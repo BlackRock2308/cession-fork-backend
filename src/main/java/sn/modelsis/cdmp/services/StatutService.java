@@ -22,7 +22,7 @@ public class StatutService {
         return  statutRepository.findAll();
     }
 
-    /*public Statut findStatutById(Long id){
+    /* public Statut findStatutById(Long id){
         return statutRepository.findStatutById(id)
                 .orElseThrow(()->new NotFoundException("Statut not find"));
     }*/
@@ -32,7 +32,6 @@ public class StatutService {
         statutUpdate.setLibelle(statut.getLibelle());
         return  statutRepository.save(statutUpdate);
     }
-
     public void deleteStatut(Long idStatut){
         statutRepository.deleteById(idStatut);
     }
