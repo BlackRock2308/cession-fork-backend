@@ -13,6 +13,11 @@ import java.io.Serializable;
 @ToString
 @Table(name = "demande")
 public class Demande implements Serializable {
+    /**
+   * 
+   */
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idDemande")
