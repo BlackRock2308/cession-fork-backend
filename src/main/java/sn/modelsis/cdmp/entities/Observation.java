@@ -33,10 +33,10 @@ public class Observation implements Serializable {
     private LocalDateTime dateObservation; 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="idDemande")
+    @JoinColumn(name="demandeid")
     private Demande demande;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="idAgent")
+    @JoinColumn(name="agentid")
     private Agent agent;
 }

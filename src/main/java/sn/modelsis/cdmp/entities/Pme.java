@@ -7,6 +7,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -22,34 +24,34 @@ public class Pme implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idPME")
+    @Column(name = "id")
     private Long idPME;
     
-    @Column(name = "prenomRepresentant")
+    @Column(name = "prenomrepresentant")
     private String prenomRepresentant;
     
-    @Column(name = "nomRepresentant")
+    @Column(name = "nomrepresentant")
     private String nomRepresentant;
     
     @Column(name = "rccm")
     private String rccm;
     
-    @Column(name = "adressePME")
+    @Column(name = "adresse")
     private String adressePME;
     
-    @Column(name = "telephonePME")
+    @Column(name = "telephone")
     private String telephonePME;
     
-    @Column(name = "dateImmatriculation")
+    @Column(name = "dateimmatriculation")
     private Date dateImmatriculation;
     
-    @Column(name = "centreFiscal")
+    @Column(name = "centrefiscal")
     private String centreFiscal;
     
     @Column(name = "ninea")
     private String ninea;
     
-    @Column(name = "raisonSocial")
+    @Column(name = "raisonsocial")
     private String raisonSocial;
     
     @Column(name = "atd")
@@ -58,22 +60,25 @@ public class Pme implements Serializable {
     @Column(name = "nantissement")
     private String nantissement;
     
-    @Column(name = "interdictionBancaire")
+    @Column(name = "interdictionbancaire")
     private String interdictionBancaire;
     
-    @Column(name = "formeJuridique")
+    @Column(name = "formejuridique")
     private String formeJuridique;
     
     @Column(name = "email")
     private String email;
     
-    @Column(name = "codePin")
+    @Column(name = "codepin")
     private  int codePin;
     
-    @Column(name = "urlImageProfile")
+    @Column(name = "urlimageprofil")
     private String urlImageProfile;
     
-    @Column(name = "urlImageSignature")
+    @Column(name = "urlimagesignature")
     private String urlImageSignature;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    private Set<Demande> demandes = new HashSet<>();
     
 }

@@ -37,7 +37,7 @@ public class Agent implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "idAgent")
+  @Column(name = "id")
   private Long idAgent;
 
   @Column(name = "nom")
@@ -49,10 +49,10 @@ public class Agent implements Serializable {
   @Column(name = "adresse")
   private String adresse;
   
-  @Column(name = "codePin")
+  @Column(name = "codepin")
   private int codePin;
   
-  @Column(name = "urlImageSignature")
+  @Column(name = "urlimagesignature")
   private String urlImageSignature;
   
   @Column(name = "telephone")
@@ -61,7 +61,7 @@ public class Agent implements Serializable {
   @Column(name = "email")
   private String email;
 
-  @Column(name = "urlImageProfil")
+  @Column(name = "urlimageprofil")
   private String urlImageProfil;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "agent")

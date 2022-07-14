@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ToString
-@Table(name = "bonEngagement")
+@Table(name = "statut")
 public class Statut implements Serializable {
     /**
    * 
@@ -20,7 +20,7 @@ public class Statut implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idStatut")
+    @Column(name = "id")
     private Long idStatut;
     
     @Column(name = "code")
