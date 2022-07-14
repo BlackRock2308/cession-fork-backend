@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class PmeDto {
-    private Long id;
+    private Long idPME;
     private String prenomRepresentant;
     private String nomRepresentant;
     private String rccm;
