@@ -17,6 +17,7 @@ import sn.modelsis.cdmp.services.AgentService;
  */
 @Service
 public class AgentServiceImpl implements AgentService{
+  
   @Autowired
   private AgentRepository agentRepository;
  

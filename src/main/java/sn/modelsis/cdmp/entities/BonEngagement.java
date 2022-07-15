@@ -24,33 +24,32 @@ public class BonEngagement implements Serializable {
 
   @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idBonEngagement")
+    @Column(name = "id")
     private Long idBonEngagement;
     
-    @Column(name = "montantCreance")
+    @Column(name = "montantcreance")
     private double montantCreance;
     
     @Column(name = "reference")
     private String reference;
     
-    @Column(name = "naturePrestation")
+    @Column(name = "natureprestation")
     private String naturePrestation;
     
-    @Column(name = "natureDepense")
+    @Column(name = "naturedepense")
     private String natureDepense;
     
-    @Column(name = "objetDepense")
+    @Column(name = "objetdepense")
     private String objetDepense;
     
     @Column(name = "imputation")
     private String imputation;
     
-    @Column(name = "dateBonEngagement")
+    @Column(name = "datebonengagement")
     private Date dateBonEngagement;
     
-    @Column(name = "identificationComptable")
+    @Column(name = "identificationcomptable")
     private String identificationComptable;
-
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<Demande> demandes = new HashSet<>();
 }

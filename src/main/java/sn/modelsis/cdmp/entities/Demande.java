@@ -6,6 +6,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,18 +22,25 @@ public class Demande implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idDemande")
+    @Column(name = "id")
     private Long idDemande;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="pmeId")
+    @JoinColumn(name="pmeid")
     private Pme pme;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="statutId")
+    @JoinColumn(name="statutid")
     private Statut statut;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="bonEngagementId")
+    @JoinColumn(name="bonengagementid")
     private BonEngagement bonEngagement;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="conventionid")
+    private Convention convention;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
+    private Set<Observation> observations = new HashSet<>();
 }

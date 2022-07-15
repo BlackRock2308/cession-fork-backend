@@ -5,19 +5,13 @@ package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,11 +24,11 @@ import lombok.Setter;
  *
  */
 @Entity
-@Table(name = "convention")
+@Table(name = "paiement")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Convention implements Serializable {
+public class Paiement implements Serializable {
   
   /**
    * 
@@ -44,28 +38,20 @@ public class Convention implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private Long idConvention;
+  private Long idPaiement;
   
-  @Column(name = "modepaiement")
-  @Enumerated(EnumType.STRING)
-  private ModePaiement modePaiement;
+  @Column(name = "montant")
+  private double montant;
 
-  @Column(name = "decote")
-  private String decote;
+  @Column(name = "paiementeffectif")
+  private Boolean paiementEffectif;
   
-  @Column(name = "dateconvention")
+  @Column(name = "datepaiement")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime dateConvention; 
+  private LocalDateTime datePaiement; 
   
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "pmeid", nullable = true)
-  private Pme pme;
-  
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "agentid", nullable = true)
-  private Agent agent;
-  
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
-  private Set<Demande> demandes = new HashSet<>();
+  @JoinColumn(name = "demandeid", nullable = false)
+  private Demande demande;
 
 }

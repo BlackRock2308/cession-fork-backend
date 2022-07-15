@@ -22,7 +22,7 @@ public class Statut implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idStatut")
+    @Column(name = "id")
     private Long idStatut;
     
     @Column(name = "code")

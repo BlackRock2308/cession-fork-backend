@@ -32,7 +32,7 @@ public class Parametrage implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "idParam")
+  @Column(name = "id")
   private Long idParam;
 
   @Column(name = "code")
