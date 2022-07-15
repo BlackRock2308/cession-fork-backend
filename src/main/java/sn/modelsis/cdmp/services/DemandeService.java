@@ -1,10 +1,8 @@
 package sn.modelsis.cdmp.services;
 
-import org.springframework.stereotype.Service;
-import sn.modelsis.cdmp.entities.Demande;
-
 import java.util.List;
 import java.util.Optional;
+import sn.modelsis.cdmp.entities.Demande;
 
 public interface DemandeService {
     /**
