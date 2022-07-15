@@ -2,14 +2,8 @@ package sn.modelsis.cdmp.Util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import sn.modelsis.cdmp.entities.Agent;
-import sn.modelsis.cdmp.entities.Convention;
-import sn.modelsis.cdmp.entities.Observation;
-import sn.modelsis.cdmp.entities.Parametrage;
-import sn.modelsis.cdmp.entitiesDtos.AgentDto;
-import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
-import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
-import sn.modelsis.cdmp.entitiesDtos.ParametrageDto;
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.*;
 
 public class DtoConverter {
 
@@ -87,4 +81,70 @@ public class DtoConverter {
 		return observation;
 	}
 
+	public static  PmeDto convertToDto(Pme pme) {
+		PmeDto pmeDto = null;
+		if(null != pme) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			pmeDto = modelMapper.map(pme, PmeDto.class);
+		}
+		return pmeDto;
+	}
+
+	public static Pme convertToEntity(PmeDto pmeDto) {
+		Pme pme = null;
+		if(null != pmeDto) {
+			pme = modelMapper.map(pmeDto, Pme.class);
+		}
+		return pme;
+	}
+
+	public static  BonEngagementDto convertToDto(BonEngagement bonEngagement) {
+		BonEngagementDto bonEngagementDto = null;
+		if(null != bonEngagement) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			bonEngagementDto = modelMapper.map(bonEngagement, BonEngagementDto.class);
+		}
+		return bonEngagementDto;
+	}
+
+	public static BonEngagement convertToEntity(BonEngagementDto bonEngagementDto) {
+		BonEngagement bonEngagement = null;
+		if(null != bonEngagementDto) {
+			bonEngagement = modelMapper.map(bonEngagementDto, BonEngagement.class);
+		}
+		return bonEngagement;
+	}
+
+	public static  DemandeDto convertToDto(Demande demande) {
+		DemandeDto demandeDto = null;
+		if(null != demande) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			demandeDto = modelMapper.map(demande, DemandeDto.class);
+		}
+		return demandeDto;
+	}
+
+	public static Demande convertToEntity(DemandeDto demandeDto) {
+		Demande demande = null;
+		if(null != demandeDto) {
+			demande = modelMapper.map(demandeDto, Demande.class);
+		}
+		return demande;
+	}
+	public static  StatutDto convertToDto(Statut statut) {
+		StatutDto statutDto = null;
+		if(null != statut) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			statutDto = modelMapper.map(statut, StatutDto.class);
+		}
+		return statutDto;
+	}
+
+	public static Statut convertToEntity(StatutDto statutDto) {
+		Statut statut = new Statut();
+		if(null != statutDto) {
+			statut = modelMapper.map(statutDto, Statut.class);
+		}
+		return statut;
+	}
 }

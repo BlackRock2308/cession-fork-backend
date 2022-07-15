@@ -1,48 +1,62 @@
 package sn.modelsis.cdmp.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sn.modelsis.cdmp.Util.DtoConverter;
 import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.services.PmeService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/pme")
+@RequestMapping("api/pme")
 public class PmeController {
+    private final Logger log = LoggerFactory.getLogger(PmeController.class);
+    @Autowired
     private PmeService pmeService;
-    public PmeController(PmeService pmeService){
-        this.pmeService = pmeService;
+
+    @PostMapping()
+    public ResponseEntity<PmeDto> addPme(@RequestBody PmeDto pmeDto, HttpServletRequest request) {
+        Pme pme = DtoConverter.convertToEntity(pmeDto);
+        Pme result = pmeService.save(pme);
+        log.info("Pme create. Id:{} ", result.getIdPME());
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Pme>> getAllPme () {
-        List<Pme> PmeList = pmeService.findAllPme();
-        return new ResponseEntity<>(PmeList, HttpStatus.OK);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<PmeDto> updatePme(@RequestBody PmeDto pmeDto, HttpServletRequest request) {
+        Pme pme = DtoConverter.convertToEntity(pmeDto);
+        Pme result = pmeService.save(pme);
+        log.info("Pme updated. Id:{}", result.getIdPME());
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
     }
 
-   /* @GetMapping("/find/{id}")
-    public ResponseEntity<Pme> getPmeById (@PathVariable("id") Long id) {
-        Pme pme = pmeService.findPmeById(id);
-        return new ResponseEntity<>(pme, HttpStatus.OK);
-    }*/
-
-    @PostMapping("/add")
-    public ResponseEntity<Pme> addPme(@RequestBody Pme pme) {
-        Pme newPme = pmeService.addPme(pme);
-        return new ResponseEntity<>(newPme, HttpStatus.CREATED);
+    @GetMapping
+    public ResponseEntity<List<PmeDto>> getAllPme(HttpServletRequest request) {
+        List<Pme> pmeList = pmeService.findAll();
+        log.info("All Pme .");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(pmeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Pme> updatePme(@RequestBody Pme pme,@PathVariable("id") Long pmeId) {
-        Pme updatePme = pmeService.updatePme(pme, pmeId);
-        return new ResponseEntity<>(updatePme, HttpStatus.OK);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<PmeDto> getPme(@PathVariable Long id,HttpServletRequest request) {
+        Pme pme = pmeService.getPme(id).orElse(null);
+        log.info("Pme . Id:{}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(pme));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deletePme(@PathVariable("id") Long pmeId) {
-        pmeService.deletePme(pmeId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<PmeDto> deletePme(@PathVariable Long id, HttpServletRequest request) {
+        pmeService.delete(id);
+        log.warn("Pme deleted. Id:{}", id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

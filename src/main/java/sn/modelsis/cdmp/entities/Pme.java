@@ -7,6 +7,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -75,5 +77,8 @@ public class Pme implements Serializable {
     
     @Column(name = "urlImageSignature")
     private String urlImageSignature;
-    
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    private Set<Demande> demandes = new HashSet<>();
+
 }

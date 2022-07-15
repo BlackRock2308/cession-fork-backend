@@ -7,6 +7,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -48,4 +50,7 @@ public class BonEngagement implements Serializable {
     
     @Column(name = "identificationComptable")
     private String identificationComptable;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
+    private Set<Demande> demandes = new HashSet<>();
 }
