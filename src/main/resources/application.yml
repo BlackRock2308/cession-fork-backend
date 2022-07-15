@@ -1,14 +1,14 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
     name: Cession creance
   datasource:
     initialization-mode: always
-    password: passer123
+    password: khd.dev17
     platform: postgres
-    url: jdbc:postgresql://10.42.1.204:5432/cdmp
-    username: cdmp
+    url: jdbc:postgresql://localhost:5432/cdmp
+    username: postgres
   jpa:
     hibernate:
       ddl-auto: validate

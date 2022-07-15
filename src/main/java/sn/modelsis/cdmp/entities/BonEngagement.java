@@ -50,7 +50,6 @@ public class BonEngagement implements Serializable {
     
     @Column(name = "identificationcomptable")
     private String identificationComptable;
-    
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<Demande> demandes = new HashSet<>();
 }
