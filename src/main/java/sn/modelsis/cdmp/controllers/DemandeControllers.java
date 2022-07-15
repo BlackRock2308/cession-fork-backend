@@ -31,7 +31,7 @@ public class DemandeControllers {
     public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto, HttpServletRequest request) {
         Demande demande = DtoConverter.convertToEntity(demandeDto);
         Demande result = demandeService.save(demande);
-        log.info("Demande create. Id:{} ", result.getIdDemande());
+        log.info("demande create. Id:{} ", result.getIdDemande());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
