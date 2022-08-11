@@ -22,47 +22,50 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/demandes")
 public class DemandeControllers {
 
-    private final Logger log = LoggerFactory.getLogger(DemandeControllers.class);
+  private final Logger log = LoggerFactory.getLogger(DemandeControllers.class);
 
-    @Autowired
-    private DemandeService demandeService;
+  @Autowired
+  private DemandeService demandeService;
 
-    @PostMapping()
-    public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto, HttpServletRequest request) {
-        Demande demande = DtoConverter.convertToEntity(demandeDto);
-        Demande result = demandeService.save(demande);
-        log.info("demande create. Id:{} ", result.getIdDemande());
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
-    }
+  @PostMapping()
+  public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto,
+      HttpServletRequest request) {
+    Demande demande = DtoConverter.convertToEntity(demandeDto);
+    Demande result = demandeService.save(demande);
+    log.info("demande create. Id:{} ", result.getIdDemande());
+    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+  }
 
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<DemandeDto> updateDemande(@RequestBody DemandeDto demandeDto, HttpServletRequest request) {
-        Demande demande = DtoConverter.convertToEntity(demandeDto);
-        Demande result = demandeService.save(demande);
-        log.info("Demande updated. Id:{}", result.getIdDemande());
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
-    }
+  @PutMapping(value = "/{id}")
+  public ResponseEntity<DemandeDto> updateDemande(@RequestBody DemandeDto demandeDto,
+      HttpServletRequest request) {
+    Demande demande = DtoConverter.convertToEntity(demandeDto);
+    Demande result = demandeService.save(demande);
+    log.info("Demande updated. Id:{}", result.getIdDemande());
+    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
+  }
 
-    @GetMapping
-    public ResponseEntity<List<DemandeDto>> getAllDemande(HttpServletRequest request) {
-        List<Demande> demandeList = demandeService.findAll();
-        log.info("All Demande .");
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
-    }
+  @GetMapping
+  public ResponseEntity<List<DemandeDto>> getAllDemande(HttpServletRequest request) {
+    List<Demande> demandeList = demandeService.findAll();
+    log.info("All Demande .");
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+  }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<DemandeDto> getDemande(@PathVariable Long id,HttpServletRequest request) {
-        Demande demande = demandeService.getDemande(id).orElse(null);
-        log.info("Demande . Id:{}", id);
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demande));
-    }
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<DemandeDto> getDemande(@PathVariable Long id, HttpServletRequest request) {
+    Demande demande = demandeService.getDemande(id).orElse(null);
+    log.info("Demande . Id:{}", id);
+    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demande));
+  }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<DemandeDto> deleteDemande(@PathVariable Long id, HttpServletRequest request) {
-        demandeService.delete(id);
-        log.warn("Demande deleted. Id:{}", id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+  @DeleteMapping(value = "/{id}")
+  public ResponseEntity<DemandeDto> deleteDemande(@PathVariable Long id,
+      HttpServletRequest request) {
+    demandeService.delete(id);
+    log.warn("Demande deleted. Id:{}", id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
 }

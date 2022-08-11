@@ -29,7 +29,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Agent implements Serializable {
-  
+
   /**
    * 
    */
@@ -42,22 +42,22 @@ public class Agent implements Serializable {
 
   @Column(name = "nom")
   private String nom;
-  
+
   @Column(name = "prenom")
   private String prenom;
-  
+
   @Column(name = "adresse")
   private String adresse;
-  
+
   @Column(name = "codepin")
   private int codePin;
-  
+
   @Column(name = "urlimagesignature")
   private String urlImageSignature;
-  
+
   @Column(name = "telephone")
   private String telephone;
-  
+
   @Column(name = "email")
   private String email;
 

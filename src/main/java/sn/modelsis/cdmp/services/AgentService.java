@@ -14,31 +14,31 @@ import sn.modelsis.cdmp.entities.Agent;
  */
 public interface AgentService {
 
-    /**
-     * 
-     * @param agent
-     * @return
-     */
-    Agent save(Agent agent);
+  /**
+   * 
+   * @param agent
+   * @return
+   */
+  Agent save(Agent agent);
 
-    /**
-    * 
-    * @return
-    */
-    List<Agent> findAll();
+  /**
+   * 
+   * @return
+   */
+  List<Agent> findAll();
 
-    /**
-     * 
-     * @param id
-     * @return
-     */
-    Optional<Agent> getAgent(Long id);
+  /**
+   * 
+   * @param id
+   * @return
+   */
+  Optional<Agent> getAgent(Long id);
 
-    /**
-     * 
-     * @param id
-     */
-    void delete(Long id);
-    
-    
+  /**
+   * 
+   * @param id
+   */
+  void delete(Long id);
+
+
 }

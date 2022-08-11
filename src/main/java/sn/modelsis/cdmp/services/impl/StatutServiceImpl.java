@@ -12,20 +12,28 @@ import java.util.Optional;
 @Service
 public class StatutServiceImpl implements StatutService {
 
-    @Autowired
-    private StatutRepository statutRepository;
+  @Autowired
+  private StatutRepository statutRepository;
 
-    @Override
-    public Statut save(Statut statut){return statutRepository.save(statut);}
+  @Override
+  public Statut save(Statut statut) {
+    return statutRepository.save(statut);
+  }
 
-    @Override
-    public List<Statut> findAll(){return statutRepository.findAll();}
+  @Override
+  public List<Statut> findAll() {
+    return statutRepository.findAll();
+  }
 
-    @Override
-    public Optional<Statut> getStatut(Long id){return statutRepository.findById(id);}
+  @Override
+  public Optional<Statut> getStatut(Long id) {
+    return statutRepository.findById(id);
+  }
 
-    @Override
-    public void delete(Long id){statutRepository.deleteById(id);}
+  @Override
+  public void delete(Long id) {
+    statutRepository.deleteById(id);
+  }
 }
 
 

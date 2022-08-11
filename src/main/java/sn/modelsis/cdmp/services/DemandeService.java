@@ -5,30 +5,30 @@ import java.util.Optional;
 import sn.modelsis.cdmp.entities.Demande;
 
 public interface DemandeService {
-    /**
-     *
-     * @param demande
-     * @return
-     */
-    Demande save(Demande demande);
+  /**
+   *
+   * @param demande
+   * @return
+   */
+  Demande save(Demande demande);
 
-    /**
-     *
-     * @return
-     */
-    List<Demande> findAll();
+  /**
+   *
+   * @return
+   */
+  List<Demande> findAll();
 
-    /**
-     *
-     * @param id
-     * @return
-     */
-    Optional<Demande> getDemande(Long id);
+  /**
+   *
+   * @param id
+   * @return
+   */
+  Optional<Demande> getDemande(Long id);
 
-    /**
-     *
-     * @param id
-     */
-    void delete(Long id);
+  /**
+   *
+   * @param id
+   */
+  void delete(Long id);
 
 }

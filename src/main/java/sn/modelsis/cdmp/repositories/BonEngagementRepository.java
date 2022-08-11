@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import sn.modelsis.cdmp.entities.BonEngagement;
 
 public interface BonEngagementRepository extends JpaRepository<BonEngagement, Long> {
-   // Optional<BonEngagement> findBonEngagementById(Long id);
+  // Optional<BonEngagement> findBonEngagementById(Long id);
 }
