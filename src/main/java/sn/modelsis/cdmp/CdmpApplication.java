@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp;
 
 import java.net.InetAddress;
+
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,6 +16,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+/**
+ * @author SNDIAGNEF
+ *
+ */
 
 @SpringBootApplication
 public class CdmpApplication implements InitializingBean {

@@ -22,6 +22,7 @@ import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.services.ConventionService;
 
 /**
+ * @author SNDIAGNEF
  * REST Controller to handle Convention
  */
 @RestController

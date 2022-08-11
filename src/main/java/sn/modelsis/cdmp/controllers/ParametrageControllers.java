@@ -22,6 +22,7 @@ import sn.modelsis.cdmp.entitiesDtos.ParametrageDto;
 import sn.modelsis.cdmp.services.ParametrageService;
 
 /**
+ * @author SNDIAGNEF
  * REST Controller to handle Parametrage
  */
 @RestController

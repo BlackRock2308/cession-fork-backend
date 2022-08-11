@@ -22,6 +22,7 @@ import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.services.ObservationService;
 
 /**
+ *  @author SNDIAGNEF
  * REST Controller to handle Observation
  */
 @RestController

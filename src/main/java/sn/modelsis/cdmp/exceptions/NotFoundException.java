@@ -1,5 +1,9 @@
 package sn.modelsis.cdmp.exceptions;
 
+/**
+ * @author SNDIAGNEF
+ *
+ */
 public class NotFoundException extends RuntimeException{
    /**
    * 
