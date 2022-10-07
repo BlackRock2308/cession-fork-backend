@@ -5,10 +5,10 @@ spring:
     name: Cession creance
   datasource:
     initialization-mode: always
-    password: khd.dev17
+    password: passer123
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/cdmp
-    username: postgres
+    url: jdbc:postgresql://10.42.1.204:5432/cdmp
+    username: cdmp
   jpa:
     hibernate:
       ddl-auto: validate
