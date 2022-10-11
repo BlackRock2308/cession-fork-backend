@@ -96,6 +96,30 @@ public class Pme implements Serializable {
     @Column(name = "activitePricipale")
     private String activitePrincipale;
 
+    @Column(name = "autorisationMinisterielle")
+    private String autorisationMinisterielle;
+
+    @Column(name = "dateCreation")
+    private Date dateCreation;
+
+    @Column(name = "capitalSocial")
+    private String capitalSocial;
+
+    @Column(name = "chiffresDaffaires")
+    private int chiffresDaffaires;
+
+    @Column(name = "effectifPermanent")
+    private int effectifPermanent;
+
+    @Column(name = "nombreEtablissementSecondaires")
+    private String nombreEtablissementSecondaires;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    private Set<Agent> agents = new HashSet<>();
+
+
+
+
 
 
 
