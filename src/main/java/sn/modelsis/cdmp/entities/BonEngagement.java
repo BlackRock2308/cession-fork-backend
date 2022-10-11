@@ -1,14 +1,23 @@
 package sn.modelsis.cdmp.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -52,4 +61,7 @@ public class BonEngagement implements Serializable {
     private String identificationComptable;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<Demande> demandes = new HashSet<>();
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
+    private Set<BEDocuments> documents = new HashSet<>();
 }

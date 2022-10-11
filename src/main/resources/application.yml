@@ -1,5 +1,6 @@
 server:
   port: 8081
+  document_folder: ${DOCUMENT_FOLDER:D:/Projets/Finance_islamique/documentLibrary}
 spring:
   application:
     name: Cession creance

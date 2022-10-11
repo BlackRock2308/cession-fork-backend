@@ -1,4 +1,4 @@
-package sn.modelsis.cdmp.Util;
+package sn.modelsis.cdmp.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -147,4 +147,21 @@ public class DtoConverter {
 		}
 		return statut;
 	}
+	
+	public static DocumentDto convertToDto(Documents document) {
+	    DocumentDto documentDto = null;
+	    if (null != document) {
+	      modelMapper.getConfiguration().setAmbiguityIgnored(true);
+	      documentDto = modelMapper.map(document, DocumentDto.class);
+	    }
+	    return documentDto;
+	  }
+
+	  public static Documents convertToEntity(DocumentDto documentDto) {
+	    Documents document = null;
+	    if (null != documentDto) {
+	      document = modelMapper.map(documentDto, Documents.class);
+	    }
+	    return document;
+	  }
 }

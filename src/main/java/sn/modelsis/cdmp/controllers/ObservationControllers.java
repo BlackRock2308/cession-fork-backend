@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sn.modelsis.cdmp.Util.DtoConverter;
+
 import sn.modelsis.cdmp.entities.Observation;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.services.ObservationService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 /**
  *  @author SNDIAGNEF

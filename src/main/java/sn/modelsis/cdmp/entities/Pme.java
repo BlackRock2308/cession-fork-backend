@@ -80,4 +80,7 @@ public class Pme implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Demande> demandes = new HashSet<>();
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    private Set<PMEDocuments> documents = new HashSet<>();
 }

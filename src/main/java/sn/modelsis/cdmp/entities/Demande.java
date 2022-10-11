@@ -43,4 +43,7 @@ public class Demande implements Serializable {
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<Observation> observations = new HashSet<>();
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
+    private Set<DemandeDocuments> documents = new HashSet<>();
 }
