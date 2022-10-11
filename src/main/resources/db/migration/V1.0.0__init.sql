@@ -9,9 +9,10 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
+--SET default_table_access_method = heap;
 
 --
 -- Name: pme; Type: TABLE; Schema: public; Owner: -
@@ -32,7 +33,6 @@ CREATE TABLE public.pme (
     nantissement character varying(200),
     interdictionbancaire character varying(200),
     identificationbudgetaire boolean ,
-    formejuridique character varying(50),
     urlimageprofil character varying(250),
     email character varying(50),
     codepin integer,
@@ -40,7 +40,6 @@ CREATE TABLE public.pme (
     representantLegal character varying(250),
     enseigne character varying(100),
     formeJuridique character varying(250),
-    representantLegal character varying(250),
     numCNIRepresentant integer ,
     localite character varying(250),
     controle integer ,
@@ -123,7 +122,8 @@ CREATE TABLE public.paiement (
     demandeid bigint NOT NULL,
     soldePme double precision,
     montantRecuCdmp double precision,
-    statutid bigint NOT NULL
+    statutid bigint NOT NULL,
+    datePaiement timestamp without time zone
 );
 
 
@@ -192,12 +192,13 @@ CREATE TABLE public.agent (
 ALTER TABLE ONLY public.agent
     ADD CONSTRAINT agent_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: agent paiement_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.detailsPaiement
-    ADD CONSTRAINT detailsPaiement._pkey PRIMARY KEY (id);
+    ADD CONSTRAINT detailsPaiement_pkey PRIMARY KEY (id);
 
 --
 -- Name: parametrage parametrage_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -326,3 +327,6 @@ ALTER TABLE ONLY public.observation
 
 ALTER TABLE ONLY public.observation
     ADD CONSTRAINT fk_observation_demande FOREIGN KEY (demandeid) REFERENCES public.demande(id);
+
+
+
