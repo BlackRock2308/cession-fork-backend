@@ -62,6 +62,9 @@ public class Pme implements Serializable {
     
     @Column(name = "interdictionbancaire")
     private String interdictionBancaire;
+
+    @Column(name = "identificationBudgetaire")
+    private String identificationBudgetaire;
     
     @Column(name = "formejuridique")
     private String formeJuridique;
@@ -77,6 +80,29 @@ public class Pme implements Serializable {
     
     @Column(name = "urlimagesignature")
     private String urlImageSignature;
+
+    @Column(name = "dateAdhesion")
+    private Date dateAdhesion;
+
+    @Column(name = "enseigne")
+    private String enseigne;
+
+    @Column(name = "localite")
+    private String localite;
+
+    @Column(name = "controle")
+    private int controle;
+
+    @Column(name = "activitePricipale")
+    private String activitePrincipale;
+
+
+
+
+
+
+    private Boolean hasNinea;
+    private Boolean isActive;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Demande> demandes = new HashSet<>();
