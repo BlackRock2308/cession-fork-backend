@@ -9,9 +9,10 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
+--SET default_table_access_method = heap;
 
 --
 -- Name: pme; Type: TABLE; Schema: public; Owner: -
@@ -31,11 +32,30 @@ CREATE TABLE public.pme (
     atd character varying(200),
     nantissement character varying(200),
     interdictionbancaire character varying(200),
-    formejuridique character varying(50),
+    identificationbudgetaire boolean ,
     urlimageprofil character varying(250),
     email character varying(50),
     codepin integer,
-    urlimagesignature character varying(250)
+    urlimagesignature character varying(250),
+    representantLegal character varying(250),
+    enseigne character varying(100),
+    formeJuridique character varying(250),
+    numCNIRepresentant integer ,
+    localite character varying(250),
+    controle integer ,
+    activitePrincipal character varying(250),
+    autorisationMinisterielle character varying(250),
+    registreCommerce character varying(250),
+    dateCreation  timestamp without time zone,
+    capitalSocial character varying(250),
+    chiffresDaffaires integer,
+    effectifPermanent integer,
+    nombreEtablissementSecondaires integer,
+    dateDemandeAdhesion timestamp without time zone,
+    nineaExistant boolean,
+    pmeActive boolean
+
+
 );
 
 --
@@ -51,7 +71,20 @@ CREATE TABLE public.bonengagement (
     imputation character varying(100),
     datebonengagement timestamp without time zone,
     montantCreance double precision,
-    identificationcomptable character varying(100)
+    identificationcomptable character varying(100),
+    date_demande timestamp without time zone,
+    exercice character varying(250),
+    designatinonBeneficiaire character varying(250),
+    actionDestination character varying(250),
+    activiteDestination character varying(250),
+    typeDepense character varying(250),
+    modeReglement character varying(100),
+    dateSoumissionServiceDepensier timestamp without time zone
+
+
+
+
+
 );
 
 --
@@ -86,12 +119,24 @@ CREATE TABLE public.demande (
 
 CREATE TABLE public.paiement (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    datepaiement timestamp without time zone,
-    montant double precision,
-    paiementeffectif boolean,
-    demandeid bigint NOT NULL
+    demandeid bigint NOT NULL,
+    soldePme double precision,
+    montantRecuCdmp double precision,
+    statutid bigint NOT NULL,
+    datePaiement timestamp without time zone
 );
 
+
+CREATE TABLE public.detailsPaiement (
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    modePaiement character varying(250) ,
+    datePaiement timestamp without time zone,
+    comptable character varying(100),
+    montant double precision,
+    reference character varying(250),
+    typePaiement character varying(150),
+    paiementid bigint NOT NULL
+);
 --
 -- Name: observation; Type: TABLE; Schema: public; Owner: -
 --
@@ -146,6 +191,14 @@ CREATE TABLE public.agent (
 
 ALTER TABLE ONLY public.agent
     ADD CONSTRAINT agent_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agent paiement_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.detailsPaiement
+    ADD CONSTRAINT detailsPaiement_pkey PRIMARY KEY (id);
 
 --
 -- Name: parametrage parametrage_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -226,6 +279,12 @@ ALTER TABLE ONLY public.demande
     ADD CONSTRAINT fk_demande_bonengagement FOREIGN KEY (bonengagementid) REFERENCES public.bonengagement(id);
 
 --
+-- Name: detailsPaiement fk_detailsPaiement_paiement; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.detailsPaiement
+    ADD CONSTRAINT fk_detailsPaiement_paiement FOREIGN KEY (paiementid) REFERENCES public.paiement(id);
+--
 -- Name: demande fk_demande_statut; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 ALTER TABLE ONLY public.demande
@@ -252,6 +311,9 @@ ALTER TABLE ONLY public.convention
 ALTER TABLE ONLY public.paiement
     ADD CONSTRAINT fk_paiement_demande FOREIGN KEY (demandeid) REFERENCES public.demande(id);
 
+
+ALTER TABLE ONLY public.paiement
+    ADD CONSTRAINT fk_paiement_statut FOREIGN KEY (statutid) REFERENCES public.statut(id);
 --
 -- Name: observation fk_observation_agent; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
@@ -265,3 +327,6 @@ ALTER TABLE ONLY public.observation
 
 ALTER TABLE ONLY public.observation
     ADD CONSTRAINT fk_observation_demande FOREIGN KEY (demandeid) REFERENCES public.demande(id);
+
+
+

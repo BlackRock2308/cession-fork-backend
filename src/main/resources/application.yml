@@ -5,10 +5,10 @@ spring:
     name: Cession creance
   datasource:
     initialization-mode: always
-    password: passer123
+    password: diarra2020
     platform: postgres
-    url: jdbc:postgresql://10.42.1.204:5432/cdmp
-    username: cdmp
+    url: jdbc:postgresql://localhost:5434/ageis
+    username: postgres
   jpa:
     hibernate:
       ddl-auto: validate
@@ -22,3 +22,5 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: false
+
+
