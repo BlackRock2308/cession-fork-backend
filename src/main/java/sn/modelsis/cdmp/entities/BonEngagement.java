@@ -61,11 +61,9 @@ public class BonEngagement implements Serializable {
     private String identificationComptable;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<Demande> demandes = new HashSet<>();
-<<<<<<< HEAD
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<BEDocuments> documents = new HashSet<>();
-=======
 
   @Column(name = "nomMarche")
   private String nomMarche;
@@ -90,5 +88,4 @@ public class BonEngagement implements Serializable {
 
   @Column(name = "dateSoumissionServiceDepensier")
   private String dateSoumissionServiceDepensier;
->>>>>>> f39963a62aebecbdadd6342b6b3c37854e0fe58e
 }
