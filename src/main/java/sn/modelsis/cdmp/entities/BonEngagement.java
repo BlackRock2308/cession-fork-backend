@@ -64,4 +64,28 @@ public class BonEngagement implements Serializable {
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<BEDocuments> documents = new HashSet<>();
+
+  @Column(name = "nomMarche")
+  private String nomMarche;
+
+  @Column(name = "exercice")
+  private int exercice;
+
+  @Column(name = "designationBeneficiare")
+  private String designationBeneficiaire;
+
+  @Column(name = "destinationAction")
+  private String destinationAction;
+
+  @Column(name = "destinationActivite")
+  private String destinationActivite;
+
+  @Column(name = "typeDepense")
+  private String typeDepense;
+
+  @Column(name = "modeReglement")
+  private String modeReglement;
+
+  @Column(name = "dateSoumissionServiceDepensier")
+  private String dateSoumissionServiceDepensier;
 }
