@@ -1,0 +1,124 @@
+.entete {
+    margin: 0em;
+}
+.underline{
+    font-weight: bolder;
+    color: black;
+    font-size: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+.unPeuple{
+    font-size: 10px;
+    text-align: center;
+
+}
+.titre{
+    text-align: center;
+    font-size: 30px;
+    margin: 3em;
+}
+
+.text{
+    display: flex;
+    justify-content: center;
+margin: 4em;
+    font-size: 17px;
+}
+
+.enddoc{
+    display: inline-block;
+    float: right;
+
+
+}
+.centrer{
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+}
+.centrer_und{
+      font-size: 10px;
+    font-weight: bold;
+    color: black;
+}
+
+.centrer_und_full{
+    font-size: 10px;
+    font-weight: bold;
+    color: black;
+}
+
+.bfiscal{
+    text-align: center;
+    font-weight: bold;
+    color: black;
+}
+
+.container{
+
+}
+.sub_centrer{
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+}
+.sub_sub_centrer{
+
+
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+}
+.sub_sub_centrer_2{
+
+
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+}
+
+.sn{
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+}
+
+.date{
+    display: inline-block;
+    width: 8em;
+    height: 5em;
+    float: right;
+
+}
+.date2{
+    float: right;
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+.bureau{
+display: inline-block;
+    font-weight: bold;
+    color: black;
+    font-size:17px;
+    min-height: 1em;
+    margin-bottom: 2em;
+    margin-top: 0em;
+
+}
+.footer{
+    align-content: center;
+}
+.imgpart{
+   align-content: center;
+    display: inline-block;
+    margin-left: 2em;
+}
+
+p {
+    margin: 0.2em;
+}
