@@ -6,15 +6,8 @@ package sn.modelsis.cdmp.entities;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,29 +33,10 @@ public class Agent implements Serializable {
   @Column(name = "id")
   private Long idAgent;
 
-  @Column(name = "nom")
-  private String nom;
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "idUtilisateur", nullable = true)
+  private Utilisateur utilisateur;
 
-  @Column(name = "prenom")
-  private String prenom;
-
-  @Column(name = "adresse")
-  private String adresse;
-
-  @Column(name = "codepin")
-  private int codePin;
-
-  @Column(name = "urlimagesignature")
-  private String urlImageSignature;
-
-  @Column(name = "telephone")
-  private String telephone;
-
-  @Column(name = "email")
-  private String email;
-
-  @Column(name = "urlimageprofil")
-  private String urlImageProfil;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "agent")
   private Set<Observation> observations = new HashSet<>();
