@@ -1,17 +1,30 @@
 package sn.modelsis.cdmp.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @ToString
 @Table(name = "pme")
@@ -64,7 +77,7 @@ public class Pme implements Serializable {
     private String interdictionBancaire;
 
     @Column(name = "identificationBudgetaire")
-    private String identificationBudgetaire;
+    private Boolean identificationBudgetaire;
     
     @Column(name = "formejuridique")
     private String formeJuridique;
@@ -81,7 +94,7 @@ public class Pme implements Serializable {
     @Column(name = "urlimagesignature")
     private String urlImageSignature;
 
-    @Column(name = "dateAdhesion")
+    @Column(name = "dateDemandeAdhesion")
     private Date dateAdhesion;
 
     @Column(name = "enseigne")
@@ -93,7 +106,7 @@ public class Pme implements Serializable {
     @Column(name = "controle")
     private int controle;
 
-    @Column(name = "activitePricipale")
+    @Column(name = "activitePrincipal")
     private String activitePrincipale;
 
     @Column(name = "autorisationMinisterielle")
@@ -112,21 +125,15 @@ public class Pme implements Serializable {
     private int effectifPermanent;
 
     @Column(name = "nombreEtablissementSecondaires")
-    private String nombreEtablissementSecondaires;
+    private int nombreEtablissementSecondaires;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
-    private Set<Agent> agents = new HashSet<>();
-
-
-
-
-
-
-
-
-
-    private Boolean hasNinea;
-    private Boolean isActive;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "agentid", nullable = true)
+    private Agent agentId;
+//
+//
+//    private Boolean hasNinea;
+//    private Boolean isActive;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Demande> demandes = new HashSet<>();

@@ -2,9 +2,12 @@ package sn.modelsis.cdmp.services.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.FilenameUtils;
 
 @Service
 public class FileHandlerService {
@@ -23,7 +26,10 @@ public class FileHandlerService {
             }
           }
 		  if(i!= 0) {
-		    fileName+="_"+i;
+		      String ext1 = FilenameUtils.getExtension(fileName);
+		      String name = FilenameUtils.removeExtension(fileName);
+		      name+="_"+i;
+		      fileName = name +'.'+ext1;
 		  }
 		}
 		String fileUrl = documentFolder + "/" + filePath + "/";

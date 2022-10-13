@@ -33,9 +33,9 @@ public class Agent implements Serializable {
   @Column(name = "id")
   private Long idAgent;
 
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "idUtilisateur", nullable = true)
-  private Utilisateur utilisateur;
+//  @OneToOne(fetch = FetchType.EAGER)
+//  @JoinColumn(name = "idUtilisateur", nullable = true)
+//  private Utilisateur utilisateur;
 
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "agent")
