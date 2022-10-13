@@ -5,9 +5,9 @@ spring:
     name: Cession creance
   datasource:
     initialization-mode: always
-    password: diarra2020
+    password:
     platform: postgres
-    url: jdbc:postgresql://localhost:5434/ageis
+    url: jdbc:postgresql://localhost:5432
     username: postgres
   jpa:
     hibernate:
