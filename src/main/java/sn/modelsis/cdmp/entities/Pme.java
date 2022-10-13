@@ -64,7 +64,7 @@ public class Pme implements Serializable {
     private String interdictionBancaire;
 
     @Column(name = "identificationBudgetaire")
-    private String identificationBudgetaire;
+    private boolean identificationBudgetaire;
     
     @Column(name = "formejuridique")
     private String formeJuridique;
@@ -81,7 +81,7 @@ public class Pme implements Serializable {
     @Column(name = "urlimagesignature")
     private String urlImageSignature;
 
-    @Column(name = "dateAdhesion")
+    @Column(name = "datedemandeadhesion")
     private Date dateAdhesion;
 
     @Column(name = "enseigne")
@@ -93,26 +93,26 @@ public class Pme implements Serializable {
     @Column(name = "controle")
     private int controle;
 
-    @Column(name = "activitePricipale")
+    @Column(name = "activiteprincipale")
     private String activitePrincipale;
 
-    @Column(name = "autorisationMinisterielle")
+    @Column(name = "autorisationministerielle")
     private String autorisationMinisterielle;
 
-    @Column(name = "dateCreation")
+    @Column(name = "datecreation")
     private Date dateCreation;
 
-    @Column(name = "capitalSocial")
+    @Column(name = "capitalsocial")
     private String capitalSocial;
 
-    @Column(name = "chiffresDaffaires")
+    @Column(name = "chiffresdaffaires")
     private int chiffresDaffaires;
 
-    @Column(name = "effectifPermanent")
+    @Column(name = "effectifpermanent")
     private int effectifPermanent;
 
-    @Column(name = "nombreEtablissementSecondaires")
-    private String nombreEtablissementSecondaires;
+    @Column(name = "nombreetablissementsecondaires")
+    private int nombreEtablissementSecondaires;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Agent> agents = new HashSet<>();
@@ -125,8 +125,8 @@ public class Pme implements Serializable {
 
 
 
-    private Boolean hasNinea;
-    private Boolean isActive;
+    private Boolean hasninea;
+    private Boolean isactive;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Demande> demandes = new HashSet<>();

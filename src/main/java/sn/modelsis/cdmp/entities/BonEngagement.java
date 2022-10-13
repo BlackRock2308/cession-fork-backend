@@ -22,7 +22,7 @@ public class BonEngagement implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long idBonEngagement;
@@ -53,19 +53,19 @@ public class BonEngagement implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<Demande> demandes = new HashSet<>();
 
-  @Column(name = "nomMarche")
+  @Column(name = "nommarche")
   private String nomMarche;
 
   @Column(name = "exercice")
-  private int exercice;
+  private String exercice;
 
-  @Column(name = "designationBeneficiare")
+  @Column(name = "designatinonbeneficiaire")
   private String designationBeneficiaire;
 
-  @Column(name = "destinationAction")
+  @Column(name = "actiondestination")
   private String destinationAction;
 
-  @Column(name = "destinationActivite")
+  @Column(name = "activitedestination")
   private String destinationActivite;
 
   @Column(name = "typeDepense")
@@ -75,5 +75,5 @@ public class BonEngagement implements Serializable {
   private String modeReglement;
 
   @Column(name = "dateSoumissionServiceDepensier")
-  private String dateSoumissionServiceDepensier;
+  private Date dateSoumissionServiceDepensier;
 }

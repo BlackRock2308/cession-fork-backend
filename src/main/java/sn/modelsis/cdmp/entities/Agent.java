@@ -34,12 +34,14 @@ public class Agent implements Serializable {
   private Long idAgent;
 
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "idUtilisateur", nullable = true)
-  private Utilisateur utilisateur;
+  @JoinColumn(name = "id", nullable = true)
+  private Utilisateur idUtilisateur;
 
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "agent")
   private Set<Observation> observations = new HashSet<>();
 
-
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name="id" , insertable = false,updatable = false)
+  private Pme pme;
 }

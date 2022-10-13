@@ -3,18 +3,20 @@ server:
 spring:
   application:
     name: Cession creance
+
   datasource:
     initialization-mode: always
     password: diarra2020
     platform: postgres
-    url: jdbc:postgresql://localhost:5434/ageis
+    url: jdbc:postgresql://localhost:5432/cdmp
     username: postgres
   jpa:
     hibernate:
       ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
+
+      ddl-auto=update:properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true

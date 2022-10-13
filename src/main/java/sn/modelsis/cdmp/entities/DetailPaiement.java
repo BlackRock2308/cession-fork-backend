@@ -6,10 +6,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 
 @Entity
-@Table(name = "detailPaiement")
+@Table(name = "detailspaiement")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,28 +22,28 @@ public class DetailPaiement implements Serializable {
     private Long id;
 
 
-    @Column(name = "modePaiement" ,nullable = true)
-    private ModePaiement modePaiement;
+    @Column(name = "modepaiement" ,nullable = true)
+    private String modePaiement;
 
 
 
-    @Column(name = "datePaiement")
-    private String datePaiement;
+    @Column(name = "datepaiement")
+    private Date datePaiement;
 
     @Column(name = "comptable")
     private String comptable;
 
     @Column(name = "montant")
-    private Long montant;
+    private int montant;
 
     @Column(name = "reference")
     private String reference;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "typepaiement")
+    private String typepaiement;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idpaiement", nullable = true)
+    @JoinColumn(name = "paiementid", nullable = true)
     private Paiement paiement;
 
 

@@ -53,10 +53,10 @@ public class Convention implements Serializable {
   @Column(name = "decote")
   private String decote;
 
-  @Column(name = "urlImageSignatureDG")
+  @Column(name = "urlimagesignaturedg")
   private String urlImageSignatureDG;
 
-  @Column(name = "urlImageSignaturePME")
+  @Column(name = "urlimagesignaturepme")
   private String urlImageSignaturePME;
   
   @Column(name = "dateconvention")
