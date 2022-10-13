@@ -77,7 +77,7 @@ public class Pme implements Serializable {
     private String interdictionBancaire;
 
     @Column(name = "identificationBudgetaire")
-    private Boolean identificationBudgetaire;
+    private boolean identificationBudgetaire;
     
     @Column(name = "formejuridique")
     private String formeJuridique;
@@ -94,7 +94,7 @@ public class Pme implements Serializable {
     @Column(name = "urlimagesignature")
     private String urlImageSignature;
 
-    @Column(name = "dateDemandeAdhesion")
+    @Column(name = "datedemandeadhesion")
     private Date dateAdhesion;
 
     @Column(name = "enseigne")
@@ -106,34 +106,40 @@ public class Pme implements Serializable {
     @Column(name = "controle")
     private int controle;
 
-    @Column(name = "activitePrincipal")
+    @Column(name = "activiteprincipale")
     private String activitePrincipale;
 
-    @Column(name = "autorisationMinisterielle")
+    @Column(name = "autorisationministerielle")
     private String autorisationMinisterielle;
 
-    @Column(name = "dateCreation")
+    @Column(name = "datecreation")
     private Date dateCreation;
 
-    @Column(name = "capitalSocial")
+    @Column(name = "capitalsocial")
     private String capitalSocial;
 
-    @Column(name = "chiffresDaffaires")
+    @Column(name = "chiffresdaffaires")
     private int chiffresDaffaires;
 
-    @Column(name = "effectifPermanent")
+    @Column(name = "effectifpermanent")
     private int effectifPermanent;
 
-    @Column(name = "nombreEtablissementSecondaires")
+    @Column(name = "nombreetablissementsecondaires")
     private int nombreEtablissementSecondaires;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "agentid", nullable = true)
-    private Agent agentId;
-//
-//
-//    private Boolean hasNinea;
-//    private Boolean isActive;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    private Set<Agent> agents = new HashSet<>();
+
+
+
+
+
+
+
+
+
+    private Boolean hasninea;
+    private Boolean isactive;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Demande> demandes = new HashSet<>();

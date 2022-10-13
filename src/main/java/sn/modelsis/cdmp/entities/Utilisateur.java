@@ -17,7 +17,7 @@ public class Utilisateur implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "idutilisateur")
     private Long idUtilisateur;
 
     @Column(name="adresse")
@@ -29,7 +29,7 @@ public class Utilisateur implements Serializable {
     @Column(name="prenom")
     private String prenom;
 
-    @Column(name="urlImageSignature")
+    @Column(name="urlImagesignature")
     private String urlImageSignature;
 
     @Column(name="telephone")
@@ -38,6 +38,6 @@ public class Utilisateur implements Serializable {
     @Column(name="email")
     private String email;
 
-    @Column(name="urlImageProfil")
+    @Column(name="urlimageprofil")
     private String urlImageProfil;
 }

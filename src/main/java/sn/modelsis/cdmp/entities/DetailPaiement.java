@@ -10,11 +10,11 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Entity
-@Table(name = "detailsPaiement")
+@Table(name = "detailspaiement")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,7 +38,7 @@ public class DetailPaiement implements Serializable {
     private String comptable;
 
     @Column(name = "montant")
-    private Double montant;
+    private int montant;
 
     @Column(name = "reference")
     private String reference;
@@ -46,9 +46,12 @@ public class DetailPaiement implements Serializable {
 //    @Column(name = "type")
 //    private String type;
 
-//    @OneToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "idpaiement", nullable = true)
-//    private Paiement paiement;
+    @Column(name = "typepaiement")
+    private String typepaiement;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "paiementid", nullable = true)
+    private Paiement paiement;
 
 
 

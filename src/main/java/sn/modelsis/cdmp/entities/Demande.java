@@ -38,8 +38,10 @@ public class Demande implements Serializable {
     @Column(name = "id")
     private Long idDemande;
 
-//    @Column(name = "dateDemandeCession")
-//    private Date dateDemandeCession;
+
+
+    @Column(name = "datedemandecession")
+    private Date dateDemandeCession;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="pmeid")
@@ -57,9 +59,13 @@ public class Demande implements Serializable {
     @JoinColumn(name="conventionid")
     private Convention convention;
     
+<<<<<<< HEAD
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<Observation> observations = new HashSet<>();
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<DemandeDocuments> documents = new HashSet<>();
+=======
+
+>>>>>>> 57962361f89d36151d04df638ee46d57a03a73a1
 }

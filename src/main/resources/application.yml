@@ -8,6 +8,7 @@ spring:
       platform: postgres
   application:
     name: Cession creance
+
   datasource:
     password: passer
     url: jdbc:postgresql://localhost:5432/cdmp
@@ -17,7 +18,8 @@ spring:
       ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
+
+      ddl-auto=update:properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
