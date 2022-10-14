@@ -33,8 +33,8 @@ public class Paiement implements Serializable {
   @Column(name = "id")
   private Long idPaiement;
   
-  @Column(name = "montant")
-  private int montant;
+  @Column(name = "montantRecuCdmp")
+  private double montant;
 
   @Column(name = "montantrecucdmp")
   private double montantRecuCDMP;

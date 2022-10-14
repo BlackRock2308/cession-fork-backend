@@ -52,12 +52,6 @@ public class Convention implements Serializable {
 
   @Column(name = "decote")
   private String decote;
-
-  @Column(name = "urlimagesignaturedg")
-  private String urlImageSignatureDG;
-
-  @Column(name = "urlimagesignaturepme")
-  private String urlImageSignaturePME;
   
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")

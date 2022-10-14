@@ -12,9 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -106,7 +104,7 @@ public class Pme implements Serializable {
     @Column(name = "controle")
     private int controle;
 
-    @Column(name = "activiteprincipale")
+    @Column(name = "activitePrincipal")
     private String activitePrincipale;
 
     @Column(name = "autorisationministerielle")
@@ -127,18 +125,10 @@ public class Pme implements Serializable {
     @Column(name = "nombreetablissementsecondaires")
     private int nombreEtablissementSecondaires;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
-    private Set<Agent> agents = new HashSet<>();
-
-
-
-
-
-
-
-
-
+    @Column(name = "nineaExistant")
     private Boolean hasninea;
+    
+    @Column(name = "pmeActive")
     private Boolean isactive;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
@@ -146,4 +136,7 @@ public class Pme implements Serializable {
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<PMEDocuments> documents = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    private Set<Agent> agents = new HashSet<>();
 }

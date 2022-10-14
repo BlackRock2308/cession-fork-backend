@@ -18,12 +18,14 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @ToString
 @Table(name = "bonEngagement")
@@ -60,9 +62,6 @@ public class BonEngagement implements Serializable {
     @Column(name = "datebonengagement")
     private Date dateBonEngagement;
 
-//    @Column(name = "nomMarche")
-//    private String nomMarche;
-
     @Column(name = "exercice")
     private String exercice;
 
@@ -75,12 +74,6 @@ public class BonEngagement implements Serializable {
     @Column(name = "activiteDestination")
     private String destinationActivite;
 
-    @Column(name = "typeDepense")
-    private String typeDepense;
-
-    @Column(name = "modeReglement")
-    private String modeReglement;
-
     @Column(name = "dateSoumissionServiceDepensier")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateSoumissionServiceDepensier;
@@ -92,27 +85,13 @@ public class BonEngagement implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<BEDocuments> documents = new HashSet<>();
-  @Column(name = "nommarche")
-  private String nomMarche;
+    @Column(name = "nomMarche")
+    private String nomMarche;
 
-  @Column(name = "exercice")
-  private String exercice;
+    @Column(name = "typeDepense")
+    private String typeDepense;
 
-  @Column(name = "designatinonbeneficiaire")
-  private String designationBeneficiaire;
+    @Column(name = "modeReglement")
+    private String modeReglement;
 
-  @Column(name = "actiondestination")
-  private String destinationAction;
-
-  @Column(name = "activitedestination")
-  private String destinationActivite;
-
-  @Column(name = "typeDepense")
-  private String typeDepense;
-
-  @Column(name = "modeReglement")
-  private String modeReglement;
-
-  @Column(name = "dateSoumissionServiceDepensier")
-  private Date dateSoumissionServiceDepensier;
 }

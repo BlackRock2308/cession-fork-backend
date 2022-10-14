@@ -2,12 +2,11 @@ package sn.modelsis.cdmp.services.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FilenameUtils;
 
 @Service
 public class FileHandlerService {
