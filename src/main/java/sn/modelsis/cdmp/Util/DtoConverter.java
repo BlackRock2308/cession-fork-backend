@@ -164,4 +164,22 @@ public class DtoConverter {
 		}
 		return detailPaiement;
 	}
+
+	public static  PaiementDto convertToDto(Paiement paiement) {
+		PaiementDto paiementDto = null;
+		if(null != paiement) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			paiementDto = modelMapper.map(paiement, PaiementDto.class);
+		}
+		return paiementDto;
+	}
+
+	public static Paiement convertToEntity(PaiementDto paiementDto) {
+		Paiement paiement = new Paiement();
+		if(null != paiementDto) {
+			paiement = modelMapper.map(paiementDto, Paiement.class);
+		}
+		return paiement;
+	}
+
 }
