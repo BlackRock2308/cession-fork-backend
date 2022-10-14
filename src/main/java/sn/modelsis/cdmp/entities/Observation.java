@@ -32,7 +32,9 @@ public class Observation implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateObservation; 
 
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="demandeid")
+    private Demande demande;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="agentid")

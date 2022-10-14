@@ -52,12 +52,6 @@ public class Convention implements Serializable {
 
   @Column(name = "decote")
   private String decote;
-
-  @Column(name = "urlimagesignaturedg")
-  private String urlImageSignatureDG;
-
-  @Column(name = "urlimagesignaturepme")
-  private String urlImageSignaturePME;
   
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -73,5 +67,8 @@ public class Convention implements Serializable {
   
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
   private Set<Demande> demandes = new HashSet<>();
+  
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
+  private Set<ConventionDocuments> documents = new HashSet<>();
 
 }

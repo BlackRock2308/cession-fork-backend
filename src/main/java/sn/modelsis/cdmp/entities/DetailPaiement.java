@@ -1,13 +1,30 @@
 package sn.modelsis.cdmp.entities;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 
 @Entity
@@ -22,13 +39,13 @@ public class DetailPaiement implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Column(name = "modePaiement")
+    private ModePaiement modePaiement;
 
-    @Column(name = "modepaiement" ,nullable = true)
-    private String modePaiement;
-
-
-
-    @Column(name = "datepaiement")
+    @Column(name = "datePaiement")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime datePaiement;
 
     @Column(name = "comptable")
@@ -46,6 +63,9 @@ public class DetailPaiement implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "paiementid", nullable = true)
     private Paiement paiement;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "dp")
+    private Set<DPaiementDocuments> documents = new HashSet<>();
 
 
 

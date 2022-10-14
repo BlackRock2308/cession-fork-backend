@@ -1,10 +1,13 @@
 package sn.modelsis.cdmp.services;
 
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.DetailPaiement;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import sn.modelsis.cdmp.entities.DetailPaiement;
+import sn.modelsis.cdmp.entities.TypeDocument;
 
 public interface DetailPaiementService {
 
@@ -33,5 +36,18 @@ public interface DetailPaiementService {
      * @param id
      */
     void delete(Long id);
+    
+    /**
+     * Cette methode permet de charger un document lié à un bon d'engagement
+     * 
+     * @param dpId de type Long c'est l'id du be
+     * @param file de type {@link MultipartFile} c'est le fichier à charger
+     * @param type de type {@link TypeDocument} qui est un ENUM
+     * @return le type de retour est un optional de {@link DetailPaiement}
+     * @throws IOException gère l'exception
+     */
+    Optional<DetailPaiement> upload(Long dpId, MultipartFile file, TypeDocument type) throws IOException;
+
+
 
 }

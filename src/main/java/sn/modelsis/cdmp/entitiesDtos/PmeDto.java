@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -28,4 +30,5 @@ public class PmeDto {
     private  int codePin;
     private String urlImageProfile;
     private String urlImageSignature;
+    private Set<DocumentDto> documents = new HashSet<>();
 }

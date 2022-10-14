@@ -1,4 +1,4 @@
-package sn.modelsis.cdmp.Util;
+package sn.modelsis.cdmp.util;
 
 
 import java.io.File;

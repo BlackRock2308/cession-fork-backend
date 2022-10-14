@@ -48,12 +48,13 @@ CREATE TABLE public.pme (
     registreCommerce character varying(250),
     dateCreation  timestamp without time zone,
     capitalSocial character varying(250),
-    chiffresDaffaires integer,
+    chiffresDaffaires bigint,
     effectifPermanent integer,
     nombreEtablissementSecondaires integer,
     dateDemandeAdhesion timestamp without time zone,
     nineaExistant boolean,
-    pmeActive boolean
+    pmeActive boolean,
+    agentid bigint 
 
 
 );
@@ -70,11 +71,12 @@ CREATE TABLE public.bonengagement (
     objetdepense character varying(100),
     imputation character varying(100),
     datebonengagement timestamp without time zone,
-    montantCreance double precision,
+    montantCreance bigint,
     identificationcomptable character varying(100),
     date_demande timestamp without time zone,
     exercice character varying(250),
-    designatinonBeneficiaire character varying(250),
+    nomMarche character varying(250),
+    designationBeneficiaire character varying(250),
     actionDestination character varying(250),
     activiteDestination character varying(250),
     typeDepense character varying(250),
@@ -120,8 +122,8 @@ CREATE TABLE public.demande (
 CREATE TABLE public.paiement (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     demandeid bigint NOT NULL,
-    soldePme double precision,
-    montantRecuCdmp double precision,
+    soldePme bigint,
+    montantRecuCdmp bigint,
     statutid bigint NOT NULL,
     datePaiement timestamp without time zone
 );
@@ -132,7 +134,7 @@ CREATE TABLE public.detailsPaiement (
     modePaiement character varying(250) ,
     datePaiement timestamp without time zone,
     comptable character varying(100),
-    montant double precision,
+    montant bigint,
     reference character varying(250),
     typePaiement character varying(150),
     paiementid bigint NOT NULL
@@ -186,6 +188,20 @@ CREATE TABLE public.agent (
 );
 
 --
+-- Name: document; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.document (
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    date_sauvegarde timestamp without time zone,
+    nom character varying(255),
+    id_provenance bigint,
+    provenance character varying(50),    
+    url_file character varying(255),
+    typeDocument character varying(50) NOT NULL
+);
+
+--
 -- Name: agent agent_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -213,6 +229,13 @@ ALTER TABLE ONLY public.parametrage
 
 ALTER TABLE ONLY public.statut
     ADD CONSTRAINT statut_pkey PRIMARY KEY (id);
+    
+--
+-- Name: document document_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.document
+    ADD CONSTRAINT document_pkey PRIMARY KEY (id);
 
 --
 -- Name: convention convention_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -263,6 +286,13 @@ ALTER TABLE ONLY public.bonengagement
 
 ALTER TABLE ONLY public.demande
     ADD CONSTRAINT fk_demande_pme FOREIGN KEY (pmeid) REFERENCES public.pme(id);
+    
+--
+-- Name: pme fk_pme_agent; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pme
+    ADD CONSTRAINT fk_pme_agent FOREIGN KEY (agentid) REFERENCES public.agent(id);
 
 --
 -- Name: demande fk_demande_convention; Type: FK CONSTRAINT; Schema: public; Owner: -
