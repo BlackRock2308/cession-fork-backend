@@ -2,7 +2,6 @@ package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +40,7 @@ public class BonEngagement implements Serializable {
     @Column(name = "id")
     private Long idBonEngagement;
 
-    @Column(name = "montantcreance")
+    @Column(name = "montantCreance")
     private Long montantCreance;
     
     @Column(name = "reference")
@@ -58,8 +57,19 @@ public class BonEngagement implements Serializable {
 
     @Column(name = "imputation")
     private String imputation;
+    
+    @Column(name = "nomMarche")
+    private String nomMarche;
+    
+    @Column(name = "typeDepense")
+    private String typeDepense;
+
+    @Column(name = "modeReglement")
+    private String modeReglement;
 
     @Column(name = "datebonengagement")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime datebonengagement;
 
     @Column(name = "exercice")
     private String exercice;
@@ -77,34 +87,15 @@ public class BonEngagement implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateSoumissionServiceDepensier;
 
-    private LocalDateTime dateBonEngagement;
     @Column(name = "identificationcomptable")
     private String identificationComptable;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<Demande> demandes = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<BEDocuments> documents = new HashSet<>();
-    @Column(name = "nomMarche")
-    private String nomMarche;
+   
 
-    @Column(name = "typeDepense")
-    private String typeDepense;
 
-    @Column(name = "modeReglement")
-    private String modeReglement;
-
-  @Column(name = "actiondestination")
-  private String destinationAction;
-
-  @Column(name = "activitedestination")
-  private String destinationActivite;
-
-  @Column(name = "typeDepense")
-  private String typeDepense;
-
-  @Column(name = "modeReglement")
-  private String modeReglement;
-
-  @Column(name = "dateSoumissionServiceDepensier")
-  private LocalDateTime dateSoumissionServiceDepensier;
 }

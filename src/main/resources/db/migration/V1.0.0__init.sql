@@ -48,7 +48,7 @@ CREATE TABLE public.pme (
     registreCommerce character varying(250),
     dateCreation  timestamp without time zone,
     capitalSocial character varying(250),
-    chiffresDaffaires integer,
+    chiffresDaffaires bigint,
     effectifPermanent integer,
     nombreEtablissementSecondaires integer,
     dateDemandeAdhesion timestamp without time zone,
@@ -71,7 +71,7 @@ CREATE TABLE public.bonengagement (
     objetdepense character varying(100),
     imputation character varying(100),
     datebonengagement timestamp without time zone,
-    montantCreance double precision,
+    montantCreance bigint,
     identificationcomptable character varying(100),
     date_demande timestamp without time zone,
     exercice character varying(250),
@@ -122,8 +122,8 @@ CREATE TABLE public.demande (
 CREATE TABLE public.paiement (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     demandeid bigint NOT NULL,
-    soldePme double precision,
-    montantRecuCdmp double precision,
+    soldePme bigint,
+    montantRecuCdmp bigint,
     statutid bigint NOT NULL,
     datePaiement timestamp without time zone
 );
@@ -134,7 +134,7 @@ CREATE TABLE public.detailsPaiement (
     modePaiement character varying(250) ,
     datePaiement timestamp without time zone,
     comptable character varying(100),
-    montant double precision,
+    montant bigint,
     reference character varying(250),
     typePaiement character varying(150),
     paiementid bigint NOT NULL

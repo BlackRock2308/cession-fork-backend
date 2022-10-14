@@ -1,13 +1,13 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.Paiement;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -29,7 +29,9 @@ public class DetailPaiementDto {
 
     private String typepaiement;
 
-    private Paiement paiement;
+    private PaiementDto paiement;
+    
+    private Set<DocumentDto> documents = new HashSet<>();
 
 
 }
