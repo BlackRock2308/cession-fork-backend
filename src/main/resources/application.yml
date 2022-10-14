@@ -6,7 +6,7 @@ spring:
 
   datasource:
     initialization-mode: always
-    password:
+    password: diarra2020
     platform: postgres
 
     url: jdbc:postgresql://localhost:5432/cdmp
