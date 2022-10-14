@@ -147,6 +147,7 @@ public class DtoConverter {
 		}
 		return statut;
 	}
+<<<<<<< HEAD:src/main/java/sn/modelsis/cdmp/util/DtoConverter.java
 	
 	public static DocumentDto convertToDto(Documents document) {
 	    DocumentDto documentDto = null;
@@ -164,4 +165,41 @@ public class DtoConverter {
 	    }
 	    return document;
 	  }
+=======
+
+	public static  DetailPaiementDto convertToDto(DetailPaiement detailPaiement) {
+		DetailPaiementDto detailPaiementDto = null;
+		if(null != detailPaiement) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			detailPaiementDto = modelMapper.map(detailPaiement, DetailPaiementDto.class);
+		}
+		return detailPaiementDto;
+	}
+
+	public static DetailPaiement convertToEntity(DetailPaiementDto detailPaiementDto) {
+		DetailPaiement detailPaiement = new DetailPaiement();
+		if(null != detailPaiementDto) {
+			detailPaiement = modelMapper.map(detailPaiementDto, DetailPaiement.class);
+		}
+		return detailPaiement;
+	}
+
+	public static  PaiementDto convertToDto(Paiement paiement) {
+		PaiementDto paiementDto = null;
+		if(null != paiement) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			paiementDto = modelMapper.map(paiement, PaiementDto.class);
+		}
+		return paiementDto;
+	}
+
+	public static Paiement convertToEntity(PaiementDto paiementDto) {
+		Paiement paiement = new Paiement();
+		if(null != paiementDto) {
+			paiement = modelMapper.map(paiementDto, Paiement.class);
+		}
+		return paiement;
+	}
+
+>>>>>>> 3eb687ba4310f9dc71ea35d1dc0281779da7f559:src/main/java/sn/modelsis/cdmp/Util/DtoConverter.java
 }

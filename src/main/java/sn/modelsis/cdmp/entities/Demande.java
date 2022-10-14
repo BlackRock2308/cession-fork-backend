@@ -26,9 +26,9 @@ public class Demande implements Serializable {
     @Column(name = "id")
     private Long idDemande;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dateDemandeCession")
+
+
+    @Column(name = "datedemandecession")
     private Date dateDemandeCession;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -47,9 +47,13 @@ public class Demande implements Serializable {
     @JoinColumn(name="conventionid")
     private Convention convention;
     
+<<<<<<< HEAD
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<Observation> observations = new HashSet<>();
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<DemandeDocuments> documents = new HashSet<>();
+=======
+
+>>>>>>> 3eb687ba4310f9dc71ea35d1dc0281779da7f559
 }

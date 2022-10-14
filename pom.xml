@@ -86,10 +86,16 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
-				<version>5.2.4</version>
+				<version>7.0.0</version>
+				<configuration>
+					<url>jdbc:postgresql://localhost:5432/cdmp</url>
+					<user>postgres</user>
+					<password>diarra2020</password>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

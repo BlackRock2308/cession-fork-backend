@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +44,7 @@ public class Pme implements Serializable {
     private String telephonePME;
     
     @Column(name = "dateimmatriculation")
-    private Date dateImmatriculation;
+    private LocalDateTime dateImmatriculation;
     
     @Column(name = "centrefiscal")
     private String centreFiscal;
@@ -64,7 +65,7 @@ public class Pme implements Serializable {
     private String interdictionBancaire;
 
     @Column(name = "identificationBudgetaire")
-    private String identificationBudgetaire;
+    private boolean identificationBudgetaire;
     
     @Column(name = "formejuridique")
     private String formeJuridique;
@@ -81,8 +82,8 @@ public class Pme implements Serializable {
     @Column(name = "urlimagesignature")
     private String urlImageSignature;
 
-    @Column(name = "dateAdhesion")
-    private Date dateAdhesion;
+    @Column(name = "datedemandeadhesion")
+    private LocalDateTime dateAdhesion;
 
     @Column(name = "enseigne")
     private String enseigne;
@@ -93,26 +94,26 @@ public class Pme implements Serializable {
     @Column(name = "controle")
     private int controle;
 
-    @Column(name = "activitePricipale")
+    @Column(name = "activiteprincipale")
     private String activitePrincipale;
 
-    @Column(name = "autorisationMinisterielle")
+    @Column(name = "autorisationministerielle")
     private String autorisationMinisterielle;
 
-    @Column(name = "dateCreation")
-    private Date dateCreation;
+    @Column(name = "datecreation")
+    private LocalDateTime dateCreation;
 
-    @Column(name = "capitalSocial")
+    @Column(name = "capitalsocial")
     private String capitalSocial;
 
-    @Column(name = "chiffresDaffaires")
-    private int chiffresDaffaires;
+    @Column(name = "chiffresdaffaires")
+    private Long chiffresDaffaires;
 
-    @Column(name = "effectifPermanent")
+    @Column(name = "effectifpermanent")
     private int effectifPermanent;
 
-    @Column(name = "nombreEtablissementSecondaires")
-    private String nombreEtablissementSecondaires;
+    @Column(name = "nombreetablissementsecondaires")
+    private int nombreEtablissementSecondaires;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Agent> agents = new HashSet<>();
@@ -125,8 +126,8 @@ public class Pme implements Serializable {
 
 
 
-    private Boolean hasNinea;
-    private Boolean isActive;
+    private Boolean hasninea;
+    private Boolean isactive;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Demande> demandes = new HashSet<>();

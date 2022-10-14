@@ -28,7 +28,6 @@ public interface ConventionService {
 
     /**
     * 
-    * @param pageable
     * @return
     */
     List<Convention> findAll();
