@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -28,13 +29,13 @@ public class DetailPaiement implements Serializable {
 
 
     @Column(name = "datepaiement")
-    private Date datePaiement;
+    private LocalDateTime datePaiement;
 
     @Column(name = "comptable")
     private String comptable;
 
     @Column(name = "montant")
-    private int montant;
+    private Long montant;
 
     @Column(name = "reference")
     private String reference;

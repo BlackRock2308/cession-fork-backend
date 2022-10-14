@@ -147,4 +147,21 @@ public class DtoConverter {
 		}
 		return statut;
 	}
+
+	public static  DetailPaiementDto convertToDto(DetailPaiement detailPaiement) {
+		DetailPaiementDto detailPaiementDto = null;
+		if(null != detailPaiement) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			detailPaiementDto = modelMapper.map(detailPaiement, DetailPaiementDto.class);
+		}
+		return detailPaiementDto;
+	}
+
+	public static DetailPaiement convertToEntity(DetailPaiementDto detailPaiementDto) {
+		DetailPaiement detailPaiement = new DetailPaiement();
+		if(null != detailPaiementDto) {
+			detailPaiement = modelMapper.map(detailPaiementDto, DetailPaiement.class);
+		}
+		return detailPaiement;
+	}
 }

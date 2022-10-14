@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class BonEngagement implements Serializable {
     private Long idBonEngagement;
     
     @Column(name = "montantcreance")
-    private double montantCreance;
+    private Long montantCreance;
     
     @Column(name = "reference")
     private String reference;
@@ -46,7 +47,7 @@ public class BonEngagement implements Serializable {
     private String imputation;
     
     @Column(name = "datebonengagement")
-    private Date dateBonEngagement;
+    private LocalDateTime dateBonEngagement;
     
     @Column(name = "identificationcomptable")
     private String identificationComptable;
@@ -75,5 +76,5 @@ public class BonEngagement implements Serializable {
   private String modeReglement;
 
   @Column(name = "dateSoumissionServiceDepensier")
-  private Date dateSoumissionServiceDepensier;
+  private LocalDateTime dateSoumissionServiceDepensier;
 }
