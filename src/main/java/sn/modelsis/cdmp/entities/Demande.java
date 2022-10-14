@@ -47,13 +47,10 @@ public class Demande implements Serializable {
     @JoinColumn(name="conventionid")
     private Convention convention;
     
-<<<<<<< HEAD
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<Observation> observations = new HashSet<>();
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<DemandeDocuments> documents = new HashSet<>();
-=======
 
->>>>>>> 3eb687ba4310f9dc71ea35d1dc0281779da7f559
 }

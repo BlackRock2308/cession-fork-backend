@@ -147,7 +147,6 @@ public class DtoConverter {
 		}
 		return statut;
 	}
-<<<<<<< HEAD:src/main/java/sn/modelsis/cdmp/util/DtoConverter.java
 	
 	public static DocumentDto convertToDto(Documents document) {
 	    DocumentDto documentDto = null;
@@ -165,7 +164,6 @@ public class DtoConverter {
 	    }
 	    return document;
 	  }
-=======
 
 	public static  DetailPaiementDto convertToDto(DetailPaiement detailPaiement) {
 		DetailPaiementDto detailPaiementDto = null;
@@ -201,5 +199,4 @@ public class DtoConverter {
 		return paiement;
 	}
 
->>>>>>> 3eb687ba4310f9dc71ea35d1dc0281779da7f559:src/main/java/sn/modelsis/cdmp/Util/DtoConverter.java
 }
