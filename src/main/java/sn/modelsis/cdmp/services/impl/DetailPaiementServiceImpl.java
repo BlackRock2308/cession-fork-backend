@@ -1,7 +1,5 @@
 package sn.modelsis.cdmp.services.impl;
 
-import java.util.List;
-import java.util.Optional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +14,6 @@ import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
 import sn.modelsis.cdmp.services.DetailPaiementService;
 import sn.modelsis.cdmp.services.DocumentService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
-import sn.modelsis.cdmp.services.DetailPaiementService;
 
 
 @Service

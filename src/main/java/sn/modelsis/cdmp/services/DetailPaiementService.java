@@ -1,15 +1,12 @@
 package sn.modelsis.cdmp.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import sn.modelsis.cdmp.entities.DetailPaiement;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import sn.modelsis.cdmp.entities.DetailPaiement;
 import sn.modelsis.cdmp.entities.TypeDocument;
 
 public interface DetailPaiementService {
