@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="vw_demande_document")
+@Table(name="vw_demande_document", schema= "public")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorValue("DEMANDE")
 public class DemandeDocuments extends Documents {

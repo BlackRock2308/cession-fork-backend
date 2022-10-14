@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.BEDocuments;
 import sn.modelsis.cdmp.entities.ConventionDocuments;
+import sn.modelsis.cdmp.entities.DPaiementDocuments;
 import sn.modelsis.cdmp.entities.DemandeDocuments;
 import sn.modelsis.cdmp.entities.Documents;
 import sn.modelsis.cdmp.entities.PMEDocuments;
@@ -117,6 +118,17 @@ public class DocumentServiceImpl implements DocumentService {
             String.format(PMEDocuments.FOLDER_PATH, provenanceId), file.getOriginalFilename());
         document.setUrlFile(raFileUrl);
         break;
+      case DPaiementDocuments.PROVENANCE:
+          document = new DPaiementDocuments();
+          document.setDateSauvegarde(LocalDateTime.now());
+          document.setTypeDocument(type);
+          document.setProvenance(provenance);
+          document.setNom(file.getOriginalFilename());
+          document.setIdprovenance(provenanceId);
+          String dpFileUrl = fileService.fileUpload(file,
+              String.format(DPaiementDocuments.FOLDER_PATH, provenanceId), file.getOriginalFilename());
+          document.setUrlFile(dpFileUrl);
+          break;
       default:
         break;
     }

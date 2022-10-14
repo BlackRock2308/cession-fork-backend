@@ -1,6 +1,9 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,5 +30,7 @@ public class ConventionDto {
   private PmeDto pmeDto;
 
   private AgentDto agentDto;
+  
+  private Set<DocumentDto> documents = new HashSet<>();
 
 }

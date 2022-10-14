@@ -32,9 +32,6 @@ public class Paiement implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long idPaiement;
-  
-  @Column(name = "montant")
-  private Long montant;
 
   @Column(name = "montantrecucdmp")
   private Long montantRecuCDMP;

@@ -24,7 +24,7 @@ COMMENT ON VIEW public.vw_convention_document
 
 CREATE VIEW public.vw_DPaiement_document
  AS
-SELECT id, date_sauvegarde, nom, id_provenance, provenance, url_file, typedocument
+SELECT id, id_provenance, date_sauvegarde, nom, provenance, url_file, typedocument
 	FROM public.document where provenance = 'DETAIL_PAIEMENT';
 	
 COMMENT ON VIEW public.vw_DPaiement_document
@@ -32,7 +32,7 @@ COMMENT ON VIEW public.vw_DPaiement_document
     
 CREATE VIEW public.vw_demande_document
  AS
-SELECT id, date_sauvegarde, nom, id_provenance, provenance, url_file, typedocument
+SELECT id, id_provenance, date_sauvegarde, nom, provenance, url_file, typedocument
 	FROM public.document where provenance = 'DEMANDE';
 	
 COMMENT ON VIEW public.vw_demande_document

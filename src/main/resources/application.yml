@@ -1,19 +1,18 @@
 server:
   port: 8081
-  document_folder: ${DOCUMENT_FOLDER:D:/Projets/Finance_islamique/documentLibrary}
+  document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/documentLibrary}
 spring:
+  sql:
+    init:
+      mode: always
+      platform: postgres
   application:
     name: Cession creance
 
   datasource:
-    initialization-mode: always
-    password: diarra2020
-    platform: postgres
-
+    password: passer
     url: jdbc:postgresql://localhost:5432/cdmp
-
-
-    username: postgres
+    username: cdmp
   jpa:
     hibernate:
       ddl-auto: validate
