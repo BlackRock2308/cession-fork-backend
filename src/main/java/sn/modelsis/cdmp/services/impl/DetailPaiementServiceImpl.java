@@ -1,15 +1,14 @@
 package sn.modelsis.cdmp.services.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.repositories.ConventionRepository;
-import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
-import sn.modelsis.cdmp.services.DetailPaiementService;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import sn.modelsis.cdmp.entities.DetailPaiement;
+import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
+import sn.modelsis.cdmp.services.DetailPaiementService;
 
 
 @Service

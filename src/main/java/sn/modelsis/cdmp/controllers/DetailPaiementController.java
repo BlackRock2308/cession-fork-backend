@@ -1,7 +1,7 @@
 package sn.modelsis.cdmp.controllers;
 
 
-import sn.modelsis.cdmp.Util.DtoConverter;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
