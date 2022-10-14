@@ -42,8 +42,8 @@ public class BonEngagement implements Serializable {
     private Long idBonEngagement;
 
     @Column(name = "montantcreance")
-    private double montantCreance;
-
+    private Long montantCreance;
+    
     @Column(name = "reference")
     private String reference;
 
@@ -60,7 +60,6 @@ public class BonEngagement implements Serializable {
     private String imputation;
 
     @Column(name = "datebonengagement")
-    private Date dateBonEngagement;
 
     @Column(name = "exercice")
     private String exercice;
@@ -78,9 +77,9 @@ public class BonEngagement implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateSoumissionServiceDepensier;
 
+    private LocalDateTime dateBonEngagement;
     @Column(name = "identificationcomptable")
     private String identificationComptable;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<Demande> demandes = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
@@ -94,4 +93,18 @@ public class BonEngagement implements Serializable {
     @Column(name = "modeReglement")
     private String modeReglement;
 
+  @Column(name = "actiondestination")
+  private String destinationAction;
+
+  @Column(name = "activitedestination")
+  private String destinationActivite;
+
+  @Column(name = "typeDepense")
+  private String typeDepense;
+
+  @Column(name = "modeReglement")
+  private String modeReglement;
+
+  @Column(name = "dateSoumissionServiceDepensier")
+  private LocalDateTime dateSoumissionServiceDepensier;
 }

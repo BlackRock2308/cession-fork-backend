@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -54,7 +55,7 @@ public class Pme implements Serializable {
     private String telephonePME;
     
     @Column(name = "dateimmatriculation")
-    private Date dateImmatriculation;
+    private LocalDateTime dateImmatriculation;
     
     @Column(name = "centrefiscal")
     private String centreFiscal;
@@ -93,7 +94,7 @@ public class Pme implements Serializable {
     private String urlImageSignature;
 
     @Column(name = "datedemandeadhesion")
-    private Date dateAdhesion;
+    private LocalDateTime dateAdhesion;
 
     @Column(name = "enseigne")
     private String enseigne;
@@ -111,13 +112,13 @@ public class Pme implements Serializable {
     private String autorisationMinisterielle;
 
     @Column(name = "datecreation")
-    private Date dateCreation;
+    private LocalDateTime dateCreation;
 
     @Column(name = "capitalsocial")
     private String capitalSocial;
 
     @Column(name = "chiffresdaffaires")
-    private int chiffresDaffaires;
+    private Long chiffresDaffaires;
 
     @Column(name = "effectifpermanent")
     private int effectifPermanent;

@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Date;
 
 
 @Entity
@@ -40,7 +41,7 @@ public class DetailPaiement implements Serializable {
     private String comptable;
 
     @Column(name = "montant")
-    private Double montant;
+    private Long montant;
 
     @Column(name = "reference")
     private String reference;
