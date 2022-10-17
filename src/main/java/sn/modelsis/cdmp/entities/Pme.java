@@ -125,10 +125,13 @@ public class Pme implements Serializable {
     @Column(name = "nombreetablissementsecondaires")
     private int nombreEtablissementSecondaires;
 
-    @Column(name = "nineaExistant")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    private Set<Agent> agents = new HashSet<>();
+
+    @Column(name = "hasninea")
     private Boolean hasninea;
     
-    @Column(name = "pmeActive")
+    @Column(name = "isactive")
     private Boolean isactive;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
@@ -137,6 +140,5 @@ public class Pme implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<PMEDocuments> documents = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
-    private Set<Agent> agents = new HashSet<>();
+
 }
