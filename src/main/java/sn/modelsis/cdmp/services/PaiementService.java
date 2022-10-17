@@ -1,10 +1,9 @@
 package sn.modelsis.cdmp.services;
 
-import sn.modelsis.cdmp.entities.Paiement;
-import sn.modelsis.cdmp.entities.Paiement;
-
 import java.util.List;
 import java.util.Optional;
+
+import sn.modelsis.cdmp.entities.Paiement;
 
 public interface PaiementService {
 

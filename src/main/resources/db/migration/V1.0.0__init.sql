@@ -49,12 +49,14 @@ CREATE TABLE public.pme (
     dateCreation  timestamp without time zone,
     capitalSocial character varying(250),
     chiffresdaffaires bigint,
+
     effectifPermanent integer,
     nombreEtablissementSecondaires integer,
     dateDemandeAdhesion timestamp without time zone,
     nineaExistant boolean,
     isActive boolean,
-    hasninea boolean
+    hasninea boolean,
+    agentid bigint
 
 
 );
@@ -103,6 +105,7 @@ CREATE TABLE public.bonengagement (
              modeReglement character varying(100),
              dateSoumissionServiceDepensier timestamp without time zone,
              nomMarche character varying(250)
+
 
 
 
@@ -214,6 +217,20 @@ CREATE TABLE public.agent (
 );
 
 --
+-- Name: document; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.document (
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    date_sauvegarde timestamp without time zone,
+    nom character varying(255),
+    id_provenance bigint,
+    provenance character varying(50),    
+    url_file character varying(255),
+    typeDocument character varying(50) NOT NULL
+);
+
+--
 -- Name: agent agent_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -241,6 +258,13 @@ ALTER TABLE ONLY public.parametrage
 
 ALTER TABLE ONLY public.statut
     ADD CONSTRAINT statut_pkey PRIMARY KEY (id);
+    
+--
+-- Name: document document_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.document
+    ADD CONSTRAINT document_pkey PRIMARY KEY (id);
 
 --
 -- Name: convention convention_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -291,6 +315,13 @@ ALTER TABLE ONLY public.bonengagement
 
 ALTER TABLE ONLY public.demande
     ADD CONSTRAINT fk_demande_pme FOREIGN KEY (pmeid) REFERENCES public.pme(id);
+    
+--
+-- Name: pme fk_pme_agent; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pme
+    ADD CONSTRAINT fk_pme_agent FOREIGN KEY (agentid) REFERENCES public.agent(id);
 
 --
 -- Name: demande fk_demande_convention; Type: FK CONSTRAINT; Schema: public; Owner: -

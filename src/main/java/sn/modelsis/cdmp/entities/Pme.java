@@ -1,18 +1,28 @@
 package sn.modelsis.cdmp.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @ToString
 @Table(name = "pme")
@@ -94,7 +104,7 @@ public class Pme implements Serializable {
     @Column(name = "controle")
     private int controle;
 
-    @Column(name = "activiteprincipale")
+    @Column(name = "activitePrincipal")
     private String activitePrincipale;
 
     @Column(name = "autorisationministerielle")
@@ -118,9 +128,17 @@ public class Pme implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Agent> agents = new HashSet<>();
 
+    @Column(name = "hasninea")
     private Boolean hasninea;
+    
+    @Column(name = "isactive")
     private Boolean isactive;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Demande> demandes = new HashSet<>();
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    private Set<PMEDocuments> documents = new HashSet<>();
+
+
 }

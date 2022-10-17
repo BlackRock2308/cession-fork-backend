@@ -7,7 +7,9 @@ import sn.modelsis.cdmp.entities.Demande;
 
 import java.util.Date;
 import java.util.HashSet;
+
 import java.util.List;
+
 import java.util.Set;
 
 @Data
@@ -33,4 +35,5 @@ public class PmeDto {
     private String urlImageProfile;
     private String urlImageSignature;
     private Set<DemandeDto> demandes;
+    private Set<DocumentDto> documents = new HashSet<>();
 }
