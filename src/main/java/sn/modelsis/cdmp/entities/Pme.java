@@ -104,7 +104,7 @@ public class Pme implements Serializable {
     @Column(name = "controle")
     private int controle;
 
-    @Column(name = "activitePrincipal")
+    @Column(name = "activiteprincipale")
     private String activitePrincipale;
 
     @Column(name = "autorisationministerielle")
