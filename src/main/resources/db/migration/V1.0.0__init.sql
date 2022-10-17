@@ -98,7 +98,7 @@ CREATE TABLE public.bonengagement (
              identificationcomptable character varying(100),
              date_demande timestamp without time zone,
              exercice character varying(250),
-             designatinonBeneficiaire character varying(250),
+             designationBeneficiaire character varying(250),
              actionDestination character varying(250),
              activiteDestination character varying(250),
              typeDepense character varying(250),
