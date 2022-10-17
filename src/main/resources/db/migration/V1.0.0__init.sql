@@ -39,47 +39,70 @@ CREATE TABLE public.pme (
     urlimagesignature character varying(250),
     representantLegal character varying(250),
     enseigne character varying(100),
-    formeJuridique character varying(250),
+    formejuridique character varying(250),
     numCNIRepresentant integer ,
     localite character varying(250),
     controle integer ,
-    activitePrincipal character varying(250),
+    activiteprincipale character varying(250),
     autorisationMinisterielle character varying(250),
     registreCommerce character varying(250),
     dateCreation  timestamp without time zone,
     capitalSocial character varying(250),
-    chiffresDaffaires integer,
+    chiffresdaffaires bigint,
     effectifPermanent integer,
     nombreEtablissementSecondaires integer,
     dateDemandeAdhesion timestamp without time zone,
     nineaExistant boolean,
-    pmeActive boolean
+    isActive boolean,
+    hasninea boolean
 
 
 );
 
+CREATE TABLE public.role
+(
+    id      bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    libelle character varying(100)
+);
 --
 -- Name: bonengagement; Type: TABLE; Schema: public; Owner: -
 --
 
+CREATE TABLE public.utilisateur (
+    idutilisateur bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    adresse character varying(250),
+    codepin character varying(250),
+    prenom character varying(250),
+    motdepasse character varying(250),
+    urlimagesignature character varying(250),
+    telephone int ,
+    urlimageprofil character varying(250),
+    email character varying(250)
+
+
+);
+
+
+
 CREATE TABLE public.bonengagement (
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    reference character varying(50),
-    natureprestation character varying(100),
-    naturedepense character varying(100),
-    objetdepense character varying(100),
-    imputation character varying(100),
-    datebonengagement timestamp without time zone,
-    montantCreance double precision,
-    identificationcomptable character varying(100),
-    date_demande timestamp without time zone,
-    exercice character varying(250),
-    designatinonBeneficiaire character varying(250),
-    actionDestination character varying(250),
-    activiteDestination character varying(250),
-    typeDepense character varying(250),
-    modeReglement character varying(100),
-    dateSoumissionServiceDepensier timestamp without time zone
+             id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+             reference character varying(50),
+             natureprestation character varying(100),
+             naturedepense character varying(100),
+             objetdepense character varying(100),
+             imputation character varying(100),
+             datebonengagement timestamp without time zone,
+             montantCreance bigint,
+             identificationcomptable character varying(100),
+             date_demande timestamp without time zone,
+             exercice character varying(250),
+             designatinonBeneficiaire character varying(250),
+             actionDestination character varying(250),
+             activiteDestination character varying(250),
+             typeDepense character varying(250),
+             modeReglement character varying(100),
+             dateSoumissionServiceDepensier timestamp without time zone,
+             nomMarche character varying(250)
 
 
 
@@ -97,7 +120,10 @@ CREATE TABLE public.convention (
     decote character varying(255),
     modepaiement character varying(50), 
     agentid bigint,
-    pmeid bigint 
+    pmeid bigint ,
+    urlimagesignaturedg character varying (250),
+    urlimagesignaturepme character varying (250)
+
 );
 
 --
@@ -110,7 +136,8 @@ CREATE TABLE public.demande (
     pmeid bigint NOT NULL,
     conventionid bigint,
    	statutid bigint NOT NULL,
-   	bonengagementid bigint
+   	bonengagementid bigint,
+   	datedemandecession timestamp without time zone
 );
 
 --
@@ -120,8 +147,9 @@ CREATE TABLE public.demande (
 CREATE TABLE public.paiement (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     demandeid bigint NOT NULL,
-    soldePme double precision,
-    montantRecuCdmp double precision,
+    soldePme bigint,
+    montantRecuCdmp bigint,
+    montant bigint,
     statutid bigint NOT NULL,
     datePaiement timestamp without time zone
 );
@@ -132,7 +160,7 @@ CREATE TABLE public.detailsPaiement (
     modePaiement character varying(250) ,
     datePaiement timestamp without time zone,
     comptable character varying(100),
-    montant double precision,
+    montant bigint,
     reference character varying(250),
     typePaiement character varying(150),
     paiementid bigint NOT NULL

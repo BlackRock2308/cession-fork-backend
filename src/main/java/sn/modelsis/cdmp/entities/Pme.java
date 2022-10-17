@@ -118,14 +118,6 @@ public class Pme implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Agent> agents = new HashSet<>();
 
-
-
-
-
-
-
-
-
     private Boolean hasninea;
     private Boolean isactive;
 
