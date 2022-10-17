@@ -84,7 +84,10 @@ CREATE TABLE public.utilisateur (
 
 );
 
-
+CREATE TABLE public.role_utilisateur(
+    roleid bigint,
+    roleutilisateur bigint
+);
 
 CREATE TABLE public.bonengagement (
              id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
