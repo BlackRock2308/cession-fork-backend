@@ -12,9 +12,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sn.modelsis.cdmp.entities.Demande;
+
+import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
+import sn.modelsis.cdmp.entitiesDtos.StatutDto;
 import sn.modelsis.cdmp.services.DemandeService;
+import sn.modelsis.cdmp.services.StatutService;
+import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,14 +43,33 @@ public class DemandeControllers {
   @Autowired
   private DemandeService demandeService;
 
+  @Autowired
+  private StatutService statutService;
+
   @PostMapping()
   public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto,
-      HttpServletRequest request) {
+                                               HttpServletRequest request) {
     Demande demande = DtoConverter.convertToEntity(demandeDto);
     Demande result = demandeService.save(demande);
     log.info("demande create. Id:{} ", result.getIdDemande());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
+
+  @PatchMapping
+  public ResponseEntity<DemandeDto> rejetAdhesion(@RequestBody DemandeDto demandeDto, StatutDto statutDto, HttpServletRequest request) {
+    Statut statut = DtoConverter.convertToEntity(statutDto);
+    Demande demande = DtoConverter.convertToEntity(demandeDto);
+    demande.setStatut(statut);
+    statut.setLibelle("Rejetée");
+    statut.setCode("1");
+    demande.setStatut(statut);
+    statutService.save(statut);
+    Demande result=demandeService.save(demande);
+    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+
+  }
+
+
 
 
   @PutMapping(value = "/{id}")
