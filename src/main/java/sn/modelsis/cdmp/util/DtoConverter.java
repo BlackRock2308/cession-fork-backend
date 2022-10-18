@@ -199,4 +199,22 @@ public class DtoConverter {
 		return paiement;
 	}
 
+	public static  RoleUtilisateurDto convertToDto(RoleUtilisateur roleUtilisateur) {
+		RoleUtilisateurDto roleUtilisateurDto = null;
+		if(null != roleUtilisateur) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			roleUtilisateurDto = modelMapper.map(roleUtilisateur, RoleUtilisateurDto.class);
+		}
+		return roleUtilisateurDto;
+	}
+
+	public static RoleUtilisateur convertToEntity(RoleUtilisateurDto roleUtilisateurDto) {
+		RoleUtilisateur roleUtilisateur = new RoleUtilisateur();
+		if(null != roleUtilisateurDto) {
+			roleUtilisateur = modelMapper.map(roleUtilisateurDto, RoleUtilisateur.class);
+		}
+		return roleUtilisateur;
+	}
+
+
 }
