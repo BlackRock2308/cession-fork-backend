@@ -29,7 +29,7 @@ import lombok.ToString;
 @Table(name = "role_utilisateur")
 public class RoleUtilisateur implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
