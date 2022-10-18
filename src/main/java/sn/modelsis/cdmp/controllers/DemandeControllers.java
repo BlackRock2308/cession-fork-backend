@@ -1,5 +1,8 @@
 package sn.modelsis.cdmp.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,24 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sn.modelsis.cdmp.entities.Demande;
-
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
-import sn.modelsis.cdmp.entitiesDtos.StatutDto;
 import sn.modelsis.cdmp.services.DemandeService;
-import sn.modelsis.cdmp.services.StatutService;
-import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -43,8 +35,6 @@ public class DemandeControllers {
   @Autowired
   private DemandeService demandeService;
 
-  @Autowired
-  private StatutService statutService;
 
   @PostMapping()
   public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto,
@@ -55,18 +45,16 @@ public class DemandeControllers {
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
 
-  @PatchMapping
-  public ResponseEntity<DemandeDto> rejetAdhesion(@RequestBody DemandeDto demandeDto, StatutDto statutDto, HttpServletRequest request) {
-    Statut statut = DtoConverter.convertToEntity(statutDto);
-    Demande demande = DtoConverter.convertToEntity(demandeDto);
-    demande.setStatut(statut);
-    statut.setLibelle("Rejetée");
-    statut.setCode("1");
-    demande.setStatut(statut);
-    statutService.save(statut);
-    Demande result=demandeService.save(demande);
-    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+  @PatchMapping(value ="/{id}/reject")
+  public ResponseEntity<DemandeDto> rejetAdhesion(@RequestBody DemandeDto demandeDto, HttpServletRequest request) {
+    DemandeDto demandeDto1=demandeService.rejetAdhesion(demandeDto);
+    return ResponseEntity.status(HttpStatus.OK).body(demandeDto1);
+  }
 
+  @PatchMapping(value = "/{id}/accept")
+  public ResponseEntity<DemandeDto> validerAdhesion(@RequestBody DemandeDto demandeDto, HttpServletRequest request) {
+    DemandeDto demandeDto1=demandeService.validerAdhesion(demandeDto);
+    return ResponseEntity.status(HttpStatus.OK).body(demandeDto1);
   }
 
 
@@ -84,7 +72,7 @@ public class DemandeControllers {
   @GetMapping
   public ResponseEntity<List<DemandeDto>> getAllDemande(HttpServletRequest request) {
     List<Demande> demandeList = demandeService.findAll();
-    log.info("All Demande .");
+    log.info("All Requests .");
     return ResponseEntity.status(HttpStatus.OK)
         .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
   }
