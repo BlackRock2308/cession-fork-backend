@@ -85,8 +85,9 @@ CREATE TABLE public.utilisateur (
 );
 
 CREATE TABLE public.role_utilisateur(
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     roleid bigint,
-    roleutilisateur bigint
+    utilisateurid bigint
 );
 
 CREATE TABLE public.bonengagement (
