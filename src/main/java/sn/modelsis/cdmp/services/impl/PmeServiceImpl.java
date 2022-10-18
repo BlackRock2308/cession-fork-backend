@@ -4,30 +4,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import sn.modelsis.cdmp.entities.PMEDocuments;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PmeServiceImpl implements PmeService {
 
   @Autowired
   private PmeRepository pmeRepository;
+
+  @Autowired
+  private PmeRepository statutRepository;
+
+  @Autowired
+  private PmeRepository demandeRepository;
   
   @Autowired
   private DocumentService documentService;
 
   @Override
   public Pme save(Pme pme) {
-    return pmeRepository.save(pme);
+
+   /* Demande demande=new Demande();
+    Statut statut=new Statut();
+    demande.setDateDemandeCession(new Date());
+
+
+    statut.setLibelle("Soumise");
+    statut.setCode("1");
+    demande.setStatut(statut);
+
+    Set<Demande> demandes=pme.getDemandes();
+    demandes.add(demande);
+    pme.setDemandes(demandes);
+
+    */
+
+    return  pmeRepository.save(pme);
   }
+
 
   @Override
   public List<Pme> findAll() {

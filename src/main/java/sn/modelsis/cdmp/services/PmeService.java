@@ -1,6 +1,8 @@
 package sn.modelsis.cdmp.services;
 
+import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypeDocument;
 
 import java.io.IOException;
