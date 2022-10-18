@@ -61,7 +61,6 @@ public class DemandeControllers {
     Demande demande = DtoConverter.convertToEntity(demandeDto);
     demande.setStatut(statut);
     statut.setLibelle("Rejetée");
-
     statut.setCode("1");
     demande.setStatut(statut);
     statutService.save(statut);
