@@ -23,11 +23,38 @@ public interface DemandeService {
   DemandeDto validerAdhesion(DemandeDto demande);
 
 
+
   /**
    *
    * @return
    */
   List<Demande> findAll();
+
+  List<Demande> findAllDemandesAdhesion();
+
+
+  List<Demande> findAllNouvellesDemandes();
+
+  List<Demande> findAllAnalyseRisque();
+
+  List<Demande> findAllConventionsComptable();
+
+  List<Demande> findAllPaiements();
+
+  List<Demande> findAllConventionsOrdonnateur();
+
+  List<Demande> findAllConventionsDG();
+
+  List<Demande> findAllCreances();
+
+  //demandes relatives à un pme
+  List<Demande> findAllPMEDemandes();
+
+  List<Demande> findAllConventionsPME();
+
+  List<Demande> findAllPaiementsPME();
+
+
 
   /**
    *

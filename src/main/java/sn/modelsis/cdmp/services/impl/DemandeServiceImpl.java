@@ -15,6 +15,7 @@ import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,11 @@ public class DemandeServiceImpl implements DemandeService {
 
     @Override
     public Demande save(Demande demande){
+        //demande.setStatut(Statuts.NON_RISQUEE);
+        Statut statut=new Statut();
+        statut.setLibelle(Statuts.SOUMISE);
+        demande.setStatut(statut);
+        statutRepository.save(demande.getStatut());
         return demandeRepository.save(demande);
     }
 
@@ -43,7 +49,7 @@ public class DemandeServiceImpl implements DemandeService {
         Statut statut = DtoConverter.convertToEntity(demandeDto.getStatut());
         Demande demande = DtoConverter.convertToEntity(demandeDto);
         Pme pme = DtoConverter.convertToEntity(demandeDto.getPme());
-        pme.setHasninea(false);
+        //pme.setHasninea(false);
         pmeRepository.save(pme);
         statutRepository.save(statut);
         Demande result=demandeRepository.save(demande);
@@ -56,7 +62,7 @@ public class DemandeServiceImpl implements DemandeService {
         Statut statut = DtoConverter.convertToEntity(demandeDto.getStatut());
         Demande demande = DtoConverter.convertToEntity(demandeDto);
         Pme pme = DtoConverter.convertToEntity(demandeDto.getPme());
-        pme.setHasninea(true);
+       // pme.setHasninea(true);
         pmeRepository.save(pme);
         statutRepository.save(statut);
         Demande result=demandeRepository.save(demande);
@@ -69,9 +75,83 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
+    public List<Demande> findAllDemandesAdhesion() {
+        List<Demande> demandes=new ArrayList<>();
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLEMENT_REQUIS));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RECEVABLE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RISQUEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.NON_RISQUEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLETEE));
+
+        return demandes;
+    }
+
+    @Override
+    public List<Demande> findAllNouvellesDemandes() {
+        return null;
+    }
+
+    @Override
+    public List<Demande> findAllAnalyseRisque() {
+        List<Demande> demandes=new ArrayList<>();
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLEMENT_REQUIS));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RECEVABLE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RISQUEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.NON_RISQUEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLETEE));
+
+        return demandes;
+    }
+
+    @Override
+    public List<Demande> findAllConventionsComptable() {
+        return null;
+    }
+
+    @Override
+    public List<Demande> findAllPaiements() {
+        return null;
+    }
+
+    @Override
+    public List<Demande> findAllConventionsOrdonnateur() {
+        return null;
+    }
+
+    @Override
+    public List<Demande> findAllConventionsDG() {
+        return null;
+    }
+
+    @Override
+    public List<Demande> findAllCreances() {
+        return null;
+    }
+
+    @Override
+    public List<Demande> findAllPMEDemandes() {
+        return null;
+    }
+
+    @Override
+    public List<Demande> findAllConventionsPME() {
+        return null;
+    }
+
+    @Override
+    public List<Demande> findAllPaiementsPME() {
+        return null;
+    }
+
+    @Override
     public Optional<Demande> getDemande(Long id) {
         return demandeRepository.findById(id);
     }
+
+    //@Override
+   // public List<Demande> getDemandeByStatus(){
+     //   return demandeRepository.get
+    //}
 
     @Override
     public void delete(Long id) {
