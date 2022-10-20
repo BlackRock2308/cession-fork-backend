@@ -36,6 +36,7 @@ public class DemandeControllers {
   private DemandeService demandeService;
 
 
+
   @PostMapping()
   public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto,
                                                HttpServletRequest request) {
@@ -75,6 +76,14 @@ public class DemandeControllers {
     log.info("All Requests .");
     return ResponseEntity.status(HttpStatus.OK)
         .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+  }
+
+  @GetMapping(value ="/analyse_risque")
+  public ResponseEntity<List<DemandeDto>> getAllAnalyseRisque(HttpServletRequest request) {
+    List<Demande> demandeList = demandeService.findAllAnalyseRisque();
+    log.info("All Requests .");
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
   }
 
   @GetMapping(value = "/{id}")
