@@ -34,6 +34,6 @@ public class PmeDto {
     private  int codePin;
     private String urlImageProfile;
     private String urlImageSignature;
-    private Set<DemandeDto> demandes;
+    //private Set<DemandeDto> demandes;
     private Set<DocumentDto> documents = new HashSet<>();
 }
