@@ -16,7 +16,9 @@ public interface DemandeService {
    * @param demande
    * @return
    */
-  Demande save(Demande demande);
+  Demande saveAdhesion(Demande demande);
+
+  Demande saveCession(Demande demande);
 
   DemandeDto rejetAdhesion(DemandeDto demande);
 

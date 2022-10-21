@@ -35,20 +35,6 @@ public class PmeServiceImpl implements PmeService {
   @Override
   public Pme save(Pme pme) {
 
-   /* Demande demande=new Demande();
-    Statut statut=new Statut();
-    demande.setDateDemandeCession(new Date());
-
-
-    statut.setLibelle("Soumise");
-    statut.setCode("1");
-    demande.setStatut(statut);
-
-    Set<Demande> demandes=pme.getDemandes();
-    demandes.add(demande);
-    pme.setDemandes(demandes);
-
-    */
 
     return  pmeRepository.save(pme);
   }

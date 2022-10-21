@@ -14,6 +14,7 @@ import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.services.DemandeService;
+import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,14 +36,27 @@ public class DemandeControllers {
   @Autowired
   private DemandeService demandeService;
 
+  @Autowired
+  private PmeService pmeService;
 
 
-  @PostMapping()
+
+  @PostMapping(value = "/adhesion")
   public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto,
                                                HttpServletRequest request) {
     Demande demande = DtoConverter.convertToEntity(demandeDto);
-    Demande result = demandeService.save(demande);
-    log.info("demande create. Id:{} ", result.getIdDemande());
+    Demande result = demandeService.saveAdhesion(demande);
+    log.info("demande created. Id:{} ", result.getIdDemande());
+    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+  }
+
+  @PostMapping(value = "/cession")
+  public ResponseEntity<DemandeDto> addDemandeCession(@RequestBody DemandeDto demandeDto,
+                                               HttpServletRequest request) {
+    Demande demande = DtoConverter.convertToEntity(demandeDto);
+
+    Demande result = demandeService.saveCession(demande);
+    log.info("demande created. Id:{} ", result.getIdDemande());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
 
@@ -65,7 +79,7 @@ public class DemandeControllers {
   public ResponseEntity<DemandeDto> updateDemande(@RequestBody DemandeDto demandeDto,
       HttpServletRequest request) {
     Demande demande = DtoConverter.convertToEntity(demandeDto);
-    Demande result = demandeService.save(demande);
+    Demande result = demandeService.saveAdhesion(demande);
     log.info("Demande updated. Id:{}", result.getIdDemande());
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
   }

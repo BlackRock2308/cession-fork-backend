@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
+import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.repositories.DemandeRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
@@ -16,6 +16,7 @@ import sn.modelsis.cdmp.util.DtoConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,9 @@ public class DemandeServiceImpl implements DemandeService {
     private DemandeRepository demandeRepository;
 
     @Autowired
+    private BonEngagementRepository bonEngagementRepository;
+
+    @Autowired
     private PmeRepository pmeRepository;
 
     @Autowired
@@ -34,12 +38,31 @@ public class DemandeServiceImpl implements DemandeService {
     private DocumentService documentService;
 
     @Override
-    public Demande save(Demande demande){
+    public Demande saveAdhesion(Demande demande){
         //demande.setStatut(Statuts.NON_RISQUEE);
+        Pme pme =demande.getPme();
+        Statut statut=new Statut();
+        statut.setLibelle(Statuts.ADHESION_SOUMISE);
+        demande.setStatut(statut);
+        pmeRepository.save(pme);
+        statutRepository.save(demande.getStatut());
+        return demandeRepository.save(demande);
+    }
+
+    @Override
+    public Demande saveCession(Demande demande) {
+        BonEngagement be = demande.getBonEngagement();
+        bonEngagementRepository.save(be);
+        demande.setDateDemandeCession(new Date());
         Statut statut=new Statut();
         statut.setLibelle(Statuts.SOUMISE);
         demande.setStatut(statut);
-        statutRepository.save(demande.getStatut());
+        statutRepository.save(statut);
+        /*for (Documents document:demande.getDocuments()
+        ) {
+            documentService.upload(document.);
+        }*/
+
         return demandeRepository.save(demande);
     }
 

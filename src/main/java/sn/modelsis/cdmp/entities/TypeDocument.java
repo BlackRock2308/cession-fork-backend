@@ -7,6 +7,7 @@ public enum TypeDocument {
   ETAT_FINANCIER("ETAT FINANCIER") , 
   FACTURE("FACTURE") ,
   DECHARGE("DECHARGE") ,
+  BE("BE"),
 
   AUTRE("AUTRE");
 
