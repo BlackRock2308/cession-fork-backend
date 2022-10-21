@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,12 +101,23 @@ public class DemandeControllers {
             .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
   }
 
+  @GetMapping(value ="/demandes_adhesion")
+  public ResponseEntity<List<DemandeDto>> getAllDemandesAdhesion(HttpServletRequest request) {
+    List<Demande> demandeList = demandeService.findAllDemandesAdhesion();
+    log.info("All Requests .");
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+  }
+
   @GetMapping(value = "/{id}")
   public ResponseEntity<DemandeDto> getDemande(@PathVariable Long id, HttpServletRequest request) {
     Demande demande = demandeService.getDemande(id).orElse(null);
     log.info("Demande . Id:{}", id);
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demande));
   }
+
+
+
 
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<DemandeDto> deleteDemande(@PathVariable Long id,

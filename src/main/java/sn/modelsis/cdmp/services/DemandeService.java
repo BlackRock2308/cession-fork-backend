@@ -49,7 +49,7 @@ public interface DemandeService {
 
   List<Demande> findAllCreances();
 
-  //demandes relatives à un pme
+  //demandes relatives à une pme
   List<Demande> findAllPMEDemandes();
 
   List<Demande> findAllConventionsPME();

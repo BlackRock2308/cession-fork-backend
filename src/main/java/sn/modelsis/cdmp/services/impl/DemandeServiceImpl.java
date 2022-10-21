@@ -100,11 +100,9 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     public List<Demande> findAllDemandesAdhesion() {
         List<Demande> demandes=new ArrayList<>();
-        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLEMENT_REQUIS));
-        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RECEVABLE));
-        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RISQUEE));
-        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.NON_RISQUEE));
-        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLETEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.ADHESION_SOUMISE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.ADHESION_REJETEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.ADHESION_ACCEPTEE));
 
         return demandes;
     }
@@ -133,27 +131,52 @@ public class DemandeServiceImpl implements DemandeService {
 
     @Override
     public List<Demande> findAllPaiements() {
-        return null;
+        List<Demande> demandes=new ArrayList<>();
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.PME_EN_ATTENTE_DE_PAIEMENT));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.PME_PARTIELLEMENT_PAYEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.PME_TOTALEMENT_PAYEE));
+        return demandes;
     }
 
     @Override
     public List<Demande> findAllConventionsOrdonnateur() {
-        return null;
+        List<Demande> demandes=new ArrayList<>();
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_ACCEPTEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_REJETEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_TRANSMISE));
+        return demandes;
     }
 
     @Override
     public List<Demande> findAllConventionsDG() {
-        return null;
+        List<Demande> demandes=new ArrayList<>();
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_SIGNEE_PAR_DG));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_SIGNEE_PAR_PME));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_REJETEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_TRANSMISE));
+
+        return demandes;
     }
 
     @Override
     public List<Demande> findAllCreances() {
-        return null;
+        List<Demande> demandes=new ArrayList<>();
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RISQUEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RECEVABLE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.NON_RISQUEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLETEE));
+        return demandes;
+
     }
 
     @Override
     public List<Demande> findAllPMEDemandes() {
-        return null;
+        List<Demande> demandes=new ArrayList<>();
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLETEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RECEVABLE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RISQUEE));
+        demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.NON_RISQUEE));
+        return demandes;
     }
 
     @Override
@@ -171,10 +194,9 @@ public class DemandeServiceImpl implements DemandeService {
         return demandeRepository.findById(id);
     }
 
-    //@Override
-   // public List<Demande> getDemandeByStatus(){
-     //   return demandeRepository.get
-    //}
+
+
+
 
     @Override
     public void delete(Long id) {
