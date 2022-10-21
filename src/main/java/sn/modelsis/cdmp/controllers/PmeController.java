@@ -1,45 +1,28 @@
 package sn.modelsis.cdmp.controllers;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.util.DtoConverter;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.services.StatutService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import sn.modelsis.cdmp.util.DtoConverter;
 
 @RestController
 @RequestMapping("api/pme")
@@ -65,7 +48,7 @@ public class PmeController {
     demande.setStatut(statut);
     Pme result = pmeService.save(pme);
     statutService.save(statut);
-    demandeService.save(demande);
+    demandeService.saveAdhesion(demande);
     log.info("Pme created. Id:{} ", result.getIdPME());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
