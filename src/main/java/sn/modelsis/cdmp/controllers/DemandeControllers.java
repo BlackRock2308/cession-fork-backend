@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.services.DemandeService;
+import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,14 +37,27 @@ public class DemandeControllers {
   @Autowired
   private DemandeService demandeService;
 
+  @Autowired
+  private PmeService pmeService;
 
 
-  @PostMapping()
+
+  @PostMapping(value = "/adhesion")
   public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto,
                                                HttpServletRequest request) {
     Demande demande = DtoConverter.convertToEntity(demandeDto);
-    Demande result = demandeService.save(demande);
-    log.info("demande create. Id:{} ", result.getIdDemande());
+    Demande result = demandeService.saveAdhesion(demande);
+    log.info("demande created. Id:{} ", result.getIdDemande());
+    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+  }
+
+  @PostMapping(value = "/cession")
+  public ResponseEntity<DemandeDto> addDemandeCession(@RequestBody DemandeDto demandeDto,
+                                               HttpServletRequest request) {
+    Demande demande = DtoConverter.convertToEntity(demandeDto);
+
+    Demande result = demandeService.saveCession(demande);
+    log.info("demande created. Id:{} ", result.getIdDemande());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
 
@@ -65,7 +80,7 @@ public class DemandeControllers {
   public ResponseEntity<DemandeDto> updateDemande(@RequestBody DemandeDto demandeDto,
       HttpServletRequest request) {
     Demande demande = DtoConverter.convertToEntity(demandeDto);
-    Demande result = demandeService.save(demande);
+    Demande result = demandeService.saveAdhesion(demande);
     log.info("Demande updated. Id:{}", result.getIdDemande());
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
   }
@@ -86,12 +101,23 @@ public class DemandeControllers {
             .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
   }
 
+  @GetMapping(value ="/demandes_adhesion")
+  public ResponseEntity<List<DemandeDto>> getAllDemandesAdhesion(HttpServletRequest request) {
+    List<Demande> demandeList = demandeService.findAllDemandesAdhesion();
+    log.info("All Requests .");
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+  }
+
   @GetMapping(value = "/{id}")
   public ResponseEntity<DemandeDto> getDemande(@PathVariable Long id, HttpServletRequest request) {
     Demande demande = demandeService.getDemande(id).orElse(null);
     log.info("Demande . Id:{}", id);
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demande));
   }
+
+
+
 
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<DemandeDto> deleteDemande(@PathVariable Long id,

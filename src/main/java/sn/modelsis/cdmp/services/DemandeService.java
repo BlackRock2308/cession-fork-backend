@@ -16,7 +16,9 @@ public interface DemandeService {
    * @param demande
    * @return
    */
-  Demande save(Demande demande);
+  Demande saveAdhesion(Demande demande);
+
+  Demande saveCession(Demande demande);
 
   DemandeDto rejetAdhesion(DemandeDto demande);
 
@@ -47,7 +49,7 @@ public interface DemandeService {
 
   List<Demande> findAllCreances();
 
-  //demandes relatives à un pme
+  //demandes relatives à une pme
   List<Demande> findAllPMEDemandes();
 
   List<Demande> findAllConventionsPME();
