@@ -97,6 +97,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     public DemandeCessionDto rejetAnalyse(DemandeCessionDto demandecession) {
         return null;
+
     }
 
     @Override
