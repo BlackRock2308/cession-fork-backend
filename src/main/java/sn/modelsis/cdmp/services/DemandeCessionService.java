@@ -17,9 +17,9 @@ public interface DemandeCessionService {
 
     DemandeCession saveCession(DemandeCession demandecession);
 
-    DemandeCessionDto rejetAdhesion(DemandeCessionDto demandecession);
+    DemandeCessionDto rejetCession(DemandeCessionDto demandecession);
 
-    DemandeCessionDto validerAdhesion(DemandeCessionDto demandecession);
+    DemandeCessionDto validerCession(DemandeCessionDto demandecession);
 
 
 
