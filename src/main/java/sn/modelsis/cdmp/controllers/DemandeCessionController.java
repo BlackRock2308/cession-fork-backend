@@ -35,14 +35,14 @@ public class DemandeCessionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
-    @PatchMapping(value ="/{id}/reject")
-    public ResponseEntity<DemandeCessionDto> rejetAdhesion(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+    @PatchMapping(value ="/{id}/rejectcession")
+    public ResponseEntity<DemandeCessionDto> rejetCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
         DemandeCessionDto demandecessionDto1=demandeCessionService.rejetCession(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
 
-    @PatchMapping(value = "/{id}/accept")
-    public ResponseEntity<DemandeCessionDto> validerAdhesion(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+    @PatchMapping(value = "/{id}/acceptcession")
+    public ResponseEntity<DemandeCessionDto> validerCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
         DemandeCessionDto demandecessionDto1=demandeCessionService.validerCession(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
