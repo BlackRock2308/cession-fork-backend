@@ -18,11 +18,7 @@ public interface DemandeService {
    */
   Demande saveAdhesion(Demande demande);
 
-  Demande saveCession(Demande demande);
 
-  DemandeDto rejetAdhesion(DemandeDto demande);
-
-  DemandeDto validerAdhesion(DemandeDto demande);
 
 
 

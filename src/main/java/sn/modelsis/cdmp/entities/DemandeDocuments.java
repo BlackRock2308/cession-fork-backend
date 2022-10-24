@@ -24,6 +24,10 @@ public class DemandeDocuments extends Documents {
   
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id_provenance", nullable = true, insertable = false, updatable = false)
-  private Demande demande;  
+  private Demande demandeadhesion;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_provenance", nullable = true, insertable = false, updatable = false)
+  private Demande demandecession;
 
 }

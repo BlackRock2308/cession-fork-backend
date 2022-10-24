@@ -50,52 +50,10 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
-    public Demande saveCession(Demande demande) {
-        BonEngagement be = demande.getBonEngagement();
-        bonEngagementRepository.save(be);
-        demande.setDateDemandeCession(new Date());
-        Statut statut=new Statut();
-        statut.setLibelle(Statuts.SOUMISE);
-        demande.setStatut(statut);
-        statutRepository.save(statut);
-        /*for (Documents document:demande.getDocuments()
-        ) {
-            documentService.upload(document.);
-        }*/
-
-        return demandeRepository.save(demande);
-    }
-
-    @Override
-    @Transactional
-    public DemandeDto rejetAdhesion(DemandeDto demandeDto) {
-        Statut statut = DtoConverter.convertToEntity(demandeDto.getStatut());
-        Demande demande = DtoConverter.convertToEntity(demandeDto);
-        Pme pme = DtoConverter.convertToEntity(demandeDto.getPme());
-        //pme.setHasninea(false);
-        pmeRepository.save(pme);
-        statutRepository.save(statut);
-        Demande result=demandeRepository.save(demande);
-        return DtoConverter.convertToDto(result) ;
-    }
-
-    @Override
-    @Transactional
-    public DemandeDto validerAdhesion(DemandeDto demandeDto) {
-        Statut statut = DtoConverter.convertToEntity(demandeDto.getStatut());
-        Demande demande = DtoConverter.convertToEntity(demandeDto);
-        Pme pme = DtoConverter.convertToEntity(demandeDto.getPme());
-       // pme.setHasninea(true);
-        pmeRepository.save(pme);
-        statutRepository.save(statut);
-        Demande result=demandeRepository.save(demande);
-        return DtoConverter.convertToDto(result) ;
-    }
-
-    @Override
-    public List<Demande> findAll(){
+    public List<Demande> findAll() {
         return demandeRepository.findAll();
     }
+
 
     @Override
     public List<Demande> findAllDemandesAdhesion() {

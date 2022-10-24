@@ -19,6 +19,7 @@ public class BonEngagementDto {
     private String natureDepense;
     private String objetDepense;
     private String imputation;
+    private String nomMarche;
     private Date dateBonEngagement;
     private String identificationComptable;
     private Set<DocumentDto> documents = new HashSet<>();

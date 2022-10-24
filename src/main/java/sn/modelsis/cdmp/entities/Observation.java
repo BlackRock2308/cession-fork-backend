@@ -34,7 +34,11 @@ public class Observation implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="demandeid")
-    private Demande demande;
+    private Demande demandeadhesion;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="demandeid")
+    private Demande demandecession;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="agentid")
