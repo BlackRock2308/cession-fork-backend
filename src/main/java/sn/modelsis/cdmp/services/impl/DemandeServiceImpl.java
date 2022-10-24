@@ -2,21 +2,16 @@ package sn.modelsis.cdmp.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.repositories.DemandeRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
-import sn.modelsis.cdmp.util.DtoConverter;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +65,8 @@ public class DemandeServiceImpl implements DemandeService {
         return null;
     }
 
+
+    //La liste des demandes a l'étape analyse du risque
     @Override
     public List<Demande> findAllAnalyseRisque() {
         List<Demande> demandes=new ArrayList<>();
@@ -87,6 +84,9 @@ public class DemandeServiceImpl implements DemandeService {
         return null;
     }
 
+
+    //La liste des demandes a l'étape de paiement
+
     @Override
     public List<Demande> findAllPaiements() {
         List<Demande> demandes=new ArrayList<>();
@@ -96,6 +96,9 @@ public class DemandeServiceImpl implements DemandeService {
         return demandes;
     }
 
+
+    //La liste des demandes a l'étape des conventions pour l'ordonnateur
+
     @Override
     public List<Demande> findAllConventionsOrdonnateur() {
         List<Demande> demandes=new ArrayList<>();
@@ -104,6 +107,8 @@ public class DemandeServiceImpl implements DemandeService {
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_TRANSMISE));
         return demandes;
     }
+
+    //La liste des demandes a l'étape des conventions pour le DG
 
     @Override
     public List<Demande> findAllConventionsDG() {
@@ -115,6 +120,8 @@ public class DemandeServiceImpl implements DemandeService {
 
         return demandes;
     }
+
+    //La liste des creances (cédées et rejetées)
 
     @Override
     public List<Demande> findAllCreances() {

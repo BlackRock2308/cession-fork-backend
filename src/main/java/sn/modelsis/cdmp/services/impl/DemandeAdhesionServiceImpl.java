@@ -41,7 +41,6 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
         DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
         Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
-        //pme.setHasninea(false);
         pmeRepository.save(pme);
         statutRepository.save(statut);
         DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);

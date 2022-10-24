@@ -21,6 +21,13 @@ public interface DemandeCessionService {
 
     DemandeCessionDto validerCession(DemandeCessionDto demandecession);
 
+    DemandeCessionDto validerAnalyse (DemandeCessionDto demandecession);
+
+    DemandeCessionDto rejetAnalyse (DemandeCessionDto demandecession);
+
+    DemandeCessionDto demanderComplements (DemandeCessionDto demandecession);
+
+
 
 
     /**
