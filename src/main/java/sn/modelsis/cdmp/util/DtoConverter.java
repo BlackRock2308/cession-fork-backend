@@ -123,7 +123,6 @@ public class DtoConverter {
 		}
 		return demandeDto;
 	}
-
 	public static Demande convertToEntity(DemandeDto demandeDto) {
 		Demande demande = null;
 		if(null != demandeDto) {
@@ -131,6 +130,42 @@ public class DtoConverter {
 		}
 		return demande;
 	}
+
+	public static DemandeCession convertToEntity(DemandeCessionDto demandecessionDto) {
+		DemandeCession demandecession = null;
+		if(null != demandecessionDto) {
+			demandecession = modelMapper.map(demandecessionDto, DemandeCession.class);
+		}
+		return demandecession;
+	}
+
+	public static  DemandeCessionDto convertToDto(DemandeCession demandecession) {
+		DemandeCessionDto demandecessionDto = null;
+		if(null != demandecession) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			demandecessionDto = modelMapper.map(demandecession, DemandeCessionDto.class);
+		}
+		return demandecessionDto;
+	}
+
+	public static DemandeAdhesion convertToEntity(DemandeAdhesionDto demandeadhesionDto) {
+		DemandeAdhesion demandeadhesion = null;
+		if(null != demandeadhesionDto) {
+			demandeadhesion = modelMapper.map(demandeadhesionDto, DemandeAdhesion.class);
+		}
+		return demandeadhesion;
+	}
+
+	public static  DemandeAdhesionDto convertToDto(DemandeAdhesion demandeadhesion) {
+		DemandeAdhesionDto demandeadhesionDto = null;
+		if(null != demandeadhesion) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			demandeadhesionDto = modelMapper.map(demandeadhesion, DemandeAdhesionDto.class);
+		}
+		return demandeadhesionDto;
+	}
+
+
 	public static  StatutDto convertToDto(Statut statut) {
 		StatutDto statutDto = null;
 		if(null != statut) {

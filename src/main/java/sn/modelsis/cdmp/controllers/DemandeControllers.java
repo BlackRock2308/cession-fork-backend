@@ -3,7 +3,6 @@ package sn.modelsis.cdmp.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.services.DemandeService;
-import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -33,12 +31,9 @@ public class DemandeControllers {
 
   private final Logger log = LoggerFactory.getLogger(DemandeControllers.class);
 
+
   @Autowired
   private DemandeService demandeService;
-
-  @Autowired
-  private PmeService pmeService;
-
 
 
   @PostMapping(value = "/adhesion")
@@ -50,27 +45,8 @@ public class DemandeControllers {
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
 
-  @PostMapping(value = "/cession")
-  public ResponseEntity<DemandeDto> addDemandeCession(@RequestBody DemandeDto demandeDto,
-                                               HttpServletRequest request) {
-    Demande demande = DtoConverter.convertToEntity(demandeDto);
 
-    Demande result = demandeService.saveCession(demande);
-    log.info("demande created. Id:{} ", result.getIdDemande());
-    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
-  }
 
-  @PatchMapping(value ="/{id}/reject")
-  public ResponseEntity<DemandeDto> rejetAdhesion(@RequestBody DemandeDto demandeDto, HttpServletRequest request) {
-    DemandeDto demandeDto1=demandeService.rejetAdhesion(demandeDto);
-    return ResponseEntity.status(HttpStatus.OK).body(demandeDto1);
-  }
-
-  @PatchMapping(value = "/{id}/accept")
-  public ResponseEntity<DemandeDto> validerAdhesion(@RequestBody DemandeDto demandeDto, HttpServletRequest request) {
-    DemandeDto demandeDto1=demandeService.validerAdhesion(demandeDto);
-    return ResponseEntity.status(HttpStatus.OK).body(demandeDto1);
-  }
 
 
 
