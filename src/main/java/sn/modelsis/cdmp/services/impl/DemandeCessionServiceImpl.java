@@ -49,7 +49,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     @Transactional
-    public DemandeCessionDto rejetAdhesion(DemandeCessionDto demandecessionDto) {
+    public DemandeCessionDto rejetCession(DemandeCessionDto demandecessionDto) {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
         Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
@@ -62,7 +62,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     @Transactional
-    public DemandeCessionDto validerAdhesion(DemandeCessionDto demandecessionDto) {
+    public DemandeCessionDto validerCession(DemandeCessionDto demandecessionDto) {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
         Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());

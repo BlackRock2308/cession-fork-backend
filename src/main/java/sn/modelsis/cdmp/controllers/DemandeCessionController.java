@@ -1,6 +1,5 @@
 package sn.modelsis.cdmp.controllers;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +37,13 @@ public class DemandeCessionController {
 
     @PatchMapping(value ="/{id}/reject")
     public ResponseEntity<DemandeCessionDto> rejetAdhesion(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.rejetAdhesion(demandecessionDto);
+        DemandeCessionDto demandecessionDto1=demandeCessionService.rejetCession(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
 
     @PatchMapping(value = "/{id}/accept")
     public ResponseEntity<DemandeCessionDto> validerAdhesion(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.validerAdhesion(demandecessionDto);
+        DemandeCessionDto demandecessionDto1=demandeCessionService.validerCession(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
 
