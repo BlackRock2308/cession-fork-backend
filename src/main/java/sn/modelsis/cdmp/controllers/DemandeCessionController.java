@@ -64,6 +64,18 @@ public class DemandeCessionController {
         DemandeCessionDto demandecessionDto1=demandeCessionService.demanderComplements(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
+
+    @PatchMapping(value = "/{id}/validerRecevabilite")
+    public ResponseEntity<DemandeCessionDto> validerRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.validerRecevabilite(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
+
+    @PatchMapping(value = "/{id}/rejeterRecevabilite")
+    public ResponseEntity<DemandeCessionDto> rejeterRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterRecevabilite(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
     @GetMapping
     public ResponseEntity<List<DemandeCessionDto>> getAllDemandeCession(HttpServletRequest request) {
         List<DemandeCession> demandeList = demandeCessionService.findAll();

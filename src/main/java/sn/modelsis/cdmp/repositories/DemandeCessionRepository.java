@@ -5,4 +5,6 @@ import sn.modelsis.cdmp.entities.DemandeCession;
 
 public interface DemandeCessionRepository extends JpaRepository<DemandeCession,Long> {
 
+
+
 }

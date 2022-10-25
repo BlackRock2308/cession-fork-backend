@@ -1,10 +1,7 @@
 package sn.modelsis.cdmp.services;
 
-import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
-
 import java.util.List;
 
 public interface DemandeCessionService {
@@ -26,6 +23,10 @@ public interface DemandeCessionService {
     DemandeCessionDto rejeterAnalyse (DemandeCessionDto demandecessionDto);
 
     DemandeCessionDto demanderComplements (DemandeCessionDto demandecessionDto);
+
+    DemandeCessionDto validerRecevabilite (DemandeCessionDto demandecessionDto);
+
+    DemandeCessionDto rejeterRecevabilite (DemandeCessionDto demandecessionDto);
 
 
 
