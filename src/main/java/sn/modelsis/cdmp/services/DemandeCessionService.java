@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.services;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import java.util.List;
+import java.util.Optional;
 
 public interface DemandeCessionService {
 
@@ -14,7 +15,9 @@ public interface DemandeCessionService {
 
     DemandeCession saveCession(DemandeCession demandecession);
 
-    DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto);
+    Optional<DemandeCession> getDemandeCession(Long id);
+
+    DemandeCessionDto rejetCession(DemandeCessionDto demandecession);
 
     DemandeCessionDto validerCession(DemandeCessionDto demandecession);
 

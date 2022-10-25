@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,6 +45,9 @@ public class DemandeCession implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
     private Set<Observation> observations = new HashSet<>();
+
+    @OneToMany(mappedBy = "demandeId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Paiement> paiements = new HashSet<>();
 
    /* @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
     private Set<DemandeDocuments> documents = new HashSet<>();*/
