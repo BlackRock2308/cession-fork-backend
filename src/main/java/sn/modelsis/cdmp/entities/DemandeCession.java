@@ -28,7 +28,7 @@ public class DemandeCession implements Serializable {
     @JoinColumn(name="pmeid")
     private Pme pme;
 
-    @Column(name = "datedemande")
+    @Column(name = "datedemandecession")
     private Date dateDemandeCession;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -39,14 +39,13 @@ public class DemandeCession implements Serializable {
     @JoinColumn(name="bonengagementid")
     private BonEngagement bonEngagement;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="conventionid")
-    private Convention convention;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandeCession")
+    private Set<Convention> conventions = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
     private Set<Observation> observations = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
-    private Set<DemandeDocuments> documents = new HashSet<>();
+   /* @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
+    private Set<DemandeDocuments> documents = new HashSet<>();*/
 }
 

@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -20,6 +22,10 @@ public class Role implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="libelle")
-    private String libelle;
+    private Roles libelle;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "roleid")
+    private Set<RoleUtilisateur> rolesUtilisateurs = new HashSet<>();
 }

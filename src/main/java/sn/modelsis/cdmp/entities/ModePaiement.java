@@ -2,7 +2,9 @@ package sn.modelsis.cdmp.entities;
 
 
 public enum ModePaiement {
-  CHEQUE("CHEQUE"), ESPECE("ESPECE");
+  CHEQUE("CHEQUE"),
+  ESPECE("ESPECE"),
+  VIREMENT("virement");
   
   private String value;
 

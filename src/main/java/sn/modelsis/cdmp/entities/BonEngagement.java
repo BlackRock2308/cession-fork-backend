@@ -91,7 +91,7 @@ public class BonEngagement implements Serializable {
     private String identificationComptable;
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
-    private Set<Demande> demandes = new HashSet<>();
+    private Set<DemandeCession> demandeCessions = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<BEDocuments> documents = new HashSet<>();

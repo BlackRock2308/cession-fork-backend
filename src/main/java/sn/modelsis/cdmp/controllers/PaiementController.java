@@ -23,8 +23,8 @@ public class PaiementController {
     private PaiementService paiementService;
 
     @PostMapping()
-    public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto, HttpServletRequest request){
-     Paiement paiement = DtoConverter.convertToEntity(paiementDto);
+    public ResponseEntity<PaiementDto> addPaiement(@RequestBody Paiement paiement, HttpServletRequest request){
+     //Paiement paiement = DtoConverter.convertToEntity(paiementDto);
      Paiement result = paiementService.save(paiement);
         log.info("Paiement created. Id:{} ", result.getIdPaiement());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));

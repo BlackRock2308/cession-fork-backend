@@ -21,8 +21,5 @@ public class ObservationDto {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime dateObservation; 
 
-  private DemandeDto demandeDto;
-
-  private AgentDto agentDto;
 
 }

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import sn.modelsis.cdmp.entities.ModePaiement;
+import sn.modelsis.cdmp.entities.Statuts;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -14,14 +17,19 @@ public class PaiementDto {
 
     private Long idPaiement;
 
-    private int montant;
+    private String raisonSocial;
+
+    private String nomMarche;
+
+    private double montantCreance;
 
     private double montantRecuCDMP;
 
     private double soldePME;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime datePaiement;
+    private Statuts statutLibelle;
 
-    private StatutDto statutdto;
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    //private LocalDateTime datePaiement;
+
 }
