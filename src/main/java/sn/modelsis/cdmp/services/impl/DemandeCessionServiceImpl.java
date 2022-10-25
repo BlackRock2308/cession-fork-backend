@@ -11,25 +11,35 @@ import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class DemandeCessionServiceImpl implements DemandeCessionService {
 
-    @Autowired
-    private DemandeCessionRepository demandecessionRepository;
+    private final DemandeCessionRepository demandecessionRepository;
 
-    @Autowired
-    private BonEngagementRepository bonEngagementRepository;
+    private final BonEngagementRepository bonEngagementRepository;
 
-    @Autowired
-    private PmeRepository pmeRepository;
 
-    @Autowired
-    private StatutRepository statutRepository;
+    private final PmeRepository pmeRepository;
 
-    @Autowired
-    private ObservationRepository observationRepository;
+    private final StatutRepository statutRepository;
+
+
+    private final ObservationRepository observationRepository;
+
+    public DemandeCessionServiceImpl(DemandeCessionRepository demandecessionRepository,
+                                     BonEngagementRepository bonEngagementRepository,
+                                     PmeRepository pmeRepository,
+                                     StatutRepository statutRepository,
+                                     ObservationRepository observationRepository) {
+        this.demandecessionRepository = demandecessionRepository;
+        this.bonEngagementRepository = bonEngagementRepository;
+        this.pmeRepository = pmeRepository;
+        this.statutRepository = statutRepository;
+        this.observationRepository = observationRepository;
+    }
 
     @Override
     @Transactional
@@ -47,6 +57,16 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         }*/
 
         return demandecessionRepository.save(demandecession);
+    }
+
+    @Override
+    public Optional<DemandeCession> getDemandeCession(Long id) {
+        return demandecessionRepository.findById(id);
+    }
+
+    @Override
+    public DemandeCessionDto rejetCession(DemandeCessionDto demandecession) {
+        return null;
     }
 
     @Override
