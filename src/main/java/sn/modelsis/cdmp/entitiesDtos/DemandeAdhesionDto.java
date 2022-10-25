@@ -3,11 +3,9 @@ package sn.modelsis.cdmp.entitiesDtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.DemandeDocuments;
-import sn.modelsis.cdmp.entities.Observation;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.*;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,9 +14,14 @@ import java.util.Set;
 @ToString
 public class DemandeAdhesionDto {
 
-    private PmeDto pme;
+    private String ninea;
+    private String rccm;
+    private Date dateDemandeAdhesion;
     private StatutDto statut;
-    private Set<ObservationDto> observations = new HashSet<>();
     private Set<DocumentDto> documents = new HashSet<>();
+
+    //private PmeDto pme;
+    //private Set<ObservationDto> observations = new HashSet<>();
+    //
 
 }

@@ -84,7 +84,7 @@ public class Pme implements Serializable {
     private String email;
     
     @Column(name = "codepin")
-    private  int codePin;
+    private  Integer codePin;
     
     @Column(name = "urlimageprofil")
     private String urlImageProfile;
@@ -102,7 +102,7 @@ public class Pme implements Serializable {
     private String localite;
 
     @Column(name = "controle")
-    private int controle;
+    private Integer controle;
 
     @Column(name = "activiteprincipale")
     private String activitePrincipale;
@@ -120,10 +120,10 @@ public class Pme implements Serializable {
     private Long chiffresDaffaires;
 
     @Column(name = "effectifpermanent")
-    private int effectifPermanent;
+    private Integer effectifPermanent;
 
     @Column(name = "nombreetablissementsecondaires")
-    private int nombreEtablissementSecondaires;
+    private Integer nombreEtablissementSecondaires;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<Agent> agents = new HashSet<>();

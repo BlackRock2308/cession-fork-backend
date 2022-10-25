@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Agent implements Serializable {
+public class Agent  implements Serializable {
 
   /**
    * 

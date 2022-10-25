@@ -30,7 +30,7 @@ public class DemandeAdhesion implements Serializable {
     @JoinColumn(name="pmeid")
     private Pme pme;
 
-    @Column(name = "datedemande")
+    @Column(name = "datedemandeAdhesion")
     private Date dateDemandeAdhesion;
 
 
@@ -38,9 +38,7 @@ public class DemandeAdhesion implements Serializable {
     @JoinColumn(name="statutid")
     private Statut statut;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandeadhesion")
-    private Set<Observation> observations = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandeadhesion")
-    private Set<DemandeDocuments> documents = new HashSet<>();
+
+
 }

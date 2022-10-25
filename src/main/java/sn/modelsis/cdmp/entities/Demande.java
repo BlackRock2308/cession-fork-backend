@@ -40,9 +40,6 @@ public class Demande implements Serializable {
     @Column(name = "id")
     private Long idDemande;
 
-    @Column(name = "datedemande")
-    private Date dateDemandeCession;
-
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -53,18 +50,17 @@ public class Demande implements Serializable {
     @JoinColumn(name="statutid")
     private Statut statut;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="bonengagementid")
-    private BonEngagement bonEngagement;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="conventionid")
-    private Convention convention;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
-    private Set<Observation> observations = new HashSet<>();
+    
+
+
+
+
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<DemandeDocuments> documents = new HashSet<>();
+
+
+
 
 }

@@ -1,6 +1,6 @@
 server:
   port: 8081
-  document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/documentLibrary}
+  document_folder: ${DOCUMENT_FOLDER:C:\Users\snndiayeos\Desktop\Wootoo\DocumentLibrary}
 spring:
   sql:
     init:
@@ -11,7 +11,7 @@ spring:
 
   datasource:
     password: EPT@MO@DB@2022
-    url: jdbc:postgresql://localhost:5432/cdmp
+    url: jdbc:postgresql://localhost:5432/cdmpes
     username: postgres
   jpa:
     hibernate:

@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -26,18 +28,26 @@ public class Utilisateur implements Serializable {
    @Column(name="codePin")
    private String codePin;
 
-  @Column(name="prenom")
-  private String prenom;
+   @Column(name="prenom")
+   private String prenom;
+
+   @Column(name="nom")
+   private String nom;
 
    @Column(name="urlImagesignature")
    private String urlImageSignature;
 
    @Column(name="telephone")
-   private int telephone;
+   private String telephone;
 
    @Column(name="email")
    private String email;
 
    @Column(name="urlimageprofil")
    private String urlImageProfil;
+
+   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "utilisateurid")
+   private Set<RoleUtilisateur> rolesUtilisateurs = new HashSet<>();
+
+   
 }
