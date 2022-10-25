@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +55,15 @@ public class DemandeCessionController {
         log.info("All Requests .");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<DemandeCessionDto> getDemandeCession(
+            @PathVariable Long id,
+            HttpServletRequest request) {
+        DemandeCession demandeCession = demandeCessionService.getDemandeCession(id).orElse(null);
+        log.info("demandeCession . Id:{}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeCession));
     }
 
 }

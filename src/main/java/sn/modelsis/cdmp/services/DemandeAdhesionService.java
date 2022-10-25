@@ -17,9 +17,9 @@ public interface DemandeAdhesionService {
 
     DemandeAdhesion saveAdhesion(DemandeAdhesion demandeadhesion);
 
-    DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeadhesion);
-
-    DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeahdesion);
+//    DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeadhesion);
+//
+//    DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeahdesion);
 
 
 

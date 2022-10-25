@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sn.modelsis.cdmp.entities.DetailPaiement;
+import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
 import sn.modelsis.cdmp.services.DetailPaiementService;
@@ -43,12 +44,12 @@ public class DetailPaiementController {
     DetailPaiementService detailPaiementService;
 
     @PostMapping()
-    public ResponseEntity<DetailPaiementDto> addDetailPaiement(@RequestBody DetailPaiementDto detailPaiementDto,
+    public ResponseEntity<DetailPaiement> addDetailPaiement(@RequestBody DetailPaiement detailPaiement,
                                                        HttpServletRequest request) {
-        DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
-        DetailPaiement result = detailPaiementService.save(detailPaiement);
-        log.info("DetailPaiement create. Id:{} ", result.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+        DetailPaiement saveDetailPaiement = detailPaiementService.save(detailPaiement);
+        detailPaiementService.save(saveDetailPaiement);
+        log.info("Paiement created : ", saveDetailPaiement.toString());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saveDetailPaiement);
     }
 
     @PutMapping()
