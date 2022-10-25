@@ -300,5 +300,21 @@ public class DtoConverter {
 		return demandeCession;
 	}
 
+	public static  UtilisateurDto convertToDto(Utilisateur utilisateur) {
+		UtilisateurDto utilisateurDto = null;
+		if(null != utilisateur) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			utilisateurDto = modelMapper.map(utilisateur, UtilisateurDto.class);
+		}
+		return utilisateurDto;
+	}
+
+	public static Utilisateur convertToEntity(UtilisateurDto utilisateurDto) {
+		Utilisateur utilisateur = new Utilisateur();
+		if(null != utilisateurDto) {
+			utilisateur = modelMapper.map(utilisateurDto, Utilisateur.class);
+		}
+		return utilisateur;
+	}
 
 }
