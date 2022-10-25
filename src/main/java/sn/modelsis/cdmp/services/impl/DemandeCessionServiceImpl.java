@@ -8,9 +8,7 @@ import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.DtoConverter;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +42,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
+    @Transactional
     public DemandeCession saveCession(DemandeCession demandecession) {
         BonEngagement be = demandecession.getBonEngagement();
         bonEngagementRepository.save(be);
@@ -67,7 +66,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     @Transactional
-    public DemandeCessionDto rejetCession(DemandeCessionDto demandecessionDto) {
+    public DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto) {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
         Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
@@ -99,26 +98,88 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     @Transactional
     public DemandeCessionDto validerAnalyse(DemandeCessionDto demandecessionDto) {
-        Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-        Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
-        // pme.setHasninea(true);
+        Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
+        Pme pme = demandecession.getPme();
+        //statut.setLibelle(Statuts.NON_RISQUEE);
         pmeRepository.save(pme);
-        statutRepository.save(statut);
+        //statutRepository.save(statut);
+        demandecession.setStatut(statutRepository.findAllByLibelle(Statuts.NON_RISQUEE));
+        observationRepository.save(observation);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
     }
 
+
+    //rejet du dossier a l'étape d'analyse du risque
     @Override
-    public DemandeCessionDto rejetAnalyse(DemandeCessionDto demandecession) {
-        return null;
+    @Transactional
+    public DemandeCessionDto rejeterAnalyse(DemandeCessionDto demandecessionDto) {
+        Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
+        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
+        Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
+        Pme pme = demandecession.getPme();
+        statut.setLibelle(Statuts.REJETEE);
+        pmeRepository.save(pme);
+        statutRepository.save(statut);
+        observationRepository.save(observation);
+        DemandeCession result=demandecessionRepository.save(demandecession);
+        return DtoConverter.convertToDto(result) ;
 
     }
 
     @Override
-    public DemandeCessionDto demanderComplements(DemandeCessionDto demandecession) {
-        return null;
+    @Transactional
+    public DemandeCessionDto demanderComplements(DemandeCessionDto demandecessionDto) {
+        Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
+        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
+        Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
+        Pme pme = demandecession.getPme();
+        statut.setLibelle(Statuts.COMPLEMENT_REQUIS);
+        pmeRepository.save(pme);
+        statutRepository.save(statut);
+        observationRepository.save(observation);
+        DemandeCession result=demandecessionRepository.save(demandecession);
+        return DtoConverter.convertToDto(result) ;
     }
+
+
+    //Validation de la recevabilité de la demande de cession
+    @Override
+    @Transactional
+    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto) {
+        Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
+        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
+        Pme pme = demandecession.getPme();
+        BonEngagement be = demandecession.getBonEngagement();
+        observationRepository.save(observation);
+        pmeRepository.save(pme);
+        bonEngagementRepository.save(be);
+        demandecession.setStatut(statutRepository.findAllByLibelle(Statuts.RECEVABLE));
+        DemandeCession result=demandecessionRepository.save(demandecession);
+        return DtoConverter.convertToDto(result) ;
+    }
+
+
+    //Rejet de la recevabilité de la demande de cession
+    @Override
+    @Transactional
+    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto) {
+        Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
+        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
+        Pme pme = demandecession.getPme();
+        BonEngagement be = demandecession.getBonEngagement();
+        observationRepository.save(observation);
+        pmeRepository.save(pme);
+        bonEngagementRepository.save(be);
+        demandecession.setStatut(statutRepository.findAllByLibelle(Statuts.REJETEE));
+        DemandeCession result=demandecessionRepository.save(demandecession);
+        return DtoConverter.convertToDto(result) ;
+    }
+
+
+
+
 
     @Override
     public List<DemandeCession> findAll(){
