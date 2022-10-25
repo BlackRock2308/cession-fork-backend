@@ -36,8 +36,8 @@ public class DemandeCessionController {
     }
 
     @PatchMapping(value ="/{id}/rejectcession")
-    public ResponseEntity<DemandeCessionDto> rejetCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.rejetCession(demandecessionDto);
+    public ResponseEntity<DemandeCessionDto> rejeterCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterCession(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
 
@@ -47,6 +47,23 @@ public class DemandeCessionController {
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
 
+    @PatchMapping(value = "/{id}/validanalyse")
+    public ResponseEntity<DemandeCessionDto> validerAnalyse(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.validerAnalyse(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
+
+    @PatchMapping(value = "/{id}/rejectanalyse")
+    public ResponseEntity<DemandeCessionDto> rejeterAnalyse(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterAnalyse(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
+
+    @PatchMapping(value = "/{id}/demandercomplements")
+    public ResponseEntity<DemandeCessionDto> demanderComplements(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.demanderComplements(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
     @GetMapping
     public ResponseEntity<List<DemandeCessionDto>> getAllDemandeCession(HttpServletRequest request) {
         List<DemandeCession> demandeList = demandeCessionService.findAll();
