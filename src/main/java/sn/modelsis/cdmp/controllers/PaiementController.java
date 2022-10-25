@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
@@ -21,13 +23,20 @@ public class PaiementController {
 
     @Autowired
     private PaiementService paiementService;
+    @Autowired
+    private DemandeCessionService demandeCessionService;
 
     @PostMapping()
-    public ResponseEntity<PaiementDto> addPaiement(@RequestBody Paiement paiement, HttpServletRequest request){
-     //Paiement paiement = DtoConverter.convertToEntity(paiementDto);
-     Paiement result = paiementService.save(paiement);
-        log.info("Paiement created. Id:{} ", result.getIdPaiement());
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+    public ResponseEntity<Paiement> addPaiement(@RequestBody Paiement paiement, HttpServletRequest request){
+        //Paiement paiement = DtoConverter.convertToEntity(paiementDto);
+//        Paiement result = paiementService.save(paiement);
+//        paiementService.save(result);
+        Paiement savePaiement = paiementService.save(paiement);
+        paiementService.save(savePaiement);
+        log.info("Paiement created : ", savePaiement.toString());
+        return ResponseEntity.status(HttpStatus.CREATED).body(savePaiement);
+
+
 
     }
 
@@ -41,22 +50,22 @@ public class PaiementController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PaiementDto>> getAllPaiements(
+    public ResponseEntity<List<Paiement>> getAllPaiements(
             HttpServletRequest request) {
         List<Paiement> paiements =
                 paiementService.findAll();
         log.info("All paiements .");
-        return ResponseEntity.status(HttpStatus.OK).body(paiements.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+        return ResponseEntity.status(HttpStatus.OK).body(paiements);
 
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PaiementDto> getPaiement(
+    public ResponseEntity<Paiement> getPaiement(
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);
         log.info("Paiement . Id:{}", id);
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
+        return ResponseEntity.status(HttpStatus.OK).body(paiement);
     }
 
     @DeleteMapping(value = "/{id}")

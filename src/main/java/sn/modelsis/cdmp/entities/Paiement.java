@@ -41,19 +41,21 @@ public class Paiement implements Serializable {
   @Column(name = "soldepme")
   private Long soldePME;
 
+  @Column(name = "demande_id")
+  private Long demandeId;
+
   
   @Column(name = "datepaiement")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime datePaiement; 
-  
+  private LocalDateTime datePaiement;
 
 
 
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "demandeid", nullable = false)
-  private DemandeCession demandecession;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name="demandeId", nullable = true, updatable = false, insertable = false)
+  private DemandeCession demandeCession;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "paiement")
+  @OneToMany(mappedBy = "paiementId",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<DetailPaiement> detailPaiements = new HashSet<>();
 
 }

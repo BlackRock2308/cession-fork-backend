@@ -33,17 +33,17 @@ public class DemandeAdhesionController {  private final Logger log = LoggerFacto
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
-    @PatchMapping(value ="/{id}/rejectadhesion")
-    public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto, HttpServletRequest request) {
-        DemandeAdhesionDto demandeadhesionDto1=demandeAdhesionService.rejetAdhesion(demandeadhesionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandeadhesionDto1);
-    }
-
-    @PatchMapping(value = "/{id}/acceptadhesion")
-    public ResponseEntity<DemandeAdhesionDto> validerAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto, HttpServletRequest request) {
-        DemandeAdhesionDto demandeadhesionDto1=demandeAdhesionService.validerAdhesion(demandeadhesionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandeadhesionDto1);
-    }
+//    @PatchMapping(value ="/{id}/rejectadhesion")
+//    public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto, HttpServletRequest request) {
+//        DemandeAdhesionDto demandeadhesionDto1=demandeAdhesionService.rejetAdhesion(demandeadhesionDto);
+//        return ResponseEntity.status(HttpStatus.OK).body(demandeadhesionDto1);
+//    }
+//
+//    @PatchMapping(value = "/{id}/acceptadhesion")
+//    public ResponseEntity<DemandeAdhesionDto> validerAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto, HttpServletRequest request) {
+//        DemandeAdhesionDto demandeadhesionDto1=demandeAdhesionService.validerAdhesion(demandeadhesionDto);
+//        return ResponseEntity.status(HttpStatus.OK).body(demandeadhesionDto1);
+//    }
 
     @GetMapping
     public ResponseEntity<List<DemandeAdhesionDto>> getAllDemandeAdhesion(HttpServletRequest request) {
