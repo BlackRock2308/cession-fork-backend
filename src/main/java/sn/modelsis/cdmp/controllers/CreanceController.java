@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
@@ -44,8 +43,6 @@ public class CreanceController {
         log.info("Getting Creance with Id = {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToCreanceDto(demandeCession));
     }
-
-
 
 
 }
