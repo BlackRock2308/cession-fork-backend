@@ -67,7 +67,7 @@ public class UtilisateurController {
      *  .
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of utilisateurs in body.
      */
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<List<UtilisateurDto>> getAllUtilisateurs() {
         log.debug("REST request to get  Utilisateurs");
         List<Utilisateur> utilisateurs =  utilisateurService.getAll();
@@ -100,7 +100,7 @@ public class UtilisateurController {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<UtilisateurDto> updateUtilisateur(
             @Valid @RequestBody UtilisateurDto utilisateurDto
     ) throws Exception {
@@ -121,7 +121,7 @@ public class UtilisateurController {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
 
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<UtilisateurDto> createUtilisateur(@Valid @RequestBody UtilisateurDto utilisateurDto) throws Exception {
         log.debug("REST request to save Utilisateur : {}", utilisateurDto);
         if (utilisateurDto.getIdUtilisateur() != null) {

@@ -317,5 +317,4 @@ public class DtoConverter {
 		}
 		return utilisateur;
 	}
-
 }
