@@ -40,11 +40,13 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
         Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
         DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-        Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
+        Pme pme = demandeadhesion.getPme();
         pmeRepository.save(pme);
         statutRepository.save(statut);
         DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);
         return DtoConverter.convertToDto(result) ;
+
+
     }
 
     @Override
@@ -52,7 +54,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
         Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
         DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-        Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
+        Pme pme = demandeAdhesion.getPme();
         // pme.setHasninea(true);
         pmeRepository.save(pme);
         statutRepository.save(statut);

@@ -40,7 +40,7 @@ public class Convention implements Serializable {
   private ModePaiement modePaiement;
 
   @Column(name = "decote")
-  private String decote;
+  private double decote;
   
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -56,7 +56,7 @@ public class Convention implements Serializable {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="demandeid")
-  private Demande demandeCession;
+  private DemandeCession demandeCession;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
   private Set<ConventionDocuments> documents = new HashSet<>();

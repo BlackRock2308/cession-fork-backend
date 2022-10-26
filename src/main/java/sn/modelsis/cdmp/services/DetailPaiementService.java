@@ -16,7 +16,10 @@ public interface DetailPaiementService {
      * @param detailPaiement
      * @return
      */
-    DetailPaiement save(DetailPaiement detailPaiement);
+    DetailPaiement paiementPME(DetailPaiement detailPaiement);
+
+    DetailPaiement paiementCDMP(DetailPaiement detailPaiement);
+
 
     /**
      *

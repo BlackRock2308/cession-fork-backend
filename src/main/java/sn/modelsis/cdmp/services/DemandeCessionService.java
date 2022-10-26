@@ -6,6 +6,7 @@ import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DemandeCessionService {
 
@@ -26,6 +27,12 @@ public interface DemandeCessionService {
     DemandeCessionDto rejetAnalyse (DemandeCessionDto demandecession);
 
     DemandeCessionDto demanderComplements (DemandeCessionDto demandecession);
+
+    Optional<DemandeCession> findById (Long id);
+
+
+    List<DemandeCession> findAllPMEDemandes(Long id);
+
 
 
 

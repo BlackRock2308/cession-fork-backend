@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.services.DemandeCessionService;
@@ -53,6 +54,21 @@ public class DemandeCessionController {
         log.info("All Requests .");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+    }
+
+    @GetMapping(value = "pme/{id}")
+    public ResponseEntity<List<DemandeCessionDto>> getAllPMEDemandeCession(@PathVariable Long id, HttpServletRequest request) {
+        List<DemandeCession> demandeList = demandeCessionService.findAllPMEDemandes(id);
+        log.info("All Requests .");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+    }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<DemandeCessionDto> getAllDemandeCession(@PathVariable Long id, HttpServletRequest request) {
+        DemandeCession demande = demandeCessionService.findById(id).orElse(null);
+        log.info("Demande . Id:{}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demande));
     }
 
 }

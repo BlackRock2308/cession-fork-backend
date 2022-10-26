@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sn.modelsis.cdmp.entities.TypePaiement;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
@@ -22,16 +23,19 @@ public class PaiementController {
     @Autowired
     private PaiementService paiementService;
 
-    @PostMapping()
-    public ResponseEntity<PaiementDto> addPaiement(@RequestBody Paiement paiement, HttpServletRequest request){
+    @PostMapping(value = "{id}")
+    public ResponseEntity<PaiementDto> addPaiement(@PathVariable Long id, HttpServletRequest request){
      //Paiement paiement = DtoConverter.convertToEntity(paiementDto);
-     Paiement result = paiementService.save(paiement);
+        log.info("Demande Id:{} ", id);
+        Paiement result = paiementService.save(id,0, TypePaiement.CDMP_PME);
         log.info("Paiement created. Id:{} ", result.getIdPaiement());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
 
     }
 
-    @PutMapping()
+
+
+    /*@PutMapping()
     public ResponseEntity<PaiementDto> updatePaiement(@RequestBody PaiementDto paiementDto,
                                                           HttpServletRequest request) {
         Paiement paiement = DtoConverter.convertToEntity(paiementDto);
@@ -39,6 +43,10 @@ public class PaiementController {
         log.info("Paiement updated. Id:{}", result.getIdPaiement());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
     }
+
+     */
+
+
 
     @GetMapping
     public ResponseEntity<List<PaiementDto>> getAllPaiements(
@@ -55,7 +63,7 @@ public class PaiementController {
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);
-        log.info("Paiement . Id:{}", id);
+        log.info("Paiement . demandeId:{}", paiement.getDemandecession().getIdDemande());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
     }
 

@@ -45,6 +45,10 @@ public class DemandeCession implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
     private Set<Observation> observations = new HashSet<>();
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "demandeid", nullable = false)
+    private Demande demande;
+
    /* @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
     private Set<DemandeDocuments> documents = new HashSet<>();*/
 }

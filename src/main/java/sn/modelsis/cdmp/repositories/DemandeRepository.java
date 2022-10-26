@@ -13,5 +13,5 @@ public interface DemandeRepository extends JpaRepository<Demande, Long> {
 
     //public List<Demande> findDemandeByPme(Pme pme);
 
-    //public List<Demande> findAllByIdPME(Pme pme);
+    //public List<Demande> findAllByIdPME(Long id);
 }

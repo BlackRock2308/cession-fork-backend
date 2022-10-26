@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.ModePaiement;
 import sn.modelsis.cdmp.entities.Statuts;
 
@@ -28,6 +29,8 @@ public class PaiementDto {
     private double soldePME;
 
     private Statuts statutLibelle;
+
+    private Long demandecessionid;
 
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     //private LocalDateTime datePaiement;

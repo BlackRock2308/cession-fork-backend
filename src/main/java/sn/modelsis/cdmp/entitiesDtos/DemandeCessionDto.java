@@ -13,6 +13,7 @@ import java.util.Set;
 @ToString
 public class DemandeCessionDto {
 
+    private Long idDemande;
     private PmeDto pme;
     private StatutDto statut;
     private Set<ObservationDto> observations = new HashSet<>();

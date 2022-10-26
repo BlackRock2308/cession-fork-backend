@@ -4,12 +4,11 @@
 package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,18 +35,10 @@ public class Paiement implements Serializable {
   private Long idPaiement;
 
   @Column(name = "montantrecucdmp")
-  private Long montantRecuCDMP;
+  private double montantRecuCDMP;
 
   @Column(name = "soldepme")
-  private Long soldePME;
-
-  
-  @Column(name = "datepaiement")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime datePaiement; 
-  
-
-
+  private double soldePME;
 
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "demandeid", nullable = false)
@@ -55,5 +46,6 @@ public class Paiement implements Serializable {
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "paiement")
   private Set<DetailPaiement> detailPaiements = new HashSet<>();
+
 
 }
