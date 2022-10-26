@@ -64,10 +64,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository.findById(id);
     }
 
-    @Override
-    public DemandeCessionDto rejetCession(DemandeCessionDto demandecession) {
-        return null;
-    }
 
     @Override
     @Transactional
