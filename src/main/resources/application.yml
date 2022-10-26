@@ -9,7 +9,7 @@ spring:
   application:
     name: Cession creance
   datasource:
-    password: password
+    password: EPT@MO@DB@2022
     url: jdbc:postgresql://localhost:5432/cdmpes
     username: postgres
   jpa:

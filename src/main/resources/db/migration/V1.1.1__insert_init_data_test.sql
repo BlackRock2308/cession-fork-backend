@@ -175,8 +175,8 @@ VALUES ('BE nanti', '2025-03-08',2,2);
 
 --convention--
 INSERT INTO public.convention(
-    dateconvention, decote, modepaiement, agentid, pmeid)
-VALUES ('2025-03-08', 10.00, 'VIREMENT',2, 1);
+    dateconvention, decote, modepaiement, agentid, pmeid,demandeid)
+VALUES ('2025-03-08', 10.00, 'VIREMENT',2, 1,3);
 ----
 --paiement--
 INSERT INTO public.paiement(
