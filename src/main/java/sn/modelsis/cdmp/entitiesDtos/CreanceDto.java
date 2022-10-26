@@ -14,7 +14,7 @@ public class CreanceDto {
 
     private Long idCreance;
 
-    private String nomMarche; //Paiement
+    private String nomMarche; //Bon engagement
 
     private String raisonSocial; //Pme
 
