@@ -55,11 +55,11 @@ public class PaiementServiceImpl implements PaiementService {
         demandeCessionRepository.findById(idDemande).ifPresentOrElse(
                 (value)
                         -> {
-                    if (paiement.getDemandecession()!=null){
+                    if (paiement.getDemandeCession()!=null){
                         throw new CustomException("Paiement for this demande Already exist");
                     }
-                    paiement.setDemandecession(value);
-                    log.info("Paiement:{} ",paiement.getDemandecession().getIdDemande());
+                    paiement.setDemandeCession(value);
+                    log.info("Paiement:{} ",paiement.getDemandeCession().getIdDemande());
 
                     double montantCreance=value.getBonEngagement().getMontantCreance();
                     Statuts statutLibelle=value.getStatut().getLibelle();
@@ -71,7 +71,7 @@ public class PaiementServiceImpl implements PaiementService {
                      */
 
                     if (statutLibelle==Statuts.CONVENTION_ACCEPTEE){
-                        Convention conventionAcceptee=conventionRepository.findConventionValideByDemande(paiement.getDemandecession().getIdDemande());
+                        Convention conventionAcceptee=conventionRepository.findConventionValideByDemande(paiement.getDemandeCession().getIdDemande());
                         double decote=conventionAcceptee.getDecote();
                         paiement.setSoldePME((montantCreance*decote)/100);
                         paiement.setMontantRecuCDMP(0);
@@ -113,7 +113,7 @@ public class PaiementServiceImpl implements PaiementService {
                     //paiement.setDemandecession(value);
 
                     //double montantCreance=value.getBonEngagement().getMontantCreance();
-                    Statuts statutLibelle=value.getDemandecession().getStatut().getLibelle();
+                    Statuts statutLibelle=value.getDemandeCession().getStatut().getLibelle();
                     log.info("statut:{} ",statutLibelle);
                     log.info("soldePME:{} ",value.getSoldePME());
 
@@ -141,22 +141,22 @@ public class PaiementServiceImpl implements PaiementService {
                         if (typePaiement==TypePaiement.SICA_CDMP) {
                             value.setMontantRecuCDMP(value.getMontantRecuCDMP()+montant);
 
-                            value.getDemandecession().setStatut(this.statutRepository.findByLibelle(Statuts.CDMP_PARTIELLEMENT_PAYEE));
-                            if (value.getMontantRecuCDMP()==value.getDemandecession().getBonEngagement().getMontantCreance()){
-                                value.getDemandecession().setStatut(this.statutRepository.findByLibelle(Statuts.CDMP_TOTALEMENT_PAYEE));
+                            value.getDemandeCession().setStatut(this.statutRepository.findByLibelle(Statuts.CDMP_PARTIELLEMENT_PAYEE));
+                            if (value.getMontantRecuCDMP()==value.getDemandeCession().getBonEngagement().getMontantCreance()){
+                                value.getDemandeCession().setStatut(this.statutRepository.findByLibelle(Statuts.CDMP_TOTALEMENT_PAYEE));
                             }
 
                         }
                         if (typePaiement==TypePaiement.CDMP_PME) {
                             log.info("soldePME:{} ",value.getSoldePME());
                             value.setSoldePME(value.getSoldePME()-montant);
-                            value.getDemandecession().setStatut(this.statutRepository.findByLibelle(Statuts.PME_PARTIELLEMENT_PAYEE));
+                            value.getDemandeCession().setStatut(this.statutRepository.findByLibelle(Statuts.PME_PARTIELLEMENT_PAYEE));
                             if (value.getSoldePME()==0){
-                                value.getDemandecession().setStatut(this.statutRepository.findByLibelle(Statuts.PME_TOTALEMENT_PAYEE));
+                                value.getDemandeCession().setStatut(this.statutRepository.findByLibelle(Statuts.PME_TOTALEMENT_PAYEE));
                             }
 
                         }
-                        log.info("paiementDemande:{} ",value.getDemandecession().getIdDemande());
+                        log.info("paiementDemande:{} ",value.getDemandeCession().getIdDemande());
 
                         paiementRepository.save(value);
                     }
