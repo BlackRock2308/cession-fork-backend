@@ -22,10 +22,9 @@ public class Role implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
+   // @Enumerated(EnumType.STRING)
     @Column(name="libelle")
-    private Roles libelle;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "roleid")
-    private Set<RoleUtilisateur> rolesUtilisateurs = new HashSet<>();
+    private String libelle;
+    // @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "roleid")
+    // private Set<RoleUtilisateur> rolesUtilisateurs = new HashSet<>();
 }

@@ -20,7 +20,7 @@ public class DemandeAdhesionDto {
     private StatutDto statut;
     private Set<DocumentDto> documents = new HashSet<>();
 
-    //private PmeDto pme;
+    private PmeDto pme;
     //private Set<ObservationDto> observations = new HashSet<>();
     //
 

@@ -8,7 +8,6 @@ spring:
       platform: postgres
   application:
     name: Cession creance
-
   datasource:
     password: password
     url: jdbc:postgresql://localhost:5432/cdmpes
