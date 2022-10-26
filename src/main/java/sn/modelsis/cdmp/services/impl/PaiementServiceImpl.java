@@ -8,10 +8,7 @@ import sn.modelsis.cdmp.controllers.AgentControllers;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.repositories.ConventionRepository;
-import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
-import sn.modelsis.cdmp.repositories.PaiementRepository;
-import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.PaiementService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -24,6 +21,8 @@ import java.util.Optional;
 @Service
 public class PaiementServiceImpl implements PaiementService {
 
+
+    private final Logger log = LoggerFactory.getLogger(PaiementServiceImpl.class);
 
     private final PaiementRepository paiementRepository;
 

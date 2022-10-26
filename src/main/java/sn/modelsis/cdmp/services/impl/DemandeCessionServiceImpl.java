@@ -106,7 +106,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         //statut.setLibelle(Statuts.NON_RISQUEE);
         pmeRepository.save(pme);
         //statutRepository.save(statut);
-        demandecession.setStatut(statutRepository.findAllByLibelle(Statuts.NON_RISQUEE));
+        demandecession.setStatut(statutRepository.findByLibelle(Statuts.NON_RISQUEE));
         observationRepository.save(observation);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
@@ -157,7 +157,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         observationRepository.save(observation);
         pmeRepository.save(pme);
         bonEngagementRepository.save(be);
-        demandecession.setStatut(statutRepository.findAllByLibelle(Statuts.RECEVABLE));
+        demandecession.setStatut(statutRepository.findByLibelle(Statuts.RECEVABLE));
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
     }
@@ -174,7 +174,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         observationRepository.save(observation);
         pmeRepository.save(pme);
         bonEngagementRepository.save(be);
-        demandecession.setStatut(statutRepository.findAllByLibelle(Statuts.REJETEE));
+        demandecession.setStatut(statutRepository.findByLibelle(Statuts.REJETEE));
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
     }

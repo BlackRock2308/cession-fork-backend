@@ -42,4 +42,10 @@ public interface DemandeCessionService {
      * @return
      */
     List<DemandeCession> findAll();
-}
+
+    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
+
+    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
+
+    public Optional<DemandeCession> getDemandeCession(Long id);
+    }
