@@ -3,11 +3,20 @@ package sn.modelsis.cdmp.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.Utilisateur;
-import sn.modelsis.cdmp.entitiesDtos.UtilisateurCreateDto;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.repositories.RoleRepository;
+import sn.modelsis.cdmp.security.dto.AuthentificationDto;
+import sn.modelsis.cdmp.security.dto.AuthentificationResponseDto;
+import sn.modelsis.cdmp.security.service.UtilisateurDetailService;
+import sn.modelsis.cdmp.security.utils.JWTUtility;
 import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
@@ -32,10 +41,23 @@ public class UtilisateurController {
 
     final private RoleRepository roleRepository ;
 
+    final   private JWTUtility jwtUtility;
+
+    final private UtilisateurDetailService utilisateurDetailService;
+
+
+    final   private AuthenticationManager authenticationManager;
+
+    final  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
     final private UtilisateurService utilisateurService ;
 
-    public UtilisateurController(RoleRepository roleRepository, UtilisateurService utilisateurService) {
+    public UtilisateurController(RoleRepository roleRepository, JWTUtility jwtUtility, UtilisateurDetailService utilisateurDetailService, AuthenticationManager authenticationManager, UtilisateurService utilisateurService) {
         this.roleRepository = roleRepository;
+        this.jwtUtility = jwtUtility;
+        this.utilisateurDetailService = utilisateurDetailService;
+        this.authenticationManager = authenticationManager;
         this.utilisateurService = utilisateurService;
     }
 
@@ -110,8 +132,7 @@ public class UtilisateurController {
         listeRole.forEach(role -> {
             listeRole.add(roleRepository.save(role));
         });
-
-       // utilisateurDto.setRoles(listeRole);
+        utilisateurDto.setPassword(passwordEncoder.encode(utilisateurDto.getPassword()));
         Utilisateur result = utilisateurService.save(DtoConverter.convertToEntity(utilisateurDto));
 
         return ResponseEntity
@@ -132,5 +153,31 @@ public class UtilisateurController {
         return ResponseEntity
                 .noContent()
                 .build();
+    }
+
+    /**
+     * {@code POST  /auth} : authenticate a user
+     *
+     * @param authentificationDto the username and the password of a user.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+
+    @PostMapping("/auth")
+    public AuthentificationResponseDto authenticate(@RequestBody AuthentificationDto authentificationDto) throws Exception {
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authentificationDto.getEmail(), authentificationDto.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new Exception("INNVALID_CREDENTIALS", e);
+        }
+        UserDetails userDetails = utilisateurDetailService.loadUserByUsername(authentificationDto.getEmail());
+        Utilisateur utilisateur = utilisateurService.findByEmail(authentificationDto.getEmail());
+        if (utilisateur != null) {
+            final String token = jwtUtility.generateToken(utilisateur ,userDetails);
+            return new AuthentificationResponseDto(utilisateur, token);
+        } else {
+            return null;
+        }
     }
 }

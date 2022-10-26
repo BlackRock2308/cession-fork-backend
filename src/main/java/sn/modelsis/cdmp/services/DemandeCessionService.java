@@ -17,7 +17,7 @@ public interface DemandeCessionService {
 
     Optional<DemandeCession> getDemandeCession(Long id);
 
-    DemandeCessionDto rejetCession(DemandeCessionDto demandecession);
+    DemandeCessionDto rejeterCession(DemandeCessionDto demandecession);
 
     DemandeCessionDto validerCession(DemandeCessionDto demandecession);
 

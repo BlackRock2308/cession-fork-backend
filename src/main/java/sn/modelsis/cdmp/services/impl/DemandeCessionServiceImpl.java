@@ -64,8 +64,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository.findById(id);
     }
 
-    @Override
+
+
     @Transactional
+    @Override
     public DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto) {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);

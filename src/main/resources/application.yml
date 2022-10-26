@@ -10,9 +10,9 @@ spring:
     name: Cession creance
 
   datasource:
-    password: password
-    url: jdbc:postgresql://localhost:5432/cdmpes
-    username: postgres
+    password: passer123
+    url: jdbc:postgresql://localhost:5433/cdmp
+    username: adel
   jpa:
     hibernate:
       ddl-auto: create-drop
