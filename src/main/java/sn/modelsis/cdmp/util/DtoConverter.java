@@ -2,10 +2,15 @@ package sn.modelsis.cdmp.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.*;
+import sn.modelsis.cdmp.repositories.PaiementRepository;
 
 public class DtoConverter {
+
+	@Autowired
+	PaiementRepository paiementRepository;
 
 	protected static final ModelMapper modelMapper = new ModelMapper();
 
@@ -199,6 +204,7 @@ public class DtoConverter {
 		if(null != detailPaiement) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			detailPaiementDto = modelMapper.map(detailPaiement, DetailPaiementDto.class);
+			//detailPaiementDto.setPaiement(detailPaiement.getPaiement());
 		}
 		return detailPaiementDto;
 	}
@@ -207,6 +213,7 @@ public class DtoConverter {
 		DetailPaiement detailPaiement = new DetailPaiement();
 		if(null != detailPaiementDto) {
 			detailPaiement = modelMapper.map(detailPaiementDto, DetailPaiement.class);
+			//detailPaiement.setPaiement(this.paiementRepository.findById(detailPaiementDto.getPaiementId()));
 		}
 		return detailPaiement;
 	}
@@ -217,10 +224,10 @@ public class DtoConverter {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			paiementDto = modelMapper.map(paiement, PaiementDto.class);
 			//renseigner les mapping ambigue
-			paiementDto.setDemandeId(paiement.getDemandeCession().getIdDemande());
-			paiementDto.setMontantCreance(paiement.getDemandeCession().getBonEngagement().getMontantCreance());
-			paiementDto.setStatutLibelle(paiement.getDemandeCession().getStatut().getLibelle());
-			paiementDto.setRaisonSocial(paiement.getDemandeCession().getPme().getRaisonSocial());
+			paiementDto.setMontantCreance(paiement.getDemandecession().getBonEngagement().getMontantCreance());
+			paiementDto.setStatutLibelle(paiement.getDemandecession().getStatut().getLibelle());
+			paiementDto.setRaisonSocial(paiement.getDemandecession().getPme().getRaisonSocial());
+			paiementDto.setDemandecessionid(paiement.getDemandecession().getIdDemande());
 		}
 		return paiementDto;
 	}

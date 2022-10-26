@@ -99,7 +99,7 @@ CREATE TABLE public.bonengagement (
              objetdepense character varying(100),
              imputation character varying(100),
              datebonengagement timestamp without time zone,
-             montantCreance bigint,
+             montantCreance FLOAT(40),
              identificationcomptable character varying(100),
              date_demande timestamp without time zone,
              exercice character varying(250),
@@ -125,7 +125,7 @@ CREATE TABLE public.bonengagement (
 CREATE TABLE public.convention (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     dateconvention timestamp without time zone,
-    decote character varying(255),
+    decote FLOAT(40),
     modepaiement character varying(50), 
     agentid bigint,
     pmeid bigint ,
@@ -143,13 +143,15 @@ CREATE TABLE public.demande (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     pmeid bigint NOT NULL,
    	statutid bigint NOT NULL
+
 );
 
 CREATE TABLE public.demandeadhesion (
                                 id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
                                 pmeid bigint NOT NULL,
                                 statutid bigint NOT NULL,
-                                datedemandeadhesion timestamp without time zone
+                                datedemandeadhesion timestamp without time zone,
+                                demandeid bigint NOT NULL
 );
 
 CREATE TABLE public.demandeCession (
@@ -157,7 +159,8 @@ CREATE TABLE public.demandeCession (
                                 pmeid bigint NOT NULL,
                                 statutid bigint NOT NULL,
                                 bonengagementid bigint,
-                                datedemandecession timestamp without time zone
+                                datedemandecession timestamp without time zone,
+                                demandeid bigint not null
 );
 
 --
@@ -167,10 +170,8 @@ CREATE TABLE public.demandeCession (
 CREATE TABLE public.paiement (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     demandeid bigint NOT NULL,
-    soldePme bigint,
-    montantRecuCdmp bigint,
-    montant bigint,
-    datePaiement timestamp without time zone
+    soldePme FLOAT(40),
+    montantRecuCdmp FLOAT(40)
 );
 
 
@@ -179,7 +180,7 @@ CREATE TABLE public.detailsPaiement (
     modePaiement character varying(250) ,
     datePaiement timestamp without time zone,
     comptable character varying(100),
-    montant bigint,
+    montant FLOAT(40),
     reference character varying(250),
     typePaiement character varying(150),
     paiementid bigint NOT NULL
@@ -377,6 +378,12 @@ ALTER TABLE ONLY public.demandeadhesion
 
 ALTER TABLE ONLY public.demandeadhesion
     ADD CONSTRAINT fk_demandecession_statut FOREIGN KEY (statutid) REFERENCES public.statut(id);
+
+ALTER TABLE ONLY public.demandeadhesion
+    ADD CONSTRAINT fk_demandeadhesion_demande FOREIGN KEY (demandeid) REFERENCES public.demande(id);
+
+ALTER TABLE ONLY public.demandecession
+    ADD CONSTRAINT fk_demandecession_demande FOREIGN KEY (demandeid) REFERENCES public.demande(id);
 
 --
 -- Name: convention fk_convention_pme; Type: FK CONSTRAINT; Schema: public; Owner: -

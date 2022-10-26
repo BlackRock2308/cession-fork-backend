@@ -40,13 +40,14 @@ public class DetailPaiement implements Serializable {
     private String comptable;
 
     @Column(name = "montant")
-    private Long montant;
+    private double montant;
 
     @Column(name = "reference")
     private String reference;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "typepaiement")
-    private String typepaiement;
+    private TypePaiement typepaiement;
 
     @Column(name = "paiement_id")
     private Long paiementId;

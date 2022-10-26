@@ -38,6 +38,10 @@ public class DemandeAdhesion implements Serializable {
     @JoinColumn(name="statutid")
     private Statut statut;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "demandeid", nullable = false)
+    private Demande demande;
+
 
 
 

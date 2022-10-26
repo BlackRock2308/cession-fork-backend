@@ -36,13 +36,30 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     }
 
     @Override
-    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeadhesion) {
-        return null;
+    @Transactional
+    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
+        DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
+        Pme pme = demandeadhesion.getPme();
+        pmeRepository.save(pme);
+        statutRepository.save(statut);
+        DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);
+        return DtoConverter.convertToDto(result) ;
+
+
     }
 
     @Override
-    public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeahdesion) {
-        return null;
+    @Transactional
+    public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
+        DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
+        Pme pme = demandeAdhesion.getPme();
+        // pme.setHasninea(true);
+        pmeRepository.save(pme);
+        statutRepository.save(statut);
+        DemandeAdhesion result=demandeAdhesionRepository.save(demandeAdhesion);
+        return DtoConverter.convertToDto(result) ;
     }
 
 //    @Override

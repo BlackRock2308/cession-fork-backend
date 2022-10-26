@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
@@ -181,6 +182,16 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
 
 
+
+    @Override
+    public Optional<DemandeCession> findById(Long id) {
+        return demandecessionRepository.findById(id);
+    }
+
+    @Override
+    public List<DemandeCession> findAllPMEDemandes(Long id) {
+        return demandecessionRepository.findAllByPmeIdPME(id);
+    }
 
     @Override
     public List<DemandeCession> findAll(){

@@ -28,11 +28,11 @@ public interface DemandeCessionService {
 
     DemandeCessionDto demanderComplements (DemandeCessionDto demandecession);
 
-    DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
+    Optional<DemandeCession> findById (Long id);
 
-    DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
 
-    Optional<DemandeCession> getDemandeCession(Long id);
+    List<DemandeCession> findAllPMEDemandes(Long id);
+
 
 
 

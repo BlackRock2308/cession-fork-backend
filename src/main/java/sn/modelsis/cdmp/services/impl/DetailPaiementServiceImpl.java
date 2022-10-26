@@ -11,9 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.DPaiementDocuments;
 import sn.modelsis.cdmp.entities.DetailPaiement;
 import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entities.TypePaiement;
 import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
 import sn.modelsis.cdmp.services.DetailPaiementService;
 import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.services.PaiementService;
 
 
 @Service
@@ -25,8 +27,22 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
     @Autowired
     private DocumentService documentService;
 
+    @Autowired
+    private PaiementService paiementService;
+
     @Override
-    public DetailPaiement save(DetailPaiement detailPaiement) {
+    public DetailPaiement paiementPME(DetailPaiement detailPaiement) {
+
+        detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
+        paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
+        return detailPaiementRepository.save(detailPaiement);
+    }
+
+    @Override
+    public DetailPaiement paiementCDMP(DetailPaiement detailPaiement) {
+
+        detailPaiement.setTypepaiement(TypePaiement.SICA_CDMP);
+        paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
         return detailPaiementRepository.save(detailPaiement);
     }
 
