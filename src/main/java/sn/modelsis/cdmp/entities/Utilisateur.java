@@ -50,7 +50,7 @@ public class Utilisateur implements Serializable {
    @Column(name="urlimageprofil")
    private String urlImageProfil;
 
-   @ManyToMany
+   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "libelle")
    private Set<Role> roles ;
 

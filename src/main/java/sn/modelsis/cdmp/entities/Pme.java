@@ -37,13 +37,7 @@ public class Pme implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long idPME;
-    
-    @Column(name = "prenomrepresentant")
-    private String prenomRepresentant;
-    
-    @Column(name = "nomrepresentant")
-    private String nomRepresentant;
-    
+
     @Column(name = "rccm")
     private String rccm;
     

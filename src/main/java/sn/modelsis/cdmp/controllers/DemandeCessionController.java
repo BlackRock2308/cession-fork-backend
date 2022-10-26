@@ -40,8 +40,8 @@ public class DemandeCessionController {
 
     @PatchMapping(value ="/{id}/rejectcession")
     public ResponseEntity<DemandeCessionDto> rejeterCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterCession(demandecessionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+       // DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterCession(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PatchMapping(value = "/{id}/acceptcession")
