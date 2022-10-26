@@ -8,14 +8,13 @@ spring:
       platform: postgres
   application:
     name: Cession creance
-
   datasource:
-    password: passer123
-    url: jdbc:postgresql://localhost:5433/cdmp
-    username: adel
+    password: password
+    url: jdbc:postgresql://localhost:5432/cdmpes
+    username: postgres
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 

@@ -232,9 +232,10 @@ public class DtoConverter {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			paiementDto = modelMapper.map(paiement, PaiementDto.class);
 			//renseigner les mapping ambigue
-			paiementDto.setMontantCreance(paiement.getDemandecession().getBonEngagement().getMontantCreance());
-			paiementDto.setStatutLibelle(paiement.getDemandecession().getStatut().getLibelle());
-			paiementDto.setRaisonSocial(paiement.getDemandecession().getPme().getRaisonSocial());
+			paiementDto.setDemandeId(paiement.getDemandeCession().getIdDemande());
+			paiementDto.setMontantCreance(paiement.getDemandeCession().getBonEngagement().getMontantCreance());
+			paiementDto.setStatutLibelle(paiement.getDemandeCession().getStatut().getLibelle());
+			paiementDto.setRaisonSocial(paiement.getDemandeCession().getPme().getRaisonSocial());
 		}
 		return paiementDto;
 	}
