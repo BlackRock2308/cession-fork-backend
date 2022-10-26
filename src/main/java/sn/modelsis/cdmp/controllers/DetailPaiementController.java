@@ -35,7 +35,7 @@ import sn.modelsis.cdmp.services.DetailPaiementService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 @RestController
-@RequestMapping("/api/detailsPaiement")
+@RequestMapping("/api/detailsPaiements")
 public class DetailPaiementController {
 
     private final Logger log = LoggerFactory.getLogger(DetailPaiementController.class);
@@ -43,16 +43,28 @@ public class DetailPaiementController {
     @Autowired
     DetailPaiementService detailPaiementService;
 
-    @PostMapping()
-    public ResponseEntity<DetailPaiement> addDetailPaiement(@RequestBody DetailPaiement detailPaiement,
+    @PostMapping(value = "pme")
+    public ResponseEntity<DetailPaiementDto> addDetailPaiementPME(@RequestBody DetailPaiementDto detailPaiementDto,
                                                        HttpServletRequest request) {
-        DetailPaiement saveDetailPaiement = detailPaiementService.save(detailPaiement);
-        detailPaiementService.save(saveDetailPaiement);
-        log.info("Paiement created : ", saveDetailPaiement.toString());
-        return ResponseEntity.status(HttpStatus.CREATED).body(saveDetailPaiement);
+        log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getIdPaiement());
+
+        DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
+        log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
+        DetailPaiement result = detailPaiementService.paiementPME(detailPaiement);
+        log.info("DetailPaiement create. Id:{} ", result.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
-    @PutMapping()
+    @PostMapping(value = "cdmp")
+    public ResponseEntity<DetailPaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiement detailPaiement,
+                                                               HttpServletRequest request) {
+       // DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
+        DetailPaiement result = detailPaiementService.paiementCDMP(detailPaiement);
+        log.info("DetailPaiement create. Id:{} ", result.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+    }
+
+    /*@PutMapping()
     public ResponseEntity<DetailPaiementDto> updateDetailPaiement(@RequestBody DetailPaiementDto detailPaiementDto,
                                                           HttpServletRequest request) {
         DetailPaiement detailPaiement = DtoConverter.convertToEntity(detailPaiementDto);
@@ -60,6 +72,8 @@ public class DetailPaiementController {
         log.info("DetailPaiement updated. Id:{}", result.getId());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
     }
+
+     */
 
     @GetMapping
     public ResponseEntity<List<DetailPaiementDto>> getAllDetailPaiements(

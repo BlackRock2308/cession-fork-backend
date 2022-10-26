@@ -50,16 +50,21 @@ VALUES ('Oumar', 'Ndiaye', 'G-T1239877', 'Mermoz/Dakar/Senegal', '+221 77 381 83
 --BE--
 INSERT INTO public.bonengagement(
     reference, natureprestation, objetdepense, datebonengagement, montantcreance, modereglement, nommarche)
-VALUES ('B-aza1234', 'Service','Recrutement', '2024-10-01',200000000,'Virement' , 'Campagne de publicité Orange');
+VALUES ('B-aza1234', 'Service','Recrutement', '2024-10-01',200000000.00,'Virement' , 'Campagne de publicité Orange');
 
 INSERT INTO public.bonengagement(
     reference, natureprestation, objetdepense, datebonengagement, montantcreance, modereglement, nommarche)
-VALUES ('D-aza1234', 'Service','Achat', '2024-10-01',80000000,'Virement' , 'Fournitures de matériels de burreau');
+VALUES ('D-aza1234', 'Service','Achat', '2024-10-01',80000000.00,'Virement' , 'Fournitures de matériels de burreau');
 ----
 
 --Statut--
 
-
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('00', 'ADHESION_SOUMISE');
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('01', 'ADHESION_ACCEPTEE');
 INSERT INTO public.statut(
     code, libelle)
 VALUES ('01', 'ADHESION_REJETEE');
@@ -74,7 +79,31 @@ VALUES ('03', 'RECEVABLE');
 
 INSERT INTO public.statut(
     code, libelle)
+VALUES ('03', 'REJETEE');
+
+INSERT INTO public.statut(
+    code, libelle)
 VALUES ('04', 'NON_RISQUEE');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('04', 'RISQUEE');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('04', 'COMPLEMENT_REQUIS');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('04', 'COMPLETEE');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('05', 'CONVENTION_GENEREE');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('05', 'CONVENTION_SIGNEE_PAR_PME');
 
 INSERT INTO public.statut(
     code, libelle)
@@ -82,25 +111,61 @@ VALUES ('05', 'CONVENTION_SIGNEE_PAR_DG');
 
 INSERT INTO public.statut(
     code, libelle)
-VALUES ('07', 'CONVENTION ACCPTEE');
+VALUES ('05', 'CONVENTION_TRANSMISE');
+
 
 INSERT INTO public.statut(
     code, libelle)
-VALUES ('08', 'PME PARTIELLEMENT PAYEE');
+VALUES ('05', 'CONVENTION_ACCEPTEE');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('06', 'PME_EN_ATTENTE_DE_PAIEMENT');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('06', 'CDMP_EN_ATTENTE_DE_PAIEMENT');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('06', 'PME_PARTIELLEMENT_PAYEE');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('06', 'CDMP_PARTIELLEMENT_PAYEE');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('06', 'PME_TOTALEMENT_PAYEE');
+
+INSERT INTO public.statut(
+    code, libelle)
+VALUES ('06', 'CDMP_TOTALEMENT_PAYEE');
 ----
 
 --Demande--
+INSERT INTO public.demande(
+    pmeid, statutid)
+VALUES (1,1);
 INSERT INTO public.demandeadhesion(
-    pmeid, statutid, datedemandeadhesion)
-VALUES (1,1,'2025-03-08');
+    pmeid, statutid, datedemandeadhesion,demandeid)
+VALUES (1,1,'2025-03-08',1);
+
+INSERT INTO public.demande(
+    pmeid,  statutid)
+VALUES (2,3);
 
 INSERT INTO public.demandecession(
-    pmeid,  statutid, bonengagementid, datedemandecession)
-VALUES (2,3,1,'2025-03-08');
+    pmeid,  statutid, bonengagementid, datedemandecession,demandeid)
+VALUES (2,3,1,'2025-03-08',2);
+
+INSERT INTO public.demande(
+    pmeid,statutid)
+VALUES (2,7);
 
 INSERT INTO public.demandecession(
-    pmeid,statutid, bonengagementid, datedemandecession)
-VALUES (2,5,2,'2025-03-08');
+    pmeid,statutid, bonengagementid, datedemandecession,demandeid)
+VALUES (2,7,2,'2025-03-08',3);
 ----
 --Observation--
 INSERT INTO public.observation(
@@ -111,16 +176,16 @@ VALUES ('BE nanti', '2025-03-08',2,2);
 --convention--
 INSERT INTO public.convention(
     dateconvention, decote, modepaiement, agentid, pmeid)
-VALUES ('2025-03-08', '1O%', 'VIREMENT',2, 1);
+VALUES ('2025-03-08', 10.00, 'VIREMENT',2, 1);
 ----
 --paiement--
 INSERT INTO public.paiement(
-    demandeid, soldepme, montantrecucdmp, montant, datepaiement)
-VALUES (2,2000000, 0, 4000000,'2025-03-08');
+    demandeid, soldepme, montantrecucdmp)
+VALUES (2,2000000.00, 00.00);
 
 -----
 
 INSERT INTO public.detailspaiement(
     modepaiement, datepaiement, comptable, montant, typepaiement, paiementid)
-VALUES ('VIREMENT','2025-03-08','Oumar', 12000000,'CDMP_PME', 1);
+VALUES ('VIREMENT','2025-03-08','Oumar', 12000000.00,'CDMP_PME', 1);
 

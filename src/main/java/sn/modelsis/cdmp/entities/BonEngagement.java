@@ -41,7 +41,7 @@ public class BonEngagement implements Serializable {
     private Long idBonEngagement;
 
     @Column(name = "montantCreance")
-    private Long montantCreance;
+    private double montantCreance;
     
     @Column(name = "reference")
     private String reference;
