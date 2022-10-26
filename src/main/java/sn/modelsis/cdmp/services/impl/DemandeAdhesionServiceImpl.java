@@ -62,6 +62,31 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         return DtoConverter.convertToDto(result) ;
     }
 
+//    @Override
+//    @Transactional
+//    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+//        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
+//        DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
+//        Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
+//        pmeRepository.save(pme);
+//        statutRepository.save(statut);
+//        DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);
+//        return DtoConverter.convertToDto(result) ;
+//    }
+
+//    @Override
+//    @Transactional
+//    public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+//        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
+//        DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
+//        Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
+//        // pme.setHasninea(true);
+//        pmeRepository.save(pme);
+//        statutRepository.save(statut);
+//        DemandeAdhesion result=demandeAdhesionRepository.save(demandeAdhesion);
+//        return DtoConverter.convertToDto(result) ;
+//    }
+
     @Override
     public List<DemandeAdhesion> findAll(){
         return demandeAdhesionRepository.findAll();

@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -43,11 +44,17 @@ public class Utilisateur implements Serializable {
    @Column(name="email")
    private String email;
 
+   @Column(name="password")
+   private String password;
+
    @Column(name="urlimageprofil")
    private String urlImageProfil;
 
-   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "utilisateurid")
-   private Set<RoleUtilisateur> rolesUtilisateurs = new HashSet<>();
+   @ManyToMany
+   //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "libelle")
+   private Set<Role> roles ;
+
+   // private Set<RoleUtilisateur> rolesUtilisateurs = new HashSet<>();
 
    
 }

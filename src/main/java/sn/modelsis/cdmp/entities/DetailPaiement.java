@@ -49,12 +49,15 @@ public class DetailPaiement implements Serializable {
     @Column(name = "typepaiement")
     private TypePaiement typepaiement;
 
+    @Column(name = "paiement_id")
+    private Long paiementId;
+
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "dp")
     private Set<DPaiementDocuments> documents = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="paiementid")
+    @JoinColumn(name="paiementId", nullable = true, updatable = false, insertable = false)
     private Paiement paiement;
 
 

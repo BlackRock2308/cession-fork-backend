@@ -40,11 +40,11 @@ public class Paiement implements Serializable {
   @Column(name = "soldepme")
   private double soldePME;
 
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "demandeid", nullable = false)
-  private DemandeCession demandecession;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name="demandeId", nullable = true, updatable = false, insertable = false)
+  private DemandeCession demandeCession;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "paiement")
+  @OneToMany(mappedBy = "paiementId",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<DetailPaiement> detailPaiements = new HashSet<>();
 
 

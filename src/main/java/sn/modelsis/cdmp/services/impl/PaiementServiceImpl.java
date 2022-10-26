@@ -24,10 +24,16 @@ import java.util.Optional;
 @Service
 public class PaiementServiceImpl implements PaiementService {
 
-    private final Logger log = LoggerFactory.getLogger(PaiementServiceImpl.class);
 
-    @Autowired
-    private PaiementRepository paiementRepository;
+    private final PaiementRepository paiementRepository;
+
+    private final BonEngagementRepository bonEngagementRepository;
+
+    public PaiementServiceImpl(PaiementRepository paiementRepository,
+                               BonEngagementRepository bonEngagementRepository) {
+        this.paiementRepository = paiementRepository;
+        this.bonEngagementRepository = bonEngagementRepository;
+    }
 
     @Autowired
     private DemandeCessionRepository demandeCessionRepository;

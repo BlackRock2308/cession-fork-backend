@@ -18,6 +18,7 @@ public class DemandeCessionDto {
     private StatutDto statut;
     private Set<ObservationDto> observations = new HashSet<>();
     private Set<DocumentDto> documents = new HashSet<>();
+    private Set<PaiementDto> paiements = new HashSet<>();
     private BonEngagementDto bonEngagement;
 
 }

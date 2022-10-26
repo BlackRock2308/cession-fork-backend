@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import javax.servlet.http.HttpServletRequest;
@@ -37,8 +39,8 @@ public class DemandeCessionController {
     }
 
     @PatchMapping(value ="/{id}/rejectcession")
-    public ResponseEntity<DemandeCessionDto> rejetCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.rejetCession(demandecessionDto);
+    public ResponseEntity<DemandeCessionDto> rejeterCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterCession(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
 
@@ -48,6 +50,35 @@ public class DemandeCessionController {
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
 
+    @PatchMapping(value = "/{id}/validanalyse")
+    public ResponseEntity<DemandeCessionDto> validerAnalyse(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.validerAnalyse(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
+
+    @PatchMapping(value = "/{id}/rejectanalyse")
+    public ResponseEntity<DemandeCessionDto> rejeterAnalyse(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterAnalyse(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
+
+    @PatchMapping(value = "/{id}/demandercomplements")
+    public ResponseEntity<DemandeCessionDto> demanderComplements(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.demanderComplements(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
+
+    @PatchMapping(value = "/{id}/validerRecevabilite")
+    public ResponseEntity<DemandeCessionDto> validerRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.validerRecevabilite(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
+
+    @PatchMapping(value = "/{id}/rejeterRecevabilite")
+    public ResponseEntity<DemandeCessionDto> rejeterRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
+        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterRecevabilite(demandecessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    }
     @GetMapping
     public ResponseEntity<List<DemandeCessionDto>> getAllDemandeCession(HttpServletRequest request) {
         List<DemandeCession> demandeList = demandeCessionService.findAll();

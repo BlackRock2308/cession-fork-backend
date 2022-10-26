@@ -22,6 +22,8 @@ public class PaiementController {
 
     @Autowired
     private PaiementService paiementService;
+    @Autowired
+    private DemandeCessionService demandeCessionService;
 
     @PostMapping(value = "{id}")
     public ResponseEntity<PaiementDto> addPaiement(@PathVariable Long id, HttpServletRequest request){
@@ -49,17 +51,17 @@ public class PaiementController {
 
 
     @GetMapping
-    public ResponseEntity<List<PaiementDto>> getAllPaiements(
+    public ResponseEntity<List<Paiement>> getAllPaiements(
             HttpServletRequest request) {
         List<Paiement> paiements =
                 paiementService.findAll();
         log.info("All paiements .");
-        return ResponseEntity.status(HttpStatus.OK).body(paiements.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+        return ResponseEntity.status(HttpStatus.OK).body(paiements);
 
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PaiementDto> getPaiement(
+    public ResponseEntity<Paiement> getPaiement(
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);

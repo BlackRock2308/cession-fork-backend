@@ -18,17 +18,21 @@ public class PaiementDto {
 
     private Long idPaiement;
 
+    private double montantRecuCDMP;
+
+    private double soldePME;
+
+    private Long demandeId;
+
     private String raisonSocial;
 
     private String nomMarche;
 
     private double montantCreance;
 
-    private double montantRecuCDMP;
-
-    private double soldePME;
-
     private Statuts statutLibelle;
+
+
 
     private Long demandecessionid;
 

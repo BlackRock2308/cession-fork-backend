@@ -18,13 +18,13 @@ public interface DemandeCessionService {
 
     DemandeCession saveCession(DemandeCession demandecession);
 
-    DemandeCessionDto rejetCession(DemandeCessionDto demandecession);
+    DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto);
 
     DemandeCessionDto validerCession(DemandeCessionDto demandecession);
 
     DemandeCessionDto validerAnalyse (DemandeCessionDto demandecession);
 
-    DemandeCessionDto rejetAnalyse (DemandeCessionDto demandecession);
+    DemandeCessionDto rejeterAnalyse(DemandeCessionDto demandecessionDto);
 
     DemandeCessionDto demanderComplements (DemandeCessionDto demandecession);
 
