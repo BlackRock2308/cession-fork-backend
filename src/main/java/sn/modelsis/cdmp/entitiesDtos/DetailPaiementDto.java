@@ -34,6 +34,4 @@ public class DetailPaiementDto {
     private Set<DocumentDto> documents = new HashSet<>();
 
 
-
-
 }

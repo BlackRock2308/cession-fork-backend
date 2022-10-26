@@ -35,6 +35,16 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         return demandeAdhesionRepository.save(demandeadhesion);
     }
 
+    @Override
+    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeadhesion) {
+        return null;
+    }
+
+    @Override
+    public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeahdesion) {
+        return null;
+    }
+
 //    @Override
 //    @Transactional
 //    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {

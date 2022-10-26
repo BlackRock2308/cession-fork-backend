@@ -131,22 +131,7 @@ public class DtoConverter {
 		return demande;
 	}
 
-	public static DemandeCession convertToEntity(DemandeCessionDto demandecessionDto) {
-		DemandeCession demandecession = null;
-		if(null != demandecessionDto) {
-			demandecession = modelMapper.map(demandecessionDto, DemandeCession.class);
-		}
-		return demandecession;
-	}
 
-	public static  DemandeCessionDto convertToDto(DemandeCession demandecession) {
-		DemandeCessionDto demandecessionDto = null;
-		if(null != demandecession) {
-			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			demandecessionDto = modelMapper.map(demandecession, DemandeCessionDto.class);
-		}
-		return demandecessionDto;
-	}
 
 	public static DemandeAdhesion convertToEntity(DemandeAdhesionDto demandeadhesionDto) {
 		DemandeAdhesion demandeadhesion = null;
@@ -301,21 +286,42 @@ public class DtoConverter {
 		return demandeCession;
 	}
 
-	public static  UtilisateurDto convertToDto(Utilisateur utilisateur) {
-		UtilisateurDto utilisateurDto = null;
-		if(null != utilisateur) {
+	public static  CreanceDto convertToCreanceDto(DemandeCession demandeCession) {
+		CreanceDto creanceDto = null;
+		if(null != demandeCession) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			utilisateurDto = modelMapper.map(utilisateur, UtilisateurDto.class);
+			creanceDto = modelMapper.map(demandeCession, CreanceDto.class);
+			//renseigner les mapping ambigue
+			creanceDto.setIdCreance(demandeCession.getIdDemande());
+			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
+			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
+			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
+			creanceDto.setRccm(demandeCession.getPme().getRccm());
+			creanceDto.setStatutLibelle(demandeCession.getStatut().getLibelle());
 		}
-		return utilisateurDto;
+		return creanceDto;
 	}
 
-	public static Utilisateur convertToEntity(UtilisateurDto utilisateurDto) {
-		Utilisateur utilisateur = new Utilisateur();
-		if(null != utilisateurDto) {
-			utilisateur = modelMapper.map(utilisateurDto, Utilisateur.class);
+	public static DemandeCession convertToEntity(DemandeCessionDto demandecessionDto) {
+		DemandeCession demandecession = null;
+		if(null != demandecessionDto) {
+			demandecession = modelMapper.map(demandecessionDto, DemandeCession.class);
 		}
-		return utilisateur;
+		return demandecession;
 	}
+
+	public static  DemandeCessionDto convertToDto(DemandeCession demandecession) {
+		DemandeCessionDto demandecessionDto = null;
+		if(null != demandecession) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			demandecessionDto = modelMapper.map(demandecession, DemandeCessionDto.class);
+		}
+		return demandecessionDto;
+	}
+
+
+
+
 
 }
