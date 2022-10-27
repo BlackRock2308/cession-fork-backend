@@ -1,11 +1,11 @@
 --utilisateur--
 INSERT INTO public.utilisateur(
-    adresse, codepin, prenom, nom,motdepasse, telephone,  email)
-VALUES ('Mermoz/Dakar/Senegal',1023,'Oumar',  'Ndiaye','passer',  '+221 77 381 83 40','sahabandiaye@gmail.com');
+    adresse, codepin, prenom, nom,password, telephone,  email)
+VALUES ('Mermoz/Dakar/Senegal','1021','Oumar',  'Ndiaye','passer',  '+221 77 381 83 40','sahabandiaye@gmail.com');
 
 INSERT INTO public.utilisateur(
-    adresse, codepin, prenom, nom,motdepasse, telephone,  email)
-VALUES ('Mermoz/Dakar/Senegal',1003,'Alioune',  'Ngom','pass',  '+221 77 661 83 40','test@gmail.com');
+    adresse, codepin, prenom, nom,password, telephone,  email)
+VALUES ('Mermoz/Dakar/Senegal','1232','Alioune',  'Ngom','pass',  '+221 77 661 83 40','test@gmail.com');
 ----
 
 --Role--
@@ -32,11 +32,11 @@ VALUES ('ordonnateur');
 
 INSERT INTO public.agent(
     prenom, nom, adresse, telephone, codepin, email)
-VALUES ('Oumar', 'Ndiaye', 'Mermoz/Dakar/Senegal', '+221 77 381 83 40', 1023,'sahabandiaye@gmail.com');
+VALUES ('Oumar', 'Ndiaye', 'Mermoz/Dakar/Senegal', '+221 77 381 83 40', '1313','sahabandiaye@gmail.com');
 
 INSERT INTO public.agent(
     prenom, nom, adresse, telephone, codepin, email)
-VALUES ('Alioune',  'Ngom', 'Mermoz/Dakar/Senegal',  '+221 77 661 83 40', 1003,'test@gmail.com');
+VALUES ('Alioune',  'Ngom', 'Mermoz/Dakar/Senegal',  '+221 77 661 83 40', '1212','test@gmail.com');
 ----
 
 INSERT INTO public.pme(

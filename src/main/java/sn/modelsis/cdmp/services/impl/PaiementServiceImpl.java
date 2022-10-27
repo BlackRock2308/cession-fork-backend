@@ -4,17 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sn.modelsis.cdmp.controllers.AgentControllers;
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.*;
-import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.PaiementService;
-import sn.modelsis.cdmp.util.DtoConverter;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
