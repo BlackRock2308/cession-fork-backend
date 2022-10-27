@@ -166,6 +166,10 @@ VALUES (2,7);
 INSERT INTO public.demandecession(
     pmeid,statutid, bonengagementid, datedemandecession,demandeid)
 VALUES (2,7,2,'2025-03-08',3);
+
+INSERT INTO public.demandecession(
+    pmeid,statutid, bonengagementid, datedemandecession,demandeid)
+VALUES (2,15,2,'2025-03-08',3);
 ----
 --Observation--
 INSERT INTO public.observation(
