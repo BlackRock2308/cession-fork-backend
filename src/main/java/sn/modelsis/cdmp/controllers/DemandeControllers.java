@@ -36,29 +36,6 @@ public class DemandeControllers {
   private DemandeService demandeService;
 
 
-  @PostMapping(value = "/adhesion")
-  public ResponseEntity<DemandeDto> addDemande(@RequestBody DemandeDto demandeDto,
-                                               HttpServletRequest request) {
-    Demande demande = DtoConverter.convertToEntity(demandeDto);
-    Demande result = demandeService.saveAdhesion(demande);
-    log.info("demande created. Id:{} ", result.getIdDemande());
-    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
-  }
-
-
-
-
-
-
-
-  @PutMapping(value = "/{id}")
-  public ResponseEntity<DemandeDto> updateDemande(@RequestBody DemandeDto demandeDto,
-      HttpServletRequest request) {
-    Demande demande = DtoConverter.convertToEntity(demandeDto);
-    Demande result = demandeService.saveAdhesion(demande);
-    log.info("Demande updated. Id:{}", result.getIdDemande());
-    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
-  }
 
   @GetMapping
   public ResponseEntity<List<DemandeDto>> getAllDemande(HttpServletRequest request) {
@@ -71,14 +48,6 @@ public class DemandeControllers {
   @GetMapping(value ="/analyse_risque")
   public ResponseEntity<List<DemandeDto>> getAllAnalyseRisque(HttpServletRequest request) {
     List<Demande> demandeList = demandeService.findAllAnalyseRisque();
-    log.info("All Requests .");
-    return ResponseEntity.status(HttpStatus.OK)
-            .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
-  }
-
-  @GetMapping(value ="/demandes_adhesion")
-  public ResponseEntity<List<DemandeDto>> getAllDemandesAdhesion(HttpServletRequest request) {
-    List<Demande> demandeList = demandeService.findAllDemandesAdhesion();
     log.info("All Requests .");
     return ResponseEntity.status(HttpStatus.OK)
             .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));

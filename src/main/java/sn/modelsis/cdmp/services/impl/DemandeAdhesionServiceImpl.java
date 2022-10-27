@@ -1,6 +1,6 @@
 package sn.modelsis.cdmp.services.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
@@ -11,22 +11,15 @@ import sn.modelsis.cdmp.util.DtoConverter;
 import java.util.Date;
 import java.util.List;
 
-
+@AllArgsConstructor
 @Service
 public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
-
-    @Autowired
-    private DemandeAdhesionRepository demandeAdhesionRepository;
-
-
-    @Autowired
-    private PmeRepository pmeRepository;
-    @Autowired
-    private StatutRepository statutRepository;
-
+    private final DemandeAdhesionRepository demandeAdhesionRepository;
+    private final PmeRepository pmeRepository;
+    private final StatutRepository statutRepository;
 
     @Override
-        public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeadhesion) {
+    public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeadhesion) {
         demandeadhesion.setDateDemandeAdhesion(new Date());
         Statut statut=new Statut();
         statut.setLibelle(Statuts.SOUMISE);
@@ -35,9 +28,11 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         return demandeAdhesionRepository.save(demandeadhesion);
     }
 
-    @Override
-    @Transactional
-    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+    /**
+     This function is used inside rejetAdhesion and validerAdhesion
+     to avoid boilerplate code inside those two functions
+     */
+    public DemandeAdhesionDto getDemandeAdhesionDto(DemandeAdhesionDto demandeAdhesionDto) {
         Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
         DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
         Pme pme = demandeadhesion.getPme();
@@ -45,47 +40,19 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         statutRepository.save(statut);
         DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);
         return DtoConverter.convertToDto(result) ;
+    }
 
-
+    @Override
+    @Transactional
+    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+        return getDemandeAdhesionDto(demandeAdhesionDto);
     }
 
     @Override
     @Transactional
     public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
-        DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-        Pme pme = demandeAdhesion.getPme();
-        // pme.setHasninea(true);
-        pmeRepository.save(pme);
-        statutRepository.save(statut);
-        DemandeAdhesion result=demandeAdhesionRepository.save(demandeAdhesion);
-        return DtoConverter.convertToDto(result) ;
+        return getDemandeAdhesionDto(demandeAdhesionDto);
     }
-
-//    @Override
-//    @Transactional
-//    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-//        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
-//        DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-//        Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
-//        pmeRepository.save(pme);
-//        statutRepository.save(statut);
-//        DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);
-//        return DtoConverter.convertToDto(result) ;
-//    }
-
-//    @Override
-//    @Transactional
-//    public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-//        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
-//        DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-//        Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
-//        // pme.setHasninea(true);
-//        pmeRepository.save(pme);
-//        statutRepository.save(statut);
-//        DemandeAdhesion result=demandeAdhesionRepository.save(demandeAdhesion);
-//        return DtoConverter.convertToDto(result) ;
-//    }
 
     @Override
     public List<DemandeAdhesion> findAll(){

@@ -22,10 +22,9 @@ public class DemandeAdhesionController {  private final Logger log = LoggerFacto
     @Autowired
     private DemandeAdhesionService demandeAdhesionService;
 
-
     @PostMapping
     public ResponseEntity<DemandeAdhesionDto> addDemandeAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto,
-                                                               HttpServletRequest request) {
+                                                                 HttpServletRequest request) {
         DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeadhesionDto);
 
         DemandeAdhesion result = demandeAdhesionService.saveAdhesion(demandeadhesion);

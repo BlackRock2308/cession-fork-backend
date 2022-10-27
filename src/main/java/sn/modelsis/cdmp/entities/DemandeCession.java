@@ -17,24 +17,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "demandecession")
-public class DemandeCession implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long idDemande;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="pmeid")
-    private Pme pme;
+public class DemandeCession extends Demande{
 
     @Column(name = "datedemandecession")
     private Date dateDemandeCession;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="statutid")
-    private Statut statut;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="bonengagementid")
@@ -46,11 +32,5 @@ public class DemandeCession implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
     private Set<Observation> observations = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "demandeid", nullable = false)
-    private Demande demande;
-
-   /* @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
-    private Set<DemandeDocuments> documents = new HashSet<>();*/
 }
 
