@@ -1,9 +1,11 @@
 package sn.modelsis.cdmp.services.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
@@ -14,33 +16,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
+@AllArgsConstructor
 @Service
 public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     private final DemandeCessionRepository demandecessionRepository;
-
     private final BonEngagementRepository bonEngagementRepository;
-
-
     private final PmeRepository pmeRepository;
-
     private final StatutRepository statutRepository;
-
-
     private final ObservationRepository observationRepository;
 
-    public DemandeCessionServiceImpl(DemandeCessionRepository demandecessionRepository,
-                                     BonEngagementRepository bonEngagementRepository,
-                                     PmeRepository pmeRepository,
-                                     StatutRepository statutRepository,
-                                     ObservationRepository observationRepository) {
-        this.demandecessionRepository = demandecessionRepository;
-        this.bonEngagementRepository = bonEngagementRepository;
-        this.pmeRepository = pmeRepository;
-        this.statutRepository = statutRepository;
-        this.observationRepository = observationRepository;
-    }
 
     @Override
     @Transactional
@@ -64,7 +49,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public Optional<DemandeCession> getDemandeCession(Long id) {
         return demandecessionRepository.findById(id);
     }
-
 
     @Override
     @Transactional
@@ -146,10 +130,11 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
 
-    //Validation de la recevabilité de la demande de cession
-    @Override
-    @Transactional
-    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto) {
+    /**
+     This function is used inside validerRecevabilite and rejeterRecevabilite
+     to avoid boilerplate code inside those two functions
+     */
+    public DemandeCession getDemandeCessionDto(DemandeCessionDto demandecessionDto) {
         Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
         Pme pme = demandecession.getPme();
@@ -157,31 +142,30 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         observationRepository.save(observation);
         pmeRepository.save(pme);
         bonEngagementRepository.save(be);
-        demandecession.setStatut(statutRepository.findByLibelle(Statuts.RECEVABLE));
-        DemandeCession result=demandecessionRepository.save(demandecession);
-        return DtoConverter.convertToDto(result) ;
+        return demandecession;
     }
 
+    //Validation de la recevabilité de la demande de cession
+    @Override
+    @Transactional
+    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto) {
+
+        DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
+        demandeCession.setStatut(statutRepository.findByLibelle(Statuts.RECEVABLE));
+        DemandeCession result=demandecessionRepository.save(demandeCession);
+        return DtoConverter.convertToDto(result) ;
+    }
 
     //Rejet de la recevabilité de la demande de cession
     @Override
     @Transactional
     public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto) {
-        Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
-        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-        Pme pme = demandecession.getPme();
-        BonEngagement be = demandecession.getBonEngagement();
-        observationRepository.save(observation);
-        pmeRepository.save(pme);
-        bonEngagementRepository.save(be);
-        demandecession.setStatut(statutRepository.findByLibelle(Statuts.REJETEE));
-        DemandeCession result=demandecessionRepository.save(demandecession);
+        DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
+        demandeCession.setStatut(statutRepository.findByLibelle(Statuts.REJETEE));
+        DemandeCession result=demandecessionRepository.save(demandeCession);
         return DtoConverter.convertToDto(result) ;
+
     }
-
-
-
-
 
     @Override
     public Optional<DemandeCession> findById(Long id) {

@@ -30,10 +30,6 @@ public class PmeController {
   private final Logger log = LoggerFactory.getLogger(PmeController.class);
   @Autowired
   private PmeService pmeService;
-
-  @Autowired
-  private DemandeService demandeService;
-
   @Autowired
   private StatutService statutService;
 
@@ -48,7 +44,6 @@ public class PmeController {
     demande.setStatut(statut);
     Pme result = pmeService.save(pme);
     statutService.save(statut);
-    demandeService.saveAdhesion(demande);
     log.info("Pme created. Id:{} ", result.getIdPME());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
