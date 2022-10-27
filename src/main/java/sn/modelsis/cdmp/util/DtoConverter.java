@@ -13,7 +13,7 @@ public class DtoConverter {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 	}
 
-	public static AgentDto convertToDto(Agent agent) {
+	/*public static AgentDto convertToDto(Agent agent) {
 		AgentDto agentDto = null;
 		if (null != agent) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
@@ -29,6 +29,8 @@ public class DtoConverter {
 		}
 		return agent;
 	}
+
+	 */
 	
 	public static ConventionDto convertToDto(Convention convention) {
 	  ConventionDto conventionDto = null;
@@ -251,7 +253,7 @@ public class DtoConverter {
 		return paiement;
 	}
 
-	public static  RoleUtilisateurDto convertToDto(RoleUtilisateur roleUtilisateur) {
+	/*public static  RoleUtilisateurDto convertToDto(RoleUtilisateur roleUtilisateur) {
 		RoleUtilisateurDto roleUtilisateurDto = null;
 		if(null != roleUtilisateur) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
@@ -267,6 +269,8 @@ public class DtoConverter {
 		}
 		return roleUtilisateur;
 	}
+
+	 */
 
 	public static  RecevabiliteDto convertToRecevabiliteDto(DemandeCession demandeCession) {
 		RecevabiliteDto recevabiliteDto = null;
