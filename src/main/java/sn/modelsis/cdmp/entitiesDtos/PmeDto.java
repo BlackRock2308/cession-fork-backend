@@ -3,14 +3,10 @@ package sn.modelsis.cdmp.entitiesDtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.Utilisateur;
 
 import java.util.Date;
 import java.util.HashSet;
-
-import java.util.List;
-
 import java.util.Set;
 
 @Data
