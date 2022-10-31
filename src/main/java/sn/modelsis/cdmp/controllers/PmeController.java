@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.services.DemandeService;
@@ -44,6 +45,16 @@ public class PmeController {
   @PutMapping(value = "/{id}")
   public ResponseEntity<PmeDto> updatePme(@RequestBody PmeDto pmeDto, HttpServletRequest request) {
     Pme pme = DtoConverter.convertToEntity(pmeDto);
+    Pme result = pmeService.save(pme);
+    log.info("Pme updated. Id:{}", result.getIdPME());
+    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
+  }
+
+  @PatchMapping(value = "/{id}")
+  public ResponseEntity<PmeDto> patchPme(@PathVariable Long id,@RequestBody PmeDto pmeDto, HttpServletRequest request) {
+
+    Pme pme = DtoConverter.convertToEntity(pmeDto);
+    pme.setIdPME(id);
     Pme result = pmeService.save(pme);
     log.info("Pme updated. Id:{}", result.getIdPME());
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));

@@ -7,6 +7,7 @@ import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,9 +23,9 @@ public interface DemandeAdhesionService {
 
     DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto);
 
-    DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeadhesion);
+    DemandeAdhesion rejetAdhesion(Long id);
 
-    DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeahdesion);
+    DemandeAdhesion validerAdhesion(Long id);
 
 
 

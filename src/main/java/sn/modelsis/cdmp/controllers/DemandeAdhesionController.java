@@ -25,7 +25,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/demandeadhesion")
-public class DemandeAdhesionController {  private final Logger log = LoggerFactory.getLogger(DemandeAdhesionController.class);
+public class DemandeAdhesionController {
+
+    private final Logger log = LoggerFactory.getLogger(DemandeAdhesionController.class);
 
 
     @Autowired
@@ -41,15 +43,15 @@ public class DemandeAdhesionController {  private final Logger log = LoggerFacto
     }
 
     @PatchMapping(value ="/{id}/rejectadhesion")
-    public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto, HttpServletRequest request) {
-        DemandeAdhesionDto demandeadhesionDto1=demandeAdhesionService.rejetAdhesion(demandeadhesionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandeadhesionDto1);
+    public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@PathVariable Long id, HttpServletRequest request) {
+        DemandeAdhesion demandeadhesion=demandeAdhesionService.rejetAdhesion(id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeadhesion));
     }
 
     @PatchMapping(value = "/{id}/acceptadhesion")
-    public ResponseEntity<DemandeAdhesionDto> validerAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto, HttpServletRequest request) {
-        DemandeAdhesionDto demandeadhesionDto1=demandeAdhesionService.validerAdhesion(demandeadhesionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandeadhesionDto1);
+    public ResponseEntity<DemandeAdhesionDto> validerAdhesion(@PathVariable Long id, HttpServletRequest request) {
+        DemandeAdhesion demandeadhesion=demandeAdhesionService.validerAdhesion(id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeadhesion));
     }
 
     @GetMapping

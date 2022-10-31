@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import sn.modelsis.cdmp.entities.Utilisateur;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
