@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,13 +34,14 @@ public class Pme implements Serializable {
     @Column(name = "id")
     private Long idPME;
 
-    @Column(name = "rccm")
+    @NotNull
+    @Column(name = "rccm", unique = true)
     private String rccm;
     
     @Column(name = "adresse")
     private String adressePME;
     
-    @Column(name = "telephone")
+    @Column(name = "telephone", unique = true)
     private String telephonePME;
     
     @Column(name = "dateimmatriculation")
@@ -44,8 +49,9 @@ public class Pme implements Serializable {
     
     @Column(name = "centrefiscal")
     private String centreFiscal;
-    
-    @Column(name = "ninea")
+
+    @NotEmpty
+    @Column(name = "ninea", unique = true)
     private String ninea;
     
     @Column(name = "raisonsocial")
@@ -65,8 +71,9 @@ public class Pme implements Serializable {
     
     @Column(name = "formejuridique")
     private String formeJuridique;
-    
-    @Column(name = "email" ,nullable = false,unique = true)
+
+    @Email
+    @Column(name = "email", unique = true)
     private String email;
     
     @Column(name = "codepin")
@@ -120,7 +127,7 @@ public class Pme implements Serializable {
     @Column(name = "isactive")
     private Boolean isactive;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    @OneToMany(mappedBy = "idPme",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Demande> demandes = new HashSet<>();
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
