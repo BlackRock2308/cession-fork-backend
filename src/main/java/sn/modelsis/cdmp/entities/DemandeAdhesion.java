@@ -18,31 +18,10 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Table(name = "demandeadhesion")
-public class DemandeAdhesion implements Serializable {
-
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long idDemande;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="pmeid")
-    private Pme pme;
+public class DemandeAdhesion extends Demande {
 
     @Column(name = "datedemandeAdhesion")
     private Date dateDemandeAdhesion;
 
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="statutid")
-    private Statut statut;
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "demandeid", nullable = false)
-    private Demande demande;
-
-
-
-
 }
+

@@ -21,14 +21,13 @@ public class DemandeCessionController {
 
     private final Logger log = LoggerFactory.getLogger(DemandeCessionController.class);
 
-
     @Autowired
     private DemandeCessionService demandeCessionService;
 
 
     @PostMapping
     public ResponseEntity<DemandeCessionDto> addDemandeCession(@RequestBody DemandeCessionDto demandecessionDto,
-                                                        HttpServletRequest request) {
+                                                               HttpServletRequest request) {
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
 
         DemandeCession result = demandeCessionService.saveCession(demandecession);
@@ -38,7 +37,7 @@ public class DemandeCessionController {
 
     @PatchMapping(value ="/{id}/rejectcession")
     public ResponseEntity<DemandeCessionDto> rejeterCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-       // DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterCession(demandecessionDto);
+        // DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterCession(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 

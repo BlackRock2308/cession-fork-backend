@@ -11,27 +11,8 @@ import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 
 public interface DemandeService {
-  /**
-   *
-   * @param demande
-   * @return
-   */
-  Demande saveAdhesion(Demande demande);
 
-
-
-
-
-  /**
-   *
-   * @return
-   */
   List<Demande> findAll();
-
-  List<Demande> findAllDemandesAdhesion();
-
-
-  List<Demande> findAllNouvellesDemandes();
 
   List<Demande> findAllAnalyseRisque();
 
@@ -45,12 +26,6 @@ public interface DemandeService {
 
   List<Demande> findAllCreances();
 
-  //demandes relatives à une pme
-  List<Demande> findAllPMEDemandes();
-
-  List<Demande> findAllConventionsPME();
-
-  List<Demande> findAllPaiementsPME();
 
 
 

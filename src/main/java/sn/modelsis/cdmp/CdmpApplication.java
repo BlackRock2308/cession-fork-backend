@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
@@ -16,21 +17,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import sn.modelsis.cdmp.dbPersist.PersistStatus;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+
 /**
  * @author SNDIAGNEF
  *
  */
 
 @SpringBootApplication
-public class CdmpApplication implements InitializingBean {
+public class CdmpApplication implements InitializingBean, CommandLineRunner {
   
   private static final Logger log = LoggerFactory.getLogger(CdmpApplication.class);
   
   private final Environment env;
+
+  private final StatutRepository statutRepository;
   
-  public CdmpApplication(Environment env) {
+  public CdmpApplication(Environment env, StatutRepository statutRepository) {
     this.env = env;
-}
+      this.statutRepository = statutRepository;
+  }
 
   @Override
   public void afterPropertiesSet() throws Exception {
@@ -109,4 +116,13 @@ public class CdmpApplication implements InitializingBean {
 		return new CorsFilter(urlBasedCorsConfigurationSource);
 	}
 
+
+    @Override
+    public void run(String... args) throws Exception {
+        log.info("Initialisation des differents statuts...");
+
+        PersistStatus persistStatus=new PersistStatus(statutRepository);
+        log.info("Initialisation des differents statuts terminée");
+
+    }
 }

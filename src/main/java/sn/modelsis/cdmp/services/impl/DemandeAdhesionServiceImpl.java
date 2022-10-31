@@ -1,43 +1,56 @@
 package sn.modelsis.cdmp.services.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
+import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.DtoConverter;
+
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-
+@AllArgsConstructor
 @Service
 public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
+    private final DemandeAdhesionRepository demandeAdhesionRepository;
+    private final PmeRepository pmeRepository;
+    private final StatutRepository statutRepository;
 
-    @Autowired
-    private DemandeAdhesionRepository demandeAdhesionRepository;
-
-
-    @Autowired
-    private PmeRepository pmeRepository;
-    @Autowired
-    private StatutRepository statutRepository;
-
+    private  final DocumentService documentService;
 
     @Override
-        public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeadhesion) {
-        demandeadhesion.setDateDemandeAdhesion(new Date());
-        Statut statut=new Statut();
-        statut.setLibelle(Statuts.SOUMISE);
-        demandeadhesion.setStatut(statut);
-        statutRepository.save(statut);
-        return demandeAdhesionRepository.save(demandeadhesion);
+    public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+        DemandeAdhesion demandeAdhesion=DtoConverter.convertToEntity(demandeAdhesionDto);
+        pmeRepository.findById(demandeAdhesionDto.getPmeId()).ifPresentOrElse(
+                (value)
+                        -> {
+                    demandeAdhesion.setPme(value);
+                    demandeAdhesion.setDateDemandeAdhesion(new Date());
+                    Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_SOUMISE);
+                    demandeAdhesion.setStatut(statut);
+                },
+                ()
+                        -> {
+                    throw new CustomException("La PME n'existe pas");
+                }
+        );
+
+        return demandeAdhesionRepository.save(demandeAdhesion);
     }
 
-    @Override
-    @Transactional
-    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+    /**
+     This function is used inside rejetAdhesion and validerAdhesion
+     to avoid boilerplate code inside those two functions
+     */
+    public DemandeAdhesionDto getDemandeAdhesionDto(DemandeAdhesionDto demandeAdhesionDto) {
         Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
         DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
         Pme pme = demandeadhesion.getPme();
@@ -45,50 +58,38 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         statutRepository.save(statut);
         DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);
         return DtoConverter.convertToDto(result) ;
+    }
 
-
+    @Override
+    @Transactional
+    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+        return getDemandeAdhesionDto(demandeAdhesionDto);
     }
 
     @Override
     @Transactional
     public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
-        DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-        Pme pme = demandeAdhesion.getPme();
-        // pme.setHasninea(true);
-        pmeRepository.save(pme);
-        statutRepository.save(statut);
-        DemandeAdhesion result=demandeAdhesionRepository.save(demandeAdhesion);
-        return DtoConverter.convertToDto(result) ;
+        return getDemandeAdhesionDto(demandeAdhesionDto);
     }
-
-//    @Override
-//    @Transactional
-//    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-//        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
-//        DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-//        Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
-//        pmeRepository.save(pme);
-//        statutRepository.save(statut);
-//        DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);
-//        return DtoConverter.convertToDto(result) ;
-//    }
-
-//    @Override
-//    @Transactional
-//    public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-//        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
-//        DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-//        Pme pme = DtoConverter.convertToEntity(demandeAdhesionDto.getPme());
-//        // pme.setHasninea(true);
-//        pmeRepository.save(pme);
-//        statutRepository.save(statut);
-//        DemandeAdhesion result=demandeAdhesionRepository.save(demandeAdhesion);
-//        return DtoConverter.convertToDto(result) ;
-//    }
 
     @Override
     public List<DemandeAdhesion> findAll(){
         return demandeAdhesionRepository.findAll();
+    }
+
+    @Override
+    public Optional<DemandeAdhesion> upload(Long demandeId, MultipartFile file, TypeDocument type)
+            throws IOException {
+        Optional<DemandeAdhesion> demandeAdhesion = demandeAdhesionRepository.findById(demandeId);
+        if (demandeAdhesion.isPresent()) {
+
+            DemandeDocuments doc = (DemandeDocuments) documentService.upload(file, demandeId,
+                    DemandeDocuments.PROVENANCE, type);
+            demandeAdhesion.get().getDocuments().add(doc);
+
+            return Optional.of(demandeAdhesionRepository.save(demandeAdhesion.get()));
+
+        }
+        return demandeAdhesion;
     }
 }

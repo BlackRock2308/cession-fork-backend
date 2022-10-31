@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.TypePaiement;
+import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.entities.Paiement;
@@ -26,13 +27,13 @@ public class PaiementController {
     @Autowired
     private DemandeCessionService demandeCessionService;
 
-    @PostMapping(value = "{id}")
-    public ResponseEntity<PaiementDto> addPaiement(@PathVariable Long id, HttpServletRequest request){
+    @PostMapping
+    public ResponseEntity<Paiement> addPaiement(@RequestBody PaiementDto paiementDto, HttpServletRequest request){
      //Paiement paiement = DtoConverter.convertToEntity(paiementDto);
-        log.info("Demande Id:{} ", id);
-        Paiement result = paiementService.save(id,0, TypePaiement.CDMP_PME);
+        //log.info("Demande Id:{} ", id);
+        Paiement result = paiementService.save(paiementDto,0, TypePaiement.CDMP_PME);
         log.info("Paiement created. Id:{} ", result.getIdPaiement());
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
 
     }
 
