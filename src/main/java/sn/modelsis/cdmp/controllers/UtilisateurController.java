@@ -2,7 +2,6 @@ package sn.modelsis.cdmp.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
@@ -20,7 +18,6 @@ import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 import sn.modelsis.cdmp.security.dto.AuthentificationResponseDto;
-import sn.modelsis.cdmp.security.dto.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.security.service.UtilisateurDetailService;
 import sn.modelsis.cdmp.security.utils.JWTUtility;
 import sn.modelsis.cdmp.services.PmeService;
@@ -32,10 +29,12 @@ import sn.modelsis.cdmp.util.Util;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
-/**
+/**@
  * REST controller for managing {@link Utilisateur}.
  */
 @RestController
@@ -58,11 +57,6 @@ public class UtilisateurController {
     final private PmeService  pmeService;
 
     final private RestTemplateUtil restTemplateUtil ;
-
-    @Value("${server.notification}")
-    private String HOST_NOTIFICATION ;
-
-    final private String baseUrl ="/api/notification/v1/messages";
 
     final   private AuthenticationManager authenticationManager;
 
