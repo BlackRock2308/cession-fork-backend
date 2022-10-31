@@ -41,7 +41,7 @@ public class Utilisateur implements Serializable {
    @Column(name="telephone")
    private String telephone;
 
-   @Column(name="email")
+   @Column(name="email",nullable = false,unique = true)
    private String email;
 
    @Column(name="password")
@@ -59,5 +59,4 @@ public class Utilisateur implements Serializable {
    @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private Set<Convention> conventions = new HashSet<>();
 
-   
 }

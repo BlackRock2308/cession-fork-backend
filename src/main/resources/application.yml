@@ -1,6 +1,7 @@
 server:
   port: 8081
   document_folder: ${DOCUMENT_FOLDER:C:\Users\snndiayeos\Desktop\Wootoo\DocumentLibrary}
+  notification: ${HOST:http://localhost:8087}
 spring:
   sql:
     init:
@@ -9,9 +10,15 @@ spring:
   application:
     name: Cession creance
   datasource:
+<<<<<<< HEAD
     password: diarra2020
     url: jdbc:postgresql://localhost:5432/cdmp
     username: postgres
+=======
+    password: passer123
+    url: jdbc:postgresql://localhost:5433/cdmp
+    username: adel
+>>>>>>> 39dd848e3abfe21c7e438d82942c121ac735d085
   jpa:
     hibernate:
       ddl-auto: create-drop
