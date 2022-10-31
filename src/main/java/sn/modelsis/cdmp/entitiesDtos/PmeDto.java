@@ -35,5 +35,5 @@ public class PmeDto {
     private String urlImageProfile;
     private String urlImageSignature;
     //private Set<DemandeDto> demandes;
-    private Set<DocumentDto> documents = new HashSet<>();
+    //private Set<DocumentDto> documents = new HashSet<>();
 }
