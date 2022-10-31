@@ -14,6 +14,7 @@ import java.util.Set;
 @ToString
 public class DemandeAdhesionDto {
 
+    private Long id;
     private String ninea;
     private String rccm;
     private Date dateDemandeAdhesion;

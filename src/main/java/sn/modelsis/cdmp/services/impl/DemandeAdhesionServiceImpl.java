@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
@@ -50,26 +51,24 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
      This function is used inside rejetAdhesion and validerAdhesion
      to avoid boilerplate code inside those two functions
      */
-    public DemandeAdhesionDto getDemandeAdhesionDto(DemandeAdhesionDto demandeAdhesionDto) {
-        Statut statut = DtoConverter.convertToEntity(demandeAdhesionDto.getStatut());
-        DemandeAdhesion demandeadhesion = DtoConverter.convertToEntity(demandeAdhesionDto);
-        Pme pme = demandeadhesion.getPme();
-        pmeRepository.save(pme);
-        statutRepository.save(statut);
-        DemandeAdhesion result=demandeAdhesionRepository.save(demandeadhesion);
-        return DtoConverter.convertToDto(result) ;
+
+    @Override
+    @Transactional
+    public DemandeAdhesion rejetAdhesion(Long id) {
+        Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_REJETEE);
+        DemandeAdhesion demandeAdhesion=demandeAdhesionRepository.findById(id).orElseThrow();
+        demandeAdhesion.setStatut(statut);
+        return demandeAdhesionRepository.save(demandeAdhesion);
     }
 
     @Override
     @Transactional
-    public DemandeAdhesionDto rejetAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-        return getDemandeAdhesionDto(demandeAdhesionDto);
-    }
+    public DemandeAdhesion validerAdhesion(Long id) {
 
-    @Override
-    @Transactional
-    public DemandeAdhesionDto validerAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-        return getDemandeAdhesionDto(demandeAdhesionDto);
+        Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_ACCEPTEE);
+        DemandeAdhesion demandeAdhesion=demandeAdhesionRepository.findById(id).orElseThrow();
+        demandeAdhesion.setStatut(statut);
+        return demandeAdhesionRepository.save(demandeAdhesion);
     }
 
     @Override

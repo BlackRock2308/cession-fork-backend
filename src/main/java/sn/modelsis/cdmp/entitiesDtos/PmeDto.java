@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import sn.modelsis.cdmp.entities.Demande;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -34,6 +35,8 @@ public class PmeDto {
     private  int codePin;
     private String urlImageProfile;
     private String urlImageSignature;
+    private Boolean hasninea;
+    private Boolean isactive;
     //private Set<DemandeDto> demandes;
     //private Set<DocumentDto> documents = new HashSet<>();
 }
