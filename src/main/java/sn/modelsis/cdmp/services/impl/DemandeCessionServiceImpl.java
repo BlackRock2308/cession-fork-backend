@@ -30,8 +30,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     @Transactional
     public DemandeCession saveCession(DemandeCession demandecession) {
-        BonEngagement be = demandecession.getBonEngagement();
-        bonEngagementRepository.save(be);
+        //BonEngagement be = demandecession.getBonEngagement();
+        //bonEngagementRepository.save(be);
         demandecession.setDateDemandeCession(new Date());
         Statut statut=new Statut();
         statut.setLibelle(Statuts.SOUMISE);
@@ -68,13 +68,13 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public DemandeCessionDto validerCession(DemandeCessionDto demandecessionDto) {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-        BonEngagement bonEngagement = DtoConverter.convertToEntity(demandecessionDto.getBonEngagement());
+        //BonEngagement bonEngagement = DtoConverter.convertToEntity(demandecessionDto.getBonEngagement());
         Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
         Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
         // pme.setHasninea(true);
         pmeRepository.save(pme);
         statutRepository.save(statut);
-        bonEngagementRepository.save(bonEngagement);
+        //bonEngagementRepository.save(bonEngagement);
         observationRepository.save(observation);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;

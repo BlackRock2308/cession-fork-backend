@@ -137,6 +137,7 @@ public class DtoConverter {
 		DemandeCession demandecession = null;
 		if(null != demandecessionDto) {
 			demandecession = modelMapper.map(demandecessionDto, DemandeCession.class);
+			demandecession.setBonEngagementId(demandecessionDto.getBonEngagementId());
 		}
 		return demandecession;
 	}
@@ -145,6 +146,7 @@ public class DtoConverter {
 		DemandeCessionDto demandecessionDto = null;
 		if(null != demandecession) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+
 			demandecessionDto = modelMapper.map(demandecession, DemandeCessionDto.class);
 		}
 		return demandecessionDto;
