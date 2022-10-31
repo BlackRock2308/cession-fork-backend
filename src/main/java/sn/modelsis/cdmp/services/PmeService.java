@@ -24,6 +24,11 @@ public interface PmeService {
     List<Pme> findAll();
 
     /**
+     * @return
+     */
+    Pme findPmeByEmail(String email);
+
+    /**
      * @param id
      * @return
      */
