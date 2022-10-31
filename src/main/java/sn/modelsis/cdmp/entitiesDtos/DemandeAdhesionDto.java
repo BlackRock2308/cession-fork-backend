@@ -14,13 +14,14 @@ import java.util.Set;
 @ToString
 public class DemandeAdhesionDto {
 
+    private Long id;
     private String ninea;
     private String rccm;
     private Date dateDemandeAdhesion;
     private StatutDto statut;
     private Set<DocumentDto> documents = new HashSet<>();
 
-    private PmeDto pme;
+    private Long pmeId;
     //private Set<ObservationDto> observations = new HashSet<>();
     //
 

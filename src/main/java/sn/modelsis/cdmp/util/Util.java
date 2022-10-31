@@ -11,6 +11,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.core.io.ClassPathResource;
@@ -18,6 +19,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +29,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Service
 public class Util {
 
   public Util() {
@@ -204,6 +207,17 @@ public class Util {
   public Resource getResource(String fileName) {
     ClassLoader classLoader = getClass().getClassLoader();
     return new ClassPathResource(fileName, classLoader);
+  }
+
+
+  public  String generateRandomPassword(int len) {
+    String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi"
+            +"jklmnopqrstuvwxyz!@#$%&";
+    Random rnd = new Random();
+    StringBuilder sb = new StringBuilder(len);
+    for (int i = 0; i < len; i++)
+      sb.append(chars.charAt(rnd.nextInt(chars.length())));
+    return sb.toString();
   }
 
 }

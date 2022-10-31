@@ -53,6 +53,11 @@ public class PmeServiceImpl implements PmeService {
   }
 
   @Override
+  public Pme findPmeByEmail(String email) {
+    return pmeRepository.findPmeByEmail(email);
+  }
+
+  @Override
   public Optional<Pme> getPme(Long id) {
     return pmeRepository.findById(id);
   }
