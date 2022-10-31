@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.PaiementService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Service
 public class PaiementServiceImpl implements PaiementService {
@@ -39,19 +41,21 @@ public class PaiementServiceImpl implements PaiementService {
 
 
     @Override
-    public Paiement save(Long idDemande,double montant,TypePaiement typePaiement) {
+    public Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement) {
 
 
         //log.info("Demande:{} ",demande.isPresent());
         Paiement paiement=new Paiement();
 
+        if (paiementRepository.findAll().stream().filter(result -> paiementDto.getDemandecessionid()==result.getDemandeCession().getIdDemande())!=null){
+            throw new CustomException("Paiement for this demande Already exist");
+        }
 
-        demandeCessionRepository.findById(idDemande).ifPresentOrElse(
+
+        demandeCessionRepository.findById(paiementDto.getDemandecessionid()).ifPresentOrElse(
                 (value)
                         -> {
-                    if (paiement.getDemandeCession()!=null){
-                        throw new CustomException("Paiement for this demande Already exist");
-                    }
+
                     paiement.setDemandeCession(value);
                     log.info("Paiement:{} ",paiement.getDemandeCession().getIdDemande());
 
@@ -76,12 +80,15 @@ public class PaiementServiceImpl implements PaiementService {
                     }
 
                                        else {
-                        log.error("Un paiement ne peut être effectué à cet étape.");
+                        throw new CustomException("Un paiement ne peut être effectué à cet étape.");
                     }
 
                 },
                 ()
-                        -> { log.error("la demande n'existe pas"); }
+                        -> {
+                    throw new CustomException("la demande n'existe pas");
+                }
+
         );
         /*
 
