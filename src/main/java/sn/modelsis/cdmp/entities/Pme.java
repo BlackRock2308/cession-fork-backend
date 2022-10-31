@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,13 +31,14 @@ public class Pme implements Serializable {
     @Column(name = "id")
     private Long idPME;
 
-    @Column(name = "rccm")
+    @Column(name = "rccm", unique = true)
+    @NotBlank
     private String rccm;
     
     @Column(name = "adresse")
     private String adressePME;
     
-    @Column(name = "telephone")
+    @Column(name = "telephone", unique = true)
     private String telephonePME;
     
     @Column(name = "dateimmatriculation")
@@ -45,7 +47,8 @@ public class Pme implements Serializable {
     @Column(name = "centrefiscal")
     private String centreFiscal;
     
-    @Column(name = "ninea")
+    @Column(name = "ninea", unique = true)
+    @NotBlank
     private String ninea;
     
     @Column(name = "raisonsocial")
@@ -66,7 +69,7 @@ public class Pme implements Serializable {
     @Column(name = "formejuridique")
     private String formeJuridique;
     
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
     
     @Column(name = "codepin")
@@ -125,9 +128,5 @@ public class Pme implements Serializable {
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<PMEDocuments> documents = new HashSet<>();
-
-
-
-
 
 }
