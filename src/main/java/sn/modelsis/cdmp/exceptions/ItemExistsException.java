@@ -9,6 +9,7 @@ public class ItemExistsException extends RuntimeException {
 
     public static final String DEFAUL_MESSAGE="Un des éléments que vous tentez d'jouter existe déjà ";
     public static final String NINEA_PME_EXIST="Le Ninea  %s  existe déjà ";
+    public static final String RCCM_EXIST="Le RCCM  %s  existe déjà ";
     public static final String BONENGAGEMENT_EXISTS="Le Bon d'engagement  %s  existe déjà ";
     public static final String MAIL_EXISTS="Le mail  %s  existe déjà ";
     public static final String DEMANDE_ADHESION_EXISTS="La demande d'adhesion  %s  existe déjà ";
