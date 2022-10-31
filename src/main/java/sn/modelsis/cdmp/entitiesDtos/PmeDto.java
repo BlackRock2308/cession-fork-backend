@@ -34,6 +34,8 @@ public class PmeDto {
   private String urlImageSignature;
   private Set<DocumentDto> documents = new HashSet<>();
   private Utilisateur utilisateur;
+  private Boolean hasninea;
+  private Boolean isactive;
 
 }
 
