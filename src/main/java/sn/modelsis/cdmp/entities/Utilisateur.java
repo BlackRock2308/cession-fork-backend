@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Utilisateur implements Serializable {
 
-    @Id
+   @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    @Column(name = "idutilisateur")
    private Long idUtilisateur;
@@ -51,9 +51,12 @@ public class Utilisateur implements Serializable {
    private String urlImageProfil;
 
    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "libelle")
    private Set<Role> roles ;
 
-   // private Set<RoleUtilisateur> rolesUtilisateurs = new HashSet<>();
+   @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   private Set<Observation> observations = new HashSet<>();
+
+   @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   private Set<Convention> conventions = new HashSet<>();
 
 }

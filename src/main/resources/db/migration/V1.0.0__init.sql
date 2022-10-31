@@ -76,7 +76,7 @@ CREATE TABLE public.utilisateur (
     codepin character varying(250),
     prenom character varying(250),
     nom character varying(250),
-    motdepasse character varying(250),
+    password character varying(250),
     urlimagesignature character varying(250),
     telephone character varying(50),
     urlimageprofil character varying(250),
@@ -85,10 +85,10 @@ CREATE TABLE public.utilisateur (
 
 );
 
-CREATE TABLE public.role_utilisateur(
+CREATE TABLE public.utilisateur_roles(
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    roleid bigint,
-    utilisateurid bigint
+    roles_id bigint,
+    Utilisateur_idutilisateur bigint
 );
 
 CREATE TABLE public.bonengagement (
@@ -126,7 +126,7 @@ CREATE TABLE public.convention (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     dateconvention timestamp without time zone,
     decote FLOAT(40),
-    modepaiement character varying(50), 
+    modepaiement character varying(50),
     agentid bigint,
     pmeid bigint ,
     urlimagesignaturedg character varying (250),
@@ -227,7 +227,7 @@ CREATE TABLE public.agent (
     nom character varying(50),
     adresse character varying(100),
     telephone character varying(50),
-    codepin integer,
+    codepin character varying(250),
     urlimageprofil character varying(250),
     email character varying(50),
     urlimagesignature character varying(250)
@@ -242,7 +242,7 @@ CREATE TABLE public.document (
     date_sauvegarde timestamp without time zone,
     nom character varying(255),
     id_provenance bigint,
-    provenance character varying(50),    
+    provenance character varying(50),
     url_file character varying(255),
     typeDocument character varying(50) NOT NULL
 );
@@ -250,6 +250,11 @@ CREATE TABLE public.document (
 --
 -- Name: agent agent_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
+ALTER TABLE ONLY public.utilisateur
+    ADD CONSTRAINT utilisateur_pkey PRIMARY KEY (idutilisateur);
+
+ALTER TABLE ONLY public.role
+    ADD CONSTRAINT role_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.agent
     ADD CONSTRAINT agent_pkey PRIMARY KEY (id);
@@ -275,7 +280,7 @@ ALTER TABLE ONLY public.parametrage
 
 ALTER TABLE ONLY public.statut
     ADD CONSTRAINT statut_pkey PRIMARY KEY (id);
-    
+
 --
 -- Name: document document_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
@@ -344,7 +349,7 @@ ALTER TABLE ONLY public.demandeadhesion
 
 ALTER TABLE ONLY public.demandecession
     ADD CONSTRAINT fk_demande_pme FOREIGN KEY (pmeid) REFERENCES public.pme(id);
-    
+
 --
 -- Name: pme fk_pme_agent; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
@@ -428,6 +433,16 @@ ALTER TABLE ONLY public.observation
 
 ALTER TABLE ONLY public.observation
     ADD CONSTRAINT fk_observation_demandecession FOREIGN KEY (demandeid) REFERENCES public.demandecession(id);
+
+
+
+ALTER TABLE ONLY public.utilisateur_roles
+    ADD CONSTRAINT fk_utilisateur_roles_utilisateur FOREIGN KEY (Utilisateur_idutilisateur) REFERENCES public.utilisateur(idutilisateur);
+
+
+
+ALTER TABLE ONLY public.utilisateur_roles
+    ADD CONSTRAINT fk_utilisateur_roles_role FOREIGN KEY (roles_id) REFERENCES public.role(id);
 
 
 
