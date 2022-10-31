@@ -120,7 +120,7 @@ public class Pme implements Serializable {
     @Column(name = "isactive")
     private Boolean isactive;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    @OneToMany(mappedBy = "idPme",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Demande> demandes = new HashSet<>();
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")

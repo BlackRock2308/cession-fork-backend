@@ -55,9 +55,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto) {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-        Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
+       // Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
         //pme.setHasninea(false);
-        pmeRepository.save(pme);
+        //pmeRepository.save(pme);
         statutRepository.save(statut);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
@@ -69,10 +69,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
         BonEngagement bonEngagement = DtoConverter.convertToEntity(demandecessionDto.getBonEngagement());
-        Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
+       // Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
         Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
         // pme.setHasninea(true);
-        pmeRepository.save(pme);
+       // pmeRepository.save(pme);
         statutRepository.save(statut);
         bonEngagementRepository.save(bonEngagement);
         observationRepository.save(observation);

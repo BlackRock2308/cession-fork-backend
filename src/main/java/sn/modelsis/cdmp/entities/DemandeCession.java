@@ -22,8 +22,6 @@ public class DemandeCession extends Demande{
     @Column(name = "datedemandecession")
     private Date dateDemandeCession;
 
-
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="bonengagement_id")
     private BonEngagement bonEngagement;

@@ -31,8 +31,11 @@ public class Demande implements Serializable {
     @Column(name = "id")
     private Long idDemande;
 
+    @Column(nullable = true)
+    private Long idPme;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="pmeid")
+    @JoinColumn(name="pme_id")
     private Pme pme;
 
     @ManyToOne(fetch = FetchType.EAGER)
