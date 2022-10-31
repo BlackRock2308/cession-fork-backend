@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +34,8 @@ public class Pme implements Serializable {
     @Column(name = "id")
     private Long idPME;
 
+    @NotNull
     @Column(name = "rccm", unique = true)
-    @NotBlank
     private String rccm;
     
     @Column(name = "adresse")
@@ -46,9 +49,9 @@ public class Pme implements Serializable {
     
     @Column(name = "centrefiscal")
     private String centreFiscal;
-    
+
+    @NotEmpty
     @Column(name = "ninea", unique = true)
-    @NotBlank
     private String ninea;
     
     @Column(name = "raisonsocial")
@@ -68,7 +71,8 @@ public class Pme implements Serializable {
     
     @Column(name = "formejuridique")
     private String formeJuridique;
-    
+
+    @Email
     @Column(name = "email", unique = true)
     private String email;
     
