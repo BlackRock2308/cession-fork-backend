@@ -24,18 +24,10 @@ public class PmeServiceImpl implements PmeService {
   private PmeRepository pmeRepository;
 
   @Autowired
-  private PmeRepository statutRepository;
-
-  @Autowired
-  private PmeRepository demandeRepository;
-  
-  @Autowired
   private DocumentService documentService;
 
   @Override
   public Pme save(Pme pme) {
-
-
     return  pmeRepository.save(pme);
   }
 
@@ -43,6 +35,11 @@ public class PmeServiceImpl implements PmeService {
   @Override
   public List<Pme> findAll() {
     return pmeRepository.findAll();
+  }
+
+  @Override
+  public Pme findPmeByEmail(String email) {
+    return pmeRepository.findPmeByEmail(email);
   }
 
   @Override

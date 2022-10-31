@@ -1,6 +1,8 @@
 package sn.modelsis.cdmp.services;
 
 import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 
 import java.util.List;
 
@@ -43,5 +45,13 @@ public interface UtilisateurService {
      */
 
     void delete(Long utilisateurId);
+
+    /**
+     ** cette methode permet creer un utilisateur pour un pme.
+     * @Param creationComptePmeDto
+     * @return   creationComptePmeDto
+     */
+
+    PmeDto createComptePme(CreationComptePmeDto creationComptePmeDto) throws Exception;
 
 }

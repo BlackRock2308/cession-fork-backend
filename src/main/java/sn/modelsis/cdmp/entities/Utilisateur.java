@@ -41,7 +41,7 @@ public class Utilisateur implements Serializable {
    @Column(name="telephone")
    private String telephone;
 
-   @Column(name="email")
+   @Column(name="email",nullable = false,unique = true)
    private String email;
 
    @Column(name="password")
@@ -56,5 +56,4 @@ public class Utilisateur implements Serializable {
 
    // private Set<RoleUtilisateur> rolesUtilisateurs = new HashSet<>();
 
-   
 }

@@ -2,6 +2,7 @@ package sn.modelsis.cdmp.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,21 +11,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 import sn.modelsis.cdmp.security.dto.AuthentificationResponseDto;
+import sn.modelsis.cdmp.security.dto.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.security.service.UtilisateurDetailService;
 import sn.modelsis.cdmp.security.utils.JWTUtility;
+import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.RestTemplateUtil;
+import sn.modelsis.cdmp.util.Util;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -43,8 +51,18 @@ public class UtilisateurController {
 
     final   private JWTUtility jwtUtility;
 
+    final   private Util util;
+
     final private UtilisateurDetailService utilisateurDetailService;
 
+    final private PmeService  pmeService;
+
+    final private RestTemplateUtil restTemplateUtil ;
+
+    @Value("${server.notification}")
+    private String HOST_NOTIFICATION ;
+
+    final private String baseUrl ="/api/notification/v1/messages";
 
     final   private AuthenticationManager authenticationManager;
 
@@ -53,10 +71,13 @@ public class UtilisateurController {
 
     final private UtilisateurService utilisateurService ;
 
-    public UtilisateurController(RoleRepository roleRepository, JWTUtility jwtUtility, UtilisateurDetailService utilisateurDetailService, AuthenticationManager authenticationManager, UtilisateurService utilisateurService) {
+    public UtilisateurController(RoleRepository roleRepository, JWTUtility jwtUtility, Util util, UtilisateurDetailService utilisateurDetailService, PmeService pmeService, RestTemplateUtil restTemplateUtil, AuthenticationManager authenticationManager, UtilisateurService utilisateurService) {
         this.roleRepository = roleRepository;
         this.jwtUtility = jwtUtility;
+        this.util = util;
         this.utilisateurDetailService = utilisateurDetailService;
+        this.pmeService = pmeService;
+        this.restTemplateUtil = restTemplateUtil;
         this.authenticationManager = authenticationManager;
         this.utilisateurService = utilisateurService;
     }
@@ -127,7 +148,7 @@ public class UtilisateurController {
         if (utilisateurDto.getIdUtilisateur() != null) {
             throw new Exception("A new utilisateur cannot already have an ID  exists");
         }
-        var listeRole = utilisateurDto.getRoles() ;
+        Set<Role> listeRole = utilisateurDto.getRoles( ) ;
 
         listeRole.forEach(role -> {
             listeRole.add(roleRepository.save(role));
@@ -138,6 +159,20 @@ public class UtilisateurController {
         return ResponseEntity
                 .created(new URI("/api/utilisateurs/" + result.getIdUtilisateur()))
                 .body(DtoConverter.convertToDto(result));
+    }
+
+    /**
+     * {@code POST  /utilisateurs} : Create a new utilisateur.
+     *
+     * @param *utilisateurDto the utilisateur to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new utilisateur, or with status {@code 400 (Bad Request)} if the utilisateur has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+
+    @PostMapping("/pme/createCompte")
+    public ResponseEntity<PmeDto> createComptePme(@Valid @RequestBody CreationComptePmeDto creationComptePmeDto) throws Exception {
+
+        return ResponseEntity.ok().body(utilisateurService.createComptePme(creationComptePmeDto)) ;
     }
 
     /**

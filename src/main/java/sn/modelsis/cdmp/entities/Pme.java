@@ -5,15 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -74,7 +66,7 @@ public class Pme implements Serializable {
     @Column(name = "formejuridique")
     private String formeJuridique;
     
-    @Column(name = "email")
+    @Column(name = "email" ,nullable = false,unique = true)
     private String email;
     
     @Column(name = "codepin")
@@ -134,7 +126,8 @@ public class Pme implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<PMEDocuments> documents = new HashSet<>();
 
-
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Utilisateur utilisateur ;
 
 
 

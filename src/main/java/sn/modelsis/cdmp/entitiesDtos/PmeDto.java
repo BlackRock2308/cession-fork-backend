@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import sn.modelsis.cdmp.entities.Demande;
+import sn.modelsis.cdmp.entities.Utilisateur;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -36,4 +37,5 @@ public class PmeDto {
     private String urlImageSignature;
     //private Set<DemandeDto> demandes;
     private Set<DocumentDto> documents = new HashSet<>();
+    private Utilisateur utilisateur ;
 }
