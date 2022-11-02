@@ -1,17 +1,15 @@
 package sn.modelsis.cdmp.services.impl;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +28,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     @Transactional
     public DemandeCession saveCession(DemandeCession demandecession) {
-        BonEngagement be = demandecession.getBonEngagement();
-        bonEngagementRepository.save(be);
+        //BonEngagement be = demandecession.getBonEngagement();
+        //bonEngagementRepository.save(be);
         demandecession.setDateDemandeCession(new Date());
         Statut statut=new Statut();
         statut.setLibelle(Statuts.SOUMISE);
@@ -55,9 +53,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto) {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-        Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
+       // Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
         //pme.setHasninea(false);
-        pmeRepository.save(pme);
+        //pmeRepository.save(pme);
         statutRepository.save(statut);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
@@ -69,10 +67,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
         BonEngagement bonEngagement = DtoConverter.convertToEntity(demandecessionDto.getBonEngagement());
-        Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
+       // Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
         Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
         // pme.setHasninea(true);
-        pmeRepository.save(pme);
+       // pmeRepository.save(pme);
         statutRepository.save(statut);
         bonEngagementRepository.save(bonEngagement);
         observationRepository.save(observation);

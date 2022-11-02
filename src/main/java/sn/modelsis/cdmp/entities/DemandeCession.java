@@ -1,6 +1,5 @@
 package sn.modelsis.cdmp.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,7 @@ public class DemandeCession extends Demande{
     private Date dateDemandeCession;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="bonengagementid")
+    @JoinColumn(name="bonengagement_id")
     private BonEngagement bonEngagement;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandeCession")

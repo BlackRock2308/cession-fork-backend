@@ -1,31 +1,28 @@
 package sn.modelsis.cdmp.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/demandecession")
 public class DemandeCessionController {
 
     private final Logger log = LoggerFactory.getLogger(DemandeCessionController.class);
-
-    @Autowired
-    private DemandeCessionService demandeCessionService;
-
+    private final DemandeCessionService demandeCessionService;
 
     @PostMapping
     public ResponseEntity<DemandeCessionDto> addDemandeCession(@RequestBody DemandeCessionDto demandecessionDto,

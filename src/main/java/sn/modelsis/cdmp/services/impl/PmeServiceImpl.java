@@ -6,10 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.exceptions.ItemExistsException;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -22,12 +24,6 @@ public class PmeServiceImpl implements PmeService {
 
   @Autowired
   private PmeRepository pmeRepository;
-
-  @Autowired
-  private PmeRepository statutRepository;
-
-  @Autowired
-  private PmeRepository demandeRepository;
   
   @Autowired
   private DocumentService documentService;
@@ -35,6 +31,17 @@ public class PmeServiceImpl implements PmeService {
   @Override
   public Pme save(Pme pme) {
 
+    Optional<Pme> optional = pmeRepository.findByNinea(pme.getNinea());
+    ExceptionUtils.absentOrThrow(optional, ItemExistsException.NINEA_PME_EXIST, pme.getNinea());
+
+    optional = pmeRepository.findByRccm(pme.getRccm());
+    ExceptionUtils.absentOrThrow(optional, ItemExistsException.RCCM_EXIST, pme.getRccm());
+
+//    optional = pmeRepository.findByMail(pme.getEmail());
+//    ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
+
+    optional = pmeRepository.findByPhone(pme.getTelephonePME());
+    ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
 
     return  pmeRepository.save(pme);
   }
@@ -43,6 +50,11 @@ public class PmeServiceImpl implements PmeService {
   @Override
   public List<Pme> findAll() {
     return pmeRepository.findAll();
+  }
+
+  @Override
+  public Pme findPmeByEmail(String email) {
+    return pmeRepository.findByMail(email);
   }
 
   @Override

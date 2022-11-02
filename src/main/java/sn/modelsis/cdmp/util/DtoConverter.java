@@ -145,6 +145,7 @@ public class DtoConverter {
 		DemandeCessionDto demandecessionDto = null;
 		if(null != demandecession) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+
 			demandecessionDto = modelMapper.map(demandecession, DemandeCessionDto.class);
 		}
 		return demandecessionDto;
@@ -172,6 +173,7 @@ public class DtoConverter {
 			//convert les attributs ambigues
 			demandeadhesionDto.setNinea(demandeadhesion.getPme().getNinea());
 			demandeadhesionDto.setRccm(demandeadhesion.getPme().getRccm());
+			demandeadhesionDto.setPmeId(demandeadhesion.getPme().getIdPME());
 		}
 		return demandeadhesionDto;
 	}

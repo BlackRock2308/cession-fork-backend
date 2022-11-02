@@ -35,6 +35,8 @@ public class SecurityConfig {
         .authorizeRequests()
         .antMatchers("/api/**" )
         .permitAll()
+        .antMatchers("/swagger-ui/**" )
+        .permitAll()
        // .antMatchers("/api/utilisateur/update", "/api/utilisateur/getAll")
        // .hasAnyAuthority("admin")
         .anyRequest()
