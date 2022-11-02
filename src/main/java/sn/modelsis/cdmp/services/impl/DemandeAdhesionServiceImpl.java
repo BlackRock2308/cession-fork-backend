@@ -8,10 +8,13 @@ import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.exceptions.ItemExistsException;
+import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -30,7 +33,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     @Override
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
         DemandeAdhesion demandeAdhesion=DtoConverter.convertToEntity(demandeAdhesionDto);
-        pmeRepository.findById(demandeAdhesionDto.getPmeId()).ifPresentOrElse(
+        pmeRepository.findById(demandeAdhesionDto.getIdPME()).ifPresentOrElse(
                 (value)
                         -> {
                     demandeAdhesion.setPme(value);
@@ -74,6 +77,13 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     @Override
     public List<DemandeAdhesion> findAll(){
         return demandeAdhesionRepository.findAll();
+    }
+
+    @Override
+    public Optional<DemandeAdhesion> findById(Long id) {
+        Optional <DemandeAdhesion> optional = demandeAdhesionRepository.findById(id);
+        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_ADHESION_ID, id.toString());
+        return optional;
     }
 
     @Override

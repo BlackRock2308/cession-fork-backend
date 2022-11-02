@@ -3,18 +3,17 @@ package sn.modelsis.cdmp.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeAdhesion;
-import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
-import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import javax.servlet.http.HttpServletRequest;
@@ -25,13 +24,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/demandeadhesion")
+@RequiredArgsConstructor
 public class DemandeAdhesionController {
 
     private final Logger log = LoggerFactory.getLogger(DemandeAdhesionController.class);
-
-
-    @Autowired
-    private DemandeAdhesionService demandeAdhesionService;
+    private final DemandeAdhesionService demandeAdhesionService;
 
     @PostMapping
     public ResponseEntity<DemandeAdhesionDto> addDemandeAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto,
@@ -42,18 +39,6 @@ public class DemandeAdhesionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
-    @PatchMapping(value ="/{id}/rejectadhesion")
-    public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@PathVariable Long id, HttpServletRequest request) {
-        DemandeAdhesion demandeadhesion=demandeAdhesionService.rejetAdhesion(id);
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeadhesion));
-    }
-
-    @PatchMapping(value = "/{id}/acceptadhesion")
-    public ResponseEntity<DemandeAdhesionDto> validerAdhesion(@PathVariable Long id, HttpServletRequest request) {
-        DemandeAdhesion demandeadhesion=demandeAdhesionService.validerAdhesion(id);
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeadhesion));
-    }
-
     @GetMapping
     public ResponseEntity<List<DemandeAdhesionDto>> getAllDemandeAdhesion(HttpServletRequest request) {
         List<DemandeAdhesion> demandeList = demandeAdhesionService.findAll();
@@ -61,6 +46,28 @@ public class DemandeAdhesionController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
     }
+/** On pourra effectuer cette operation dans le controller de la Demande**/
+//    @GetMapping(value = "/{id}")
+//    public Optional<DemandeAdhesion> getDemandeAdhesion(@PathVariable Long id, HttpServletRequest request) {
+//        Optional<DemandeAdhesion> demande = demandeAdhesionService.findById(id);
+//        return demandeAdhesionService.findById(demande.get().getIdDemande());
+//    }
+
+    @PatchMapping(value ="/{id}/rejectadhesion")
+    public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@PathVariable Long id,
+                                                            HttpServletRequest request) {
+        DemandeAdhesion demandeadhesion=demandeAdhesionService.rejetAdhesion(id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeadhesion));
+    }
+
+    @PatchMapping(value = "/{id}/acceptadhesion")
+    public ResponseEntity<DemandeAdhesionDto> validerAdhesion(@PathVariable Long id,
+                                                              HttpServletRequest request) {
+        DemandeAdhesion demandeadhesion=demandeAdhesionService.validerAdhesion(id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeadhesion));
+    }
+
+
 
     @PostMapping("/{id}/upload")
     @Operation(summary = "Upload file", description = "Upload a new file for Pme adhesion demand")
