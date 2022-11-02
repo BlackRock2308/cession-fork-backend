@@ -2,6 +2,7 @@ server:
   port: 8081
   document_folder: ${DOCUMENT_FOLDER:C:\Users\snndiayeos\Desktop\Wootoo\DocumentLibrary}
   notification: ${HOST:http://localhost:8087}
+  email_cdmp: financeislamique@modelsis.sn
 spring:
   sql:
     init:

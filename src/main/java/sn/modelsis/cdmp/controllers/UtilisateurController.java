@@ -18,6 +18,7 @@ import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 import sn.modelsis.cdmp.security.dto.AuthentificationResponseDto;
+import sn.modelsis.cdmp.security.dto.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.security.service.UtilisateurDetailService;
 import sn.modelsis.cdmp.security.utils.JWTUtility;
 import sn.modelsis.cdmp.services.PmeService;
@@ -208,5 +209,17 @@ public class UtilisateurController {
         } else {
             return null;
         }
+    }
+
+    /**
+     * {@code POST  /forget-password} : forget password
+     *
+     * @param email the email of the user.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+
+    @PostMapping("/forget-password")
+    public EmailMessageWithTemplate forgetPassword(@RequestBody String email)  {
+        return utilisateurService.forgetPassword(email);
     }
 }

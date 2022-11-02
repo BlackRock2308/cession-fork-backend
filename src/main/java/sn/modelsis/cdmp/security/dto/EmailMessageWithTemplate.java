@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.security.dto;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -21,6 +22,6 @@ public class EmailMessageWithTemplate {
 
     private String objet;
 
-    private Map<String, Object> templateVariable;
+    private Map<String, Object> templateVariable = new HashMap<>();
 
 }

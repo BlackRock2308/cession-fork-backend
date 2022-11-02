@@ -4,7 +4,6 @@ package sn.modelsis.cdmp.services.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,6 +46,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Value("${server.notification}")
     private String HOST_NOTIFICATION ;
+    @Value("${server.email_cdmp}")
+    private String EMAIL_CDMP ;
 
     public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, PmeService pmeService, RestTemplateUtil restTemplateUtil, Util util, RoleRepository roleRepository) {
         this.utilisateurRepository = utilisateurRepository;
@@ -81,6 +82,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
              roles.forEach(role -> newRoles.add(roleRepository.save(role)));
              utilisateur.setRoles(newRoles);
         }
+        if(utilisateur.getPassword()!=null)
+            utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
         return utilisateurRepository.save(utilisateur);
     }
 
@@ -109,6 +112,25 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         pme.setUtilisateur(utilisateurRepository.save(utilisateur));
         restTemplateUtil.post(HOST_NOTIFICATION+sendMail , creationComptePmeDto.getEmailMessageWithTemplate());
         return DtoConverter.convertToDto(pme) ;
+    }
+
+    @Override
+    public EmailMessageWithTemplate forgetPassword(String email){
+        EmailMessageWithTemplate emailMessageWithTemplate = new EmailMessageWithTemplate();
+        if (email==null)
+            throw new RuntimeException("email can not be null ");
+        emailMessageWithTemplate.setTemplateName("cdmp-forget-password");
+        emailMessageWithTemplate.setObjet("Mot de pass Oublier");
+        emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
+        emailMessageWithTemplate.setDestinataire(email);
+        String password = util.generateRandomPassword(8);
+        Utilisateur utilisateur = utilisateurRepository.findUtilisateurByEmail(email);
+        emailMessageWithTemplate.getTemplateVariable().put("username",utilisateur.getEmail());
+        emailMessageWithTemplate.getTemplateVariable().put("nouveauPassword",password);
+        utilisateur.setPassword(passwordEncoder.encode(password));
+        utilisateurRepository.save(utilisateur);
+        EmailMessageWithTemplate response = restTemplateUtil.post(HOST_NOTIFICATION+sendMail , emailMessageWithTemplate);
+        return response ;
     }
 
     }
