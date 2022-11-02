@@ -23,5 +23,7 @@ public class DemandeAdhesion extends Demande {
     @Column(name = "datedemandeAdhesion")
     private Date dateDemandeAdhesion;
 
+
+
 }
 

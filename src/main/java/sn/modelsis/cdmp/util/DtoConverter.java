@@ -158,9 +158,10 @@ public class DtoConverter {
 			demandeadhesion = modelMapper.map(demandeadhesionDto, DemandeAdhesion.class);
 			//convert les attributs ambigues
 			Pme pme=demandeadhesion.getPme();
-			pme.setNinea(demandeadhesionDto.getNinea());
-			pme.setRccm(demandeadhesionDto.getRccm());
+//			pme.setNinea(demandeadhesionDto.getNinea());
+//			pme.setRccm(demandeadhesionDto.getRccm());
 			demandeadhesion.setPme(pme);
+			demandeadhesion.setIdDemande(demandeadhesionDto.getIdDemande());
 		}
 		return demandeadhesion;
 	}
@@ -171,9 +172,10 @@ public class DtoConverter {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			demandeadhesionDto = modelMapper.map(demandeadhesion, DemandeAdhesionDto.class);
 			//convert les attributs ambigues
-			demandeadhesionDto.setNinea(demandeadhesion.getPme().getNinea());
-			demandeadhesionDto.setRccm(demandeadhesion.getPme().getRccm());
-			demandeadhesionDto.setPmeId(demandeadhesion.getPme().getIdPME());
+//			demandeadhesionDto.setNinea(demandeadhesion.getPme().getNinea());
+//			demandeadhesionDto.setRccm(demandeadhesion.getPme().getRccm());
+//			demandeadhesionDto.setPmeId(demandeadhesion.getPme().getIdPME());
+			demandeadhesionDto.setIdDemande(demandeadhesion.getIdDemande());
 		}
 		return demandeadhesionDto;
 	}
