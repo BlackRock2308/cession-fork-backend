@@ -1,13 +1,12 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import sn.modelsis.cdmp.entities.*;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor

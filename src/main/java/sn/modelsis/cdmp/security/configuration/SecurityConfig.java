@@ -38,7 +38,7 @@ public class SecurityConfig {
        // .antMatchers("/api/utilisateur/update", "/api/utilisateur/getAll")
        // .hasAnyAuthority("admin")
         .anyRequest()
-        .authenticated()
+        .permitAll()
         .and()
         .httpBasic()
         .and()
