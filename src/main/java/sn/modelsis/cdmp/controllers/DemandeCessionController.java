@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/demandecession")
 public class DemandeCessionController {
 
     private final Logger log = LoggerFactory.getLogger(DemandeCessionController.class);
-
-    @Autowired
-    private DemandeCessionService demandeCessionService;
-
+    private final DemandeCessionService demandeCessionService;
 
     @PostMapping
     public ResponseEntity<DemandeCessionDto> addDemandeCession(@RequestBody DemandeCessionDto demandecessionDto,

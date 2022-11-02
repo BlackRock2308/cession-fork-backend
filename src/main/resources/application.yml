@@ -1,6 +1,6 @@
 server:
   port: 8081
-  document_folder: ${DOCUMENT_FOLDER:C:\Users\snndiayeos\Desktop\Wootoo\DocumentLibrary}
+  document_folder: ${DOCUMENT_FOLDER:C:/Users/macbookpro/Desktop/Wootoo}
   notification: ${HOST:http://localhost:8087}
   email_cdmp: financeislamique@modelsis.sn
 spring:

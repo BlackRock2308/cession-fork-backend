@@ -14,7 +14,7 @@ import java.util.Set;
 public class DemandeCessionDto {
 
     private Long idDemande;
-    private PmeDto pme;
+    private Long idPme;
     private StatutDto statut;
     private Set<ObservationDto> observations = new HashSet<>();
     private Set<DocumentDto> documents = new HashSet<>();
