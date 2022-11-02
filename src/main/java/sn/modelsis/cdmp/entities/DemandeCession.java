@@ -22,7 +22,7 @@ public class DemandeCession extends Demande{
     private Date dateDemandeCession;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="bonengagementid")
+    @JoinColumn(name="bonengagement_id")
     private BonEngagement bonEngagement;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandeCession")
