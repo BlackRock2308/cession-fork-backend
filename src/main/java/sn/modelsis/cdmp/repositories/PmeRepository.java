@@ -15,7 +15,7 @@ public interface PmeRepository extends JpaRepository<Pme, Long> {
     Optional<Pme> findByRccm(@Param("rccm") String telephonePME);
 
     @Query("select p from Pme  p where p.email=:email")
-    Optional<Pme> findByMail(@Param("email") String email);
+    Pme findByMail(@Param("email") String email);
 
     @Query("select p from Pme  p where p.telephonePME=:telephonePME")
     Optional<Pme> findByPhone(@Param("telephonePME") String telephonePME);
