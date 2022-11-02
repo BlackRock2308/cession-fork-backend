@@ -7,7 +7,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -59,4 +58,6 @@ public class Utilisateur implements Serializable {
    @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private Set<Convention> conventions = new HashSet<>();
 
+   @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   private Utilisateur utilisateur ;
 }
