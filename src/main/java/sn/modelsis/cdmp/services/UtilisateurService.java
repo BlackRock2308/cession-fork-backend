@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.services;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.security.dto.EmailMessageWithTemplate;
 
 import java.util.List;
 
@@ -54,4 +55,11 @@ public interface UtilisateurService {
 
     PmeDto createComptePme(CreationComptePmeDto creationComptePmeDto) throws Exception;
 
+
+    /**
+     ** cette methode permet d'envoyer un email a un utilisateur lors de l'oublie de son password.
+     * @Param email
+     * @return   EmailMessageWithTemplate
+     */
+    EmailMessageWithTemplate forgetPassword(String email);
 }

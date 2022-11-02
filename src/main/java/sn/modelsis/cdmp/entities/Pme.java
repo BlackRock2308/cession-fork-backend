@@ -118,9 +118,6 @@ public class Pme implements Serializable {
     @Column(name = "nombreetablissementsecondaires")
     private Integer nombreEtablissementSecondaires;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    private Utilisateur utilisateur;
-
     @Column(name = "hasninea")
     private Boolean hasninea;
     
