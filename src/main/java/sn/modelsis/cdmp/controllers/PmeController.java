@@ -37,12 +37,12 @@ public class PmeController {
   @PostMapping()
   public ResponseEntity<PmeDto> addPme(@RequestBody PmeDto pmeDto, HttpServletRequest request) {
     Pme pme = DtoConverter.convertToEntity(pmeDto);
-    Demande demande=DtoConverter.convertToEntity(demandeDto);
-    demande.setPme(pme);
+    //Demande demande=DtoConverter.convertToEntity(demandeDto);
+    //demande.setPme(pme);
     Statut statut=new Statut();
     statut.setLibelle(Statuts.ADHESION_SOUMISE);
     statut.setCode("1");
-    demande.setStatut(statut);
+    //demande.setStatut(statut);
     Pme result = pmeService.save(pme);
     log.info("Pme created. Id:{} ", result.getIdPME());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
