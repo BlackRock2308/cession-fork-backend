@@ -130,5 +130,6 @@ public class Pme implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<PMEDocuments> documents = new HashSet<>();
 
-    
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Utilisateur utilisateur ;
 }

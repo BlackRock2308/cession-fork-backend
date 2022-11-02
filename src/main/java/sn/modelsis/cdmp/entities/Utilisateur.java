@@ -58,6 +58,4 @@ public class Utilisateur implements Serializable {
    @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private Set<Convention> conventions = new HashSet<>();
 
-   @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   private Utilisateur utilisateur ;
 }
