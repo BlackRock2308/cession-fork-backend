@@ -37,8 +37,8 @@ public class PmeServiceImpl implements PmeService {
     optional = pmeRepository.findByRccm(pme.getRccm());
     ExceptionUtils.absentOrThrow(optional, ItemExistsException.RCCM_EXIST, pme.getRccm());
 
-    optional = pmeRepository.findByMail(pme.getEmail());
-    ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
+//    optional = pmeRepository.findByMail(pme.getEmail());
+//    ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
 
     optional = pmeRepository.findByPhone(pme.getTelephonePME());
     ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
@@ -54,7 +54,7 @@ public class PmeServiceImpl implements PmeService {
 
   @Override
   public Pme findPmeByEmail(String email) {
-    return pmeRepository.findPmeByEmail(email);
+    return pmeRepository.findByMail(email);
   }
 
   @Override
