@@ -1,11 +1,16 @@
 package sn.modelsis.cdmp.services.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
+import sn.modelsis.cdmp.mappers.CreanceMapper;
+import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -23,6 +28,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
     private final ObservationRepository observationRepository;
+
+    private final DemandeCessionMapper cessionMapper;
+
+    private final CreanceMapper creanceMapper;
 
 
     @Override
@@ -42,10 +51,36 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         return demandecessionRepository.save(demandecession);
     }
+//    @Override
+//    public List<DemandeCession> findAll(){
+//        return demandecessionRepository.findAll();
+//    }
 
     @Override
-    public Optional<DemandeCession> getDemandeCession(Long id) {
-        return demandecessionRepository.findById(id);
+    public Page<DemandeCessionDto> findAll(Pageable pageable){
+        return demandecessionRepository
+                .findAll(pageable)
+                .map(cessionMapper::asDTO);
+    }
+
+    @Override
+    public Optional<DemandeCessionDto> findById(Long id) {
+        return Optional.ofNullable(demandecessionRepository
+                .findById(id)
+                .map(cessionMapper::asDTO)
+                .orElse(null));
+    }
+
+    @Override
+    public Optional <DemandeCessionDto> getDemandeCession(Long id) {
+        return demandecessionRepository
+                .findById(id)
+                .map(cessionMapper::asDTO);
+    }
+
+    @Override
+    public List<DemandeCession> findAllPMEDemandes(Long id) {
+        return demandecessionRepository.findAllByPmeIdPME(id);
     }
 
     @Override
@@ -164,20 +199,4 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return DtoConverter.convertToDto(result) ;
 
     }
-
-    @Override
-    public Optional<DemandeCession> findById(Long id) {
-        return demandecessionRepository.findById(id);
-    }
-
-    @Override
-    public List<DemandeCession> findAllPMEDemandes(Long id) {
-        return demandecessionRepository.findAllByPmeIdPME(id);
-    }
-
-    @Override
-    public List<DemandeCession> findAll(){
-        return demandecessionRepository.findAll();
-    }
-
 }
