@@ -1,5 +1,7 @@
 package sn.modelsis.cdmp.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeAdhesion;
@@ -23,11 +25,16 @@ public interface DemandeAdhesionService {
 
     DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto);
 
+//    List<DemandeAdhesionDto> findAll();
+
+    Page<DemandeAdhesionDto> findAll(Pageable pageable);
+
+    Optional<DemandeAdhesionDto> findById(Long id);
+
     DemandeAdhesion rejetAdhesion(Long id);
 
     DemandeAdhesion validerAdhesion(Long id);
-    List<DemandeAdhesionDto> findAll();
-    Optional<DemandeAdhesionDto> findById(Long id);
+
 
     /**
      * Cette methode permet de charger un document lié à une demande

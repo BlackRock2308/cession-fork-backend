@@ -2,6 +2,7 @@ package sn.modelsis.cdmp.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.data.domain.Page;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.*;
 
@@ -324,6 +325,23 @@ public class DtoConverter {
 			creanceDto.setStatutLibelle(demandeCession.getStatut().getLibelle());
 		}
 		return creanceDto;
+	}
+
+	public static Page<CreanceDto> convertToListCreanceDto(DemandeCession demandeCession) {
+		CreanceDto creanceDto = null;
+		if(null != demandeCession) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
+			//renseigner les mapping ambigue
+			creanceDto.setIdCreance(demandeCession.getIdDemande());
+			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
+			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
+			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
+			creanceDto.setRccm(demandeCession.getPme().getRccm());
+			creanceDto.setStatutLibelle(demandeCession.getStatut().getLibelle());
+		}
+		return (Page<CreanceDto>) creanceDto;
 	}
 
 	public static  UtilisateurDto convertToDto(Utilisateur utilisateur) {

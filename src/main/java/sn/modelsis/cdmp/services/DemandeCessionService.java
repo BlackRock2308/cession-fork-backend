@@ -1,5 +1,7 @@
 package sn.modelsis.cdmp.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
@@ -9,14 +11,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DemandeCessionService {
-
-    /**
-     *
-     * @param demandecession
-     * @return
-     */
-
     DemandeCession saveCession(DemandeCession demandecession);
+
+    //    List<DemandeCession> findAll();
+
+    Page<DemandeCessionDto> findAll(Pageable pageable);
+
+    Optional<DemandeCessionDto> findById (Long id);
+
+    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
+
+    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
+
+    Optional<DemandeCessionDto> getDemandeCession(Long id);
 
     DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto);
 
@@ -28,7 +35,7 @@ public interface DemandeCessionService {
 
     DemandeCessionDto demanderComplements (DemandeCessionDto demandecession);
 
-    Optional<DemandeCession> findById (Long id);
+
 
 
     List<DemandeCession> findAllPMEDemandes(Long id);
@@ -41,11 +48,5 @@ public interface DemandeCessionService {
      *
      * @return
      */
-    List<DemandeCession> findAll();
 
-    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
-
-    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
-
-    public Optional<DemandeCession> getDemandeCession(Long id);
     }
