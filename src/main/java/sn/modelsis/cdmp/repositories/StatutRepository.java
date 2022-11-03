@@ -8,4 +8,6 @@ public interface StatutRepository extends JpaRepository<Statut, Long> {
   // Optional<Statut> findStatutById(Long id);
 
     Statut findByLibelle(Statuts statutLibelle);
+
+    String findByCode(String code);
 }

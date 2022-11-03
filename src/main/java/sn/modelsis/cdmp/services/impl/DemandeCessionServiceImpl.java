@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.exceptions.ItemExistsException;
+import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -36,25 +41,61 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     @Transactional
-    public DemandeCession saveCession(DemandeCession demandecession) {
+    public DemandeCession saveCession(DemandeCession demandeCession) {
         //BonEngagement be = demandecession.getBonEngagement();
         //bonEngagementRepository.save(be);
-        demandecession.setDateDemandeCession(new Date());
+//        Optional<DemandeCession> optional = demandecessionRepository.findB(vm.getPhone());
+//        ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, vm.getPhone());
+        demandeCession.setDateDemandeCession(new Date());
         Statut statut=new Statut();
         statut.setLibelle(Statuts.SOUMISE);
-        demandecession.setStatut(statut);
-        statutRepository.save(statut);
-        /*for (Documents document:demandecession.getDocuments()
-        ) {
-            documentService.upload(document.);
-        }*/
+        demandeCession.setStatut(statut);
+        //statutRepository.save(statut);
 
-        return demandecessionRepository.save(demandecession);
+        return demandecessionRepository.save(demandeCession);
     }
 //    @Override
 //    public List<DemandeCession> findAll(){
 //        return demandecessionRepository.findAll();
 //    }
+
+    @Override
+    @Transactional
+    public DemandeCession addCession(DemandeCessionDto demandeCessionDto) {
+        DemandeCession demandeCession = cessionMapper.asEntity(demandeCessionDto);
+
+        Optional<Pme> optional = pmeRepository.findById(demandeCessionDto.getPme().getIdPME());
+        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.PME_BY_ID, demandeCessionDto.getPme().getIdPME().toString());
+
+        Optional<BonEngagement> optionalBe = bonEngagementRepository.findById(demandeCessionDto.getBonEngagement().getId());
+        ExceptionUtils.absentOrThrow(optionalBe, ItemNotFoundException.BONENGAGEMENT_BY_ID, demandeCessionDto.getBonEngagement().getId().toString());
+
+        if(optional.isPresent() && optionalBe.isPresent()){
+            demandeCession.setPme(optional.get());
+            demandeCession.setBonEngagement(optionalBe.get());
+            demandeCession.setDateDemandeCession(new Date());
+            Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_SOUMISE);
+            demandeCession.setStatut(statut);
+            return demandecessionRepository.save(demandeCession);
+        }
+        else {
+            throw new CustomException("Erreur, Impossible d'effectuer cette demande");
+        }
+//        pmeRepository.findById(demandeCessionDto.getIdPME()).ifPresentOrElse(
+//                (value)
+//                        -> {
+//                    demandeCession.setPme(value);
+//                    demandeCession.setDateDemandeCession(new Date());
+//                    Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_SOUMISE);
+//                    demandeCession.setStatut(statut);
+//                },
+//                ()
+//                        -> {
+//                    throw new CustomException("La PME n'existe pas");
+//                }
+//        );
+        //return demandecessionRepository.save(demandeCession);
+    }
 
     @Override
     public Page<DemandeCessionDto> findAll(Pageable pageable){

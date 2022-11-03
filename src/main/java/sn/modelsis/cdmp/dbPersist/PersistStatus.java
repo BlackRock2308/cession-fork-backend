@@ -12,92 +12,92 @@ public class PersistStatus {
         this.statutRepository = statutRepository;
 
         Statut adhesionSoumise=new Statut();
-        adhesionSoumise.setCode("1.0");
+        adhesionSoumise.setCode("ADHESION_SOUMISE");
         adhesionSoumise.setLibelle(Statuts.ADHESION_SOUMISE);
 
         Statut adhesionAcceptee=new Statut();
-        adhesionAcceptee.setCode("1.1");
+        adhesionAcceptee.setCode("ADHESION_ACCEPTEE");
         adhesionAcceptee.setLibelle(Statuts.ADHESION_ACCEPTEE);
 
         Statut adhesionRejetee=new Statut();
-        adhesionRejetee.setCode("1.2");
+        adhesionRejetee.setCode("ADHESION_REJETEE");
         adhesionRejetee.setLibelle(Statuts.ADHESION_REJETEE);
 
         Statut demandeCessionSoumise=new Statut();
-        demandeCessionSoumise.setCode("2.0");
+        demandeCessionSoumise.setCode("SOUMISE");
         demandeCessionSoumise.setLibelle(Statuts.SOUMISE);
 
         Statut demandeCessionRecevable=new Statut();
-        demandeCessionRecevable.setCode("2.1");
+        demandeCessionRecevable.setCode("RECEVABLE");
         demandeCessionRecevable.setLibelle(Statuts.RECEVABLE);
 
         Statut demandeCessionNonRecevable=new Statut();
-        demandeCessionNonRecevable.setCode("2.2");
+        demandeCessionNonRecevable.setCode("REJETEE");
         demandeCessionNonRecevable.setLibelle(Statuts.REJETEE);
 
         Statut demandeCessionComplementRequis=new Statut();
-        demandeCessionComplementRequis.setCode("3.1");
+        demandeCessionComplementRequis.setCode("COMPLEMENT_REQUIS");
         demandeCessionComplementRequis.setLibelle(Statuts.COMPLEMENT_REQUIS);
 
         Statut demandeCessionCompletee=new Statut();
-        demandeCessionCompletee.setCode("3.2");
+        demandeCessionCompletee.setCode("COMPLETEE");
         demandeCessionCompletee.setLibelle(Statuts.COMPLETEE);
 
         Statut demandeCessionNonRisquee=new Statut();
-        demandeCessionNonRisquee.setCode("3.3");
+        demandeCessionNonRisquee.setCode("NON_RISQUEE");
         demandeCessionNonRisquee.setLibelle(Statuts.NON_RISQUEE);
 
         Statut demandeCessionRisquee=new Statut();
-        demandeCessionRisquee.setCode("3.4");
+        demandeCessionRisquee.setCode("RISQUEE");
         demandeCessionRisquee.setLibelle(Statuts.RISQUEE);
 
         Statut demandeCessionConventionGeneree=new Statut();
-        demandeCessionConventionGeneree.setCode("4.0");
+        demandeCessionConventionGeneree.setCode("CONVENTION_GENEREE");
         demandeCessionConventionGeneree.setLibelle(Statuts.CONVENTION_GENEREE);
 
 
         Statut demandeCessionConventionCorrigee=new Statut();
-        demandeCessionConventionCorrigee.setCode("4.1");
+        demandeCessionConventionCorrigee.setCode("CONVENTION_CORRIGEE");
         demandeCessionConventionCorrigee.setLibelle(Statuts.CONVENTION_CORRIGEE);
 
         Statut demandeCessionConventionSigneePme=new Statut();
-        demandeCessionConventionSigneePme.setCode("4.2");
+        demandeCessionConventionSigneePme.setCode("CONVENTION_SIGNEE_PAR_PME");
         demandeCessionConventionSigneePme.setLibelle(Statuts.CONVENTION_SIGNEE_PAR_PME);
 
         Statut demandeCessionConventionSigneeDG=new Statut();
-        demandeCessionConventionSigneeDG.setCode("4.3");
+        demandeCessionConventionSigneeDG.setCode("CONVENTION_SIGNEE_PAR_DG");
         demandeCessionConventionSigneeDG.setLibelle(Statuts.CONVENTION_SIGNEE_PAR_DG);
 
         Statut demandeCessionConventionAcceptee=new Statut();
-        demandeCessionConventionAcceptee.setCode("4.4");
+        demandeCessionConventionAcceptee.setCode("CONVENTION_ACCEPTEE");
         demandeCessionConventionAcceptee.setLibelle(Statuts.CONVENTION_ACCEPTEE);
 
         Statut demandeCessionConventionRejetee=new Statut();
-        demandeCessionConventionRejetee.setCode("4.5");
+        demandeCessionConventionRejetee.setCode("CONVENTION_REJETEE");
         demandeCessionConventionRejetee.setLibelle(Statuts.CONVENTION_REJETEE);
 
         Statut demandeCessionPMEAttentePaiement=new Statut();
-        demandeCessionPMEAttentePaiement.setCode("5.0.1");
+        demandeCessionPMEAttentePaiement.setCode("PME_EN_ATTENTE_DE_PAIEMENT");
         demandeCessionPMEAttentePaiement.setLibelle(Statuts.PME_EN_ATTENTE_DE_PAIEMENT);
 
         Statut demandeCessionCDMPAttentePaiement=new Statut();
-        demandeCessionCDMPAttentePaiement.setCode("5.0.2");
+        demandeCessionCDMPAttentePaiement.setCode("CDMP_EN_ATTENTE_DE_PAIEMENT");
         demandeCessionCDMPAttentePaiement.setLibelle(Statuts.CDMP_EN_ATTENTE_DE_PAIEMENT);
 
         Statut demandeCessionPMEPaiementEnCours=new Statut();
-        demandeCessionPMEPaiementEnCours.setCode("5.1.1");
+        demandeCessionPMEPaiementEnCours.setCode("PME_PARTIELLEMENT_PAYEE");
         demandeCessionPMEPaiementEnCours.setLibelle(Statuts.PME_PARTIELLEMENT_PAYEE);
 
         Statut demandeCessionCDMPPaiementEnCours=new Statut();
-        demandeCessionCDMPPaiementEnCours.setCode("5.1.2");
+        demandeCessionCDMPPaiementEnCours.setCode("CDMP_PARTIELLEMENT_PAYEE");
         demandeCessionCDMPPaiementEnCours.setLibelle(Statuts.CDMP_PARTIELLEMENT_PAYEE);
 
         Statut demandeCessionPMEPayee=new Statut();
-        demandeCessionPMEPayee.setCode("5.2.1");
+        demandeCessionPMEPayee.setCode("PME_TOTALEMENT_PAYEE");
         demandeCessionPMEPayee.setLibelle(Statuts.PME_TOTALEMENT_PAYEE);
 
         Statut demandeCessionCDMPPayee=new Statut();
-        demandeCessionCDMPPayee.setCode("5.2.2");
+        demandeCessionCDMPPayee.setCode("CDMP_TOTALEMENT_PAYEE");
         demandeCessionCDMPPayee.setLibelle(Statuts.CDMP_TOTALEMENT_PAYEE);
 
         statutRepository.save(adhesionSoumise);

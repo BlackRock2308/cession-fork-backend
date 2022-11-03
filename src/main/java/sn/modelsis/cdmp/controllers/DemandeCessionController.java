@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
@@ -15,9 +16,11 @@ import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/demandecession")
@@ -27,7 +30,7 @@ public class DemandeCessionController {
     private final DemandeCessionService demandeCessionService;
 
     @PostMapping
-    public ResponseEntity<DemandeCessionDto> addDemandeCession(@RequestBody DemandeCessionDto demandecessionDto,
+    public ResponseEntity<DemandeCessionDto> addDemandeCession(@RequestBody @Valid DemandeCessionDto demandecessionDto,
                                                                HttpServletRequest request) {
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
 
