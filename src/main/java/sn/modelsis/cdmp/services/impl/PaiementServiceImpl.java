@@ -98,50 +98,24 @@ public class PaiementServiceImpl implements PaiementService {
 
     @Override
     public Paiement save(Paiement paiement) {
+
         Paiement paiement1 = paiementRepository.save(paiement);
-        return paiement ;
+        return paiement1 ;
     }
         @Override
     public void update(Long idPaiement,double montant,TypePaiement typePaiement) {
-
-
-        //log.info("Demande:{} ",demande.isPresent());
-        //Paiement paiement=new Paiement();
-
 
         log.info("paiement:{} ",idPaiement);
         paiementRepository.findById(idPaiement).ifPresentOrElse(
                 (value)
                         -> {
 
-                    //paiement.setDemandecession(value);
-
-                    //double montantCreance=value.getBonEngagement().getMontantCreance();
                     Statuts statutLibelle=value.getDemandeCession().getStatut().getLibelle();
                     log.info("statut:{} ",statutLibelle);
                     log.info("soldePME:{} ",value.getSoldePME());
 
-
-                    /*double soldePME= paiement.getSoldePME();
-                    double montantRecuCDMP=paiement.getMontantRecuCDMP();
-
-                     */
-
-                    /*if (statutLibelle==Statuts.CONVENTION_ACCEPTEE){
-                        Convention conventionAcceptee=conventionRepository.findConventionValideByDemande(paiement.getDemandecession().getIdDemande());
-                        double decote=conventionAcceptee.getDecote();
-                        paiement.setSoldePME((montantCreance*decote)/100);
-                        paiement.setMontantRecuCDMP(0);
-
-
-                        value.setStatut(this.statutRepository.findByLibelle(Statuts.PME_EN_ATTENTE_DE_PAIEMENT));
-                        demandeCessionRepository.save(value);
-                    }
-
-                     */
-
                     if (statutLibelle==Statuts.PME_EN_ATTENTE_DE_PAIEMENT || statutLibelle==Statuts.CDMP_EN_ATTENTE_DE_PAIEMENT || statutLibelle==Statuts.PME_PARTIELLEMENT_PAYEE || statutLibelle==Statuts.CDMP_PARTIELLEMENT_PAYEE){
-                        //paiement=paiementRepository.findById(idPaiement).orElse(null);
+
                         if (typePaiement==TypePaiement.SICA_CDMP) {
                             value.setMontantRecuCDMP(value.getMontantRecuCDMP()+montant);
 
@@ -182,16 +156,6 @@ public class PaiementServiceImpl implements PaiementService {
 
     @Override
     public List<Paiement> findAll(){
-        /*List<DemandeCession> demandes=new DemandeCession();
-
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.CDMP_EN_ATTENTE_DE_PAIEMENT));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.PME_EN_ATTENTE_DE_PAIEMENT));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.CDMP_PARTIELLEMENT_PAYEE));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.PME_PARTIELLEMENT_PAYEE));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.CDMP_TOTALEMENT_PAYEE));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.PME_TOTALEMENT_PAYEE));
-        */
-
         return paiementRepository.findAll();
     }
 

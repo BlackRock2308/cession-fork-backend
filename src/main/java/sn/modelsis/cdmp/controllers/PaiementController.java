@@ -31,45 +31,22 @@ public class PaiementController {
         this.demandeCessionService = demandeCessionService;
     }
 
-    /*
-    @PostMapping
-    public ResponseEntity<Paiement> addPaiement(@RequestBody PaiementDto paiementDto, HttpServletRequest request){
-
-        paiementDto.setStatutLibelle(Statuts.NON_RISQUEE);
-        Paiement result = paiementService.save(paiementDto,0, TypePaiement.CDMP_PME);
-        log.info("Paiement created. Id:{} ", result.getIdPaiement());
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
-    }
-
-     */
     @PostMapping
     public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto){
 
         if(paiementDto.getDemandecessionid()==null ||  paiementDto.getIdPaiement()!=null)
             throw new  CustomException("L'id de la demande de cession ne doit pas etre null ");
+
         if( paiementDto.getIdPaiement()!=null)
             throw new  CustomException("Le paiement exit déja ");
+
         Paiement paiement = DtoConverter.convertToEntity(paiementDto);
         DemandeCession demandeCession = demandeCessionService.getDemandeCession(1L).orElse(null);
         paiement.setDemandeCession(demandeCession);
-        Paiement paiement2 = paiementService.save(paiement);
+        Paiement paiementCreated = paiementService.save(paiement);
 
-        System.out.println(demandeCession);
-        String te ="";
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(paiement));
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(paiementCreated));
     }
-
-    /*@PutMapping()
-    public ResponseEntity<PaiementDto> updatePaiement(@RequestBody PaiementDto paiementDto,
-                                                          HttpServletRequest request) {
-        Paiement paiement = DtoConverter.convertToEntity(paiementDto);
-        Paiement result = paiementService.save(paiement);
-        log.info("Paiement updated. Id:{}", result.getIdPaiement());
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
-    }
-
-     */
-
 
 
     @GetMapping

@@ -45,7 +45,7 @@ public class Paiement implements Serializable {
   private DemandeCession demandeCession;
 
   @OneToMany(mappedBy = "paiement",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<DetailPaiement> detailPaiements = new HashSet<>();
+    private Set<DetailPaiement> detailPaiements = new HashSet<>();
 
 
 }
