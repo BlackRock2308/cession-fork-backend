@@ -44,6 +44,8 @@ public class UtilisateurDto {
 
     private Set<Role> roles ;
 
+    private boolean updatePassword;
+
     // private Set<RoleUtilisateur> rolesUtilisateurs ;
 
 

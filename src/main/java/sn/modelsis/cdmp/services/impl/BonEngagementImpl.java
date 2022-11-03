@@ -63,7 +63,6 @@ public class BonEngagementImpl implements BonEngagementService {
         throws IOException {
       Optional<BonEngagement> be = bonEngagementRepository.findById(id);
       if (be.isPresent()) {
-
         BEDocuments doc = (BEDocuments) documentService.upload(file, id,
             BEDocuments.PROVENANCE, type);
         be.get().getDocuments().add(doc);

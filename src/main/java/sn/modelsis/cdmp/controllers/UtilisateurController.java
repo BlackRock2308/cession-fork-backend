@@ -148,6 +148,7 @@ public class UtilisateurController {
         listeRole.forEach(role -> {
             listeRole.add(roleRepository.save(role));
         });
+        utilisateurDto.setUpdatePassword(true);
         utilisateurDto.setPassword(passwordEncoder.encode(utilisateurDto.getPassword()));
         Utilisateur result = utilisateurService.save(DtoConverter.convertToEntity(utilisateurDto));
 
