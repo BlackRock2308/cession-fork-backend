@@ -17,7 +17,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+//@ToString
 @Table(name = "demande")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Demande implements Serializable {
