@@ -16,6 +16,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
+@Table(name = "demandecession")
 public class DemandeCession extends Demande{
 
     @Column(name = "datedemandecession")
