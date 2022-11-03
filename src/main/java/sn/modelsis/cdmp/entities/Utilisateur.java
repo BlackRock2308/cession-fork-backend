@@ -49,6 +49,9 @@ public class Utilisateur implements Serializable {
    @Column(name="urlimageprofil")
    private String urlImageProfil;
 
+   @Column(name="update_password")
+   private boolean updatePassword;
+
    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private Set<Role> roles ;
 
