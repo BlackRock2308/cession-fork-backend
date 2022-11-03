@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/bonEngagement")
 public class BonEngagementControllers {
     private final Logger log = LoggerFactory.getLogger(BonEngagementControllers.class);
-
-    @Autowired
-    private BonEngagementService bonEngagementService;
+    private final BonEngagementService bonEngagementService;
 
     @PostMapping()
     public ResponseEntity<BonEngagementDto> addBonEngagement(@RequestBody BonEngagementDto bonEngagementDto,

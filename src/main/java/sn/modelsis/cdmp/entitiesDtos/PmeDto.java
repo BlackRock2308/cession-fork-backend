@@ -21,7 +21,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PmeDto {
-    //private Long idPME;
+
+    private Long idPME;
     private String prenomRepresentant;
     private String nomRepresentant;
 

@@ -1,6 +1,6 @@
 server:
   port: 8081
-  document_folder: ${DOCUMENT_FOLDER:C:/Users/macbookpro/Desktop/Wootoo}
+  document_folder: ${C:/Users/macbookpro/Desktop/Wootoo/DocumentLibrary}
   notification: ${HOST:http://localhost:8087}
   email_cdmp: financeislamique@modelsis.sn
 spring:
@@ -28,5 +28,10 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: false
+
+  servlet:
+    multipart:
+      max-file-size: 2000000MB
+      max-request-size: 2000000MB
 
 

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,12 @@ import sn.modelsis.cdmp.util.DtoConverter;
  */
 @RestController
 @RequestMapping("/api/documents")
+@RequiredArgsConstructor
 public class DocumentControllers {
 
   private final Logger log = LoggerFactory.getLogger(DocumentControllers.class);
 
-  @Autowired
-  private DocumentService documentService;
+  private final DocumentService documentService;
 
   @PostMapping()
   @Operation(summary = "Create  document", description = "Create a new  document")
@@ -78,8 +79,11 @@ public class DocumentControllers {
       HttpServletRequest request) {
     List<Documents> documents = documentService.findAll();
     log.info("All documents .");
-    return ResponseEntity.status(HttpStatus.OK).body(documents.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
-       
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(documents
+            .stream()
+            .map(DtoConverter::convertToDto)
+             .collect(Collectors.toList()));
   }
 
   @GetMapping(value = "/{id}/file")
