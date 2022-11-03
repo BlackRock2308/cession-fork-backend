@@ -27,7 +27,7 @@ public interface DemandeAdhesionService {
 
     DemandeAdhesion validerAdhesion(Long id);
     List<DemandeAdhesionDto> findAll();
-    Optional<DemandeAdhesion> findById(Long id);
+    Optional<DemandeAdhesionDto> findById(Long id);
 
     /**
      * Cette methode permet de charger un document lié à une demande

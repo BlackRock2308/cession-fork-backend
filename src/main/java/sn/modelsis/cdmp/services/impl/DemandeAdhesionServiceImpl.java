@@ -96,10 +96,12 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     }
 
     @Override
-    public Optional<DemandeAdhesion> findById(Long id) {
-        Optional <DemandeAdhesion> optional = demandeAdhesionRepository.findById(id);
-        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_ADHESION_ID, id.toString());
-        return optional;
+    public Optional<DemandeAdhesionDto> findById(Long id) {
+        return demandeAdhesionRepository
+                .findById(id)
+                .map(adhesionMapper::asDTO);
+//        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_ADHESION_ID, id.toString());
+//        return optional;
     }
 
     @Override

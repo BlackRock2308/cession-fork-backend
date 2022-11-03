@@ -48,11 +48,11 @@ public class DemandeAdhesionController {
                 .body(demandeList);
     }
 /** On pourra effectuer cette operation dans le controller de la Demande**/
-//    @GetMapping(value = "/{id}")
-//    public Optional<DemandeAdhesion> getDemandeAdhesion(@PathVariable Long id, HttpServletRequest request) {
+    @GetMapping(value = "/{id}")
+    public Optional<DemandeAdhesionDto> getDemandeAdhesion(@PathVariable Long id, HttpServletRequest request) {
 //        Optional<DemandeAdhesion> demande = demandeAdhesionService.findById(id);
-//        return demandeAdhesionService.findById(demande.get().getIdDemande());
-//    }
+        return demandeAdhesionService.findById(id);
+    }
 
     @PatchMapping(value ="/{id}/rejectadhesion")
     public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@PathVariable Long id,
