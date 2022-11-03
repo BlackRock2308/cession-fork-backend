@@ -41,17 +41,18 @@ public class DemandeAdhesionController {
 
     @GetMapping
     public ResponseEntity<List<DemandeAdhesionDto>> getAllDemandeAdhesion(HttpServletRequest request) {
-        List<DemandeAdhesion> demandeList = demandeAdhesionService.findAll();
-        log.info("All Requests .");
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+        List<DemandeAdhesionDto> demandeList = demandeAdhesionService.findAll();
+        log.info("Fetching All Demande Adhesion ....");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(demandeList);
     }
 /** On pourra effectuer cette operation dans le controller de la Demande**/
-//    @GetMapping(value = "/{id}")
-//    public Optional<DemandeAdhesion> getDemandeAdhesion(@PathVariable Long id, HttpServletRequest request) {
+    @GetMapping(value = "/{id}")
+    public Optional<DemandeAdhesionDto> getDemandeAdhesion(@PathVariable Long id, HttpServletRequest request) {
 //        Optional<DemandeAdhesion> demande = demandeAdhesionService.findById(id);
-//        return demandeAdhesionService.findById(demande.get().getIdDemande());
-//    }
+        return demandeAdhesionService.findById(id);
+    }
 
     @PatchMapping(value ="/{id}/rejectadhesion")
     public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@PathVariable Long id,

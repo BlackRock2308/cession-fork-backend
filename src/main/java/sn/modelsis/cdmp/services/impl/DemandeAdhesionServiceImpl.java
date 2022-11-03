@@ -10,6 +10,7 @@ import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemExistsException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
+import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
 import sn.modelsis.cdmp.services.DocumentService;
@@ -20,6 +21,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -27,8 +30,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private final DemandeAdhesionRepository demandeAdhesionRepository;
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
-
     private  final DocumentService documentService;
+
+    private final DemandeAdhesionMapper adhesionMapper;
 
     @Override
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
@@ -74,16 +78,30 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         return demandeAdhesionRepository.save(demandeAdhesion);
     }
 
+//    @Override
+//    public Optional<DemandeDTO> findById(UUID uuid) {
+//        return repository
+//                .findById(uuid)
+//                .map(mapper::asDTO);
+//    }
+
+
     @Override
-    public List<DemandeAdhesion> findAll(){
-        return demandeAdhesionRepository.findAll();
+    public List<DemandeAdhesionDto> findAll(){
+        return demandeAdhesionRepository
+                .findAll()
+                .stream()
+                .map(adhesionMapper::asDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<DemandeAdhesion> findById(Long id) {
-        Optional <DemandeAdhesion> optional = demandeAdhesionRepository.findById(id);
-        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_ADHESION_ID, id.toString());
-        return optional;
+    public Optional<DemandeAdhesionDto> findById(Long id) {
+        return demandeAdhesionRepository
+                .findById(id)
+                .map(adhesionMapper::asDTO);
+//        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_ADHESION_ID, id.toString());
+//        return optional;
     }
 
     @Override
