@@ -116,7 +116,7 @@ public class UtilisateurController {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
 
-    @PutMapping("/update")
+    @PatchMapping("/update")
     public ResponseEntity<UtilisateurDto> updateUtilisateur(
             @Valid @RequestBody UtilisateurDto utilisateurDto
     ) throws Exception {
@@ -148,6 +148,7 @@ public class UtilisateurController {
         listeRole.forEach(role -> {
             listeRole.add(roleRepository.save(role));
         });
+        utilisateurDto.setUpdatePassword(true);
         utilisateurDto.setPassword(passwordEncoder.encode(utilisateurDto.getPassword()));
         Utilisateur result = utilisateurService.save(DtoConverter.convertToEntity(utilisateurDto));
 

@@ -1,5 +1,19 @@
 package sn.modelsis.cdmp.services.impl;
 
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
+import sn.modelsis.cdmp.repositories.*;
+import sn.modelsis.cdmp.services.DemandeAdhesionService;
+import sn.modelsis.cdmp.services.DocumentService;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +52,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 
     @Override
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-        DemandeAdhesion demandeAdhesion=DtoConverter.convertToEntity(demandeAdhesionDto);
+        DemandeAdhesion demandeAdhesion = adhesionMapper.asEntity(demandeAdhesionDto);
         pmeRepository.findById(demandeAdhesionDto.getIdPME()).ifPresentOrElse(
                 (value)
                         -> {
@@ -52,8 +66,23 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                     throw new CustomException("La PME n'existe pas");
                 }
         );
-
         return demandeAdhesionRepository.save(demandeAdhesion);
+    }
+
+    @Override
+    public Page<DemandeAdhesionDto> findAll(Pageable pageable){
+        return demandeAdhesionRepository
+                .findAll(pageable)
+                .map(adhesionMapper::asDTO);
+    }
+
+    @Override
+    public Optional<DemandeAdhesionDto> findById(Long id) {
+
+        return Optional.of(demandeAdhesionRepository
+                .findById(id)
+                .map(adhesionMapper::asDTO)
+                .orElseThrow());
     }
 
     /**
@@ -81,10 +110,12 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     }
 
 //    @Override
-//    public Optional<DemandeDTO> findById(UUID uuid) {
-//        return repository
-//                .findById(uuid)
-//                .map(mapper::asDTO);
+//    public List<DemandeAdhesionDto> findAll(){
+//        return demandeAdhesionRepository
+//                .findAll()
+//                .stream()
+//                .map(adhesionMapper::asDTO)
+//                .collect(Collectors.toList());
 //    }
 
 

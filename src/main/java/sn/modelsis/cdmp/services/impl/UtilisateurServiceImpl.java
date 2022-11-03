@@ -103,6 +103,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur utilisateur = new Utilisateur();
         String password = util.generateRandomPassword(8);
         int codePin = (int) (Math.random()*(9999-1003)+1002);
+        utilisateur.setUpdatePassword(true);
         utilisateur.setPassword(passwordEncoder.encode(password));
         utilisateur.setEmail(email);
         utilisateur.setCodePin(Integer.toString(codePin));
@@ -128,6 +129,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         emailMessageWithTemplate.getTemplateVariable().put("username",utilisateur.getEmail());
         emailMessageWithTemplate.getTemplateVariable().put("nouveauPassword",password);
         utilisateur.setPassword(passwordEncoder.encode(password));
+        utilisateur.setUpdatePassword(true);
         utilisateurRepository.save(utilisateur);
         EmailMessageWithTemplate response = restTemplateUtil.post(HOST_NOTIFICATION+sendMail , emailMessageWithTemplate);
         return response ;

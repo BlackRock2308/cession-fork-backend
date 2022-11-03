@@ -15,8 +15,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
-@ToString
+@ToString @Getter @Setter
 public class DemandeAdhesionDto {
 
     private Long idDemande;
