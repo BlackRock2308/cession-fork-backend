@@ -1,28 +1,31 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
-import sn.modelsis.cdmp.entitiesDtos.PmeDto;
-import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.exceptions.ItemExistsException;
-import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
-import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
-import sn.modelsis.cdmp.repositories.*;
-import sn.modelsis.cdmp.services.DemandeAdhesionService;
-import sn.modelsis.cdmp.services.DocumentService;
-import sn.modelsis.cdmp.util.DtoConverter;
-import sn.modelsis.cdmp.util.ExceptionUtils;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.AllArgsConstructor;
+import sn.modelsis.cdmp.entities.DemandeAdhesion;
+import sn.modelsis.cdmp.entities.DemandeDocuments;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.Statuts;
+import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
+import sn.modelsis.cdmp.repositories.DemandeAdhesionRepository;
+import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.services.DemandeAdhesionService;
+import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 @AllArgsConstructor
 @Service
@@ -31,8 +34,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
     private  final DocumentService documentService;
-
-    private final DemandeAdhesionMapper adhesionMapper;
+   // private final DemandeAdhesionMapper adhesionMapper;
 
     @Override
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
@@ -86,23 +88,23 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 //    }
 
 
-    @Override
-    public List<DemandeAdhesionDto> findAll(){
-        return demandeAdhesionRepository
-                .findAll()
-                .stream()
-                .map(adhesionMapper::asDTO)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<DemandeAdhesionDto> findAll(){
+//        return demandeAdhesionRepository
+//                .findAll()
+//                .stream()
+//                .map(adhesionMapper::asDTO)
+//                .collect(Collectors.toList());
+//    }
 
-    @Override
-    public Optional<DemandeAdhesionDto> findById(Long id) {
-        return demandeAdhesionRepository
-                .findById(id)
-                .map(adhesionMapper::asDTO);
-//        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_ADHESION_ID, id.toString());
-//        return optional;
-    }
+//    @Override
+//    public Optional<DemandeAdhesionDto> findById(Long id) {
+//        return demandeAdhesionRepository
+//                .findById(id)
+//                .map(adhesionMapper::asDTO);
+////        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_ADHESION_ID, id.toString());
+////        return optional;
+//    }
 
     @Override
     public Optional<DemandeAdhesion> upload(Long demandeId, MultipartFile file, TypeDocument type)
@@ -118,5 +120,17 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 
         }
         return demandeAdhesion;
+    }
+
+    @Override
+    public List<DemandeAdhesionDto> findAll() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Optional<DemandeAdhesionDto> findById(Long id) {
+        // TODO Auto-generated method stub
+        return Optional.empty();
     }
 }
