@@ -26,7 +26,7 @@ public interface DemandeAdhesionService {
     DemandeAdhesion rejetAdhesion(Long id);
 
     DemandeAdhesion validerAdhesion(Long id);
-    List<DemandeAdhesion> findAll();
+    List<DemandeAdhesionDto> findAll();
     Optional<DemandeAdhesion> findById(Long id);
 
     /**

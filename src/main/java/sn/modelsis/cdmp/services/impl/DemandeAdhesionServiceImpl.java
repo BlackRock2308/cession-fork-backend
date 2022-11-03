@@ -10,6 +10,7 @@ import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemExistsException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
+import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
 import sn.modelsis.cdmp.services.DocumentService;
@@ -30,6 +31,8 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
     private  final DocumentService documentService;
+
+    private final DemandeAdhesionMapper adhesionMapper;
 
     @Override
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
@@ -84,10 +87,11 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 
 
     @Override
-    public List<DemandeAdhesion> findAll(){
+    public List<DemandeAdhesionDto> findAll(){
         return demandeAdhesionRepository
                 .findAll()
                 .stream()
+                .map(adhesionMapper::asDTO)
                 .collect(Collectors.toList());
     }
 
