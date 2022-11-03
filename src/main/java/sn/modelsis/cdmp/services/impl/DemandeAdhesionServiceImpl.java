@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -27,7 +29,6 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private final DemandeAdhesionRepository demandeAdhesionRepository;
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
-
     private  final DocumentService documentService;
 
     @Override
@@ -74,9 +75,20 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         return demandeAdhesionRepository.save(demandeAdhesion);
     }
 
+//    @Override
+//    public Optional<DemandeDTO> findById(UUID uuid) {
+//        return repository
+//                .findById(uuid)
+//                .map(mapper::asDTO);
+//    }
+
+
     @Override
     public List<DemandeAdhesion> findAll(){
-        return demandeAdhesionRepository.findAll();
+        return demandeAdhesionRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toList());
     }
 
     @Override
