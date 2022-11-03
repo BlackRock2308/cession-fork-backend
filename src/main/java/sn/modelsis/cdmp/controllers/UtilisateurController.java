@@ -116,7 +116,7 @@ public class UtilisateurController {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
 
-    @PutMapping("/update")
+    @PatchMapping("/update")
     public ResponseEntity<UtilisateurDto> updateUtilisateur(
             @Valid @RequestBody UtilisateurDto utilisateurDto
     ) throws Exception {
