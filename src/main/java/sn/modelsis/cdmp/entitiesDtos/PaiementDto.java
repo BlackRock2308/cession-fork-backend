@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @ToString
 public class PaiementDto {
 
-    private Long idPaiement;
+    private Long cdmp;
 
     private double montantRecuCDMP;
 

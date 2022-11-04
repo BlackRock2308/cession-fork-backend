@@ -11,8 +11,7 @@ import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
 import sn.modelsis.cdmp.repositories.*;
-import sn.modelsis.cdmp.services.DemandeAdhesionService;
-import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.services.*;
 
 import java.io.IOException;
 import java.util.Date;
@@ -50,6 +49,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private  final DocumentService documentService;
     private final DemandeAdhesionMapper adhesionMapper;
 
+    @Autowired
+    private  final DemandeService demandeService;
+
     @Override
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
         DemandeAdhesion demandeAdhesion = adhesionMapper.asEntity(demandeAdhesionDto);
@@ -67,6 +69,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                     throw new CustomException("La PME n'existe pas");
                 }
         );
+        demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
         return demandeAdhesionRepository.save(demandeAdhesion);
     }
 

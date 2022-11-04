@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.services.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
@@ -38,6 +40,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     private final CreanceMapper creanceMapper;
 
+    @Autowired
+    private  final DemandeService demandeService;
 
     @Override
     @Transactional
@@ -53,6 +57,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         demandeCession.setStatut(statut);
         //statutRepository.save(statut);
 
+        demandeCession.setNumeroDemande(demandeService.getNumDemande());
         return demandecessionRepository.save(demandeCession);
     }
 //    @Override
