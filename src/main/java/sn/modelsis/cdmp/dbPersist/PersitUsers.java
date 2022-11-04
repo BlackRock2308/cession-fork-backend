@@ -1,5 +1,7 @@
 package sn.modelsis.cdmp.dbPersist;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Role;
@@ -21,6 +23,9 @@ public class PersitUsers {
     private final UtilisateurRepository utilisateurRepository;
 
     private final PmeRepository pmeRepository;
+
+    final  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     public PersitUsers(RoleRepository roleRepository,
                        UtilisateurRepository utilisateurRepository,
@@ -81,7 +86,7 @@ public class PersitUsers {
         Utilisateur dg = new Utilisateur();
         dg.setAdresse("Mermoz");
         dg.setCodePin("123456");
-        dg.setPassword("passer");
+        dg.setPassword(passwordEncoder.encode("passer"));
         dg.setPrenom("DG");
         dg.setEmail("dg@gmail.com");
         dg.setRoles(dgRoles);
@@ -91,7 +96,7 @@ public class PersitUsers {
         Utilisateur pme = new Utilisateur();
         pme.setAdresse("Mermoz");
         pme.setCodePin("123456");
-        pme.setPassword("passer");
+        pme.setPassword(passwordEncoder.encode("passer"));
         pme.setPrenom("PME");
         pme.setEmail("pme@gmail.com");
         pme.setRoles(pmeRoles);
@@ -99,7 +104,7 @@ public class PersitUsers {
         Utilisateur cgr = new Utilisateur();
         cgr.setAdresse("Mermoz");
         cgr.setCodePin("123456");
-        cgr.setPassword("passer");
+        cgr.setPassword(passwordEncoder.encode("passer"));
         cgr.setPrenom("CGR");
         cgr.setEmail("cgr@gmail.com");
         cgr.setRoles(cgrRoles);
@@ -109,7 +114,7 @@ public class PersitUsers {
         Utilisateur comptable = new Utilisateur();
         comptable.setAdresse("Mermoz");
         comptable.setCodePin("123456");
-        comptable.setPassword("passer");
+        comptable.setPassword(passwordEncoder.encode("passer"));
         comptable.setPrenom("COMPTABLE");
         comptable.setEmail("comptable@gmail.com");
         comptable.setRoles(comptableRoles);
@@ -119,7 +124,7 @@ public class PersitUsers {
         Utilisateur ordonnateur = new Utilisateur();
         ordonnateur.setAdresse("Mermoz");
         ordonnateur.setCodePin("123456");
-        ordonnateur.setPassword("passer");
+        ordonnateur.setPassword(passwordEncoder.encode("passer"));
         ordonnateur.setPrenom("ORDONNATEUR");
         ordonnateur.setEmail("ordonnateur@gmail.com");
         ordonnateur.setRoles(ordonnateurRoles);

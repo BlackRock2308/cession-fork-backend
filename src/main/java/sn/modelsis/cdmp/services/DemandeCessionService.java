@@ -24,6 +24,10 @@ public interface DemandeCessionService {
 
     public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
 
+    DemandeCession rejectDemandeCession(DemandeCessionDto demandeCessionDto,Long idDemande);
+
+    DemandeCession rejectionDemandeCession(Long idDemande );
+
     public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
