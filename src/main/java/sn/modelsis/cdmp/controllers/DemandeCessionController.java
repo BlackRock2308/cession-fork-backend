@@ -39,6 +39,15 @@ public class DemandeCessionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
+    @GetMapping(value = "{id}")
+    public ResponseEntity<DemandeCessionDto> getDemandeCession(@PathVariable Long id,
+                                                               HttpServletRequest request) {
+        DemandeCessionDto demande = demandeCessionService.getDemandeCession(id).orElse(null);
+        log.info("Demande Cession with Id:{}", id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demande);
+    }
+
     @PatchMapping(value ="/{id}/rejectcession")
     public ResponseEntity<DemandeCessionDto> rejeterCession(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
         // DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterCession(demandecessionDto);
@@ -97,13 +106,6 @@ public class DemandeCessionController {
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
     }
 
-    @GetMapping(value = "{id}")
-    public ResponseEntity<DemandeCessionDto> getDemandeCession(@PathVariable Long id,
-                                                               HttpServletRequest request) {
-        DemandeCessionDto demande = demandeCessionService.getDemandeCession(id).orElse(null);
-        log.info("Demande Cession with Id:{}", id);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(demande);
-    }
+
 
 }
