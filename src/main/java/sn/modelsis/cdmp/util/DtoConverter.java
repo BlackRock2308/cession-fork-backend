@@ -239,10 +239,10 @@ public class DtoConverter {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			paiementDto = modelMapper.map(paiement, PaiementDto.class);
 			//renseigner les mapping ambigue
-//			paiementDto.setDemandeId(paiement.getDemandeCession().getIdDemande());
-//			paiementDto.setMontantCreance(paiement.getDemandeCession().getBonEngagement().getMontantCreance());
-//			paiementDto.setStatutLibelle(paiement.getDemandeCession().getStatut().getLibelle());
-//			paiementDto.setRaisonSocial(paiement.getDemandeCession().getPme().getRaisonSocial());
+			paiementDto.setDemandeId(paiement.getDemandeCession().getIdDemande());
+			paiementDto.setMontantCreance(paiement.getDemandeCession().getBonEngagement().getMontantCreance());
+			paiementDto.setStatutDto(DtoConverter.convertToDto(paiement.getDemandeCession().getStatut()));
+			paiementDto.setRaisonSocial(paiement.getDemandeCession().getPme().getRaisonSocial());
 		}
 		return paiementDto;
 	}
@@ -322,7 +322,7 @@ public class DtoConverter {
 			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
 			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
 			creanceDto.setRccm(demandeCession.getPme().getRccm());
-			creanceDto.setStatutLibelle(demandeCession.getStatut().getLibelle());
+			creanceDto.setStatut(demandeCession.getStatut());
 		}
 		return creanceDto;
 	}
@@ -339,7 +339,7 @@ public class DtoConverter {
 			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
 			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
 			creanceDto.setRccm(demandeCession.getPme().getRccm());
-			creanceDto.setStatutLibelle(demandeCession.getStatut().getLibelle());
+			creanceDto.setStatut(demandeCession.getStatut());
 		}
 		return (Page<CreanceDto>) creanceDto;
 	}

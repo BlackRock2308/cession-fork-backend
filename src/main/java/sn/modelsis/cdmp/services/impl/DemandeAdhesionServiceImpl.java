@@ -38,7 +38,8 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                         -> {
                     demandeAdhesion.setPme(value);
                     demandeAdhesion.setDateDemandeAdhesion(new Date());
-                    Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_SOUMISE);
+                    Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
+
                     demandeAdhesion.setStatut(statut);
                 },
                 ()
@@ -73,7 +74,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     @Override
     @Transactional
     public DemandeAdhesion rejetAdhesion(Long id) {
-        Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_REJETEE);
+        Statut statut=statutRepository.findByLibelle("ADHESION_REJETEE");
         DemandeAdhesion demandeAdhesion=demandeAdhesionRepository.findById(id).orElseThrow();
         demandeAdhesion.setStatut(statut);
         return demandeAdhesionRepository.save(demandeAdhesion);
@@ -83,7 +84,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     @Transactional
     public DemandeAdhesion validerAdhesion(Long id) {
 
-        Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_ACCEPTEE);
+        Statut statut=statutRepository.findByLibelle("ADHESION_ACCEPTEE");
         DemandeAdhesion demandeAdhesion=demandeAdhesionRepository.findById(id).orElseThrow();
         demandeAdhesion.setStatut(statut);
         return demandeAdhesionRepository.save(demandeAdhesion);
