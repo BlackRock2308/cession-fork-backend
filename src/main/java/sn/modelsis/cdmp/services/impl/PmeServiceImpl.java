@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,6 +9,7 @@ import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.ItemExistsException;
 import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -20,13 +22,14 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class PmeServiceImpl implements PmeService {
 
-  @Autowired
-  private PmeRepository pmeRepository;
-  
-  @Autowired
-  private DocumentService documentService;
+  private final PmeRepository pmeRepository;
+
+  private final DocumentService documentService;
+
+  private final StatutRepository statutRepository;
 
   @Override
   public Pme save(Pme pme) {
@@ -43,7 +46,7 @@ public class PmeServiceImpl implements PmeService {
     optional = pmeRepository.findByPhone(pme.getTelephonePME());
     ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
 
-    return  pmeRepository.save(pme);
+    return  pmeRepository.saveAndFlush(pme);
   }
 
 

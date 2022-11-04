@@ -7,5 +7,7 @@ import sn.modelsis.cdmp.entities.Statuts;
 public interface StatutRepository extends JpaRepository<Statut, Long> {
   // Optional<Statut> findStatutById(Long id);
 
-    Statut findByLibelle(Statuts statutLibelle);
+    Statut findByLibelle(String statutLibelle);
+
+    Statut findByCode(String code);
 }

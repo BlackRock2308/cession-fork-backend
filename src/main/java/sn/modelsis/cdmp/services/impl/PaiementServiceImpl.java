@@ -60,22 +60,22 @@ public class PaiementServiceImpl implements PaiementService {
                     log.info("Paiement:{} ",paiement.getDemandeCession().getIdDemande());
 
                     double montantCreance=value.getBonEngagement().getMontantCreance();
-                    Statuts statutLibelle=value.getStatut().getLibelle();
-                    log.info("statut:{} ",statutLibelle);
+                    Statut statut=value.getStatut();
+                    log.info("statut:{} ",statut.getLibelle());
 
                     /*double soldePME= paiement.getSoldePME();
                     double montantRecuCDMP=paiement.getMontantRecuCDMP();
 
                      */
 
-                    if (statutLibelle==Statuts.CONVENTION_ACCEPTEE){
+                    if (statut.getLibelle()=="CONVENTION_ACCEPTEE"){
                         Convention conventionAcceptee=conventionRepository.findConventionValideByDemande(paiement.getDemandeCession().getIdDemande());
                         double decote=conventionAcceptee.getDecote();
                         paiement.setSoldePME((montantCreance*decote)/100);
                         paiement.setMontantRecuCDMP(0);
 
 
-                        value.setStatut(this.statutRepository.findByLibelle(Statuts.PME_EN_ATTENTE_DE_PAIEMENT));
+                        value.setStatut(this.statutRepository.findByLibelle("PME_EN_ATTENTE_DE_PAIEMENT"));
                         demandeCessionRepository.save(value);
                     }
 
@@ -114,8 +114,8 @@ public class PaiementServiceImpl implements PaiementService {
                     //paiement.setDemandecession(value);
 
                     //double montantCreance=value.getBonEngagement().getMontantCreance();
-                    Statuts statutLibelle=value.getDemandeCession().getStatut().getLibelle();
-                    log.info("statut:{} ",statutLibelle);
+                    Statut statut =value.getDemandeCession().getStatut();
+                    log.info("statut:{} ",statut.getLibelle());
                     log.info("soldePME:{} ",value.getSoldePME());
 
 
@@ -137,23 +137,23 @@ public class PaiementServiceImpl implements PaiementService {
 
                      */
 
-                    if (statutLibelle==Statuts.PME_EN_ATTENTE_DE_PAIEMENT || statutLibelle==Statuts.CDMP_EN_ATTENTE_DE_PAIEMENT || statutLibelle==Statuts.PME_PARTIELLEMENT_PAYEE || statutLibelle==Statuts.CDMP_PARTIELLEMENT_PAYEE){
+                    if (statut.getLibelle()=="PME_EN_ATTENTE_DE_PAIEMENT" || statut.getLibelle()=="CDMP_EN_ATTENTE_DE_PAIEMENT" || statut.getLibelle()=="PME_PARTIELLEMENT_PAYEE" || statut.getLibelle()=="CDMP_PARTIELLEMENT_PAYEE"){
                         //paiement=paiementRepository.findById(idPaiement).orElse(null);
                         if (typePaiement==TypePaiement.SICA_CDMP) {
                             value.setMontantRecuCDMP(value.getMontantRecuCDMP()+montant);
 
-                            value.getDemandeCession().setStatut(this.statutRepository.findByLibelle(Statuts.CDMP_PARTIELLEMENT_PAYEE));
+                            value.getDemandeCession().setStatut(this.statutRepository.findByLibelle("CDMP_PARTIELLEMENT_PAYEE"));
                             if (value.getMontantRecuCDMP()==value.getDemandeCession().getBonEngagement().getMontantCreance()){
-                                value.getDemandeCession().setStatut(this.statutRepository.findByLibelle(Statuts.CDMP_TOTALEMENT_PAYEE));
+                                value.getDemandeCession().setStatut(this.statutRepository.findByLibelle("CDMP_TOTALEMENT_PAYEE"));
                             }
 
                         }
                         if (typePaiement==TypePaiement.CDMP_PME) {
                             log.info("soldePME:{} ",value.getSoldePME());
                             value.setSoldePME(value.getSoldePME()-montant);
-                            value.getDemandeCession().setStatut(this.statutRepository.findByLibelle(Statuts.PME_PARTIELLEMENT_PAYEE));
+                            value.getDemandeCession().setStatut(this.statutRepository.findByLibelle("PME_PARTIELLEMENT_PAYEE"));
                             if (value.getSoldePME()==0){
-                                value.getDemandeCession().setStatut(this.statutRepository.findByLibelle(Statuts.PME_TOTALEMENT_PAYEE));
+                                value.getDemandeCession().setStatut(this.statutRepository.findByLibelle("PME_TOTALEMENT_PAYEE"));
                             }
 
                         }
