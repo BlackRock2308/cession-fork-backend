@@ -98,10 +98,14 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Optional<DemandeCessionDto> findById(Long id) {
-        return Optional.ofNullable(demandecessionRepository
+        final Optional <DemandeCessionDto> optional = Optional.of(demandecessionRepository
                 .findById(id)
                 .map(cessionMapper::asDTO)
-                .orElse(null));
+                .orElseThrow());
+        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_CESSION_BY_ID, id.toString());
+
+        return optional;
+
     }
 
     @Override

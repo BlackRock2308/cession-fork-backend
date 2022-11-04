@@ -5,6 +5,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +24,16 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import sn.modelsis.cdmp.dbPersist.PersistStatus;
+import sn.modelsis.cdmp.dbPersist.PersitUsers;
+import sn.modelsis.cdmp.entities.Role;
+import sn.modelsis.cdmp.entities.Roles;
+import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.repositories.UtilisateurRepository;
+
+import static sn.modelsis.cdmp.entities.Roles.DG;
 
 /**
  * @author SNDIAGNEF
@@ -36,10 +48,19 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
   private final Environment env;
 
   private final StatutRepository statutRepository;
+
+  private final UtilisateurRepository utilisateurRepository;
+
+  private final RoleRepository roleRepository;
+
+  private final PmeRepository pmeRepository;
   
-  public CdmpApplication(Environment env, StatutRepository statutRepository) {
+  public CdmpApplication(Environment env, StatutRepository statutRepository, UtilisateurRepository utilisateurRepository, RoleRepository roleRepository, PmeRepository pmeRepository) {
     this.env = env;
       this.statutRepository = statutRepository;
+      this.utilisateurRepository = utilisateurRepository;
+      this.roleRepository = roleRepository;
+      this.pmeRepository = pmeRepository;
   }
 
   @Override
@@ -136,5 +157,50 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         PersistStatus persistStatus=new PersistStatus(statutRepository);
         log.info("Initialisation des differents statuts terminée");
 
+        log.info("Initialisation des differents profils utilisateurs...");
+
+        PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
+        log.info("Initialisation des differents profils terminée");
+
     }
+//    @Bean
+//    CommandLineRunner start(UtilisateurRepository utilisateurRepository,
+//                            RoleRepository roleRepository, PmeRepository pmeRepository){
+//      return args -> {
+//          Role dg = new Role();
+//          dg.setLibelle("DG");
+//
+//          Role comptable = new Role();
+//          dg.setLibelle("COMPTABLE");
+//          roleRepository.saveAndFlush(comptable);
+//
+//          Role cgr = new Role();
+//          dg.setLibelle("CGR");
+//          roleRepository.saveAndFlush(cgr);
+//
+//          Role pme = new Role();
+//          dg.setLibelle("PME");
+//          roleRepository.saveAndFlush(pme);
+//
+//          Role ordonnateur = new Role();
+//          dg.setLibelle("ORDONNATEUR");
+//          roleRepository.saveAndFlush(ordonnateur);
+//
+//          Set<Role> dgRoles = new HashSet<>();
+//          dgRoles.add(dg);
+//
+//          Utilisateur userDG = new Utilisateur();
+//          userDG.setAdresse("Mermoz");
+//          userDG.setCodePin("123456");
+//          userDG.setRoles(dgRoles);
+//          userDG.setEmail("dg@gmail.com");
+//          utilisateurRepository.saveAndFlush(userDG);
+//
+//          utilisateurRepository.findAll().forEach(cp ->{
+//              System.out.println("Roles :" + cp.getRoles()+ "Adress : " + cp.getAdresse() + "Email :" + cp.getEmail());
+//          });
+//
+//
+//      };
+//    }
 }
