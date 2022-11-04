@@ -6,12 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
-import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.exceptions.ItemExistsException;
+import sn.modelsis.cdmp.entitiesDtos.*;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
@@ -33,7 +28,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
     private final ObservationRepository observationRepository;
-
     private final DemandeCessionMapper cessionMapper;
 
     private final CreanceMapper creanceMapper;
@@ -108,6 +102,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository
                 .findById(id)
                 .map(cessionMapper::asDTO);
+
     }
 
     @Override
@@ -126,6 +121,54 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         statutRepository.save(statut);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
+    }
+
+
+    @Override
+    @Transactional
+    public DemandeCession rejectionDemandeCession(Long idDemande ){
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
+        optional.get().setStatut(updatedStatut);
+
+        DemandeCession demandeCessionDto = optional.get();
+
+        return demandecessionRepository.save(demandeCessionDto);
+
+    }
+
+    @Override
+    @Transactional
+    public DemandeCession rejectDemandeCession(DemandeCessionDto demandeCessionDto, Long idDemande) {
+        Optional <DemandeCessionDto> optional = demandecessionRepository.findById(idDemande).map(cessionMapper::asDTO);
+        Statut statut = DtoConverter.convertToEntity(optional.get().getStatut());
+
+        BonEngagementDto optionalBe = optional.get().getBonEngagement();
+        System.out.println("mail PME :" + optional.get().getPme().getEmail());
+        System.out.println("Initila Statut Demande Cession:" + optional.get().getStatut().getLibelle());
+
+        //System.out.println("Initial Statut from DTO :" + demandeCessionDto.getStatut().getLibelle());
+
+        Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
+
+        optional.get().setStatut(DtoConverter.convertToDto(updatedStatut));
+
+        System.out.println("Updated Statut (Rejection):" + optional.get().getStatut().getLibelle());
+
+        demandeCessionDto.setStatut(DtoConverter.convertToDto(updatedStatut));
+
+        //assigning new values to Old one
+        optional.get().setBonEngagement(demandeCessionDto.getBonEngagement());
+        optional.get().setPme(demandeCessionDto.getPme());
+        optional.get().setDateDemandeCession(demandeCessionDto.getDateDemandeCession());
+        optional.get().setIdDemande(demandeCessionDto.getIdDemande());
+
+
+        System.out.println("Ninea Updated Statut (Rejection):" + optional.get().getPme().getNinea());
+
+        //DemandeCession resultUpdated = demandecessionRepository.saveAndFlush(DtoConverter.convertToEntity(optional.get()));
+
+        return demandecessionRepository.save(DtoConverter.convertToEntity(optional.get()));
     }
 
     @Override

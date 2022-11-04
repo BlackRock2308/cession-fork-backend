@@ -163,44 +163,5 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         log.info("Initialisation des differents profils terminée");
 
     }
-//    @Bean
-//    CommandLineRunner start(UtilisateurRepository utilisateurRepository,
-//                            RoleRepository roleRepository, PmeRepository pmeRepository){
-//      return args -> {
-//          Role dg = new Role();
-//          dg.setLibelle("DG");
-//
-//          Role comptable = new Role();
-//          dg.setLibelle("COMPTABLE");
-//          roleRepository.saveAndFlush(comptable);
-//
-//          Role cgr = new Role();
-//          dg.setLibelle("CGR");
-//          roleRepository.saveAndFlush(cgr);
-//
-//          Role pme = new Role();
-//          dg.setLibelle("PME");
-//          roleRepository.saveAndFlush(pme);
-//
-//          Role ordonnateur = new Role();
-//          dg.setLibelle("ORDONNATEUR");
-//          roleRepository.saveAndFlush(ordonnateur);
-//
-//          Set<Role> dgRoles = new HashSet<>();
-//          dgRoles.add(dg);
-//
-//          Utilisateur userDG = new Utilisateur();
-//          userDG.setAdresse("Mermoz");
-//          userDG.setCodePin("123456");
-//          userDG.setRoles(dgRoles);
-//          userDG.setEmail("dg@gmail.com");
-//          utilisateurRepository.saveAndFlush(userDG);
-//
-//          utilisateurRepository.findAll().forEach(cp ->{
-//              System.out.println("Roles :" + cp.getRoles()+ "Adress : " + cp.getAdresse() + "Email :" + cp.getEmail());
-//          });
-//
-//
-//      };
-//    }
+
 }
