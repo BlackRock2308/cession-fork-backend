@@ -31,8 +31,9 @@ public class ObservationServiceImpl implements ObservationService{
 
   @Override
   public ObservationDto save(Observation observation) {
+    observationMapper.mapToDto(observation);
      observationRepository.save(observation);
-    return DtoConverter.convertToDto(observation);
+    return observationMapper.mapToDto(observation);
 	}
 
   @Override

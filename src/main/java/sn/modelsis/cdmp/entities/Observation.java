@@ -30,6 +30,7 @@ public class Observation implements Serializable, Comparable<Observation> {
     
     @Column(name = "libelle")
     private String libelle;
+
     
     @Column(name = "dateobservation")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -37,7 +38,7 @@ public class Observation implements Serializable, Comparable<Observation> {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="demandeid")
-    private Demande demandecession;
+    private Demande demande;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="utilisateur_id")
@@ -47,5 +48,9 @@ public class Observation implements Serializable, Comparable<Observation> {
     public int compareTo(Observation o) {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    public Long getIdDemande() {
+        return idDemande;
     }
 }
