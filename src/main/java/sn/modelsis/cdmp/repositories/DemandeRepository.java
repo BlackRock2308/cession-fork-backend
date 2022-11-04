@@ -12,7 +12,6 @@ public interface DemandeRepository extends JpaRepository<Demande, Long> {
 
     public List<Demande> findAllByStatut_Libelle(Statuts statut);
 
-    Optional<Demande> findTopByOrderByIdDesc();
 
     //public List<Demande> findDemandeByPme(Pme pme);
 

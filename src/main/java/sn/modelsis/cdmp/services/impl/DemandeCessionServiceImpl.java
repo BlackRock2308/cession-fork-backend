@@ -40,7 +40,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     private final CreanceMapper creanceMapper;
 
-    @Autowired
     private  final DemandeService demandeService;
 
     @Override
@@ -57,7 +56,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         demandeCession.setStatut(statut);
         //statutRepository.save(statut);
 
-        demandeCession.setNumeroDemande(demandeService.getNumDemande());
+        if(demandeCession.getIdDemande()==null){
+            demandeCession.setNumeroDemande(demandeService.getNumDemande());
+        }
         return demandecessionRepository.save(demandeCession);
     }
 //    @Override

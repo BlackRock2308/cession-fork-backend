@@ -49,7 +49,6 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private  final DocumentService documentService;
     private final DemandeAdhesionMapper adhesionMapper;
 
-    @Autowired
     private  final DemandeService demandeService;
 
     @Override
@@ -69,7 +68,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                     throw new CustomException("La PME n'existe pas");
                 }
         );
-        demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
+        if(demandeAdhesion.getIdDemande()==null){
+            demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
+        }
         return demandeAdhesionRepository.save(demandeAdhesion);
     }
 
