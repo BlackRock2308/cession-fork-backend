@@ -8,13 +8,14 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 
 @Entity
 @Data
 @NoArgsConstructor
 @ToString
 @Table(name = "observation")
-public class Observation implements Serializable {
+public class Observation implements Serializable, Comparable<Observation> {
     /**
    * 
    */
@@ -39,4 +40,10 @@ public class Observation implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="utilisateur_id")
     private Utilisateur utilisateur;
+    
+    @Override
+    public int compareTo(Observation o) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }
