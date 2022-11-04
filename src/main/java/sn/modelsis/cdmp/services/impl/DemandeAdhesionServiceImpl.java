@@ -48,7 +48,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
     private  final DocumentService documentService;
-   // private final DemandeAdhesionMapper adhesionMapper;
+    private final DemandeAdhesionMapper adhesionMapper;
 
     @Override
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
@@ -154,15 +154,5 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         return demandeAdhesion;
     }
 
-    @Override
-    public List<DemandeAdhesionDto> findAll() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
-    @Override
-    public Optional<DemandeAdhesionDto> findById(Long id) {
-        // TODO Auto-generated method stub
-        return Optional.empty();
-    }
 }
