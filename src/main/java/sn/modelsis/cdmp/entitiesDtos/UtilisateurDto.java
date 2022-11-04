@@ -18,28 +18,20 @@ public class UtilisateurDto {
 
     private Long idUtilisateur;
 
-    @Column(name="adresse")
     private String adresse;
 
-    @Column(name="codePin")
     private String codePin;
 
-    @Column(name="password")
     private String password;
 
-    @Column(name="prenom")
     private String prenom;
 
-    @Column(name="urlImagesignature")
     private String urlImageSignature;
 
-    @Column(name="telephone")
     private int telephone;
 
-    @Column(name="email")
     private String email;
 
-    @Column(name="urlimageprofil")
     private String urlImageProfil;
 
     private Set<Role> roles ;

@@ -1,12 +1,17 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
-import lombok.*;
-import sn.modelsis.cdmp.entities.*;
-
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.validation.constraints.NotBlank;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor

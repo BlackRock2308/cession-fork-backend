@@ -58,13 +58,13 @@ public class Pme implements Serializable {
     private String raisonSocial;
     
     @Column(name = "atd")
-    private String atd;
+    private boolean atd;
     
     @Column(name = "nantissement")
-    private String nantissement;
+    private boolean nantissement;
     
     @Column(name = "interdictionbancaire")
-    private String interdictionBancaire;
+    private boolean interdictionBancaire;
 
     @Column(name = "identificationBudgetaire")
     private boolean identificationBudgetaire;
