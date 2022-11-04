@@ -15,8 +15,14 @@ import lombok.ToString;
 public class ObservationDto {
   
   private Long id;
+
+  private Long idDemande;
   
   private String libelle;
+
+  private StatutDto statut;
+
+  private DemandeCessionDto demandeCessionDto;
   
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime dateObservation; 

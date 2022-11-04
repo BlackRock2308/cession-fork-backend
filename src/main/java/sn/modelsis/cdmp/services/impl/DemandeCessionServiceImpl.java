@@ -110,25 +110,13 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository.findAllByPmeIdPME(id);
     }
 
-    @Override
-    @Transactional
-    public DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto) {
-        Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
-        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-       // Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
-        //pme.setHasninea(false);
-        //pmeRepository.save(pme);
-        statutRepository.save(statut);
-        DemandeCession result=demandecessionRepository.save(demandecession);
-        return DtoConverter.convertToDto(result) ;
-    }
-
+    /** Analyse des Demande de Cession REJETTEE ou RECEVABLE **/
 
     @Override
     @Transactional
     public DemandeCession rejectionDemandeCession(Long idDemande ){
         Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
-        Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
+        Statut updatedStatut = statutRepository.findByLibelle("REJETEE");
         optional.get().setStatut(updatedStatut);
 
         DemandeCession demandeCessionDto = optional.get();
@@ -139,38 +127,31 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     @Transactional
-    public DemandeCession rejectDemandeCession(DemandeCessionDto demandeCessionDto, Long idDemande) {
-        Optional <DemandeCessionDto> optional = demandecessionRepository.findById(idDemande).map(cessionMapper::asDTO);
-        Statut statut = DtoConverter.convertToEntity(optional.get().getStatut());
-
-        BonEngagementDto optionalBe = optional.get().getBonEngagement();
-        System.out.println("mail PME :" + optional.get().getPme().getEmail());
-        System.out.println("Initila Statut Demande Cession:" + optional.get().getStatut().getLibelle());
-
-        //System.out.println("Initial Statut from DTO :" + demandeCessionDto.getStatut().getLibelle());
-
+    public DemandeCession acceptDemandeCession(Long idDemande ){
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
         Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
+        optional.get().setStatut(updatedStatut);
 
-        optional.get().setStatut(DtoConverter.convertToDto(updatedStatut));
+        DemandeCession demandeCessionDto = optional.get();
 
-        System.out.println("Updated Statut (Rejection):" + optional.get().getStatut().getLibelle());
+        return demandecessionRepository.save(demandeCessionDto);
 
-        demandeCessionDto.setStatut(DtoConverter.convertToDto(updatedStatut));
-
-        //assigning new values to Old one
-        optional.get().setBonEngagement(demandeCessionDto.getBonEngagement());
-        optional.get().setPme(demandeCessionDto.getPme());
-        optional.get().setDateDemandeCession(demandeCessionDto.getDateDemandeCession());
-        optional.get().setIdDemande(demandeCessionDto.getIdDemande());
-
-
-        System.out.println("Ninea Updated Statut (Rejection):" + optional.get().getPme().getNinea());
-
-        //DemandeCession resultUpdated = demandecessionRepository.saveAndFlush(DtoConverter.convertToEntity(optional.get()));
-
-        return demandecessionRepository.save(DtoConverter.convertToEntity(optional.get()));
     }
 
+    /** Validation des Demande de Cession RISQUE ou NON_RISQUE, COMPLEMENT **/
+
+    @Override
+    @Transactional
+    public DemandeCession validateDemandeCession(Long idDemande ){
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
+        optional.get().setStatut(updatedStatut);
+
+        DemandeCession demandeCessionDto = optional.get();
+
+        return demandecessionRepository.save(demandeCessionDto);
+
+    }
     @Override
     @Transactional
     public DemandeCessionDto validerCession(DemandeCessionDto demandecessionDto) {
