@@ -9,9 +9,11 @@ import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.PaiementService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 @Service
@@ -95,6 +97,30 @@ public class PaiementServiceImpl implements PaiementService {
          */
 
 
+        return paiementRepository.save(paiement);
+    }
+
+    @Override
+    public Paiement save(PaiementDto paiementDto) {
+        DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
+        String statusLibelle = demandeCession.getStatut().getLibelle() ;
+        Paiement paiement = DtoConverter.convertToEntity(paiementDto);
+        BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
+        double montantCreance=bonEngagement.getMontantCreance();
+        Set<Convention> convention=  demandeCession.getConventions();
+        //convention.forEach(CO);
+        double decote = 20000;
+
+        if(statusLibelle.equals("CONVENTION_ACCEPTEE")){
+            paiement.setDemandeCession(demandeCession);
+
+            paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
+            paiement.setMontantRecuCDMP(0);
+            demandeCession.setStatut(statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT"));
+            demandeCessionRepository.save(demandeCession);
+
+
+        }
         return paiementRepository.save(paiement);
     }
 

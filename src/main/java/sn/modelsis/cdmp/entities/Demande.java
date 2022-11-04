@@ -42,14 +42,6 @@ public class Demande implements Serializable {
     @JoinColumn(name="statutid")
     private Statut statut;
 
-
-
-    
-
-
-
-
-    
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<DemandeDocuments> documents = new HashSet<>();
 
