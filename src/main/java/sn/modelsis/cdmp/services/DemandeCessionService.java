@@ -27,8 +27,10 @@ public interface DemandeCessionService {
 
     // Analyse Demande de Cession
     DemandeCession rejectionDemandeCession(Long idDemande );
-
     DemandeCession acceptDemandeCession(Long idDemande );
+
+    // Vilidation Demande de Cession
+    DemandeCession validateDemandeCession(Long idDemande );
 
     public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 

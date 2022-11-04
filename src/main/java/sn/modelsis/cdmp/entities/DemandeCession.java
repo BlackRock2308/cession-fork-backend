@@ -29,7 +29,7 @@ public class DemandeCession extends Demande{
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandeCession")
     private Set<Convention> conventions = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "idDemande")
     private Set<Observation> observations = new HashSet<>();
 
 }

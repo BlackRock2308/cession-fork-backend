@@ -138,7 +138,20 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     }
 
+    /** Validation des Demande de Cession RISQUE ou NON_RISQUE, COMPLEMENT **/
 
+    @Override
+    @Transactional
+    public DemandeCession validateDemandeCession(Long idDemande ){
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
+        optional.get().setStatut(updatedStatut);
+
+        DemandeCession demandeCessionDto = optional.get();
+
+        return demandecessionRepository.save(demandeCessionDto);
+
+    }
     @Override
     @Transactional
     public DemandeCessionDto validerCession(DemandeCessionDto demandecessionDto) {
