@@ -4,9 +4,7 @@ import lombok.*;
 import sn.modelsis.cdmp.entities.*;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +18,7 @@ public class DemandeCessionDto {
     private StatutDto statut;
     private Set<ObservationDto> observations = new HashSet<>();
     private Set<DocumentDto> documents = new HashSet<>();
+    private List<Convention> conventions = new ArrayList<>();
     private Set<PaiementDto> paiements = new HashSet<>();
     @NotBlank
     private BonEngagementDto bonEngagement;

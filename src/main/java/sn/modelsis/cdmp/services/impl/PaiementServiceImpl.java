@@ -107,9 +107,13 @@ public class PaiementServiceImpl implements PaiementService {
         Paiement paiement = DtoConverter.convertToEntity(paiementDto);
         BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
         double montantCreance=bonEngagement.getMontantCreance();
-        Set<Convention> convention=  demandeCession.getConventions();
-        //convention.forEach(CO);
-        double decote = 20000;
+        double decote = 2000000 ;
+        List<Convention> conventions=  demandeCession.getConventions();
+        for (Convention convention :conventions ) {
+            if (convention.isActiveConvention()){
+                decote=convention.getDecote() ;
+            }
+        }
 
         if(statusLibelle.equals("CONVENTION_ACCEPTEE")){
             paiement.setDemandeCession(demandeCession);
