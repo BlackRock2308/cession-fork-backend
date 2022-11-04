@@ -14,7 +14,8 @@ import java.util.Optional;
 public interface DemandeCessionService {
     DemandeCession saveCession(DemandeCession demandeCession);
 
-    DemandeCession addCession(DemandeCessionDto demandeCessionDto);
+//    DemandeCession addCession(DemandeCessionDto demandeCessionDto);
+
     //    List<DemandeCession> findAll();
 
     Page<DemandeCessionDto> findAll(Pageable pageable);

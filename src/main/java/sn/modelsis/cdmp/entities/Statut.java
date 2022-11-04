@@ -28,9 +28,8 @@ public class Statut implements Serializable {
     @Column(name = "code")
     private String code;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "libelle")
-    private Statuts libelle;
+    private String libelle;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "statut")
     private Set<Demande> demandes = new HashSet<>();

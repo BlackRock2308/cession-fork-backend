@@ -47,8 +47,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 //        Optional<DemandeCession> optional = demandecessionRepository.findB(vm.getPhone());
 //        ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, vm.getPhone());
         demandeCession.setDateDemandeCession(new Date());
-        Statut statut=new Statut();
-        statut.setLibelle(Statuts.SOUMISE);
+//        Statut statut = new Statut();
+//        statut.setLibelle(statutRepository.findByLibelle("SOUMISE").getLibelle());
+        Statut statut = statutRepository.findByLibelle("SOUMISE");
         demandeCession.setStatut(statut);
         //statutRepository.save(statut);
 
@@ -59,43 +60,29 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 //        return demandecessionRepository.findAll();
 //    }
 
-    @Override
-    @Transactional
-    public DemandeCession addCession(DemandeCessionDto demandeCessionDto) {
-        DemandeCession demandeCession = cessionMapper.asEntity(demandeCessionDto);
-
-        Optional<Pme> optional = pmeRepository.findById(demandeCessionDto.getPme().getIdPME());
-        ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.PME_BY_ID, demandeCessionDto.getPme().getIdPME().toString());
-
-        Optional<BonEngagement> optionalBe = bonEngagementRepository.findById(demandeCessionDto.getBonEngagement().getId());
-        ExceptionUtils.absentOrThrow(optionalBe, ItemNotFoundException.BONENGAGEMENT_BY_ID, demandeCessionDto.getBonEngagement().getId().toString());
-
-        if(optional.isPresent() && optionalBe.isPresent()){
-            demandeCession.setPme(optional.get());
-            demandeCession.setBonEngagement(optionalBe.get());
-            demandeCession.setDateDemandeCession(new Date());
-            Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_SOUMISE);
-            demandeCession.setStatut(statut);
-            return demandecessionRepository.save(demandeCession);
-        }
-        else {
-            throw new CustomException("Erreur, Impossible d'effectuer cette demande");
-        }
-//        pmeRepository.findById(demandeCessionDto.getIdPME()).ifPresentOrElse(
-//                (value)
-//                        -> {
-//                    demandeCession.setPme(value);
-//                    demandeCession.setDateDemandeCession(new Date());
-//                    Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_SOUMISE);
-//                    demandeCession.setStatut(statut);
-//                },
-//                ()
-//                        -> {
-//                    throw new CustomException("La PME n'existe pas");
-//                }
-//        );
-        //return demandecessionRepository.save(demandeCession);
-    }
+//    @Override
+//    @Transactional
+//    public DemandeCession addCession(DemandeCessionDto demandeCessionDto) {
+//        DemandeCession demandeCession = cessionMapper.asEntity(demandeCessionDto);
+//
+//        Optional<Pme> optional = pmeRepository.findByNinea(demandeCessionDto.getPme().getNinea());
+//        ExceptionUtils.absentOrThrow(optional, ItemExistsException.NINEA_PME_EXIST, demandeCessionDto.getPme().getNinea());
+//
+//        Optional<BonEngagement> optionalBe = bonEngagementRepository.findById(demandeCessionDto.getBonEngagement().getId());
+//        ExceptionUtils.absentOrThrow(optionalBe, ItemNotFoundException.BONENGAGEMENT_BY_ID, demandeCessionDto.getBonEngagement().getId().toString());
+//
+//        if(optional.isPresent() ){
+//            demandeCession.setPme(optional.get());
+//            demandeCession.setBonEngagement(optionalBe.get());
+//            demandeCession.setDateDemandeCession(new Date());
+//            Statut statut=statutRepository.findByLibelle(Statuts.ADHESION_SOUMISE);
+//            demandeCession.setStatut(statut);
+//            return demandecessionRepository.save(demandeCession);
+//        }
+//        else {
+//            throw new CustomException("Erreur, Impossible d'effectuer cette demande");
+//        }
+//    }
 
     @Override
     public Page<DemandeCessionDto> findAll(Pageable pageable){
@@ -164,7 +151,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         //statut.setLibelle(Statuts.NON_RISQUEE);
         pmeRepository.save(pme);
         //statutRepository.save(statut);
-        demandecession.setStatut(statutRepository.findByLibelle(Statuts.NON_RISQUEE));
+        demandecession.setStatut(statutRepository.findByLibelle("NON_RISQUEE"));
         observationRepository.save(observation);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
@@ -179,9 +166,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
         Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
         Pme pme = demandecession.getPme();
-        statut.setLibelle(Statuts.REJETEE);
+        //statut.setLibelle(statutRepository.findByLibelle("REJETEE").getLibelle());
+        demandecession.setStatut(statutRepository.findByLibelle("REJETEE"));
         pmeRepository.save(pme);
-        statutRepository.save(statut);
+        //statutRepository.save(statut);
         observationRepository.save(observation);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
@@ -195,9 +183,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
         Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
         Pme pme = demandecession.getPme();
-        statut.setLibelle(Statuts.COMPLEMENT_REQUIS);
+        //statut.setLibelle(Statuts.COMPLEMENT_REQUIS);
+        demandecession.setStatut(statutRepository.findByLibelle("COMPLEMENT_REQUIS"));
         pmeRepository.save(pme);
-        statutRepository.save(statut);
+        //statutRepository.save(statut);
         observationRepository.save(observation);
         DemandeCession result=demandecessionRepository.save(demandecession);
         return DtoConverter.convertToDto(result) ;
@@ -225,7 +214,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto) {
 
         DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
-        demandeCession.setStatut(statutRepository.findByLibelle(Statuts.RECEVABLE));
+        //demandeCession.setStatut(statutRepository.findByLibelle(Statuts.RECEVABLE));
+        demandeCession.setStatut(statutRepository.findByLibelle("RECEVABLE"));
+
         DemandeCession result=demandecessionRepository.save(demandeCession);
         return DtoConverter.convertToDto(result) ;
     }
@@ -235,7 +226,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Transactional
     public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto) {
         DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
-        demandeCession.setStatut(statutRepository.findByLibelle(Statuts.REJETEE));
+        //demandeCession.setStatut(statutRepository.findByLibelle(Statuts.REJETEE));
+        demandeCession.setStatut(statutRepository.findByLibelle("REJETEE"));
+
         DemandeCession result=demandecessionRepository.save(demandeCession);
         return DtoConverter.convertToDto(result) ;
 
