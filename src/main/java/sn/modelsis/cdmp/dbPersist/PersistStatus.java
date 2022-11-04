@@ -122,6 +122,8 @@ public class PersistStatus {
         statutRepository.save(demandeCessionCDMPPaiementEnCours);
         statutRepository.save(demandeCessionPMEPayee);
         statutRepository.save(demandeCessionCDMPPayee);
+
+
     }
 
         //insertion des differents statuts que l'on peut avoir
