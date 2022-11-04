@@ -30,7 +30,7 @@ public class PaiementDto {
 
     private double montantCreance;
 
-    private Statuts statutLibelle;
+    private StatutDto statutDto;
 
 
 

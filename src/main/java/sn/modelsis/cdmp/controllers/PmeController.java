@@ -39,9 +39,9 @@ public class PmeController {
     Pme pme = DtoConverter.convertToEntity(pmeDto);
     //Demande demande=DtoConverter.convertToEntity(demandeDto);
     //demande.setPme(pme);
-    Statut statut=new Statut();
-    statut.setLibelle(Statuts.ADHESION_SOUMISE);
-    statut.setCode("1");
+//    Statut statut=new Statut();
+//    statut.setLibelle(Statuts.ADHESION_SOUMISE);
+//    statut.setCode("1");
     //demande.setStatut(statut);
     Pme result = pmeService.save(pme);
     log.info("Pme created. Id:{} ", result.getIdPME());

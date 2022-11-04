@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.entitiesDtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.Statuts;
 
 import java.util.Date;
@@ -22,7 +23,7 @@ public class CreanceDto {
 
     private double montantCreance; //Bon engagement
 
-    private Statuts statutLibelle; //DemandeCession
+    private Statut statut; //DemandeCession
 
     private String rccm; //PME
 
