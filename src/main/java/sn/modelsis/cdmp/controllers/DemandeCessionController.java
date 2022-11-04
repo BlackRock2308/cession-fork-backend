@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -76,11 +78,12 @@ public class DemandeCessionController {
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
     @GetMapping
-    public ResponseEntity<List<DemandeCessionDto>> getAllDemandeCession(HttpServletRequest request) {
-        List<DemandeCession> demandeList = demandeCessionService.findAll();
-        log.info("All Requests .");
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCession(Pageable pageable,
+                                                                        HttpServletRequest request) {
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAll(pageable);
+        log.info("Fetching All Deamndes Cession ....");
         return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+                .body(demandeList);
     }
 
     @GetMapping(value = "pme/{id}")
@@ -92,10 +95,12 @@ public class DemandeCessionController {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<DemandeCessionDto> getAllDemandeCession(@PathVariable Long id, HttpServletRequest request) {
-        DemandeCession demande = demandeCessionService.findById(id).orElse(null);
-        log.info("Demande . Id:{}", id);
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demande));
+    public ResponseEntity<DemandeCessionDto> getDemandeCession(@PathVariable Long id,
+                                                               HttpServletRequest request) {
+        DemandeCessionDto demande = demandeCessionService.getDemandeCession(id).orElse(null);
+        log.info("Demande Cession with Id:{}", id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demande);
     }
 
 }

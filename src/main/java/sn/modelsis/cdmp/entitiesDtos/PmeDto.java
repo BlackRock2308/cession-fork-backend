@@ -25,15 +25,12 @@ public class PmeDto {
     private Long idPME;
     private String prenomRepresentant;
     private String nomRepresentant;
-
     @NotNull @NotBlank
     private String rccm;
-
     private String adressePME;
     private String telephonePME;
     private Date dateImmatriculation;
     private String centreFiscal;
-
     @NotEmpty
     private String ninea;
     private String raisonSocial;
@@ -41,11 +38,9 @@ public class PmeDto {
     private String nantissement;
     private String interdictionBancaire;
     private String formeJuridique;
-
     @NotEmpty
     @Email
     private String email;
-
     private  int codePin;
     private String urlImageProfile;
     private String urlImageSignature;

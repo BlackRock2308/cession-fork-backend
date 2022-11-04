@@ -11,8 +11,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
-@ToString
+@ToString @Getter @Setter
 public class DemandeAdhesionDto {
 
     private Long idDemande;
