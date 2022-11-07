@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
@@ -48,6 +49,15 @@ public class DemandeCessionController {
         log.info("DemandeCessionController:getDemandeCession request params  {}", demande.getIdDemande());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demande);
+    }
+
+    @GetMapping(value="bystatut")
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatut(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String statut,
+                                                                        HttpServletRequest request) {
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatut(pageable,statut);
+        log.info("Fetching All Deamndes Cession ....");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
     }
 
 
@@ -127,6 +137,31 @@ public class DemandeCessionController {
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
     }
 
+    /* **************** Filtering accepting and rejected Demande **************** */
+
+    @GetMapping("/rejected")
+    public ResponseEntity<List<DemandeCessionDto>> getAllRejectedDemande(HttpServletRequest request) {
+        log.info("DemandeCessionController:getAllRejectedDemande request started");
+        List<DemandeCession> demandeList = demandeCessionService.findAllDemandeRejetee();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/recevable")
+    public ResponseEntity<List<DemandeCessionDto>> getAllAcceptedDemande(HttpServletRequest request) {
+        log.info("DemandeCessionController:getAllRejectedDemande request started");
+        List<DemandeCession> demandeList = demandeCessionService.findAllDemandeAcceptee();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/complement-requis")
+    public ResponseEntity<List<DemandeCessionDto>> getAllComplementRequisDemande(HttpServletRequest request) {
+        log.info("DemandeCessionController:getAllRejectedDemande request started");
+        List<DemandeCession> demandeList = demandeCessionService.findAllDemandeComplementRequis();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+    }
 
 
 }

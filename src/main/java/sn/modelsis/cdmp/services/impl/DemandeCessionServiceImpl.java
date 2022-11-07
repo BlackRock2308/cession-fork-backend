@@ -21,6 +21,7 @@ import sn.modelsis.cdmp.util.ExceptionUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -36,6 +37,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionMapper cessionMapper;
 
     private final CreanceMapper creanceMapper;
+
+
 
 
     @Override
@@ -92,6 +95,14 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     public List<DemandeCession> findAllPMEDemandes(Long id) {
         return demandecessionRepository.findAllByPmeIdPME(id);
+    }
+
+    @Override
+    public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
+        log.info("DemandeCessionService:findAll by statut request started");
+        return demandecessionRepository
+                .findAllByStatut_Libelle(pageable,statut)
+                .map(cessionMapper::asDTO);
     }
 
     /** Recebavilite des Demande de Cession REJETTEE ou RECEVABLE **/
@@ -210,7 +221,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto) {
 
         DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
-        //demandeCession.setStatut(statutRepository.findByLibelle(Statuts.RECEVABLE));
         demandeCession.setStatut(statutRepository.findByLibelle("RECEVABLE"));
 
         DemandeCession result=demandecessionRepository.save(demandeCession);
@@ -222,11 +232,37 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto) {
         DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
-        //demandeCession.setStatut(statutRepository.findByLibelle(Statuts.REJETEE));
         demandeCession.setStatut(statutRepository.findByLibelle("REJETEE"));
 
         DemandeCession result=demandecessionRepository.save(demandeCession);
         return DtoConverter.convertToDto(result) ;
 
+    }
+
+    @Override
+    public List<DemandeCession> findAllDemandeRejetee(){
+
+        return demandecessionRepository
+                .findAll().stream()
+                .filter(demande -> demande.getStatut().getLibelle().equals("REJETEE"))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DemandeCession> findAllDemandeAcceptee(){
+
+        return demandecessionRepository
+                .findAll().stream()
+                .filter(demande -> demande.getStatut().getLibelle().equals("RECEVABLE"))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DemandeCession> findAllDemandeComplementRequis(){
+
+        return demandecessionRepository
+                .findAll().stream()
+                .filter(demande -> demande.getStatut().getLibelle().equals("COMPLEMENT_REQUIS"))
+                .collect(Collectors.toList());
     }
 }

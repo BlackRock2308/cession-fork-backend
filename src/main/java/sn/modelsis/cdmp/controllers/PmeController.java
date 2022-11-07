@@ -85,6 +85,13 @@ public class PmeController {
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(pme));
   }
 
+  @GetMapping(value = "/byutilisateur/{id}")
+  public ResponseEntity<PmeDto> getPmeByUtilisateur(@PathVariable Long id, HttpServletRequest request) {
+    Pme pme = pmeService.getPmeByUtilisateur(id).orElse(null);
+    log.info("Utilisateur . Id:{}", id);
+    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(pme));
+  }
+
 
 
   @DeleteMapping(value = "/{id}")

@@ -1,13 +1,11 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.repositories.DemandeRepository;
-import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
@@ -15,19 +13,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class DemandeServiceImpl implements DemandeService {
 
     private final DemandeRepository demandeRepository;
     private final DocumentService documentService;
 
+    private final StatutRepository statutRepository;
+
     @Override
     public List<Demande> findAll() {
         return demandeRepository.findAll();
     }
-
 
     //La liste des demandes a l'étape analyse du risque
     @Override

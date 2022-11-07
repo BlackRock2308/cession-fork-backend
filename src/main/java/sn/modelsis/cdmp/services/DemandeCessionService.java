@@ -14,10 +14,6 @@ import java.util.Optional;
 public interface DemandeCessionService {
     DemandeCession saveCession(DemandeCession demandeCession);
 
-//    DemandeCession addCession(DemandeCessionDto demandeCessionDto);
-
-    //    List<DemandeCession> findAll();
-
     Page<DemandeCessionDto> findAll(Pageable pageable);
 
     Optional<DemandeCessionDto> findById (Long id);
@@ -38,26 +34,15 @@ public interface DemandeCessionService {
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
-//    DemandeCessionDto validerCession(DemandeCessionDto demandecession);
-
-
-
-
-//    DemandeCessionDto rejeterAnalyse(DemandeCessionDto demandecessionDto);
-
-
-
-
-
     List<DemandeCession> findAllPMEDemandes(Long id);
 
+    List<DemandeCession> findAllDemandeRejetee();
 
+    List<DemandeCession> findAllDemandeAcceptee();
 
+    List<DemandeCession> findAllDemandeComplementRequis();
 
+    Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut);
 
-    /**
-     *
-     * @return
-     */
 
     }
