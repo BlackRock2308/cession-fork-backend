@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.security.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,7 +18,7 @@ import sn.modelsis.cdmp.security.filter.JwtFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-public class SwaggerConfiguration {
+public class SecurityConfig {
 
     @Value("${spring.security.debug:false}")
     boolean securityDebug;

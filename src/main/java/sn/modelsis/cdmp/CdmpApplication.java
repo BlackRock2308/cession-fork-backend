@@ -5,8 +5,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,17 +15,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import sn.modelsis.cdmp.dbPersist.PersistStatus;
 import sn.modelsis.cdmp.dbPersist.PersitUsers;
-import sn.modelsis.cdmp.entities.Role;
-import sn.modelsis.cdmp.entities.Roles;
-import sn.modelsis.cdmp.entities.Utilisateur;
+
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;

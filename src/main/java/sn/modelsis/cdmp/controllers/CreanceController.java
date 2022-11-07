@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.controllers;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -26,20 +27,18 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/creances")
+@Slf4j
 public class CreanceController {
 
-    private final Logger log = LoggerFactory.getLogger(CreanceController.class);
-
     private final DemandeCessionService demandeCessionService;
-
     private final CreanceMapper creanceMapper;
 
     @GetMapping
-    public ResponseEntity<Page<CreanceDto>> getAllDemandeCession(Pageable pageable,
+    public ResponseEntity<Page<CreanceDto>> CreanceController(Pageable pageable,
                                                                  HttpServletRequest request) {
+        log.info("CreanceController.CreanceController request started ...");
         Page<DemandeCessionDto> demandeList = demandeCessionService
                 .findAll(pageable);
-        log.info("Fetching list of creances : ....");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList.map(creanceMapper::mapToDto));
     }
@@ -47,10 +46,11 @@ public class CreanceController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Optional<CreanceDto>> getCreance(@PathVariable Long id,
                                                     HttpServletRequest request) {
-       Optional<CreanceDto> creanceDto = demandeCessionService
+        log.info("CreanceController.getCreance request started ...");
+        Optional<CreanceDto> creanceDto = demandeCessionService
                     .getDemandeCession(id)
                     .map(creanceMapper::mapToDto);
-        log.info("Getting Creance with Id = {}", id);
+        log.debug("CreanceController.getCreance request params : {}", id);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(creanceDto);
     }
