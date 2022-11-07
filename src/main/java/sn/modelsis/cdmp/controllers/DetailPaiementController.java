@@ -46,7 +46,7 @@ public class DetailPaiementController {
     @PostMapping(value = "pme")
     public ResponseEntity<DetailPaiementDto> addDetailPaiementPME(@RequestBody DetailPaiementDto detailPaiementDto,
                                                        HttpServletRequest request) {
-        log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getIdPaiement());
+       // log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getIdPaiement());
 
         DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
         log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
