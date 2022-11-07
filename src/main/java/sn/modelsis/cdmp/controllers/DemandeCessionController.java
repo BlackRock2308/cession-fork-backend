@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/demandecession")
+@Slf4j
 public class DemandeCessionController {
 
-    private final Logger log = LoggerFactory.getLogger(DemandeCessionController.class);
     private final DemandeCessionService demandeCessionService;
 
     @PostMapping
@@ -42,37 +43,37 @@ public class DemandeCessionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
+    @GetMapping
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCession(Pageable pageable,
+                                                                        HttpServletRequest request) {
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAll(pageable);
+        log.info("DemandeCessionController:getAllDemandeCession request started");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
+    }
+
     @GetMapping(value = "{id}")
     public ResponseEntity<DemandeCessionDto> getDemandeCession(@PathVariable Long id,
                                                                HttpServletRequest request) {
+        log.info("DemandeCessionController:getDemandeCession request started");
         DemandeCessionDto demande = demandeCessionService.getDemandeCession(id).orElse(null);
         log.info("DemandeCessionController:getDemandeCession request params  {}", demande.getIdDemande());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demande);
     }
 
-    @GetMapping(value="bystatut")
-    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatut(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String statut,
-                                                                        HttpServletRequest request) {
-        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatut(pageable,statut);
-        log.info("Fetching All Deamndes Cession ....");
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList);
-    }
+    /******* Recevabilité : Endpoint pour rejeter une demande de cession -- accepter une demande de cession ******* ***/
 
-
-    /******* Endpoint pour rejeter une demande de cession -- accepter une demande de cession ******* ***/
-
-    @PatchMapping(value ="/{idDemande}/rejectedCession")
+    @PatchMapping(value ="/{idDemande}/rejeterRecevabilite")
     public ResponseEntity<DemandeCessionDto> rejectCession(@PathVariable("idDemande") Long idDemande) {
-        DemandeCession rejectedDemande = demandeCessionService.rejectionDemandeCession(idDemande);
+        DemandeCession rejectedDemande = demandeCessionService.rejeterRecevabilite(idDemande);
         log.info("DemandeCessionController:rejectCession request params  {}", rejectedDemande.getIdDemande());
        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(rejectedDemande));
     }
 
-    @PatchMapping(value ="/{idDemande}/acceptedCession")
+    @PatchMapping(value ="/{idDemande}/validerRecevabilite")
     public ResponseEntity<DemandeCessionDto> acceptCession(@PathVariable("idDemande") Long idDemande) {
-        DemandeCession acceptedDemande = demandeCessionService.acceptDemandeCession(idDemande);
+        DemandeCession acceptedDemande = demandeCessionService.validerRecevabilite(idDemande);
         log.info("DemandeCessionController:acceptCession request params  {}", acceptedDemande.getIdDemande());
 
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(acceptedDemande));
@@ -106,28 +107,6 @@ public class DemandeCessionController {
 
     /** *******Endpoints pour la recevabilité de la Demande de Cession******* **/
 
-    @PatchMapping(value = "/{id}/validerRecevabilite")
-    public ResponseEntity<DemandeCessionDto> validerRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.validerRecevabilite(demandecessionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
-    }
-
-    @PatchMapping(value = "/{id}/rejeterRecevabilite")
-    public ResponseEntity<DemandeCessionDto> rejeterRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterRecevabilite(demandecessionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
-    }
-
-    /** --------********************************************-------**/
-
-    @GetMapping
-    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCession(Pageable pageable,
-                                                                        HttpServletRequest request) {
-        Page<DemandeCessionDto> demandeList = demandeCessionService.findAll(pageable);
-        log.info("Fetching All Deamndes Cession ....");
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList);
-    }
 
     @GetMapping(value = "pme/{id}")
     public ResponseEntity<List<DemandeCessionDto>> getAllPMEDemandeCession(@PathVariable Long id, HttpServletRequest request) {
@@ -149,7 +128,7 @@ public class DemandeCessionController {
 
     @GetMapping("/recevable")
     public ResponseEntity<List<DemandeCessionDto>> getAllAcceptedDemande(HttpServletRequest request) {
-        log.info("DemandeCessionController:getAllRejectedDemande request started");
+        log.info("DemandeCessionController:getAllAcceptedDemande request started");
         List<DemandeCession> demandeList = demandeCessionService.findAllDemandeAcceptee();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
@@ -161,6 +140,16 @@ public class DemandeCessionController {
         List<DemandeCession> demandeList = demandeCessionService.findAllDemandeComplementRequis();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+    }
+
+
+    @GetMapping(value="bystatut")
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatut(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String statut,
+                                                                                HttpServletRequest request) {
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatut(pageable,statut);
+        log.info("Fetching All Deamndes Cession ....");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
     }
 
 

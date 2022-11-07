@@ -6,6 +6,15 @@ import sn.modelsis.cdmp.entities.*;
 import javax.validation.constraints.NotBlank;
 import java.util.*;
 
+import javax.validation.constraints.NotBlank;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,4 +32,5 @@ public class DemandeCessionDto {
     private BonEngagementDto bonEngagement;
     @NotBlank
     private PmeDto pme;
+
 }

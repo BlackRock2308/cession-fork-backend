@@ -1,20 +1,18 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.DemandeCession;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Data
@@ -34,9 +32,10 @@ public class PmeDto {
     @NotEmpty
     private String ninea;
     private String raisonSocial;
-    private String atd;
-    private String nantissement;
-    private String interdictionBancaire;
+    private boolean atd;
+    private boolean nantissement;
+    private boolean interdictionBancaire;
+    private boolean identificationBudgetaire;
     private String formeJuridique;
     @NotEmpty
     @Email

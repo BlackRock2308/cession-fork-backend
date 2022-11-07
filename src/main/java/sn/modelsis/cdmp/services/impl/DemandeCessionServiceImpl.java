@@ -16,7 +16,6 @@ import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
-import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.util.Date;
@@ -40,8 +39,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final CreanceMapper creanceMapper;
 
     private  final DemandeService demandeService;
-
-
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -69,7 +66,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Page<DemandeCessionDto> findAll(Pageable pageable){
-        log.info("DemandeCessionService:findAll request started");
+        log.info("DemandeCessionService:findAll : fetching .....");
         return demandecessionRepository
                 .findAll(pageable)
                 .map(cessionMapper::asDTO);
@@ -77,7 +74,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Optional<DemandeCessionDto> findById(Long id) {
-        log.info("DemandeCessionService:findById request started");
+        log.info("DemandeCessionService:findById with param : {}", id);
         log.debug("DemandeCessionService:findById request params {}", id);
         final Optional <DemandeCessionDto> optional = Optional.of(demandecessionRepository
                 .findById(id)
@@ -91,29 +88,18 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     public Optional <DemandeCessionDto> getDemandeCession(Long id) {
         log.info("DemandeCessionService:getDemandeCession request started");
-        log.debug("DemandeCessionService:getDemandeCession request params {}", id);        return demandecessionRepository
+        log.debug("DemandeCessionService:getDemandeCession request params {}", id);
+        return demandecessionRepository
                 .findById(id)
                 .map(cessionMapper::asDTO);
     }
 
-    @Override
-    public List<DemandeCession> findAllPMEDemandes(Long id) {
-        return demandecessionRepository.findAllByPmeIdPME(id);
-    }
 
-    @Override
-    public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
-        log.info("DemandeCessionService:findAll by statut request started");
-        return demandecessionRepository
-                .findAllByStatut_Libelle(pageable,statut)
-                .map(cessionMapper::asDTO);
-    }
-
-    /** Recebavilite des Demande de Cession REJETTEE ou RECEVABLE **/
+    /** ********** [RECEVABILITE} Demande de Cession REJETTEE ou RECEVABLE  ************* **/
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public DemandeCession rejectionDemandeCession(Long idDemande ){
+    public DemandeCession rejeterRecevabilite(Long idDemande ){
         DemandeCession demandeCessionDto;
         try{
             log.info("DemandeCessionService:rejectionDemandeCession request started", idDemande);
@@ -133,14 +119,15 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public DemandeCession acceptDemandeCession(Long idDemande ){
+    public DemandeCession validerRecevabilite(Long idDemande ){
         DemandeCession demandeCessionDto;
         try {
             log.info("DemandeCessionService:acceptDemandeCession request params {}", idDemande);
             Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
             log.debug("DemandeCessionService:acceptDemandeCession request params {}", idDemande);
             Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
-            optional.get().setStatut(updatedStatut);
+
+            optional.ifPresent(demandeCession -> optional.get().setStatut(updatedStatut));
 
             demandeCessionDto = demandecessionRepository.save(optional.get());
             log.debug("DemandeCessionService:acceptDemandeCession received from Database {}", demandeCessionDto.getIdDemande());
@@ -152,7 +139,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     }
 
-    /** Analyse de risque des Demande de Cession RISQUEE, NON_RISQUEE ou COMPLEMENT **/
+    /** ****** [ANALYSE DE RISQUE] des Demande de Cession RISQUEE, NON_RISQUEE ou COMPLEMENT  ****** **/
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -198,49 +185,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     }
 
-
-    /**
-     This function is used inside validerRecevabilite and rejeterRecevabilite
-     to avoid boilerplate code inside those two functions
-     */
-    public DemandeCession getDemandeCessionDto(DemandeCessionDto demandecessionDto) {
-        Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
-        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-        Pme pme = demandecession.getPme();
-        BonEngagement be = demandecession.getBonEngagement();
-        observationRepository.save(observation);
-        pmeRepository.save(pme);
-        bonEngagementRepository.save(be);
-        return demandecession;
-    }
-
-    //Validation de la recevabilité de la demande de cession
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto) {
-
-        DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
-        demandeCession.setStatut(statutRepository.findByLibelle("RECEVABLE"));
-
-        DemandeCession result=demandecessionRepository.save(demandeCession);
-        return DtoConverter.convertToDto(result) ;
-    }
-
-    //Rejet de la recevabilité de la demande de cession
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto) {
-        DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
-        demandeCession.setStatut(statutRepository.findByLibelle("REJETEE"));
-
-        DemandeCession result=demandecessionRepository.save(demandeCession);
-        return DtoConverter.convertToDto(result) ;
-
-    }
-
+    /** ************** FIlter les demandes en fonction de leur statut*************************** **/
     @Override
     public List<DemandeCession> findAllDemandeRejetee(){
-
+        log.info("DemandeCessionService:findAllDemandeRejetee : fetching .....");
         return demandecessionRepository
                 .findAll().stream()
                 .filter(demande -> demande.getStatut().getLibelle().equals("REJETEE"))
@@ -249,7 +197,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public List<DemandeCession> findAllDemandeAcceptee(){
-
+        log.info("DemandeCessionService:findAllDemandeAcceptee : fetching .....");
         return demandecessionRepository
                 .findAll().stream()
                 .filter(demande -> demande.getStatut().getLibelle().equals("RECEVABLE"))
@@ -257,11 +205,26 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
-    public List<DemandeCession> findAllDemandeComplementRequis(){
-
+    public List<DemandeCession> findAllDemandeComplementRequis() {
+        log.info("DemandeCessionService:findAllBfindAllDemandeComplementRequis : fetching .....");
         return demandecessionRepository
                 .findAll().stream()
                 .filter(demande -> demande.getStatut().getLibelle().equals("COMPLEMENT_REQUIS"))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
+        log.info("DemandeCessionService:findAllByStatut request started");
+        return demandecessionRepository
+                .findAllByStatut_Libelle(pageable,statut)
+                .map(cessionMapper::asDTO);
+    }
+
+
+    @Override
+    public List<DemandeCession> findAllPMEDemandes(Long id) {
+        return demandecessionRepository.findAllByPmeIdPME(id);
+    }
+
 }
