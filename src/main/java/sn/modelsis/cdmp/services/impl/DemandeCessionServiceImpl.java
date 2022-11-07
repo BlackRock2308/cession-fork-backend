@@ -6,7 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.*;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
@@ -28,6 +29,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
     private final ObservationRepository observationRepository;
+
     private final DemandeCessionMapper cessionMapper;
 
     private final CreanceMapper creanceMapper;
@@ -102,15 +104,12 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository
                 .findById(id)
                 .map(cessionMapper::asDTO);
-
     }
 
     @Override
     public List<DemandeCession> findAllPMEDemandes(Long id) {
         return demandecessionRepository.findAllByPmeIdPME(id);
     }
-
-    /** Analyse des Demande de Cession REJETTEE ou RECEVABLE **/
 
     @Override
     @Transactional
@@ -125,33 +124,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     }
 
-    @Override
-    @Transactional
-    public DemandeCession acceptDemandeCession(Long idDemande ){
-        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
-        Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
-        optional.get().setStatut(updatedStatut);
 
-        DemandeCession demandeCessionDto = optional.get();
-
-        return demandecessionRepository.save(demandeCessionDto);
-
-    }
-
-    /** Validation des Demande de Cession RISQUE ou NON_RISQUE, COMPLEMENT **/
-
-    @Override
-    @Transactional
-    public DemandeCession validateDemandeCession(Long idDemande ){
-        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
-        Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
-        optional.get().setStatut(updatedStatut);
-
-        DemandeCession demandeCessionDto = optional.get();
-
-        return demandecessionRepository.save(demandeCessionDto);
-
-    }
     @Override
     @Transactional
     public DemandeCessionDto validerCession(DemandeCessionDto demandecessionDto) {

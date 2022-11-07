@@ -26,7 +26,7 @@ public interface DemandeService {
 
   List<Demande> findAllCreances();
 
-
+  Demande save(Demande demande);
 
 
   /**

@@ -103,6 +103,11 @@ public class DemandeControllers {
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demande));
   }
 
+  @PostMapping
+  public Demande addDemande(@RequestBody Demande demande){
+    return demandeService.save(demande) ;
+  }
+
 
 
 

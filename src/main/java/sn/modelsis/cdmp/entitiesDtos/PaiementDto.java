@@ -1,15 +1,10 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.ModePaiement;
 import sn.modelsis.cdmp.entities.Statuts;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -31,8 +26,6 @@ public class PaiementDto {
     private double montantCreance;
 
     private StatutDto statutDto;
-
-
 
     private Long demandecessionid;
 

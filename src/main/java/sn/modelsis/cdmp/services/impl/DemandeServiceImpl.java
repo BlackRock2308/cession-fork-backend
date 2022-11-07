@@ -97,6 +97,11 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
+    public Demande save(Demande demande) {
+      return   demandeRepository.save(demande);
+    }
+
+    @Override
     public Optional<Demande> getDemande(Long id) {
         return demandeRepository.findById(id);
     }
