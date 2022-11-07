@@ -40,19 +40,19 @@ public class ObservationControllers {
         @RequestBody ObservationDto observationDto,
         HttpServletRequest request) {
       Observation observation = DtoConverter.convertToEntity(observationDto);
-      Observation result = observationService.save(observation);
+      ObservationDto result = observationService.save(observation);
       log.info("Observation create. Id:{} ", result.getId());
-      return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+      return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PutMapping()
-    public ResponseEntity<ObservationDto> updateObservation(@RequestBody ObservationDto observationDto,
-        HttpServletRequest request) {
-      Observation observation = DtoConverter.convertToEntity(observationDto);
-      Observation result = observationService.save(observation);
-      log.info("Observation updated. Id:{}", result.getId());
-      return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
-    }
+//    @PutMapping()
+//    public ResponseEntity<ObservationDto> updateObservation(@RequestBody ObservationDto observationDto,
+//        HttpServletRequest request) {
+//      Observation observation = DtoConverter.convertToEntity(observationDto);
+//      Observation result = observationService.save(observation);
+//      log.info("Observation updated. Id:{}", result.getId());
+//      return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
+//    }
    
     @GetMapping
     public ResponseEntity<List<ObservationDto>> getAllObservations(
