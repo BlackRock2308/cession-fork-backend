@@ -3,7 +3,6 @@ package sn.modelsis.cdmp.security.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,7 +17,7 @@ import sn.modelsis.cdmp.security.filter.JwtFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-public class SecurityConfig {
+public class SwaggerConfiguration {
 
     @Value("${spring.security.debug:false}")
     boolean securityDebug;
@@ -26,13 +25,20 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter ;
 
-
+    private static final String[] AUTH_WHITELIST = {
+            "/authenticate",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v3/api-docs",
+            "/webjars/**"
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf()
         .disable()
         .authorizeRequests()
+         .antMatchers(AUTH_WHITELIST).permitAll()
         .antMatchers("/api/**" )
         .permitAll()
         .antMatchers("/swagger-ui/**" )
