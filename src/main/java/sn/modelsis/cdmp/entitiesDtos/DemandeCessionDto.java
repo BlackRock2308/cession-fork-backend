@@ -13,7 +13,6 @@ import java.util.*;
 public class DemandeCessionDto {
 
     private Long idDemande;
-//    private Long idPME;
     private Date dateDemandeCession;
     private StatutDto statut;
     private Set<ObservationDto> observations = new HashSet<>();

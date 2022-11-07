@@ -6,8 +6,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -27,7 +28,6 @@ public class DemandeCession extends Demande{
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "demandeCession")
     private Set<Convention> conventions = new HashSet<>();
 
-  //  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandecession")
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Observation> observations = new HashSet<>();
 

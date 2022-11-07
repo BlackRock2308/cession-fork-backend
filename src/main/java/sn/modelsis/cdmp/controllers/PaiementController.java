@@ -32,7 +32,7 @@ public class PaiementController {
     }
 
     @PostMapping
-    public Paiement addPaiement(@RequestBody PaiementDto paiementDto){
+    public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto){
 
         if(paiementDto.getDemandecessionid()==null ||  paiementDto.getIdPaiement()!=null)
             throw new  CustomException("L'id de la demande de cession ne doit pas etre null ");
@@ -41,8 +41,8 @@ public class PaiementController {
             throw new  CustomException("Le paiement exit déja ");
 
         Paiement paiementCreated = paiementService.save(paiementDto);
-      //  return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(paiementCreated));
-        return paiementCreated;
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(paiementCreated));
+
     }
 
 

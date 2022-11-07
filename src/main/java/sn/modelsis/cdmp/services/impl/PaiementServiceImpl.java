@@ -42,66 +42,6 @@ public class PaiementServiceImpl implements PaiementService {
     private StatutRepository statutRepository;
 
 
-    @Override
-    public Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement) {
-/*
-
-        //log.info("Demande:{} ",demande.isPresent());
-        Paiement paiement=new Paiement();
-
-        if (paiementRepository.findAll().stream().filter(result -> paiementDto.getDemandecessionid()==result.getDemandeCession().getIdDemande())!=null){
-            throw new CustomException("Paiement for this demande Already exist");
-        }
-
-
-        demandeCessionRepository.findById(paiementDto.getDemandecessionid()).ifPresentOrElse(
-                (value)
-                        -> {
-
-                    paiement.setDemandeCession(value);
-                    log.info("Paiement:{} ",paiement.getDemandeCession().getIdDemande());
-
-                    double montantCreance=value.getBonEngagement().getMontantCreance();
-                    Statut statut=value.getStatut();
-                    log.info("statut:{} ",statut.getLibelle());
-
-                    /*double soldePME= paiement.getSoldePME();
-                    double montantRecuCDMP=paiement.getMontantRecuCDMP();
-
-
-
-                    if (statut.getLibelle()=="CONVENTION_ACCEPTEE"){
-                        Convention conventionAcceptee=conventionRepository.findConventionValideByDemande(paiement.getDemandeCession().getIdDemande());
-                        double decote=conventionAcceptee.getDecote();
-                        paiement.setSoldePME((montantCreance*decote)/100);
-                        paiement.setMontantRecuCDMP(0);
-
-
-                        value.setStatut(this.statutRepository.findByLibelle("PME_EN_ATTENTE_DE_PAIEMENT"));
-                        demandeCessionRepository.save(value);
-                    }
-
-                                       else {
-                        throw new CustomException("Un paiement ne peut être effectué à cet étape.");
-                    }
-
-                },
-                ()
-                        -> {
-                    throw new CustomException("la demande n'existe pas");
-                }
-
-        );
-
-
-
-        return paiementRepository.save(paiement);
-
-
- */
-        return null;
-
-    }
 
     @Override
     public Paiement save(PaiementDto paiementDto) {
