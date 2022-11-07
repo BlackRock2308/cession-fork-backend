@@ -38,16 +38,16 @@ public class PmeServiceImpl implements PmeService {
 
     try {
       log.info("PmeService:savePme request started");
-      Optional<Pme> optional = pmeRepository.findByNinea(pme.getNinea());
-      ExceptionUtils.absentOrThrow(optional, ItemExistsException.NINEA_PME_EXIST, pme.getNinea());
+//      Optional<Pme> optional = pmeRepository.findByNinea(pme.getNinea());
+//      ExceptionUtils.absentOrThrow(optional, ItemExistsException.NINEA_PME_EXIST, pme.getNinea());
 
-      optional = pmeRepository.findByRccm(pme.getRccm());
-      ExceptionUtils.absentOrThrow(optional, ItemExistsException.RCCM_EXIST, pme.getRccm());
+//      optional = pmeRepository.findByRccm(pme.getRccm());
+//      ExceptionUtils.absentOrThrow(optional, ItemExistsException.RCCM_EXIST, pme.getRccm());
 
        //optional = pmeRepository.findByMail(pme.getEmail());
        //ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
 
-      optional = pmeRepository.findByPhone(pme.getTelephonePME());
+      Optional<Pme> optional = pmeRepository.findByPhone(pme.getTelephonePME());
       ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
 
       newPme = pmeRepository.saveAndFlush(pme);

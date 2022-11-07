@@ -29,16 +29,9 @@ import java.util.stream.Collectors;
 public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     private final DemandeCessionRepository demandecessionRepository;
-    private final BonEngagementRepository bonEngagementRepository;
-    private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
-    private final ObservationRepository observationRepository;
-
     private final DemandeCessionMapper cessionMapper;
 
-    private final CreanceMapper creanceMapper;
-
-    private  final DemandeService demandeService;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -74,7 +67,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Optional<DemandeCessionDto> findById(Long id) {
-        log.info("DemandeCessionService:findById with param : {}", id);
+        log.info("DemandeCessionService:findById :fetching .....");
         log.debug("DemandeCessionService:findById request params {}", id);
         final Optional <DemandeCessionDto> optional = Optional.of(demandecessionRepository
                 .findById(id)
