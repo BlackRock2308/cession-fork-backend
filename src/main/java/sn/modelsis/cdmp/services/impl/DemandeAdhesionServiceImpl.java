@@ -77,10 +77,6 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                 .orElseThrow());
     }
 
-    /**
-     This function is used inside rejetAdhesion and validerAdhesion
-     to avoid boilerplate code inside those two functions
-     */
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
