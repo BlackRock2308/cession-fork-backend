@@ -1,5 +1,7 @@
 package sn.modelsis.cdmp.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import sn.modelsis.cdmp.entities.Demande;
@@ -11,7 +13,7 @@ import java.util.List;
 public interface DemandeCessionRepository extends JpaRepository<DemandeCession,Long> {
 
 
-    public List<DemandeCession> findAllByStatut_Libelle(Statuts statut);
+    public Page<DemandeCession> findAllByStatut_Libelle(org.springframework.data.domain.Pageable pageable, String statut);
 
     public List<DemandeCession> findAllByPmeIdPME(Long id);
 

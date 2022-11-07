@@ -50,6 +50,15 @@ public class DemandeCessionController {
                 .body(demande);
     }
 
+    @GetMapping(value="bystatut")
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatut(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String statut,
+                                                                        HttpServletRequest request) {
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatut(pageable,statut);
+        log.info("Fetching All Deamndes Cession ....");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
+    }
+
 
     /******* Endpoint pour rejeter une demande de cession -- accepter une demande de cession ******* ***/
 
