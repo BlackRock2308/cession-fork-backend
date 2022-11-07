@@ -36,6 +36,7 @@ public class DtoConverter {
 	public static ConventionDto convertToDto(Convention convention) {
 	  ConventionDto conventionDto = null;
       if (null != convention) {
+//		  conventionDto.setC
           modelMapper.getConfiguration().setAmbiguityIgnored(true);
           conventionDto = modelMapper.map(convention, ConventionDto.class);
       }

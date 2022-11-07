@@ -44,7 +44,7 @@ public class PaiementServiceImpl implements PaiementService {
 
     @Override
     public Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement) {
-
+/*
 
         //log.info("Demande:{} ",demande.isPresent());
         Paiement paiement=new Paiement();
@@ -68,7 +68,7 @@ public class PaiementServiceImpl implements PaiementService {
                     /*double soldePME= paiement.getSoldePME();
                     double montantRecuCDMP=paiement.getMontantRecuCDMP();
 
-                     */
+
 
                     if (statut.getLibelle()=="CONVENTION_ACCEPTEE"){
                         Convention conventionAcceptee=conventionRepository.findConventionValideByDemande(paiement.getDemandeCession().getIdDemande());
@@ -92,12 +92,15 @@ public class PaiementServiceImpl implements PaiementService {
                 }
 
         );
-        /*
 
-         */
 
 
         return paiementRepository.save(paiement);
+
+
+ */
+        return null;
+
     }
 
     @Override
@@ -108,23 +111,25 @@ public class PaiementServiceImpl implements PaiementService {
         BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
         double montantCreance=bonEngagement.getMontantCreance();
         double decote = 2000000 ;
-        List<Convention> conventions=  demandeCession.getConventions();
+        Set<Convention> conventions=  demandeCession.getConventions();
         for (Convention convention :conventions ) {
             if (convention.isActiveConvention()){
                 decote=convention.getDecote() ;
             }
         }
 
-        if(statusLibelle.equals("CONVENTION_ACCEPTEE")){
-            paiement.setDemandeCession(demandeCession);
+        if(statusLibelle.equals("SOUMISE")){
+            //paiement.setDemandeCession(demandeCession);
 
             paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
             paiement.setMontantRecuCDMP(0);
             demandeCession.setStatut(statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT"));
+            demandeCession.setPaiement(paiement);
             demandeCessionRepository.save(demandeCession);
 
 
         }
+    //    return paiementRepository.save(paiement);
         return paiementRepository.save(paiement);
     }
 

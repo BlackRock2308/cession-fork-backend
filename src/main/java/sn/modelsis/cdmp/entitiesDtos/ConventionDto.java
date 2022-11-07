@@ -29,7 +29,6 @@ public class ConventionDto {
   
   private PmeDto pmeDto;
 
-  private Long demandeCessionId ;
 
   private boolean activeConvention;
 

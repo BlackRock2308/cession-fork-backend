@@ -18,8 +18,8 @@ public class DemandeCessionDto {
     private StatutDto statut;
     private Set<ObservationDto> observations = new HashSet<>();
     private Set<DocumentDto> documents = new HashSet<>();
-    private List<Convention> conventions = new ArrayList<>();
-    private Set<PaiementDto> paiements = new HashSet<>();
+    private Set<ConventionDto> conventions = new HashSet<>();
+    private PaiementDto paiementDto ;
     @NotBlank
     private BonEngagementDto bonEngagement;
     @NotBlank

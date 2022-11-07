@@ -57,10 +57,17 @@ public class ConventionControllers {
   @PostMapping()
   public ResponseEntity<ConventionDto> addConvention(@RequestBody ConventionDto conventionDto,
       HttpServletRequest request) {
-    Convention convention = DtoConverter.convertToEntity(conventionDto);
+    Convention convention= new Convention();
+//    Convention convention = DtoConverter.convertToEntity(conventionDto);
     DemandeCession demandeCession = demandeCessionRepository.findById(1L).orElse(null);
     convention.setDemandeCession(demandeCession);
+
     Convention result = conventionService.save(convention);
+
+    demandeCession.setConventions(result.getDemandeCession().getConventions());
+    System.out.println(demandeCession.toString());
+    DemandeCession demandeCession1=demandeCessionRepository.save(demandeCession);
+    System.out.println(demandeCession1.toString());
     log.info("Convention create. Id:{} ", result.getIdConvention());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
