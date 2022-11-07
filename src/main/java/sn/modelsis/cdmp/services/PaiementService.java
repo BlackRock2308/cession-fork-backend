@@ -14,7 +14,10 @@ public interface PaiementService {
          * @param paiementDto,montant,typePaiement
          * @return
          */
-        Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement);
+    //    Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement);
+
+        Paiement save(PaiementDto paiementDto);
+
         /**
          *
          * @param idPaiement,montant,typePaiement

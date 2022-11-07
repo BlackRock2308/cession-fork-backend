@@ -12,33 +12,19 @@ import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface PmeService {
-    /**
-     * @param pme
-     * @return
-     */
-    Pme save(Pme pme);
 
-    /**
-     * @return
-     */
-    List<Pme> findAll();
+    Pme savePme(Pme pme);
+    List<Pme> findAllPme();
 
-    /**
-     * @return
-     */
-    Pme findPmeByEmail(String email);
-
-    /**
-     * @param id
-     * @return
-     */
     Optional<Pme> getPme(Long id);
 
-    /**
-     * @param id
-     */
-    void delete(Long id);
-    
+    void deletePme(Long id);
+
+    Pme updatePme(Long id, Pme pme);
+
+    Pme findPmeByEmail(String email);
+
+
     /**
      * Cette methode permet de charger un document lié à une pme
      * 
@@ -51,4 +37,5 @@ public interface PmeService {
     Optional<Pme> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
 
 
+    Optional<Pme> getPmeByUtilisateur(Long id);
 }

@@ -1,6 +1,6 @@
 server:
   port: 8081
-  document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/documentLibrary}
+  document_folder: ${DOCUMENT_FOLDER:C:/Users/snndiayeos/Desktop/Wootoo/DocumentLibrary}
   notification: ${HOST:http://localhost:8087}
   email_cdmp: financeislamique@modelsis.sn
 spring:
@@ -16,7 +16,7 @@ spring:
     username: cdmp
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 

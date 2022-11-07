@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,9 +24,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.services.ConventionService;
+import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 /**
@@ -40,14 +43,31 @@ public class ConventionControllers {
 
     private final Logger log = LoggerFactory.getLogger(ConventionControllers.class);
 
-    @Autowired
-    private ConventionService conventionService;
-    
+
+    final private ConventionService conventionService;
+    final private DemandeCessionService demandeCessionService ;
+    final private DemandeCessionRepository demandeCessionRepository ;
+
+  public ConventionControllers(ConventionService conventionService, DemandeCessionService demandeCessionService, DemandeCessionRepository demandeCessionRepository) {
+    this.conventionService = conventionService;
+    this.demandeCessionService = demandeCessionService;
+    this.demandeCessionRepository = demandeCessionRepository;
+  }
+
   @PostMapping()
   public ResponseEntity<ConventionDto> addConvention(@RequestBody ConventionDto conventionDto,
       HttpServletRequest request) {
-    Convention convention = DtoConverter.convertToEntity(conventionDto);
+    Convention convention= new Convention();
+//    Convention convention = DtoConverter.convertToEntity(conventionDto);
+    DemandeCession demandeCession = demandeCessionRepository.findById(1L).orElse(null);
+    convention.setDemandeCession(demandeCession);
+
     Convention result = conventionService.save(convention);
+
+    demandeCession.setConventions(result.getDemandeCession().getConventions());
+    System.out.println(demandeCession.toString());
+    DemandeCession demandeCession1=demandeCessionRepository.save(demandeCession);
+    System.out.println(demandeCession1.toString());
     log.info("Convention create. Id:{} ", result.getIdConvention());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }

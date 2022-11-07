@@ -3,6 +3,9 @@ package sn.modelsis.cdmp.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,31 +31,22 @@ import sn.modelsis.cdmp.util.DtoConverter;
  */
 @RestController
 @RequestMapping("/api/observations")
+@RequiredArgsConstructor
+@Slf4j
 public class ObservationControllers {
 
-    private final Logger log = LoggerFactory.getLogger(ObservationControllers.class);
+    private final ObservationService observationService;
 
-    @Autowired
-    private ObservationService observationService;
-    
     @PostMapping()
     public ResponseEntity<ObservationDto> addObservation(
         @RequestBody ObservationDto observationDto,
         HttpServletRequest request) {
-      Observation observation = DtoConverter.convertToEntity(observationDto);
-      Observation result = observationService.save(observation);
+      //Observation observation = DtoConverter.convertToEntity(observationDto);
+      ObservationDto result = observationService.saveNewObservation(observationDto);
       log.info("Observation create. Id:{} ", result.getId());
-      return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+      return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PutMapping()
-    public ResponseEntity<ObservationDto> updateObservation(@RequestBody ObservationDto observationDto,
-        HttpServletRequest request) {
-      Observation observation = DtoConverter.convertToEntity(observationDto);
-      Observation result = observationService.save(observation);
-      log.info("Observation updated. Id:{}", result.getId());
-      return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
-    }
    
     @GetMapping
     public ResponseEntity<List<ObservationDto>> getAllObservations(

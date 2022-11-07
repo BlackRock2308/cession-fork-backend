@@ -6,6 +6,7 @@ package sn.modelsis.cdmp.services;
 import java.util.List;
 import java.util.Optional;
 import sn.modelsis.cdmp.entities.Observation;
+import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 
 
 /**
@@ -19,7 +20,7 @@ public interface ObservationService {
      * @param observation
      * @return
      */
-    Observation save(Observation observation);
+    ObservationDto saveNewObservation(ObservationDto observation);
 
     /**
     * 
