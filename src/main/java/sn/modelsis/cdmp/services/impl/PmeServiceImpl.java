@@ -2,29 +2,23 @@ package sn.modelsis.cdmp.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemExistsException;
-import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
-import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -145,5 +139,18 @@ public class PmeServiceImpl implements PmeService {
 
     }
     return pme;
+  }
+
+  @Override
+  public Optional<Pme> getPmeByUtilisateur(Long id) {
+    Optional<Pme> optional;
+    try {
+      log.info("PmeService:getPme started request");
+      optional = pmeRepository.findPmeByUtilisateurIdUtilisateur(id);
+
+    } catch(Exception ex){
+      throw new CustomException("Error, can't find PME with id user ");
+    }
+    return optional;
   }
 }

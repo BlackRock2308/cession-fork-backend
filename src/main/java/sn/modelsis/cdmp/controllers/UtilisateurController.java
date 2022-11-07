@@ -123,7 +123,7 @@ public class UtilisateurController {
         log.debug("REST request to update Utilisateur : {}", utilisateurDto);
         if (utilisateurDto.getIdUtilisateur() == null)
             throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
-            Utilisateur result = utilisateurService.update(DtoConverter.convertToEntity(utilisateurDto));
+        Utilisateur result = utilisateurService.update(DtoConverter.convertToEntity(utilisateurDto));
             return ResponseEntity
                     .ok()
                     .body(DtoConverter.convertToDto(result));

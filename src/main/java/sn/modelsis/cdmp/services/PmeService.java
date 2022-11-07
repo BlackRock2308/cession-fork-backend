@@ -37,4 +37,5 @@ public interface PmeService {
     Optional<Pme> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
 
 
+    Optional<Pme> getPmeByUtilisateur(Long id);
 }
