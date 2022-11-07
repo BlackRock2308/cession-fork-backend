@@ -26,11 +26,13 @@ public class DemandeCession extends Demande{
     @JoinColumn(name="bonengagement_id")
     private BonEngagement bonEngagement;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demandeCession")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "demandeCession")
     private Set<Convention> conventions = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "idDemande")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Observation> observations = new HashSet<>();
 
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private Paiement paiement;
 }
 

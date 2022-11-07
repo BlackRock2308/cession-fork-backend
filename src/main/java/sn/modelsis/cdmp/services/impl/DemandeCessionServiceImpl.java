@@ -32,6 +32,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
     private final ObservationRepository observationRepository;
+
     private final DemandeCessionMapper cessionMapper;
 
     private final CreanceMapper creanceMapper;

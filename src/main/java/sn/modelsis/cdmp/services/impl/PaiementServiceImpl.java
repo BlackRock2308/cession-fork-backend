@@ -9,9 +9,11 @@ import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.PaiementService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 @Service
@@ -40,61 +42,34 @@ public class PaiementServiceImpl implements PaiementService {
     private StatutRepository statutRepository;
 
 
+
     @Override
-    public Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement) {
-
-
-        //log.info("Demande:{} ",demande.isPresent());
-        Paiement paiement=new Paiement();
-
-        if (paiementRepository.findAll().stream().filter(result -> paiementDto.getDemandecessionid()==result.getDemandeCession().getIdDemande())!=null){
-            throw new CustomException("Paiement for this demande Already exist");
+    public Paiement save(PaiementDto paiementDto) {
+        DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
+        String statusLibelle = demandeCession.getStatut().getLibelle() ;
+        Paiement paiement = DtoConverter.convertToEntity(paiementDto);
+        BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
+        double montantCreance=bonEngagement.getMontantCreance();
+        double decote = 2000000 ;
+        Set<Convention> conventions=  demandeCession.getConventions();
+        for (Convention convention :conventions ) {
+            if (convention.isActiveConvention()){
+                decote=convention.getDecote() ;
+            }
         }
 
+        if(statusLibelle.equals("SOUMISE")){
+            //paiement.setDemandeCession(demandeCession);
 
-        demandeCessionRepository.findById(paiementDto.getDemandecessionid()).ifPresentOrElse(
-                (value)
-                        -> {
-
-                    paiement.setDemandeCession(value);
-                    log.info("Paiement:{} ",paiement.getDemandeCession().getIdDemande());
-
-                    double montantCreance=value.getBonEngagement().getMontantCreance();
-                    Statut statut=value.getStatut();
-                    log.info("statut:{} ",statut.getLibelle());
-
-                    /*double soldePME= paiement.getSoldePME();
-                    double montantRecuCDMP=paiement.getMontantRecuCDMP();
-
-                     */
-
-                    if (statut.getLibelle()=="CONVENTION_ACCEPTEE"){
-                        Convention conventionAcceptee=conventionRepository.findConventionValideByDemande(paiement.getDemandeCession().getIdDemande());
-                        double decote=conventionAcceptee.getDecote();
-                        paiement.setSoldePME((montantCreance*decote)/100);
-                        paiement.setMontantRecuCDMP(0);
+            paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
+            paiement.setMontantRecuCDMP(0);
+            demandeCession.setStatut(statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT"));
+            demandeCession.setPaiement(paiement);
+            demandeCessionRepository.save(demandeCession);
 
 
-                        value.setStatut(this.statutRepository.findByLibelle("PME_EN_ATTENTE_DE_PAIEMENT"));
-                        demandeCessionRepository.save(value);
-                    }
-
-                                       else {
-                        throw new CustomException("Un paiement ne peut être effectué à cet étape.");
-                    }
-
-                },
-                ()
-                        -> {
-                    throw new CustomException("la demande n'existe pas");
-                }
-
-        );
-        /*
-
-         */
-
-
+        }
+    //    return paiementRepository.save(paiement);
         return paiementRepository.save(paiement);
     }
 

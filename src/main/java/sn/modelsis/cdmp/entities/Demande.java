@@ -15,7 +15,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+//@ToString
 @Table(name = "demande")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Demande implements Serializable {
@@ -40,14 +40,6 @@ public class Demande implements Serializable {
     @JoinColumn(name="statutid")
     private Statut statut;
 
-
-
-    
-
-
-
-
-    
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "demande")
     private Set<DemandeDocuments> documents = new HashSet<>();
 
