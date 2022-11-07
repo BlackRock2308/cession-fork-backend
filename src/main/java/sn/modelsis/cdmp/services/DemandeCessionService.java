@@ -18,19 +18,19 @@ public interface DemandeCessionService {
 
     Optional<DemandeCessionDto> findById (Long id);
 
-    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
+//    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
+//    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 
 
-    // Analyse Demande de Cession
-    DemandeCession rejectionDemandeCession(Long idDemande );
-    DemandeCession acceptDemandeCession(Long idDemande );
+    // Recevabilite Demande de Cession
+    DemandeCession validerRecevabilite(Long idDemande );
+    DemandeCession rejeterRecevabilite(Long idDemande );
 
-    // Analyse Demande de Cession
+    // Analyse de risques Demande de Cession
     DemandeCession analyseDemandeCessionRisque(Long idDemande );
     DemandeCession analyseDemandeCessionNonRisque (Long idDemande );
     DemandeCession analyseDemandeCessionComplement (Long idDemande);
 
-    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
@@ -41,6 +41,8 @@ public interface DemandeCessionService {
     List<DemandeCession> findAllDemandeAcceptee();
 
     List<DemandeCession> findAllDemandeComplementRequis();
+
+//    Page<DemandeCessionDto> findAllDemandeComplementRequis(Pageable pageable);
 
     Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut);
 
