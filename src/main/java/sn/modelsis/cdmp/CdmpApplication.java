@@ -128,7 +128,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
       };
   }
 //	@Bean
-//	public CorsFilter corsFilter() {
+//	public CorsFilter corsFilter() {"
 //		CorsConfiguration corsConfiguration = new CorsConfiguration();
 //		corsConfiguration.setAllowCredentials(true);
 //		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
