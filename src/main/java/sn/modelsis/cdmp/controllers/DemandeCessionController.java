@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/demandecession")
+@Slf4j
 public class DemandeCessionController {
 
-    private final Logger log = LoggerFactory.getLogger(DemandeCessionController.class);
     private final DemandeCessionService demandeCessionService;
 
     @PostMapping
@@ -54,12 +55,12 @@ public class DemandeCessionController {
     @GetMapping(value = "{id}")
     public ResponseEntity<DemandeCessionDto> getDemandeCession(@PathVariable Long id,
                                                                HttpServletRequest request) {
+        log.info("DemandeCessionController:getDemandeCession request started");
         DemandeCessionDto demande = demandeCessionService.getDemandeCession(id).orElse(null);
         log.info("DemandeCessionController:getDemandeCession request params  {}", demande.getIdDemande());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demande);
     }
-
 
     /******* Recevabilité : Endpoint pour rejeter une demande de cession -- accepter une demande de cession ******* ***/
 
@@ -105,20 +106,6 @@ public class DemandeCessionController {
     }
 
     /** *******Endpoints pour la recevabilité de la Demande de Cession******* **/
-
-//    @PatchMapping(value = "/{id}/validerRecevabilite")
-//    public ResponseEntity<DemandeCessionDto> validerRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-//        DemandeCessionDto demandecessionDto1=demandeCessionService.validerRecevabilite(demandecessionDto);
-//        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
-//    }
-//
-//    @PatchMapping(value = "/{id}/rejeterRecevabilite")
-//    public ResponseEntity<DemandeCessionDto> rejeterRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-//        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterRecevabilite(demandecessionDto);
-//        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
-//    }
-
-    /** --------********************************************-------**/
 
 
     @GetMapping(value = "pme/{id}")

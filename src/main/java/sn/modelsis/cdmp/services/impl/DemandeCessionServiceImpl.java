@@ -15,7 +15,6 @@ import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.util.Date;
@@ -37,8 +36,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionMapper cessionMapper;
 
     private final CreanceMapper creanceMapper;
-
-
 
 
     @Override
@@ -93,10 +90,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(cessionMapper::asDTO);
     }
 
-    @Override
-    public List<DemandeCession> findAllPMEDemandes(Long id) {
-        return demandecessionRepository.findAllByPmeIdPME(id);
-    }
 
     /** ********** [RECEVABILITE} Demande de Cession REJETTEE ou RECEVABLE  ************* **/
 
@@ -224,5 +217,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(cessionMapper::asDTO);
     }
 
+
+    @Override
+    public List<DemandeCession> findAllPMEDemandes(Long id) {
+        return demandecessionRepository.findAllByPmeIdPME(id);
+    }
 
 }
