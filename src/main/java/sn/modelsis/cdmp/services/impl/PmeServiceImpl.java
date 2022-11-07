@@ -118,7 +118,7 @@ public class PmeServiceImpl implements PmeService {
       existingPme.get().setLocalite(pme.getLocalite());
       existingPme.get().setRaisonSocial(pme.getRaisonSocial());
       existingPme.get().setCodePin(pme.getCodePin());
-      existingPme.get().setAtd(pme.getAtd());
+      existingPme.get().setAtd(pme.isAtd());
       existingPme.get().setEnseigne(pme.getEnseigne());
       existingPme.get().setNombreEtablissementSecondaires(pme.getNombreEtablissementSecondaires());
 
