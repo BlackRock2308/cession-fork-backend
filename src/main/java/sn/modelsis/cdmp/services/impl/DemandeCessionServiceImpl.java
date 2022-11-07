@@ -113,16 +113,17 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     @Transactional
-    public DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto) {
-        Statut statut = DtoConverter.convertToEntity(demandecessionDto.getStatut());
-        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-       // Pme pme = DtoConverter.convertToEntity(demandecessionDto.getPme());
-        //pme.setHasninea(false);
-        //pmeRepository.save(pme);
-        statutRepository.save(statut);
-        DemandeCession result=demandecessionRepository.save(demandecession);
-        return DtoConverter.convertToDto(result) ;
+    public DemandeCession rejectionDemandeCession(Long idDemande ){
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        Statut updatedStatut = statutRepository.findByLibelle("REJETEE");
+        optional.get().setStatut(updatedStatut);
+
+        DemandeCession demandeCessionDto = optional.get();
+
+        return demandecessionRepository.save(demandeCessionDto);
+
     }
+
 
     @Override
     @Transactional
