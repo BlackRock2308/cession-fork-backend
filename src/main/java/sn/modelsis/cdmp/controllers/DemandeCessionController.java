@@ -155,4 +155,13 @@ public class DemandeCessionController {
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
     }
 
+    @GetMapping("/complement-requis")
+    public ResponseEntity<List<DemandeCessionDto>> getAllComplementRequisDemande(HttpServletRequest request) {
+        log.info("DemandeCessionController:getAllRejectedDemande request started");
+        List<DemandeCession> demandeList = demandeCessionService.findAllDemandeComplementRequis();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+    }
+
+
 }

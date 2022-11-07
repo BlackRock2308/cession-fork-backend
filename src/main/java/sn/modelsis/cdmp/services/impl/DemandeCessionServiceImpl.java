@@ -39,6 +39,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final CreanceMapper creanceMapper;
 
 
+
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCession saveCession(DemandeCession demandeCession) {
@@ -214,7 +216,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto) {
 
         DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
-        //demandeCession.setStatut(statutRepository.findByLibelle(Statuts.RECEVABLE));
         demandeCession.setStatut(statutRepository.findByLibelle("RECEVABLE"));
 
         DemandeCession result=demandecessionRepository.save(demandeCession);
@@ -226,7 +227,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto) {
         DemandeCession demandeCession = getDemandeCessionDto(demandecessionDto);
-        //demandeCession.setStatut(statutRepository.findByLibelle(Statuts.REJETEE));
         demandeCession.setStatut(statutRepository.findByLibelle("REJETEE"));
 
         DemandeCession result=demandecessionRepository.save(demandeCession);
@@ -249,6 +249,15 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository
                 .findAll().stream()
                 .filter(demande -> demande.getStatut().getLibelle().equals("RECEVABLE"))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DemandeCession> findAllDemandeComplementRequis(){
+
+        return demandecessionRepository
+                .findAll().stream()
+                .filter(demande -> demande.getStatut().getLibelle().equals("COMPLEMENT_REQUIS"))
                 .collect(Collectors.toList());
     }
 }

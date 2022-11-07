@@ -29,14 +29,6 @@ public class DemandeServiceImpl implements DemandeService {
     public List<Demande> findAll() {
         return demandeRepository.findAll();
     }
-    @Override
-    public List<Demande> findAllDemandeRejetee(){
-
-        return demandeRepository
-                .findAll().stream()
-                .filter(demande -> demande.getStatut().getLibelle().equals("REJETEE"))
-                .collect(Collectors.toList());
-    }
 
     //La liste des demandes a l'étape analyse du risque
     @Override
