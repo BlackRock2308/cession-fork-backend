@@ -4,7 +4,7 @@ package sn.modelsis.cdmp.entitiesDtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.Statuts;
+import sn.modelsis.cdmp.entities.DemandeCession;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +26,8 @@ public class PaiementDto {
     private double montantCreance;
 
     private StatutDto statutDto;
+
+    //DemandeCession demandeCession;
 
     private Long demandecessionid;
 

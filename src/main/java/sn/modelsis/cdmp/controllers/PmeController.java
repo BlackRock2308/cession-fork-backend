@@ -116,4 +116,9 @@ public class PmeController {
     log.info("PmeController:addDocument saved in database with idPme = {}", be.get().getIdPME());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(be.get()));
   }
+
+  public ResponseEntity<PmeDto> getPmeByUser(Long idUser){
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(null);
+  }
 }
