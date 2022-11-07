@@ -52,6 +52,11 @@ public interface DemandeCessionService {
     List<DemandeCession> findAllPMEDemandes(Long id);
 
 
+    List<DemandeCession> findAllDemandeRejetee();
+
+    List<DemandeCession> findAllDemandeAcceptee();
+
+
 
 
 

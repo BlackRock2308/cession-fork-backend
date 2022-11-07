@@ -14,6 +14,8 @@ public interface DemandeService {
 
   List<Demande> findAll();
 
+  List<Demande> findAllDemandeRejetee();
+
   List<Demande> findAllAnalyseRisque();
 
   List<Demande> findAllConventionsComptable();
