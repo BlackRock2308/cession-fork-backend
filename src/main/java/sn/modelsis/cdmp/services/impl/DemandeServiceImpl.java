@@ -128,10 +128,10 @@ public class DemandeServiceImpl implements DemandeService {
         StringBuilder numero = new StringBuilder();
         Integer annee = Calendar.getInstance().get(Calendar.YEAR);
         Integer num = 0;
-        List<Demande> demandes = demandeRepository.findAll();
+        Optional<Demande> opDemande = demandeRepository.findFirstByOrderByIdDemandeDesc();
         Demande demande = new Demande();
-        if(demandes.size()!=0 ){
-            demande = demandes.get(demandes.size()-1);
+        if(opDemande.isPresent() && opDemande!=null ){
+            demande = opDemande.get();
             String c =  demande.getNumeroDemande().substring(5);
             num = Integer.parseInt(c)+1;
         }

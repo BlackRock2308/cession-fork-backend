@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface DemandeRepository extends JpaRepository<Demande, Long> {
 
-    public List<Demande> findAllByStatut_Libelle(Statuts statut);
-
+    List<Demande> findAllByStatut_Libelle(Statuts statut);
+    Optional<Demande> findFirstByOrderByIdDemandeDesc();
 
     //public List<Demande> findDemandeByPme(Pme pme);
 
