@@ -95,6 +95,14 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository.findAllByPmeIdPME(id);
     }
 
+    @Override
+    public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
+        log.info("DemandeCessionService:findAll by statut request started");
+        return demandecessionRepository
+                .findAllByStatut_Libelle(pageable,statut)
+                .map(cessionMapper::asDTO);
+    }
+
     /** Recebavilite des Demande de Cession REJETTEE ou RECEVABLE **/
 
     @Override
