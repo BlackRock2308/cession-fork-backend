@@ -2,6 +2,8 @@ package sn.modelsis.cdmp.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.BEDocuments;
@@ -30,6 +32,7 @@ public class BonEngagementImpl implements BonEngagementService {
     private DocumentService documentService;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public BonEngagement save(BonEngagement bonEngagement) {
         return bonEngagementRepository.saveAndFlush(bonEngagement);
     }
@@ -50,6 +53,7 @@ public class BonEngagementImpl implements BonEngagementService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
         final Optional<BonEngagement> bonEngagement = bonEngagementRepository.findById(id);
         ExceptionUtils.presentOrThrow(bonEngagement, ItemNotFoundException.BONENGAGEMENT_BY_ID, id.toString());
@@ -59,6 +63,7 @@ public class BonEngagementImpl implements BonEngagementService {
     }
     
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Optional<BonEngagement> upload(Long id, MultipartFile file, TypeDocument type)
         throws IOException {
       Optional<BonEngagement> be = bonEngagementRepository.findById(id);

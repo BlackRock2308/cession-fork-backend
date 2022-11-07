@@ -24,19 +24,27 @@ public interface DemandeCessionService {
 
     public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
 
+
+    // Analyse Demande de Cession
+    DemandeCession rejectionDemandeCession(Long idDemande );
+    DemandeCession acceptDemandeCession(Long idDemande );
+
+    // Analyse Demande de Cession
+    DemandeCession analyseDemandeCessionRisque(Long idDemande );
+    DemandeCession analyseDemandeCessionNonRisque (Long idDemande );
+    DemandeCession analyseDemandeCessionComplement (Long idDemande);
+
     public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
-    DemandeCessionDto rejeterCession(DemandeCessionDto demandecessionDto);
+//    DemandeCessionDto validerCession(DemandeCessionDto demandecession);
 
-    DemandeCessionDto validerCession(DemandeCessionDto demandecession);
 
-    DemandeCessionDto validerAnalyse (DemandeCessionDto demandecession);
 
-    DemandeCessionDto rejeterAnalyse(DemandeCessionDto demandecessionDto);
 
-    DemandeCessionDto demanderComplements (DemandeCessionDto demandecession);
+//    DemandeCessionDto rejeterAnalyse(DemandeCessionDto demandecessionDto);
+
 
 
 

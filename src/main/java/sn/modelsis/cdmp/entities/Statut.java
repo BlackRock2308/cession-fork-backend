@@ -32,5 +32,5 @@ public class Statut implements Serializable {
     private String libelle;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "statut")
-    private Set<Demande> demandes = new HashSet<>();
+    private Set<Demande> demandes = new HashSet<>() ;
 }

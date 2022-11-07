@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,51 +28,53 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/demandeadhesion")
 @RequiredArgsConstructor
+@Slf4j
 public class DemandeAdhesionController {
 
-    private final Logger log = LoggerFactory.getLogger(DemandeAdhesionController.class);
     private final DemandeAdhesionService demandeAdhesionService;
-
     @PostMapping
     public ResponseEntity<DemandeAdhesionDto> addDemandeAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto,
                                                                  HttpServletRequest request) {
-
+        log.info("DemandeAdhesionController:addDemandeAdhesion request started");
         DemandeAdhesion result = demandeAdhesionService.saveAdhesion(demandeadhesionDto);
-        log.info("demande cession created. Id:{} ", result.getIdDemande());
+        log.info("DemandeAdhesionController:addDemandeAdhesion request params  {}", result.getIdDemande());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
     @GetMapping
     public ResponseEntity<Page<DemandeAdhesionDto>> getAllDemandeAdhesion(Pageable pageable,
                                                                           HttpServletRequest request) {
+        log.info("DemandeAdhesionController:getAllDemandeAdhesion request started");
         Page<DemandeAdhesionDto> demandeList = demandeAdhesionService.findAll(pageable);
-        log.info("Fetching All Demande Adhesion ....");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(demandeList);
     }
-/** On pourra effectuer cette operation dans le controller de la Demande**/
     @GetMapping(value = "/{id}")
-    public Optional<DemandeAdhesionDto> getDemandeAdhesion(@PathVariable Long id, HttpServletRequest request) {
-//        Optional<DemandeAdhesion> demande = demandeAdhesionService.findById(id);
+    public Optional<DemandeAdhesionDto> getDemandeAdhesion(@PathVariable Long id,
+                                                           HttpServletRequest request) {
+        log.info("DemandeAdhesionController:getDemandeAdhesion request started");
+        log.debug("DemandeAdhesionController:getDemandeAdhesion request param {}", id);
         return demandeAdhesionService.findById(id);
     }
 
     @PatchMapping(value ="/{id}/rejectadhesion")
-    public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@PathVariable Long id,
+    public ResponseEntity<DemandeAdhesionDto> rejetAdhesion(@PathVariable("id") Long id,
                                                             HttpServletRequest request) {
+        log.info("DemandeAdhesionController:rejetAdhesion request started");
         DemandeAdhesion demandeadhesion=demandeAdhesionService.rejetAdhesion(id);
+        log.debug("DemandeAdhesionController:rejetAdhesion request params  {}", demandeadhesion.getIdDemande());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeadhesion));
     }
 
     @PatchMapping(value = "/{id}/acceptadhesion")
-    public ResponseEntity<DemandeAdhesionDto> validerAdhesion(@PathVariable Long id,
+    public ResponseEntity<DemandeAdhesionDto> validerAdhesion(@PathVariable("id") Long id,
                                                               HttpServletRequest request) {
+        log.info("DemandeAdhesionController:validerAdhesion request started");
         DemandeAdhesion demandeadhesion=demandeAdhesionService.validerAdhesion(id);
+        log.debug("DemandeAdhesionController:validerAdhesion request params  {}", demandeadhesion.getIdDemande());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandeadhesion));
     }
-
-
 
     @PostMapping("/{id}/upload")
     @Operation(summary = "Upload file", description = "Upload a new file for Pme adhesion demand")
@@ -90,9 +93,7 @@ public class DemandeAdhesionController {
         if (doc.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        log.info("Document added. Id:{} ", doc.get().getIdDemande());
+        log.info("DemandeAdhesionController.addDocument : Document added with Demande Id:{} ", doc.get().getIdDemande());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(doc.get()));
     }
-
-
 }

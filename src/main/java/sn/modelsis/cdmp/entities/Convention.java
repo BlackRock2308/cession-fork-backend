@@ -41,7 +41,10 @@ public class Convention implements Serializable {
 
   @Column(name = "decote")
   private double decote;
-  
+
+  @Column(name = "active_convention")
+  private boolean activeConvention;
+
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime dateConvention; 
@@ -49,7 +52,7 @@ public class Convention implements Serializable {
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "pmeid", nullable = true)
   private Pme pme;
-  
+
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "utilisateur_id", nullable = true)
   private Utilisateur utilisateur;

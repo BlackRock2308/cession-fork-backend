@@ -20,7 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+//@ToString
 @Table(name = "pme")
 public class Pme implements Serializable {
   
