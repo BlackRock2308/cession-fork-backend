@@ -8,7 +8,6 @@ import java.util.Set;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.Paiement;
 
 @Data
 @NoArgsConstructor
