@@ -11,6 +11,7 @@ import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -126,5 +127,34 @@ public class DemandeServiceImpl implements DemandeService {
 
         }
         return demande;
+    }
+
+    @Override
+    public String getNumDemande() {
+        StringBuilder numero = new StringBuilder();
+        Integer annee = Calendar.getInstance().get(Calendar.YEAR);
+        Integer num = 0;
+        Optional<Demande> opDemande = demandeRepository.findFirstByOrderByIdDemandeDesc();
+        Demande demande = new Demande();
+        if(opDemande.isPresent() && opDemande!=null ){
+            demande = opDemande.get();
+            String c =  demande.getNumeroDemande().substring(5);
+            num = Integer.parseInt(c)+1;
+        }
+        if(demande.getNumeroDemande()==null || demande.getNumeroDemande().substring(0, 4).equals(""+(annee-1))){
+            num = 1;
+        }
+        numero.append(annee);
+        numero.append("-");
+        if(num<10){
+            numero.append("000");
+        }
+        else if(num<100){
+            numero.append("00");
+        }else {
+            numero.append("0");
+        }
+        numero.append(num);
+        return numero.toString();
     }
 }
