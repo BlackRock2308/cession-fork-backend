@@ -51,7 +51,13 @@ public interface DemandeCessionService {
 
     List<DemandeCession> findAllPMEDemandes(Long id);
 
-    Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut);
+
+    List<DemandeCession> findAllDemandeRejetee();
+
+    List<DemandeCession> findAllDemandeAcceptee();
+
+
+
 
 
     /**

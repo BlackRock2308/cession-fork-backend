@@ -21,6 +21,7 @@ import sn.modelsis.cdmp.util.ExceptionUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -231,5 +232,23 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         DemandeCession result=demandecessionRepository.save(demandeCession);
         return DtoConverter.convertToDto(result) ;
 
+    }
+
+    @Override
+    public List<DemandeCession> findAllDemandeRejetee(){
+
+        return demandecessionRepository
+                .findAll().stream()
+                .filter(demande -> demande.getStatut().getLibelle().equals("REJETEE"))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DemandeCession> findAllDemandeAcceptee(){
+
+        return demandecessionRepository
+                .findAll().stream()
+                .filter(demande -> demande.getStatut().getLibelle().equals("RECEVABLE"))
+                .collect(Collectors.toList());
     }
 }
