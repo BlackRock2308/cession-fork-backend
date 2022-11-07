@@ -3,6 +3,8 @@ package sn.modelsis.cdmp.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +29,16 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/demandes")
+@Slf4j
+@RequiredArgsConstructor
 public class DemandeControllers {
 
-  private final Logger log = LoggerFactory.getLogger(DemandeControllers.class);
-
-
-  @Autowired
-  private DemandeService demandeService;
-
-
+  private final DemandeService demandeService;
 
   @GetMapping
   public ResponseEntity<List<DemandeDto>> getAllDemande(HttpServletRequest request) {
+    log.info("DemandeControllers:getAllDemande request started");
     List<Demande> demandeList = demandeService.findAll();
-    log.info("All Requests .");
     return ResponseEntity.status(HttpStatus.OK)
         .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
   }

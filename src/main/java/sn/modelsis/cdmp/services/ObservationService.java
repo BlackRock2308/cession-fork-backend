@@ -20,7 +20,7 @@ public interface ObservationService {
      * @param observation
      * @return
      */
-    ObservationDto save(Observation observation);
+    ObservationDto saveNewObservation(ObservationDto observation);
 
     /**
     * 

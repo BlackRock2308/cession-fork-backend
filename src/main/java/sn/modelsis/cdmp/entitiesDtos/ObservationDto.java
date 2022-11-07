@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Value;
+import sn.modelsis.cdmp.entities.Demande;
+
 /**
  * @author SNDIAGNEF
  *
@@ -22,10 +25,9 @@ public class ObservationDto {
 
   private StatutDto statut;
 
-  private DemandeCessionDto demandeCessionDto;
+  private DemandeCessionDto demande;
   
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime dateObservation; 
-
+  private LocalDateTime dateObservation;
 
 }

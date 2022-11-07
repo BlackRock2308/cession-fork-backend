@@ -14,24 +14,7 @@ public class DtoConverter {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 	}
 
-	/*public static AgentDto convertToDto(Agent agent) {
-		AgentDto agentDto = null;
-		if (null != agent) {
-			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			agentDto = modelMapper.map(agent, AgentDto.class);
-		}
-		return agentDto;
-	}
 
-	public static Agent convertToEntity(AgentDto agentDto) {
-		Agent agent = null;
-		if (null != agentDto) {
-			agent = modelMapper.map(agentDto, Agent.class);
-		}
-		return agent;
-	}
-
-	 */
 	
 	public static ConventionDto convertToDto(Convention convention) {
 	  ConventionDto conventionDto = null;
@@ -55,7 +38,7 @@ public class DtoConverter {
 		ParametrageDto parametrageDto = null;
 		if (null != parametrage) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			parametrage = modelMapper.map(parametrage, Parametrage.class);
+
 		}
 		return parametrageDto;
 	}
@@ -160,8 +143,7 @@ public class DtoConverter {
 			demandeadhesion = modelMapper.map(demandeadhesionDto, DemandeAdhesion.class);
 			//convert les attributs ambigues
 			Pme pme=demandeadhesion.getPme();
-//			pme.setNinea(demandeadhesionDto.getNinea());
-//			pme.setRccm(demandeadhesionDto.getRccm());
+
 			demandeadhesion.setPme(pme);
 			demandeadhesion.setIdDemande(demandeadhesionDto.getIdDemande());
 		}
@@ -174,9 +156,7 @@ public class DtoConverter {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			demandeadhesionDto = modelMapper.map(demandeadhesion, DemandeAdhesionDto.class);
 			//convert les attributs ambigues
-//			demandeadhesionDto.setNinea(demandeadhesion.getPme().getNinea());
-//			demandeadhesionDto.setRccm(demandeadhesion.getPme().getRccm());
-//			demandeadhesionDto.setPmeId(demandeadhesion.getPme().getIdPME());
+
 			demandeadhesionDto.setIdDemande(demandeadhesion.getIdDemande());
 		}
 		return demandeadhesionDto;
@@ -251,7 +231,6 @@ public class DtoConverter {
 	public static Paiement convertToEntity(PaiementDto paiementDto) {
 		Paiement paiement = new Paiement();
 		if(null != paiementDto) {
-			//modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			paiement = modelMapper.map(paiementDto, Paiement.class);
 			//renseigner les mapping ambigue
 
@@ -259,24 +238,6 @@ public class DtoConverter {
 		return paiement;
 	}
 
-	/*public static  RoleUtilisateurDto convertToDto(RoleUtilisateur roleUtilisateur) {
-		RoleUtilisateurDto roleUtilisateurDto = null;
-		if(null != roleUtilisateur) {
-			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			roleUtilisateurDto = modelMapper.map(roleUtilisateur, RoleUtilisateurDto.class);
-		}
-		return roleUtilisateurDto;
-	}
-
-	public static RoleUtilisateur convertToEntity(RoleUtilisateurDto roleUtilisateurDto) {
-		RoleUtilisateur roleUtilisateur = new RoleUtilisateur();
-		if(null != roleUtilisateurDto) {
-			roleUtilisateur = modelMapper.map(roleUtilisateurDto, RoleUtilisateur.class);
-		}
-		return roleUtilisateur;
-	}
-
-	 */
 
 	public static  RecevabiliteDto convertToRecevabiliteDto(DemandeCession demandeCession) {
 		RecevabiliteDto recevabiliteDto = null;
@@ -295,18 +256,8 @@ public class DtoConverter {
 	public static DemandeCession convertToEntity(RecevabiliteDto recevabiliteDto) {
 		DemandeCession demandeCession = new DemandeCession();
 		if(null != recevabiliteDto) {
-			//modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			demandeCession = modelMapper.map(recevabiliteDto, DemandeCession.class);
 
-			/*Pme pme=demandeCession.getPme();
-			pme.setNinea(recevabiliteDto.getNinea());
-			pme.setRccm(recevabiliteDto.getRccm());
-			pme.setRaisonSocial(recevabiliteDto.getRaisonSociale());
-			BonEngagement be=demandeCession.getBonEngagement();
-			be.setNomMarche(recevabiliteDto.getNomMarche());
-
-			demandeCession.setPme(pme);
-			demandeCession.setBonEngagement(be);*/
 		}
 		return demandeCession;
 	}

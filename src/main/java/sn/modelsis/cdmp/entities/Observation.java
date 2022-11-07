@@ -8,7 +8,6 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 
 @Entity
 @Data
@@ -25,13 +24,11 @@ public class Observation implements Serializable, Comparable<Observation> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
     private Long idDemande;
     
     @Column(name = "libelle")
     private String libelle;
 
-    
     @Column(name = "dateobservation")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateObservation;
@@ -46,7 +43,7 @@ public class Observation implements Serializable, Comparable<Observation> {
     
     @Override
     public int compareTo(Observation o) {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 

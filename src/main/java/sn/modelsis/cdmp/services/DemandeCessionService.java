@@ -29,22 +29,22 @@ public interface DemandeCessionService {
     DemandeCession rejectionDemandeCession(Long idDemande );
     DemandeCession acceptDemandeCession(Long idDemande );
 
-    // Vilidation Demande de Cession
-    DemandeCession validateDemandeCession(Long idDemande );
+    // Analyse Demande de Cession
+    DemandeCession analyseDemandeCessionRisque(Long idDemande );
+    DemandeCession analyseDemandeCessionNonRisque (Long idDemande );
+    DemandeCession analyseDemandeCessionComplement (Long idDemande);
 
     public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
-    DemandeCessionDto validerCession(DemandeCessionDto demandecession);
+//    DemandeCessionDto validerCession(DemandeCessionDto demandecession);
 
 
 
-    DemandeCessionDto validerAnalyse (DemandeCessionDto demandecession);
 
-    DemandeCessionDto rejeterAnalyse(DemandeCessionDto demandecessionDto);
+//    DemandeCessionDto rejeterAnalyse(DemandeCessionDto demandecessionDto);
 
-    DemandeCessionDto demanderComplements (DemandeCessionDto demandecession);
 
 
 

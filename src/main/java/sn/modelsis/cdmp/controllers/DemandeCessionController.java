@@ -37,7 +37,7 @@ public class DemandeCessionController {
         DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
 
         DemandeCession result = demandeCessionService.saveCession(demandecession);
-        log.info("demande cession created. Id:{} ", result.getIdDemande());
+        log.info("DemandeCessionController:addDemandeCession save in database {}", result.getIdDemande());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
@@ -45,56 +45,57 @@ public class DemandeCessionController {
     public ResponseEntity<DemandeCessionDto> getDemandeCession(@PathVariable Long id,
                                                                HttpServletRequest request) {
         DemandeCessionDto demande = demandeCessionService.getDemandeCession(id).orElse(null);
-        log.info("Demande Cession with Id:{}", id);
+        log.info("DemandeCessionController:getDemandeCession request params  {}", demande.getIdDemande());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demande);
     }
 
-//    @PatchMapping(value ="/{idDemande}/rejectedCession")
-//    public ResponseEntity<DemandeCessionDto> rejeterCession(DemandeCessionDto demandeCessionDto,
-//                                                            @PathVariable("idDemande") Long idDemande,
-//                                                            HttpServletRequest request) {
-//        DemandeCession demandecessionDto1 = demandeCessionService.rejectDemandeCession(demandeCessionDto,idDemande);
-//        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(demandecessionDto1));
-//    }
 
-    /** Endpoint pour rejeter une demande de cession -- accepter une demande de cession***/
+    /******* Endpoint pour rejeter une demande de cession -- accepter une demande de cession ******* ***/
 
     @PatchMapping(value ="/{idDemande}/rejectedCession")
     public ResponseEntity<DemandeCessionDto> rejectCession(@PathVariable("idDemande") Long idDemande) {
         DemandeCession rejectedDemande = demandeCessionService.rejectionDemandeCession(idDemande);
-
+        log.info("DemandeCessionController:rejectCession request params  {}", rejectedDemande.getIdDemande());
        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(rejectedDemande));
     }
 
     @PatchMapping(value ="/{idDemande}/acceptedCession")
     public ResponseEntity<DemandeCessionDto> acceptCession(@PathVariable("idDemande") Long idDemande) {
-        DemandeCession rejectedDemande = demandeCessionService.acceptDemandeCession(idDemande);
+        DemandeCession acceptedDemande = demandeCessionService.acceptDemandeCession(idDemande);
+        log.info("DemandeCessionController:acceptCession request params  {}", acceptedDemande.getIdDemande());
 
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(rejectedDemande));
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(acceptedDemande));
     }
 
-    /** Endpoints pour la validation de la Demande de Cession**/
+    /** ******* Endpoints pour la validation de la Demande de Cession ************ **/
 
-    @PatchMapping(value = "/{id}/validanalyse")
-    public ResponseEntity<DemandeCessionDto> validerAnalyse(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.validerAnalyse(demandecessionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    @PatchMapping(value ="/{idDemande}/validateAnalyse")
+    public ResponseEntity<DemandeCessionDto> validateAnalyseNonRisque(@PathVariable("idDemande") Long idDemande) {
+        DemandeCession acceptedDemande = demandeCessionService.analyseDemandeCessionNonRisque(idDemande);
+        log.info("DemandeCessionController:acceptCession request params  {}", acceptedDemande.getIdDemande());
+
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(acceptedDemande));
     }
 
-    @PatchMapping(value = "/{id}/rejectanalyse")
-    public ResponseEntity<DemandeCessionDto> rejeterAnalyse(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterAnalyse(demandecessionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    @PatchMapping(value ="/{idDemande}/rejectedAnalyse")
+    public ResponseEntity<DemandeCessionDto> rejectAnalyseRisque(@PathVariable("idDemande") Long idDemande) {
+        DemandeCession acceptedDemande = demandeCessionService.analyseDemandeCessionRisque(idDemande);
+        log.info("DemandeCessionController:acceptCession request params  {}", acceptedDemande.getIdDemande());
+
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(acceptedDemande));
     }
 
-    @PatchMapping(value = "/{id}/demandercomplements")
-    public ResponseEntity<DemandeCessionDto> demanderComplements(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
-        DemandeCessionDto demandecessionDto1=demandeCessionService.demanderComplements(demandecessionDto);
-        return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
+    @PatchMapping(value ="/{idDemande}/complementAnalyse")
+    public ResponseEntity<DemandeCessionDto> completeDocAnalyse(@PathVariable("idDemande") Long idDemande) {
+        DemandeCession acceptedDemande = demandeCessionService.analyseDemandeCessionComplement(idDemande);
+        log.info("DemandeCessionController:acceptCession request params  {}", acceptedDemande.getIdDemande());
+
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(acceptedDemande));
     }
 
-    /** Endpoints pour la recevabilité de la Demande de Cession**/
+    /** *******Endpoints pour la recevabilité de la Demande de Cession******* **/
+
     @PatchMapping(value = "/{id}/validerRecevabilite")
     public ResponseEntity<DemandeCessionDto> validerRecevabilite(@RequestBody DemandeCessionDto demandecessionDto, HttpServletRequest request) {
         DemandeCessionDto demandecessionDto1=demandeCessionService.validerRecevabilite(demandecessionDto);
@@ -106,6 +107,9 @@ public class DemandeCessionController {
         DemandeCessionDto demandecessionDto1=demandeCessionService.rejeterRecevabilite(demandecessionDto);
         return ResponseEntity.status(HttpStatus.OK).body(demandecessionDto1);
     }
+
+    /** --------********************************************-------**/
+
     @GetMapping
     public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCession(Pageable pageable,
                                                                         HttpServletRequest request) {

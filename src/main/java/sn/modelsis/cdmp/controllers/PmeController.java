@@ -3,6 +3,8 @@ package sn.modelsis.cdmp.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,67 +29,70 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/pme")
+@RequiredArgsConstructor
+@Slf4j
 public class PmeController {
-  private final Logger log = LoggerFactory.getLogger(PmeController.class);
-  @Autowired
-  private PmeService pmeService;
-  @Autowired
-  private StatutService statutService;
+  private final PmeService pmeService;
+
+  private final StatutService statutService;
 
   @PostMapping()
-  public ResponseEntity<PmeDto> addPme(@RequestBody PmeDto pmeDto, HttpServletRequest request) {
+  public ResponseEntity<PmeDto> savePme(@RequestBody PmeDto pmeDto,
+                                              HttpServletRequest request) {
+
+    log.info("PmeController:savePme request body : {}", pmeDto);
     Pme pme = DtoConverter.convertToEntity(pmeDto);
-    //Demande demande=DtoConverter.convertToEntity(demandeDto);
-    //demande.setPme(pme);
-//    Statut statut=new Statut();
-//    statut.setLibelle(Statuts.ADHESION_SOUMISE);
-//    statut.setCode("1");
-    //demande.setStatut(statut);
-    Pme result = pmeService.save(pme);
-    log.info("Pme created. Id:{} ", result.getIdPME());
+
+    Pme result = pmeService.savePme(pme);
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
 
   @PutMapping(value = "/{id}")
-  public ResponseEntity<PmeDto> updatePme(@RequestBody PmeDto pmeDto, HttpServletRequest request) {
+  public ResponseEntity<PmeDto> updatePme(@RequestBody PmeDto pmeDto, @PathVariable("id") Long id ,
+                                          HttpServletRequest request) {
+    log.info("PmeController:updatePme Started with request params id={}", id);
+
     Pme pme = DtoConverter.convertToEntity(pmeDto);
-    Pme result = pmeService.save(pme);
-    log.info("Pme updated. Id:{}", result.getIdPME());
+    Pme result = pmeService.updatePme(id,pme);
+    log.info("PmeController:updatePme updated with id = {} ", result.getIdPME());
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
   }
 
   @PatchMapping(value = "/{id}")
-  public ResponseEntity<PmeDto> patchPme(@PathVariable Long id,@RequestBody PmeDto pmeDto, HttpServletRequest request) {
+  public ResponseEntity<PmeDto> patchPme(@PathVariable Long id,@RequestBody PmeDto pmeDto,
+                                         HttpServletRequest request) {
 
     Pme pme = DtoConverter.convertToEntity(pmeDto);
     pme.setIdPME(id);
-    Pme result = pmeService.save(pme);
+    Pme result = pmeService.savePme(pme);
     log.info("Pme updated. Id:{}", result.getIdPME());
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
   }
 
   @GetMapping
   public ResponseEntity<List<PmeDto>> getAllPme(HttpServletRequest request) {
-    List<Pme> pmeList = pmeService.findAll();
-    log.info("All Pme .");
+    List<Pme> pmeList = pmeService.findAllPme();
+    log.info("PmeController:getAllPme fetching from database");
     return ResponseEntity.status(HttpStatus.OK)
         .body(pmeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
   }
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<PmeDto> getPme(@PathVariable Long id, HttpServletRequest request) {
+    log.info("PmeController:getPme request params : id = {}", id);
     Pme pme = pmeService.getPme(id).orElse(null);
-    log.info("Pme . Id:{}", id);
+
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(pme));
   }
 
 
 
   @DeleteMapping(value = "/{id}")
-  public ResponseEntity<PmeDto> deletePme(@PathVariable Long id, HttpServletRequest request) {
-    pmeService.delete(id);
-    log.warn("Pme deleted. Id:{}", id);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  public ResponseEntity<String> deletePme(@PathVariable Long id, HttpServletRequest request) {
+    log.info("PmeController:deletePme with id = {}", id);
+    pmeService.deletePme(id);
+
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Pme Deleted Successfullly...");
   }
   
   @PostMapping("/{id}/upload")
@@ -99,6 +104,7 @@ public class PmeController {
 
     Optional<Pme> be = null;
     try {
+      log.info("PmeController:addDocument uploading with request params id = {}", id);
       be = pmeService.upload(id, file, TypeDocument.valueOf(type));
     } catch (IOException e) {
       log.error(e.getMessage());
@@ -107,7 +113,7 @@ public class PmeController {
     if (be.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
-    log.info("Document added. Id:{} ", be.get().getIdPME());
+    log.info("PmeController:addDocument saved in database with idPme = {}", be.get().getIdPME());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(be.get()));
   }
 }
