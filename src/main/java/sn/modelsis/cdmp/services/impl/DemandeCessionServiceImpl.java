@@ -33,11 +33,12 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionMapper cessionMapper;
 
 
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCession saveCession(DemandeCession demandeCession) {
         if(demandeCession.getIdDemande()==null){
-            demandeCession.setNumeroDemande(demandeService.getNumDemande());
+            demandeCession.setNumeroDemande(demandeCession.getNumeroDemande());
         }
         DemandeCession newDemandeCession;
 
