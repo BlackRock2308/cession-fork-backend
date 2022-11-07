@@ -189,13 +189,18 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
      to avoid boilerplate code inside those two functions
      */
     public DemandeCession getDemandeCessionDto(DemandeCessionDto demandecessionDto) {
-        Observation observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
-        DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
-        Pme pme = demandecession.getPme();
-        BonEngagement be = demandecession.getBonEngagement();
-        observationRepository.save(observation);
-        pmeRepository.save(pme);
-        bonEngagementRepository.save(be);
+        Observation observation = new Observation();
+        if(!demandecessionDto.getObservations().isEmpty()) {
+            observation = DtoConverter.convertToEntity((ObservationDto) demandecessionDto.getObservations());
+        }
+            DemandeCession demandecession = DtoConverter.convertToEntity(demandecessionDto);
+            Pme pme = demandecession.getPme();
+            BonEngagement be = demandecession.getBonEngagement();
+            observationRepository.save(observation);
+            pmeRepository.save(pme);
+            bonEngagementRepository.save(be);
+        
+      
         return demandecession;
     }
 
