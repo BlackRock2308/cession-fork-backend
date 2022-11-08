@@ -34,10 +34,11 @@ public interface DemandeCessionService {
     DemandeCession analyseDemandeCessionNonRisque (Long idDemande );
     DemandeCession analyseDemandeCessionComplement (Long idDemande);
 
-
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
     List<DemandeCession> findAllPMEDemandes(Long id);
+
+    Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable,Long id);
 
     List<DemandeCession> findAllDemandeRejetee();
 

@@ -11,11 +11,14 @@ import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 public interface CreanceMapper {
 
     @Mapping(target = "idCreance", expression = "java(demandeCessionDto.getIdDemande())")
+    @Mapping(target = "ninea", expression = "java(demandeCessionDto.getPme().getNinea())")
     @Mapping(target = "rccm", expression = "java(demandeCessionDto.getPme().getRccm())")
     @Mapping(target = "raisonSocial", expression = "java(demandeCessionDto.getPme().getRaisonSocial())")
-    @Mapping(target = "montantCreance", expression = "java(demandeCessionDto.getBonEngagement().getMontantCreance())")
+    @Mapping(target = "typeMarche", expression = "java(demandeCessionDto.getBonEngagement().getTypeMarche())")
     @Mapping(target = "nomMarche", expression = "java(demandeCessionDto.getBonEngagement().getNomMarche())")
+    @Mapping(target = "montantCreance", expression = "java(demandeCessionDto.getBonEngagement().getMontantCreance())")
     @Mapping(target = "dateDemandeCession", expression = "java(demandeCessionDto.getDateDemandeCession())")
-   // @Mapping(target = "statutLibelle", expression = "java(demandeCessionDto.getStatut().getLibelle())")
+    @Mapping(target = "dateMarche", expression = "java(demandeCessionDto.getBonEngagement().getDateSoumissionServiceDepensier())")
+        // @Mapping(target = "statutLibelle", expression = "java(demandeCessionDto.getStatut().getLibelle())")
     CreanceDto mapToDto(DemandeCessionDto demandeCessionDto);
 }
