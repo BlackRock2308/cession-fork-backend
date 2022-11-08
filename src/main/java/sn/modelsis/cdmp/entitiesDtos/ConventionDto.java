@@ -29,7 +29,10 @@ public class ConventionDto {
   
   private PmeDto pmeDto;
 
-  private AgentDto agentDto;
+
+  private boolean activeConvention;
+
+  private UtilisateurDto utilisatuerDto;
   
   private Set<DocumentDto> documents = new HashSet<>();
 

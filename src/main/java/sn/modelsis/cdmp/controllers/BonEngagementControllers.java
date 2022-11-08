@@ -1,8 +1,7 @@
 package sn.modelsis.cdmp.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,16 +24,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/bonEngagement")
+@Slf4j
 public class BonEngagementControllers {
-    private final Logger log = LoggerFactory.getLogger(BonEngagementControllers.class);
-
-    @Autowired
-    private BonEngagementService bonEngagementService;
+    private final BonEngagementService bonEngagementService;
 
     @PostMapping()
     public ResponseEntity<BonEngagementDto> addBonEngagement(@RequestBody BonEngagementDto bonEngagementDto,
             HttpServletRequest request) {
+        log.info("BonEngagementControllers.addBonEngagement request started ...");
         BonEngagement bonEngagement = DtoConverter.convertToEntity(bonEngagementDto);
         BonEngagement result = bonEngagementService.save(bonEngagement);
         log.info("BonEngagement create. Id:{} ", result.getIdBonEngagement());
@@ -44,6 +43,7 @@ public class BonEngagementControllers {
     @PutMapping(value = "/{id}")
     public ResponseEntity<BonEngagementDto> updateBonEngagement(@RequestBody BonEngagementDto bonEngagementDto,
             HttpServletRequest request) {
+        log.info("BonEngagementControllers.updateBonEngagement request started ...");
         BonEngagement bonEngagement = DtoConverter.convertToEntity(bonEngagementDto);
         BonEngagement result = bonEngagementService.save(bonEngagement);
         log.info("BonEngagement updated. Id:{}", result.getIdBonEngagement());
@@ -52,21 +52,25 @@ public class BonEngagementControllers {
 
     @GetMapping
     public ResponseEntity<List<BonEngagementDto>> getAllBonEngagement(HttpServletRequest request) {
+        log.info("BonEngagementControllers.getAllBonEngagement request started ...");
+
         List<BonEngagement> bonEngagementList = bonEngagementService.findAll();
-        log.info("All BonEngagement .");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(bonEngagementList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BonEngagementDto> getBonEngagement(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<BonEngagementDto> getBonEngagement(@PathVariable Long id,
+                                                             HttpServletRequest request) {
+        log.info("BonEngagementControllers.getBonEngagement request started ...");
         BonEngagement bonEngagement = bonEngagementService.getBonEngagement(id).orElse(null);
-        log.info("BonEngagement . Id:{}", id);
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(bonEngagement));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<BonEngagementDto> deleteBonEngagement(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<BonEngagementDto> deleteBonEngagement(@PathVariable Long id,
+                                                                HttpServletRequest request) {
+        log.info("BonEngagementControllers.deleteBonEngagement request started ...");
         bonEngagementService.delete(id);
         log.warn("BonEngagement deleted. Id:{}", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

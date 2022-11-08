@@ -2,6 +2,7 @@ package sn.modelsis.cdmp.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.data.domain.Page;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.*;
 
@@ -13,26 +14,12 @@ public class DtoConverter {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 	}
 
-	public static AgentDto convertToDto(Agent agent) {
-		AgentDto agentDto = null;
-		if (null != agent) {
-			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			agentDto = modelMapper.map(agent, AgentDto.class);
-		}
-		return agentDto;
-	}
 
-	public static Agent convertToEntity(AgentDto agentDto) {
-		Agent agent = null;
-		if (null != agentDto) {
-			agent = modelMapper.map(agentDto, Agent.class);
-		}
-		return agent;
-	}
 	
 	public static ConventionDto convertToDto(Convention convention) {
 	  ConventionDto conventionDto = null;
       if (null != convention) {
+//		  conventionDto.setC
           modelMapper.getConfiguration().setAmbiguityIgnored(true);
           conventionDto = modelMapper.map(convention, ConventionDto.class);
       }
@@ -51,7 +38,7 @@ public class DtoConverter {
 		ParametrageDto parametrageDto = null;
 		if (null != parametrage) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			parametrage = modelMapper.map(parametrage, Parametrage.class);
+
 		}
 		return parametrageDto;
 	}
@@ -123,7 +110,6 @@ public class DtoConverter {
 		}
 		return demandeDto;
 	}
-
 	public static Demande convertToEntity(DemandeDto demandeDto) {
 		Demande demande = null;
 		if(null != demandeDto) {
@@ -131,6 +117,52 @@ public class DtoConverter {
 		}
 		return demande;
 	}
+
+	public static DemandeCession convertToEntity(DemandeCessionDto demandecessionDto) {
+		DemandeCession demandecession = null;
+		if(null != demandecessionDto) {
+			demandecession = modelMapper.map(demandecessionDto, DemandeCession.class);
+		}
+		return demandecession;
+	}
+
+	public static  DemandeCessionDto convertToDto(DemandeCession demandecession) {
+		DemandeCessionDto demandecessionDto = null;
+		if(null != demandecession) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+
+			demandecessionDto = modelMapper.map(demandecession, DemandeCessionDto.class);
+		}
+		return demandecessionDto;
+	}
+
+	public static DemandeAdhesion convertToEntity(DemandeAdhesionDto demandeadhesionDto) {
+		DemandeAdhesion demandeadhesion = null;
+		if(null != demandeadhesionDto) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			demandeadhesion = modelMapper.map(demandeadhesionDto, DemandeAdhesion.class);
+			//convert les attributs ambigues
+			Pme pme=demandeadhesion.getPme();
+
+			demandeadhesion.setPme(pme);
+			demandeadhesion.setIdDemande(demandeadhesionDto.getIdDemande());
+		}
+		return demandeadhesion;
+	}
+
+	public static  DemandeAdhesionDto convertToDto(DemandeAdhesion demandeadhesion) {
+		DemandeAdhesionDto demandeadhesionDto = null;
+		if(null != demandeadhesion) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			demandeadhesionDto = modelMapper.map(demandeadhesion, DemandeAdhesionDto.class);
+			//convert les attributs ambigues
+
+			demandeadhesionDto.setIdDemande(demandeadhesion.getIdDemande());
+		}
+		return demandeadhesionDto;
+	}
+
+
 	public static  StatutDto convertToDto(Statut statut) {
 		StatutDto statutDto = null;
 		if(null != statut) {
@@ -187,6 +219,11 @@ public class DtoConverter {
 		if(null != paiement) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			paiementDto = modelMapper.map(paiement, PaiementDto.class);
+			//renseigner les mapping ambigue
+			paiementDto.setDemandeId(paiement.getDemandeCession().getIdDemande());
+			paiementDto.setMontantCreance(paiement.getDemandeCession().getBonEngagement().getMontantCreance());
+			paiementDto.setStatutDto(DtoConverter.convertToDto(paiement.getDemandeCession().getStatut()));
+			paiementDto.setRaisonSocial(paiement.getDemandeCession().getPme().getRaisonSocial());
 		}
 		return paiementDto;
 	}
@@ -195,8 +232,85 @@ public class DtoConverter {
 		Paiement paiement = new Paiement();
 		if(null != paiementDto) {
 			paiement = modelMapper.map(paiementDto, Paiement.class);
+			//renseigner les mapping ambigue
+
 		}
 		return paiement;
+	}
+
+
+	public static  RecevabiliteDto convertToRecevabiliteDto(DemandeCession demandeCession) {
+		RecevabiliteDto recevabiliteDto = null;
+		if(null != recevabiliteDto) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			recevabiliteDto = modelMapper.map(demandeCession, RecevabiliteDto.class);
+
+			recevabiliteDto.setNinea(demandeCession.getPme().getNinea());
+			recevabiliteDto.setRccm(demandeCession.getPme().getRccm());
+			recevabiliteDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+			recevabiliteDto.setRaisonSociale(demandeCession.getPme().getRaisonSocial());
+		}
+		return recevabiliteDto;
+	}
+
+	public static DemandeCession convertToEntity(RecevabiliteDto recevabiliteDto) {
+		DemandeCession demandeCession = new DemandeCession();
+		if(null != recevabiliteDto) {
+			demandeCession = modelMapper.map(recevabiliteDto, DemandeCession.class);
+
+		}
+		return demandeCession;
+	}
+
+	public static  CreanceDto convertToCreanceDto(DemandeCession demandeCession) {
+		CreanceDto creanceDto = null;
+		if(null != demandeCession) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
+			//renseigner les mapping ambigue
+			creanceDto.setIdCreance(demandeCession.getIdDemande());
+			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
+			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
+			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
+			creanceDto.setRccm(demandeCession.getPme().getRccm());
+			creanceDto.setStatut(demandeCession.getStatut());
+		}
+		return creanceDto;
+	}
+
+	public static Page<CreanceDto> convertToListCreanceDto(DemandeCession demandeCession) {
+		CreanceDto creanceDto = null;
+		if(null != demandeCession) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
+			//renseigner les mapping ambigue
+			creanceDto.setIdCreance(demandeCession.getIdDemande());
+			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
+			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
+			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
+			creanceDto.setRccm(demandeCession.getPme().getRccm());
+			creanceDto.setStatut(demandeCession.getStatut());
+		}
+		return (Page<CreanceDto>) creanceDto;
+	}
+
+	public static  UtilisateurDto convertToDto(Utilisateur utilisateur) {
+		UtilisateurDto utilisateurDto = null;
+		if(null != utilisateur) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			utilisateurDto = modelMapper.map(utilisateur, UtilisateurDto.class);
+		}
+		return utilisateurDto;
+	}
+
+	public static Utilisateur convertToEntity(UtilisateurDto utilisateurDto) {
+		Utilisateur utilisateur = new Utilisateur();
+		if(null != utilisateurDto) {
+			utilisateur = modelMapper.map(utilisateurDto, Utilisateur.class);
+		}
+		return utilisateur;
 	}
 
 }

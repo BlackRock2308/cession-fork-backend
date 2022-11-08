@@ -29,7 +29,7 @@ public class DetailPaiementDto {
 
     private String typepaiement;
 
-    private PaiementDto paiement;
+    private PaiementDto paiementDto;
     
     private Set<DocumentDto> documents = new HashSet<>();
 

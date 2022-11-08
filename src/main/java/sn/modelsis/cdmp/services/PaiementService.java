@@ -4,15 +4,26 @@ import java.util.List;
 import java.util.Optional;
 
 import sn.modelsis.cdmp.entities.Paiement;
+import sn.modelsis.cdmp.entities.TypePaiement;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 
 public interface PaiementService {
 
         /**
          *
-         * @param paiement
+         * @param paiementDto,montant,typePaiement
          * @return
          */
-        Paiement save(Paiement paiement);
+    //    Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement);
+
+        Paiement save(PaiementDto paiementDto);
+
+        /**
+         *
+         * @param idPaiement,montant,typePaiement
+         * @return
+         */
+        void update(Long idPaiement, double montant, TypePaiement typePaiement);
 
         /**
          *

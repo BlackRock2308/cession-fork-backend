@@ -8,20 +8,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 
 public interface DemandeService {
-  /**
-   *
-   * @param demande
-   * @return
-   */
+
+  List<Demande> findAll();
+
+  List<Demande> findAllAnalyseRisque();
+
+  List<Demande> findAllConventionsComptable();
+
+  List<Demande> findAllPaiements();
+
+  List<Demande> findAllConventionsOrdonnateur();
+
+  List<Demande> findAllConventionsDG();
+
+  List<Demande> findAllCreances();
+
   Demande save(Demande demande);
 
-  /**
-   *
-   * @return
-   */
-  List<Demande> findAll();
 
   /**
    *
@@ -47,6 +53,10 @@ public interface DemandeService {
    */
   Optional<Demande> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
 
-
+  /**
+   *
+   * @return le numréro de la demande
+   */
+  String getNumDemande();
 
 }

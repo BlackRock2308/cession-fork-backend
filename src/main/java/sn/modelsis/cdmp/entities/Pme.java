@@ -5,15 +5,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+//@ToString
 @Table(name = "pme")
 public class Pme implements Serializable {
   
@@ -37,20 +33,15 @@ public class Pme implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long idPME;
-    
-    @Column(name = "prenomrepresentant")
-    private String prenomRepresentant;
-    
-    @Column(name = "nomrepresentant")
-    private String nomRepresentant;
-    
+
+    @NotNull
     @Column(name = "rccm")
     private String rccm;
     
     @Column(name = "adresse")
     private String adressePME;
     
-    @Column(name = "telephone")
+    @Column(name = "telephone", unique = true)
     private String telephonePME;
     
     @Column(name = "dateimmatriculation")
@@ -58,7 +49,8 @@ public class Pme implements Serializable {
     
     @Column(name = "centrefiscal")
     private String centreFiscal;
-    
+
+    @NotEmpty
     @Column(name = "ninea")
     private String ninea;
     
@@ -66,25 +58,26 @@ public class Pme implements Serializable {
     private String raisonSocial;
     
     @Column(name = "atd")
-    private String atd;
+    private boolean atd;
     
     @Column(name = "nantissement")
-    private String nantissement;
+    private boolean nantissement;
     
     @Column(name = "interdictionbancaire")
-    private String interdictionBancaire;
+    private boolean interdictionBancaire;
 
     @Column(name = "identificationBudgetaire")
     private boolean identificationBudgetaire;
     
     @Column(name = "formejuridique")
     private String formeJuridique;
-    
-    @Column(name = "email")
+
+    @Email
+    @Column(name = "email", unique = true)
     private String email;
     
     @Column(name = "codepin")
-    private  int codePin;
+    private  Integer codePin;
     
     @Column(name = "urlimageprofil")
     private String urlImageProfile;
@@ -102,9 +95,9 @@ public class Pme implements Serializable {
     private String localite;
 
     @Column(name = "controle")
-    private int controle;
+    private Integer controle;
 
-    @Column(name = "activitePrincipal")
+    @Column(name = "activiteprincipale")
     private String activitePrincipale;
 
     @Column(name = "autorisationministerielle")
@@ -120,23 +113,23 @@ public class Pme implements Serializable {
     private Long chiffresDaffaires;
 
     @Column(name = "effectifpermanent")
-    private int effectifPermanent;
+    private Integer effectifPermanent;
 
     @Column(name = "nombreetablissementsecondaires")
-    private int nombreEtablissementSecondaires;
+    private Integer nombreEtablissementSecondaires;
 
-    @Column(name = "nineaExistant")
+    @Column(name = "hasninea")
     private Boolean hasninea;
     
-    @Column(name = "pmeActive")
+    @Column(name = "isactive")
     private Boolean isactive;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
+    @OneToMany(mappedBy = "pme",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Demande> demandes = new HashSet<>();
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<PMEDocuments> documents = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
-    private Set<Agent> agents = new HashSet<>();
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Utilisateur utilisateur ;
 }

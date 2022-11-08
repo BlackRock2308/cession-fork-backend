@@ -5,19 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -52,20 +40,22 @@ public class DetailPaiement implements Serializable {
     private String comptable;
 
     @Column(name = "montant")
-    private Long montant;
+    private double montant;
 
     @Column(name = "reference")
     private String reference;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "typepaiement")
-    private String typepaiement;
+    private TypePaiement typepaiement;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "paiementid", nullable = true)
-    private Paiement paiement;
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "dp")
     private Set<DPaiementDocuments> documents = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="paiementId", nullable = true, updatable = false, insertable = false)
+    private Paiement paiement;
 
 
 

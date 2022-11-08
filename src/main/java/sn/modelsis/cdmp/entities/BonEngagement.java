@@ -26,7 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+//@ToString
 @Table(name = "bonEngagement")
 public class BonEngagement implements Serializable {
 
@@ -41,7 +41,7 @@ public class BonEngagement implements Serializable {
     private Long idBonEngagement;
 
     @Column(name = "montantCreance")
-    private Long montantCreance;
+    private double montantCreance;
     
     @Column(name = "reference")
     private String reference;
@@ -90,8 +90,8 @@ public class BonEngagement implements Serializable {
     @Column(name = "identificationcomptable")
     private String identificationComptable;
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
-    private Set<Demande> demandes = new HashSet<>();
+    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER)
+    private Set<DemandeCession> demandeCessions = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")
     private Set<BEDocuments> documents = new HashSet<>();

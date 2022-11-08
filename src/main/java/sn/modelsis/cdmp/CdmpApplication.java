@@ -5,32 +5,57 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import sn.modelsis.cdmp.dbPersist.PersistStatus;
+import sn.modelsis.cdmp.dbPersist.PersitUsers;
+
+import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.RoleRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.repositories.UtilisateurRepository;
+
+import static sn.modelsis.cdmp.entities.Roles.DG;
+
 /**
  * @author SNDIAGNEF
  *
  */
 
 @SpringBootApplication
-public class CdmpApplication implements InitializingBean {
+public class CdmpApplication implements InitializingBean, CommandLineRunner {
   
   private static final Logger log = LoggerFactory.getLogger(CdmpApplication.class);
   
   private final Environment env;
+
+  private final StatutRepository statutRepository;
+
+  private final UtilisateurRepository utilisateurRepository;
+
+  private final RoleRepository roleRepository;
+
+  private final PmeRepository pmeRepository;
   
-  public CdmpApplication(Environment env) {
+  public CdmpApplication(Environment env, StatutRepository statutRepository, UtilisateurRepository utilisateurRepository, RoleRepository roleRepository, PmeRepository pmeRepository) {
     this.env = env;
-}
+      this.statutRepository = statutRepository;
+      this.utilisateurRepository = utilisateurRepository;
+      this.roleRepository = roleRepository;
+      this.pmeRepository = pmeRepository;
+  }
 
   @Override
   public void afterPropertiesSet() throws Exception {
@@ -93,20 +118,44 @@ public class CdmpApplication implements InitializingBean {
               "Config Server: \t{}\n----------------------------------------------------------", configServerStatus);
   }
 
-	@Bean
-	public CorsFilter corsFilter() {
-		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.setAllowCredentials(true);
-		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
-				"Accept", "Authorization", "Origin, Accept", "X-Requested-With",
-				"Access-Control-Request-Method", "Access-Control-Request-Headers"));
-		corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
-				"Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-		return new CorsFilter(urlBasedCorsConfigurationSource);
-	}
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+      return new WebMvcConfigurer() {
+          @Override
+          public void addCorsMappings(CorsRegistry registry) {
+              registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("GET", "POST", "OPTIONS", "PUT", "PATCH");
+          }
+      };
+  }
+//	@Bean
+//	public CorsFilter corsFilter() {"
+//		CorsConfiguration corsConfiguration = new CorsConfiguration();
+//		corsConfiguration.setAllowCredentials(true);
+//		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+//		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
+//				"Accept", "Authorization", "Origin, Accept", "X-Requested-With",
+//				"Access-Control-Request-Method", "Access-Control-Request-Headers"));
+//		corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
+//				"Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
+//		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+//		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+//		return new CorsFilter(urlBasedCorsConfigurationSource);
+//	}
+
+
+    @Override
+    public void run(String... args) throws Exception {
+        log.info("Initialisation des differents statuts...");
+
+        PersistStatus persistStatus=new PersistStatus(statutRepository);
+        log.info("Initialisation des differents statuts terminée");
+
+        log.info("Initialisation des differents profils utilisateurs...");
+
+        PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
+        log.info("Initialisation des differents profils terminée");
+
+    }
 
 }

@@ -3,14 +3,14 @@
  */
 package sn.modelsis.cdmp.entities;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author SNDIAGNEF
@@ -34,18 +34,17 @@ public class Paiement implements Serializable {
   private Long idPaiement;
 
   @Column(name = "montantrecucdmp")
-  private Long montantRecuCDMP;
+  private double montantRecuCDMP;
 
   @Column(name = "soldepme")
-  private Long soldePME;
+  private double soldePME;
 
-  
-  @Column(name = "datepaiement")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime datePaiement; 
-  
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "statutid", nullable = false)
-  private Statut statut;
+  @OneToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name="demandeId", nullable = true, updatable = false, insertable = false)
+  private DemandeCession demandeCession;
+
+  @OneToMany(mappedBy = "paiement",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<DetailPaiement> detailPaiements = new HashSet<>();
+
 
 }

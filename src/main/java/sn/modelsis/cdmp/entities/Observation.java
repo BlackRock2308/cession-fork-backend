@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Table(name = "observation")
-public class Observation implements Serializable {
+public class Observation implements Serializable, Comparable<Observation> {
     /**
    * 
    */
@@ -24,19 +24,30 @@ public class Observation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    private Long idDemande;
     
     @Column(name = "libelle")
     private String libelle;
-    
+
     @Column(name = "dateobservation")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime dateObservation; 
+    private LocalDateTime dateObservation;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="demandeid")
     private Demande demande;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="agentid")
-    private Agent agent;
+    @JoinColumn(name="utilisateur_id")
+    private Utilisateur utilisateur;
+    
+    @Override
+    public int compareTo(Observation o) {
+
+        return 0;
+    }
+
+    public Long getIdDemande() {
+        return idDemande;
+    }
 }

@@ -26,7 +26,7 @@ import lombok.Setter;
  *
  */
 @Entity
-@Table(name = "Document")
+@Table(name = "document")
 @Getter
 @Setter
 @EqualsAndHashCode
