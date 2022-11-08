@@ -177,13 +177,13 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         PersistBonEngagement PersistBonEngagement = new PersistBonEngagement(bonEngagementService);
         log.info("Initialisation des bon d'engagement");
 
-        PersistDemande persistDemande= new PersistDemande(demandeCessionService, demandeAdhesionService, pmeRepository, bonEngagementRepository);
+       // PersistDemande persistDemande= new PersistDemande(demandeCessionService, demandeAdhesionService, pmeRepository, bonEngagementRepository);
         log.info("Initialisation des demandes d'adhésion et de cession");
 
-        PersistConvention persistConvention = new PersistConvention(demandeCessionRepository, conventionService, pmeRepository);
+       // PersistConvention persistConvention = new PersistConvention(demandeCessionRepository, conventionService, pmeRepository);
         log.info("Initialisation des conventions");
 
-        PersistPaiement persistPaiement= new PersistPaiement(demandeCessionRepository, paiementService, detailPaiementService);
+       // PersistPaiement persistPaiement= new PersistPaiement(demandeCessionRepository, paiementService, detailPaiementService);
         log.info("Initialisation des paiements et details paiements");
   }
 
