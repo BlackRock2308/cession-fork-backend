@@ -229,7 +229,18 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public List<DemandeCession> findAllPMEDemandes(Long id) {
-        return demandecessionRepository.findAllByPmeIdPME(id);
+        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);
+
+        return  demandecessionRepository.findAllByPmeIdPME(id);
+    }
+
+    @Override
+    public Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable,Long id) {
+        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);
+
+        return  demandecessionRepository
+                .findAllByPmeIdPME(pageable,id)
+                .map(cessionMapper::asDTO);
     }
 
 }
