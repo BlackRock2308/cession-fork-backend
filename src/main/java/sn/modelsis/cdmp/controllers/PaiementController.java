@@ -13,6 +13,7 @@ import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.PaiementService;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,12 +49,16 @@ public class PaiementController {
 
 
     @GetMapping
-    public ResponseEntity<List<Paiement>> getAllPaiements(
+    public ResponseEntity<List<PaiementDto>> getAllPaiements(
             HttpServletRequest request) {
         List<Paiement> paiements =
                 paiementService.findAll();
+        List<PaiementDto> paiementDtos = new ArrayList<>();
+        for (Paiement paiement :paiements ) {
+            paiementDtos.add(DtoConverter.convertToDto(paiement));
+        }
         log.info("All paiements .");
-        return ResponseEntity.status(HttpStatus.OK).body(paiements);
+        return ResponseEntity.status(HttpStatus.OK).body(paiementDtos);
 
     }
 
@@ -62,7 +67,7 @@ public class PaiementController {
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);
-        log.info("Paiement . demandeId:{}", paiement.getDemandeCession().getIdDemande());
+        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
     }
 
