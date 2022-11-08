@@ -18,7 +18,8 @@ public interface CreanceMapper {
     @Mapping(target = "nomMarche", expression = "java(demandeCessionDto.getBonEngagement().getNomMarche())")
     @Mapping(target = "montantCreance", expression = "java(demandeCessionDto.getBonEngagement().getMontantCreance())")
     @Mapping(target = "dateDemandeCession", expression = "java(demandeCessionDto.getDateDemandeCession())")
-    @Mapping(target = "dateMarche", expression = "java(demandeCessionDto.getBonEngagement().getDateSoumissionServiceDepensier())")
-        // @Mapping(target = "statutLibelle", expression = "java(demandeCessionDto.getStatut().getLibelle())")
+    //@Mapping(target = "decote", expression = "java(demandeCessionDto.getConventions().getDecote())")
+    //@Mapping(target = "dateMarche", expression = "java(java(java.time.LocalDateTime.now()))")
+    //@Mapping(target = "soldePME", expression = "java(demandeCessionDto.getPaiementDto().getSoldePME())")
     CreanceDto mapToDto(DemandeCessionDto demandeCessionDto);
 }

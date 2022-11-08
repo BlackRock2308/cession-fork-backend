@@ -1,7 +1,5 @@
 package sn.modelsis.cdmp.services.impl;
 
-<<<<<<< HEAD
-=======
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,7 +18,7 @@ import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.util.ArrayList;
->>>>>>> 16225248151ce39b35c178b6ded0cb7caf0090a8
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -59,14 +57,15 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCession saveCession(DemandeCession demandeCession) {
-//        if(demandeCession.getIdDemande()==null){
-//            demandeCession.setNumeroDemande(demandeCession.getNumeroDemande());
-//        }
         DemandeCession newDemandeCession;
 
         try{
             log.info("DemandeCessionService:saveCession request started");
             demandeCession.setDateDemandeCession(new Date());
+
+            Date dateBonEngagement = new Date();
+
+            demandeCession.getBonEngagement().setDatebonengagement(dateBonEngagement);
 
             Statut statut = statutRepository.findByLibelle("SOUMISE");
             demandeCession.setStatut(statut);

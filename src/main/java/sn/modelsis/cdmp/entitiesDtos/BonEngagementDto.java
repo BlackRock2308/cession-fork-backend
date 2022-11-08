@@ -29,7 +29,7 @@ public class BonEngagementDto {
     private String imputation;
     private String nomMarche;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime dateBonEngagement;
+    private Date dateBonEngagement;
     private String identificationComptable;
     private String typeDepense;
     private String modeReglement;
