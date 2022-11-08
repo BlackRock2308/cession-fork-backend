@@ -17,7 +17,15 @@ public interface PaiementService {
          */
     //    Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement);
 
-        DemandeCession save(PaiementDto paiementDto);
+        Paiement savePaiement(PaiementDto paiementDto);
+        /**
+         *
+         * @param paiementDto,montant,typePaiement
+         * @return
+         */
+    //    Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement);
+
+        DemandeCession saveDemande(PaiementDto paiementDto);
 
         /**
          *
