@@ -90,7 +90,7 @@ public class BonEngagement implements Serializable {
     @Column(name = "identificationcomptable")
     private String identificationComptable;
     
-    @OneToMany(mappedBy = "bonEngagement",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER)
     private Set<DemandeCession> demandeCessions = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")

@@ -15,7 +15,6 @@ import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.util.Date;
@@ -37,9 +36,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCession saveCession(DemandeCession demandeCession) {
-        if(demandeCession.getIdDemande()==null){
-            demandeCession.setNumeroDemande(demandeCession.getNumeroDemande());
-        }
+//        if(demandeCession.getIdDemande()==null){
+//            demandeCession.setNumeroDemande(demandeCession.getNumeroDemande());
+//        }
         DemandeCession newDemandeCession;
 
         try{
