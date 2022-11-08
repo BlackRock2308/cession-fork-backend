@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @Table(name="vw_demande_document", schema= "public")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorValue("DEMANDE")
-@Immutable
 public class DemandeDocuments extends Documents {
 
   /**

@@ -40,7 +40,7 @@ private final DetailPaiementService detailPaiementService;
            paiementDto.setSoldePME(0);
            paiementDto.setRaisonSocial("GFPOIOI");
            paiementDto.setDemandecessionid(dC1.get().getIdDemande());
-           p1 = paiementService.save(paiementDto);
+           p1 = paiementService.save(paiementDto).getPaiement();
        }
 
 
@@ -53,7 +53,7 @@ private final DetailPaiementService detailPaiementService;
            paiementDto.setSoldePME(0);
            paiementDto.setRaisonSocial("GFPOIOI");
            paiementDto.setDemandecessionid(dC2.get().getIdDemande());
-           p2 = paiementService.save(paiementDto);
+           p2 = paiementService.save(paiementDto).getPaiement();
        }
        Optional<DemandeCession> dC3 = this.demandeCessionRepository.findById(3L);
        if (dC3.isPresent() && dC3 != null) {
@@ -64,7 +64,7 @@ private final DetailPaiementService detailPaiementService;
            paiementDto.setSoldePME(0);
            paiementDto.setRaisonSocial("GFPOIOI");
            paiementDto.setDemandecessionid(dC3.get().getIdDemande());
-           p3 = paiementService.save(paiementDto);
+           p3 = paiementService.save(paiementDto).getPaiement();
        }
 
        DetailPaiement pme1 = new DetailPaiement();

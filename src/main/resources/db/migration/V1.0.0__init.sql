@@ -104,6 +104,7 @@ CREATE TABLE public.bonengagement
       actionDestination character varying (250),
       activiteDestination character varying (250),
       typeDepense character varying (250),
+      typeMarche character varying (250),
       modeReglement character varying (100),
       dateSoumissionServiceDepensier timestamp without time zone,
       nomMarche character varying (250)
