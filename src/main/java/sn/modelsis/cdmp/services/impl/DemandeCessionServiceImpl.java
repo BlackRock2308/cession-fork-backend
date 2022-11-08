@@ -60,8 +60,14 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
+    public DemandeCession save(DemandeCession demandeCession) {
+        return demandecessionRepository.save(demandeCession);
+    }
+
+    @Override
     public Page<DemandeCessionDto> findAll(Pageable pageable){
         log.info("DemandeCessionService:findAll : fetching .....");
+        var x =demandecessionRepository.findAll();
         return demandecessionRepository
                 .findAll(pageable)
                 .map(cessionMapper::asDTO);
@@ -78,6 +84,11 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_CESSION_BY_ID, id.toString());
         log.debug("DemandeCessionService:findById received from database {}", optional.get());
         return optional;
+    }
+
+    @Override
+    public Optional<DemandeCession> findByIdDemande(Long id) {
+        return demandecessionRepository.findById(id);
     }
 
     @Override

@@ -40,7 +40,6 @@ public class Paiement implements Serializable {
   private double soldePME;
 
   @OneToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name="demandeId", nullable = true, updatable = false, insertable = false)
   private DemandeCession demandeCession;
 
   @OneToMany(mappedBy = "paiement",fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -31,6 +31,7 @@ import sn.modelsis.cdmp.entities.DetailPaiement;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.DetailPaiementService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
@@ -43,27 +44,40 @@ public class DetailPaiementController {
     @Autowired
     DetailPaiementService detailPaiementService;
 
-    @PostMapping(value = "pme")
-    public ResponseEntity<DetailPaiementDto> addDetailPaiementPME(@RequestBody DetailPaiementDto detailPaiementDto,
-                                                       HttpServletRequest request) {
-       // log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getIdPaiement());
+    @PostMapping(value = "cdmp-pme")
+    public ResponseEntity<PaiementDto> addDetailPaiementPME(@RequestBody DetailPaiementDto detailPaiementDto,
+                                                            HttpServletRequest request) {
+        log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
 
         DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
         log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
-        DetailPaiement result = detailPaiementService.paiementPME(detailPaiement);
-        log.info("DetailPaiement create. Id:{} ", result.getId());
+        Paiement result = detailPaiementService.getPaiement(detailPaiement);
+        log.info("DetailPaiement create. Id:{} ", result.getIdPaiement());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
+    @PostMapping(value = "sica-cdmp")
+    public ResponseEntity<PaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiementDto detailPaiementDto,
+                                                            HttpServletRequest request) {
+        log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
+
+        DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
+        log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
+        Paiement result = detailPaiementService.paiementCDMP(detailPaiement);
+        log.info("DetailPaiement create. Id:{} ", result.getIdPaiement());
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+    }
+/*
     @PostMapping(value = "cdmp")
     public ResponseEntity<DetailPaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiement detailPaiement,
                                                                HttpServletRequest request) {
-       // DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
         DetailPaiement result = detailPaiementService.paiementCDMP(detailPaiement);
         log.info("DetailPaiement create. Id:{} ", result.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
+
+ */
     /*@PutMapping()
     public ResponseEntity<DetailPaiementDto> updateDetailPaiement(@RequestBody DetailPaiementDto detailPaiementDto,
                                                           HttpServletRequest request) {

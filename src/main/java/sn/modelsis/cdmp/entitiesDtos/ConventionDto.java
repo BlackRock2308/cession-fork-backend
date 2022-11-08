@@ -12,6 +12,7 @@ import lombok.*;
  *
  */
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @ToString @Getter @Setter
 public class ConventionDto {
@@ -27,6 +28,7 @@ public class ConventionDto {
   
   private PmeDto pmeDto;
 
+  private Long idDemande;
 
   private boolean activeConvention;
 
