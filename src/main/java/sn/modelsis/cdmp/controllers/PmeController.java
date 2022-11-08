@@ -27,6 +27,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.TypeDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -111,6 +119,16 @@ public class PmeController {
     log.info("PmeController:deletePme with id = {}", id);
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Pme Deleted Successfullly...");
+  }
+
+  @PatchMapping(value ="/{idDemande}/complete-demande")
+  public ResponseEntity<DemandeCessionDto> complementerDemandeCession(@PathVariable("idDemande") Long idDemande) {
+
+    log.info("PmeController:complementerDemandeCession request started... ");
+    DemandeCession acceptedDemande = pmeService.complementerDemandeCession(idDemande);
+    log.info("PmeController:complementerDemandeCession request params  {}", acceptedDemande.getIdDemande());
+
+    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(acceptedDemande));
   }
   
   @PostMapping("/{id}/upload")

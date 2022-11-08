@@ -40,7 +40,7 @@ public class PaiementController {
         if( paiementDto.getIdPaiement()!=null)
             throw new  CustomException("Le paiement exit déja ");*/
 
-        DemandeCession demandeCession = paiementService.save(paiementDto);
+        DemandeCession demandeCession = paiementService.saveDemande(paiementDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(demandeCession));
 
     }

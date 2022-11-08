@@ -1,5 +1,7 @@
 package sn.modelsis.cdmp.services;
 
+import sn.modelsis.cdmp.entities.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -36,4 +38,6 @@ public interface PmeService {
 
 
     Optional<Pme> getPmeByUtilisateur(Long id);
+
+    DemandeCession complementerDemandeCession(Long idDemande );
 }

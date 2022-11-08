@@ -52,7 +52,12 @@ public class PaiementServiceImpl implements PaiementService {
 
 
     @Override
-    public DemandeCession save(PaiementDto paiementDto) {
+    public Paiement savePaiement(PaiementDto paiementDto) {
+        return paiementRepository.save(DtoConverter.convertToEntity(paiementDto));
+    }
+
+    @Override
+    public DemandeCession saveDemande(PaiementDto paiementDto) {
         DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
 
         String statusLibelle = demandeCession.getStatut().getLibelle() ;

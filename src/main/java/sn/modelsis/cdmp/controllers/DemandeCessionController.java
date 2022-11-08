@@ -76,6 +76,7 @@ public class DemandeCessionController {
 
     @PatchMapping(value ="/{idDemande}/validerRecevabilite")
     public ResponseEntity<DemandeCessionDto> acceptCession(@PathVariable("idDemande") Long idDemande) {
+        log.info("DemandeCessionController:acceptCession request started... ");
         DemandeCession acceptedDemande = demandeCessionService.validerRecevabilite(idDemande);
         log.info("DemandeCessionController:acceptCession request params  {}", acceptedDemande.getIdDemande());
 
@@ -86,6 +87,7 @@ public class DemandeCessionController {
 
     @PatchMapping(value ="/{idDemande}/validateAnalyse")
     public ResponseEntity<DemandeCessionDto> validateAnalyseNonRisque(@PathVariable("idDemande") Long idDemande) {
+        log.info("DemandeCessionController:validateAnalyseNonRisque request started... ");
         DemandeCession acceptedDemande = demandeCessionService.analyseDemandeCessionNonRisque(idDemande);
         log.info("DemandeCessionController:acceptCession request params  {}", acceptedDemande.getIdDemande());
 

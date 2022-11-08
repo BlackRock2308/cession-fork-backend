@@ -1,5 +1,22 @@
 package sn.modelsis.cdmp.services.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.exceptions.ItemExistsException;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.services.PmeService;
+import sn.modelsis.cdmp.util.ExceptionUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +44,8 @@ import sn.modelsis.cdmp.util.ExceptionUtils;
 @Slf4j
 public class PmeServiceImpl implements PmeService {
   private final PmeRepository pmeRepository;
+  private final StatutRepository statutRepository;
+  private final DemandeCessionRepository demandecessionRepository;
   private final DocumentService documentService;
 
 
@@ -156,4 +175,22 @@ public class PmeServiceImpl implements PmeService {
     }
     return optional;
   }
+
+  /* Methode permettant á la PME de changer le statut de sa demande de Cession en complété*/
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public DemandeCession complementerDemandeCession(Long idDemande ){
+    log.info("DemandeCessionService:complementerDemandeCession request started...");
+    Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+    log.debug("DemandeCessionService:complementerDemandeCession request params {}", idDemande);
+    Statut updatedStatut = statutRepository.findByLibelle("COMPLETEE");
+    optional.get().setStatut(updatedStatut);
+
+    DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
+    log.info("DemandeCessionService:complementerDemandeCession received from Database {}", demandeCessionDto.getIdDemande());
+    return demandeCessionDto;
+
+  }
+
 }

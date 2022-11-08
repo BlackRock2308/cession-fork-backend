@@ -52,7 +52,7 @@ public class PersistDemande {
                 DemandeCession dC1 = new DemandeCession();
                 dC1.setPme(pme.get());
                 dC1.setBonEngagement(bE1.get());
-                this.demandeCessionService.saveCession(dC1);
+                demandeCessionService.saveCession(dC1);
 
                 DemandeCession dC2 = new DemandeCession();
                 dC2.setPme(pme.get());
@@ -65,7 +65,7 @@ public class PersistDemande {
                 DemandeCession dC3 = new DemandeCession();
                 dC3.setPme(pme.get());
                 dC3.setBonEngagement(bE2.get());
-                this.demandeCessionService.saveCession(dC3);
+                this.demandeCessionService.save(dC3);
             }
 
 
