@@ -13,6 +13,7 @@ import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
+import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
 
 import java.io.IOException;
@@ -34,6 +35,8 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private  final DocumentService documentService;
     private final DemandeAdhesionMapper adhesionMapper;
 
+    private  final DemandeService demandeService;
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
@@ -54,6 +57,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                     throw new CustomException("La PME n'existe pas");
                 }
         );
+        if(demandeAdhesion.getIdDemande()==null){
+            demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
+        }
         DemandeAdhesion demandeAdhesion1 = demandeAdhesionRepository.save(demandeAdhesion);
         log.info("DemandeAdhesionService:saveAdhesion execution finished successfully");
         return demandeAdhesion1;
@@ -77,10 +83,6 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                 .orElseThrow());
     }
 
-    /**
-     This function is used inside rejetAdhesion and validerAdhesion
-     to avoid boilerplate code inside those two functions
-     */
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)

@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString
 public class PaiementDto implements Serializable {
 
-    private Long idPaiement;
+    private Long cdmp;
 
     private double montantRecuCDMP;
 

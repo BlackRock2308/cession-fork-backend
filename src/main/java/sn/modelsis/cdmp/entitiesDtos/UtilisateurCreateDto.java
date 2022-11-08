@@ -1,14 +1,13 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
+import java.util.List;
+
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.Role;
-
-import javax.persistence.Column;
-import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor

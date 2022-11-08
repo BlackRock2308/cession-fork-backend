@@ -32,6 +32,9 @@ public class Demande implements Serializable {
     @Column(nullable = true)
     private Long idPme;
 
+    @Column(name="numeroDemande")
+    private String numeroDemande;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="pme_id")
     private Pme pme;

@@ -35,7 +35,7 @@ public class Pme implements Serializable {
     private Long idPME;
 
     @NotNull
-    @Column(name = "rccm", unique = true)
+    @Column(name = "rccm")
     private String rccm;
     
     @Column(name = "adresse")
@@ -51,20 +51,20 @@ public class Pme implements Serializable {
     private String centreFiscal;
 
     @NotEmpty
-    @Column(name = "ninea", unique = true)
+    @Column(name = "ninea")
     private String ninea;
     
     @Column(name = "raisonsocial")
     private String raisonSocial;
     
     @Column(name = "atd")
-    private String atd;
+    private boolean atd;
     
     @Column(name = "nantissement")
-    private String nantissement;
+    private boolean nantissement;
     
     @Column(name = "interdictionbancaire")
-    private String interdictionBancaire;
+    private boolean interdictionBancaire;
 
     @Column(name = "identificationBudgetaire")
     private boolean identificationBudgetaire;

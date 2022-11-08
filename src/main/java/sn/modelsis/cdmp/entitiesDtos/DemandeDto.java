@@ -13,6 +13,7 @@ import lombok.ToString;
 public class DemandeDto {
     private Long idDemande;
     private PmeDto pme;
+    private String numeroDemande;
     private StatutDto statut;
     private BonEngagementDto bonEngagement;
     private ConventionDto convention;

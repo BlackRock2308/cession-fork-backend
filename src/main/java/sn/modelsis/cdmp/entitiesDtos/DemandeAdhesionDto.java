@@ -1,15 +1,14 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
-import lombok.*;
-import sn.modelsis.cdmp.entities.*;
-
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Data
@@ -24,11 +23,6 @@ public class DemandeAdhesionDto {
     private StatutDto statut;
     private Set<DocumentDto> documents = new HashSet<>();
     private PmeDto pme;
-
-    //    @NotBlank
-//    private String ninea;
-//    @NotBlank
-//    private String rccm;
 
 
 }

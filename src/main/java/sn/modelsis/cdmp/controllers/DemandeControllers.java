@@ -43,6 +43,14 @@ public class DemandeControllers {
         .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
   }
 
+//  @GetMapping("/rejected")
+//  public ResponseEntity<List<DemandeDto>> getAllRejectedDemande(HttpServletRequest request) {
+//    log.info("DemandeControllers:getAllRejectedDemande request started");
+//    List<Demande> demandeList = demandeService.findAllDemandeRejetee();
+//    return ResponseEntity.status(HttpStatus.OK)
+//            .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+//  }
+
   @GetMapping(value ="/analyse_risque")
   public ResponseEntity<List<DemandeDto>> getAllAnalyseRisque(HttpServletRequest request) {
     List<Demande> demandeList = demandeService.findAllAnalyseRisque();

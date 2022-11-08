@@ -1,33 +1,35 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.repositories.DemandeRepository;
-import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class DemandeServiceImpl implements DemandeService {
 
     private final DemandeRepository demandeRepository;
     private final DocumentService documentService;
 
+    private final StatutRepository statutRepository;
+
     @Override
     public List<Demande> findAll() {
         return demandeRepository.findAll();
     }
-
 
     //La liste des demandes a l'étape analyse du risque
     @Override
@@ -125,5 +127,34 @@ public class DemandeServiceImpl implements DemandeService {
 
         }
         return demande;
+    }
+
+    @Override
+    public String getNumDemande() {
+        StringBuilder numero = new StringBuilder();
+        Integer annee = Calendar.getInstance().get(Calendar.YEAR);
+        Integer num = 0;
+        Optional<Demande> opDemande = demandeRepository.findFirstByOrderByIdDemandeDesc();
+        Demande demande = new Demande();
+        if(opDemande.isPresent() && opDemande!=null ){
+            demande = opDemande.get();
+            String c =  demande.getNumeroDemande().substring(5);
+            num = Integer.parseInt(c)+1;
+        }
+        if(demande.getNumeroDemande()==null || demande.getNumeroDemande().substring(0, 4).equals(""+(annee-1))){
+            num = 1;
+        }
+        numero.append(annee);
+        numero.append("-");
+        if(num<10){
+            numero.append("000");
+        }
+        else if(num<100){
+            numero.append("00");
+        }else {
+            numero.append("0");
+        }
+        numero.append(num);
+        return numero.toString();
     }
 }

@@ -53,6 +53,10 @@ public interface DemandeService {
    */
   Optional<Demande> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
 
-
+  /**
+   *
+   * @return le numréro de la demande
+   */
+  String getNumDemande();
 
 }

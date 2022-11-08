@@ -39,6 +39,7 @@ public class PmeController {
   @PostMapping()
   public ResponseEntity<PmeDto> savePme(@RequestBody PmeDto pmeDto,
                                               HttpServletRequest request) {
+    log.info("PmeController:savePme request started");
 
     log.info("PmeController:savePme request body : {}", pmeDto);
     Pme pme = DtoConverter.convertToEntity(pmeDto);
@@ -47,50 +48,65 @@ public class PmeController {
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
 
+  @GetMapping
+  public ResponseEntity<List<PmeDto>> getAllPme(HttpServletRequest request) {
+    log.info("PmeController:getAllPme request started....");
+    List<Pme> pmeList = pmeService.findAllPme();
+
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(pmeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
+  }
+
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<PmeDto> getPme(@PathVariable Long id,
+                                       HttpServletRequest request) {
+    log.info("PmeController:getPme request started....");
+    Pme pme = pmeService.getPme(id).orElse(null);
+    log.info("PmeController:getPme request params : id = {}", id);
+    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(pme));
+  }
+
   @PutMapping(value = "/{id}")
   public ResponseEntity<PmeDto> updatePme(@RequestBody PmeDto pmeDto, @PathVariable("id") Long id ,
                                           HttpServletRequest request) {
-    log.info("PmeController:updatePme Started with request params id={}", id);
-
+    log.info("PmeController:updatePme request started");
     Pme pme = DtoConverter.convertToEntity(pmeDto);
+    log.info("PmeController:updatePme Started with request params id={}", id);
     Pme result = pmeService.updatePme(id,pme);
     log.info("PmeController:updatePme updated with id = {} ", result.getIdPME());
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
   }
 
-  @PatchMapping(value = "/{id}")
-  public ResponseEntity<PmeDto> patchPme(@PathVariable Long id,@RequestBody PmeDto pmeDto,
-                                         HttpServletRequest request) {
+//  @PatchMapping(value = "/{id}")
+//  public ResponseEntity<PmeDto> patchPme(@PathVariable Long id,@RequestBody PmeDto pmeDto,
+//                                         HttpServletRequest request) {
+//    log.info("PmeController:patchPme request started");
+//    Pme pme = DtoConverter.convertToEntity(pmeDto);
+//    pme.setIdPME(id);
+//    Pme result = pmeService.savePme(pme);
+//    log.info("Pme updated. Id:{}", result.getIdPME());
+//    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
+//  }
 
-    Pme pme = DtoConverter.convertToEntity(pmeDto);
-    pme.setIdPME(id);
-    Pme result = pmeService.savePme(pme);
-    log.info("Pme updated. Id:{}", result.getIdPME());
-    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
-  }
 
-  @GetMapping
-  public ResponseEntity<List<PmeDto>> getAllPme(HttpServletRequest request) {
-    List<Pme> pmeList = pmeService.findAllPme();
-    log.info("PmeController:getAllPme fetching from database");
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(pmeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
-  }
 
-  @GetMapping(value = "/{id}")
-  public ResponseEntity<PmeDto> getPme(@PathVariable Long id, HttpServletRequest request) {
-    log.info("PmeController:getPme request params : id = {}", id);
-    Pme pme = pmeService.getPme(id).orElse(null);
-
+  @GetMapping(value = "/byutilisateur/{id}")
+  public ResponseEntity<PmeDto> getPmeByUtilisateur(@PathVariable Long id,
+                                                    HttpServletRequest request) {
+    log.info("PmeController:getPmeByUtilisateur request started... ");
+    Pme pme = pmeService.getPmeByUtilisateur(id).orElse(null);
+    log.info("PmeController:getPmeByUtilisateur request params id : {} ", id);
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(pme));
   }
 
 
 
   @DeleteMapping(value = "/{id}")
-  public ResponseEntity<String> deletePme(@PathVariable Long id, HttpServletRequest request) {
-    log.info("PmeController:deletePme with id = {}", id);
+  public ResponseEntity<String> deletePme(@PathVariable Long id,
+                                          HttpServletRequest request) {
+    log.info("PmeController:getPmeByUtilisateur request started... ");
     pmeService.deletePme(id);
+    log.info("PmeController:deletePme with id = {}", id);
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Pme Deleted Successfullly...");
   }
@@ -104,8 +120,9 @@ public class PmeController {
 
     Optional<Pme> be = null;
     try {
-      log.info("PmeController:addDocument uploading with request params id = {}", id);
+      log.info("PmeController:addDocument request started");
       be = pmeService.upload(id, file, TypeDocument.valueOf(type));
+      log.info("PmeController:addDocument uploading with request params id = {}", id);
     } catch (IOException e) {
       log.error(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

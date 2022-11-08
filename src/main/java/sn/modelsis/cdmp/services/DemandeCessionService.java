@@ -15,50 +15,37 @@ public interface DemandeCessionService {
     DemandeCession saveCession(DemandeCession demandeCession);
     DemandeCession save(DemandeCession demandeCession);
 
-//    DemandeCession addCession(DemandeCessionDto demandeCessionDto);
-
-    //    List<DemandeCession> findAll();
-
     Page<DemandeCessionDto> findAll(Pageable pageable);
 
     Optional<DemandeCessionDto> findById (Long id);
 
-    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
+//    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
+//    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 
 
-    // Analyse Demande de Cession
-    DemandeCession rejectionDemandeCession(Long idDemande );
-    DemandeCession acceptDemandeCession(Long idDemande );
+    // Recevabilite Demande de Cession
+    DemandeCession validerRecevabilite(Long idDemande );
+    DemandeCession rejeterRecevabilite(Long idDemande );
 
-    // Analyse Demande de Cession
+    // Analyse de risques Demande de Cession
     DemandeCession analyseDemandeCessionRisque(Long idDemande );
     DemandeCession analyseDemandeCessionNonRisque (Long idDemande );
     DemandeCession analyseDemandeCessionComplement (Long idDemande);
 
-    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
-//    DemandeCessionDto validerCession(DemandeCessionDto demandecession);
-
-
-
-
-//    DemandeCessionDto rejeterAnalyse(DemandeCessionDto demandecessionDto);
-
-
-
-
-
     List<DemandeCession> findAllPMEDemandes(Long id);
 
+    List<DemandeCession> findAllDemandeRejetee();
 
+    List<DemandeCession> findAllDemandeAcceptee();
 
+    List<DemandeCession> findAllDemandeComplementRequis();
 
+//    Page<DemandeCessionDto> findAllDemandeComplementRequis(Pageable pageable);
 
-    /**
-     *
-     * @return
-     */
+    Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut);
+
 
     }

@@ -2,29 +2,24 @@ package sn.modelsis.cdmp.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemExistsException;
-import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
-import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +29,6 @@ public class PmeServiceImpl implements PmeService {
   private final PmeRepository pmeRepository;
   private final DocumentService documentService;
 
-  private final StatutRepository statutRepository;
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
@@ -43,17 +37,12 @@ public class PmeServiceImpl implements PmeService {
     Pme newPme;
 
     try {
-      log.info("PmeService:savePme request started");
-      Optional<Pme> optional = pmeRepository.findByNinea(pme.getNinea());
-      ExceptionUtils.absentOrThrow(optional, ItemExistsException.NINEA_PME_EXIST, pme.getNinea());
+      log.info("PmeService:savePme .....");
 
-      optional = pmeRepository.findByRccm(pme.getRccm());
-      ExceptionUtils.absentOrThrow(optional, ItemExistsException.RCCM_EXIST, pme.getRccm());
+      Optional<Pme> optional = Optional.ofNullable(pmeRepository.findByMail(pme.getEmail()));
+       ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
 
-       //optional = pmeRepository.findByMail(pme.getEmail());
-       //ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
-
-      optional = pmeRepository.findByPhone(pme.getTelephonePME());
+       optional = pmeRepository.findByPhone(pme.getTelephonePME());
       ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
 
       newPme = pmeRepository.saveAndFlush(pme);
@@ -69,10 +58,9 @@ public class PmeServiceImpl implements PmeService {
 
   @Override
   public List<Pme> findAllPme() {
-    return pmeRepository
-            .findAll()
-            .stream()
-            .collect(Collectors.toList());
+    log.info("PmeService:findAllPme fetching ......");
+    return new ArrayList<>(pmeRepository
+            .findAll());
   }
 
   @Override
@@ -84,10 +72,11 @@ public class PmeServiceImpl implements PmeService {
   public Optional<Pme> getPme(Long id) {
     Optional<Pme> optional;
     try {
-      log.info("PmeService:getPme started request");
+      log.info("PmeService:getPme fetching Pme with id : {}......", id);
       optional = pmeRepository.findById(id);
-
+      log.debug("PmeService:getPme request params : {}",id);
     } catch(Exception ex){
+      log.error("Exception occured while getting PME: {}",id);
       throw new CustomException("Error, can't find PME with id ");
     }
     return optional;
@@ -97,10 +86,12 @@ public class PmeServiceImpl implements PmeService {
   @Transactional(propagation = Propagation.REQUIRED)
   public void deletePme(Long id) {
     try {
-      log.info("PmeService:deletePme started request");
+      log.info("PmeService:deletePme with id : {}", id);
       Optional<Pme> optional = pmeRepository.findById(id);
+      log.debug("PmeService:deletePme request params : {}",id);
       pmeRepository.deleteById(optional.get().getIdPME());
     } catch(Exception ex){
+      log.error("Exception occured while deleting PME: {}",id);
       throw new CustomException("Error, can't find PME with id ");
     }
   }
@@ -110,9 +101,8 @@ public class PmeServiceImpl implements PmeService {
   public Pme updatePme(Long id, Pme pme) {
     Optional <Pme> existingPme;
     try {
-      log.info("PmeService:updatePme started request");
+      log.info("PmeService:updatePme ........");
       existingPme = pmeRepository.findById(id);
-
       existingPme.get().setAdressePME(pme.getAdressePME());
       existingPme.get().setActivitePrincipale(pme.getActivitePrincipale());
       existingPme.get().setFormeJuridique(pme.getFormeJuridique());
@@ -120,10 +110,16 @@ public class PmeServiceImpl implements PmeService {
       existingPme.get().setEmail(pme.getEmail());
       existingPme.get().setTelephonePME(pme.getTelephonePME());
       existingPme.get().setLocalite(pme.getLocalite());
+      existingPme.get().setRaisonSocial(pme.getRaisonSocial());
+      existingPme.get().setCodePin(pme.getCodePin());
+      existingPme.get().setAtd(pme.isAtd());
+      existingPme.get().setEnseigne(pme.getEnseigne());
+      existingPme.get().setNombreEtablissementSecondaires(pme.getNombreEtablissementSecondaires());
 
       pmeRepository.saveAndFlush(existingPme.get());
       log.info("PmeService:updatePme update Pme in the database with id = {}",existingPme.get().getIdPME());
     } catch(Exception ex){
+      log.error("Exception occured while updating PME with id : {}",id );
       throw new CustomException("Error, can't find and update PME with id ");
     }
     return existingPme.get();
@@ -134,6 +130,7 @@ public class PmeServiceImpl implements PmeService {
   @Transactional(propagation = Propagation.REQUIRED)
   public Optional<Pme> upload(Long id, MultipartFile file, TypeDocument type)
       throws IOException {
+    log.info("PmeService:upload ");
     Optional<Pme> pme = pmeRepository.findById(id);
     if (pme.isPresent()) {
 
@@ -145,5 +142,18 @@ public class PmeServiceImpl implements PmeService {
 
     }
     return pme;
+  }
+
+  @Override
+  public Optional<Pme> getPmeByUtilisateur(Long id) {
+    Optional<Pme> optional;
+    try {
+      log.info("PmeService:getPmeByUtilisateur ...... ");
+      optional = pmeRepository.findPmeByUtilisateurIdUtilisateur(id);
+
+    } catch(Exception ex){
+      throw new CustomException("Error, can't find PME with id user ");
+    }
+    return optional;
   }
 }
