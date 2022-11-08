@@ -18,14 +18,9 @@ public interface DemandeCessionService {
     Page<DemandeCessionDto> findAll(Pageable pageable);
 
     Optional<DemandeCessionDto> findById (Long id);
-
+    
     Optional<DemandeCession> findByIdDemande (Long id);
 
-//    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
-//    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
-
-
-    // Recevabilite Demande de Cession
     DemandeCession validerRecevabilite(Long idDemande );
     DemandeCession rejeterRecevabilite(Long idDemande );
 
