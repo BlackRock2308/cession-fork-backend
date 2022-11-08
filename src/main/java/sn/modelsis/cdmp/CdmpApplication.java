@@ -19,15 +19,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import sn.modelsis.cdmp.dbPersist.PersistStatus;
-import sn.modelsis.cdmp.dbPersist.PersitUsers;
+import sn.modelsis.cdmp.dbPersist.*;
 
-import sn.modelsis.cdmp.repositories.PmeRepository;
-import sn.modelsis.cdmp.repositories.RoleRepository;
-import sn.modelsis.cdmp.repositories.StatutRepository;
-import sn.modelsis.cdmp.repositories.UtilisateurRepository;
-
-import static sn.modelsis.cdmp.entities.Roles.DG;
+import sn.modelsis.cdmp.repositories.*;
+import sn.modelsis.cdmp.services.*;
 
 /**
  * @author SNDIAGNEF
@@ -48,13 +43,36 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
   private final RoleRepository roleRepository;
 
   private final PmeRepository pmeRepository;
-  
-  public CdmpApplication(Environment env, StatutRepository statutRepository, UtilisateurRepository utilisateurRepository, RoleRepository roleRepository, PmeRepository pmeRepository) {
+
+  private final BonEngagementService bonEngagementService;
+
+  private  final DemandeCessionService demandeCessionService;
+
+  private final DemandeAdhesionService demandeAdhesionService;
+
+  private final BonEngagementRepository bonEngagementRepository;
+
+    private final DemandeCessionRepository demandeCessionRepository;
+    private final ConventionService conventionService;
+
+    private final PaiementService paiementService;
+    private final DetailPaiementService detailPaiementService;
+
+
+  public CdmpApplication(Environment env, StatutRepository statutRepository, UtilisateurRepository utilisateurRepository, RoleRepository roleRepository, PmeRepository pmeRepository, BonEngagementService bonEngagementService, DemandeCessionService demandeCessionService, DemandeAdhesionService demandeAdhesionService, BonEngagementRepository bonEngagementRepository, DemandeCessionRepository demandeCessionRepository, ConventionService conventionService, PaiementService paiementService, DetailPaiementService detailPaiementService) {
     this.env = env;
       this.statutRepository = statutRepository;
       this.utilisateurRepository = utilisateurRepository;
       this.roleRepository = roleRepository;
       this.pmeRepository = pmeRepository;
+      this.bonEngagementService = bonEngagementService;
+      this.demandeCessionService = demandeCessionService;
+      this.demandeAdhesionService = demandeAdhesionService;
+      this.bonEngagementRepository = bonEngagementRepository;
+      this.demandeCessionRepository = demandeCessionRepository;
+      this.conventionService = conventionService;
+      this.paiementService = paiementService;
+      this.detailPaiementService = detailPaiementService;
   }
 
   @Override
@@ -156,6 +174,17 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
         log.info("Initialisation des differents profils terminée");
 
-    }
+        PersistBonEngagement PersistBonEngagement = new PersistBonEngagement(bonEngagementService);
+        log.info("Initialisation des bon d'engagement");
+
+        PersistDemande persistDemande= new PersistDemande(demandeCessionService, demandeAdhesionService, pmeRepository, bonEngagementRepository);
+        log.info("Initialisation des demandes d'adhésion et de cession");
+
+        PersistConvention persistConvention = new PersistConvention(demandeCessionRepository, conventionService, pmeRepository);
+        log.info("Initialisation des conventions");
+
+        PersistPaiement persistPaiement= new PersistPaiement(demandeCessionRepository, paiementService, detailPaiementService);
+        log.info("Initialisation des paiements et details paiements");
+  }
 
 }
