@@ -45,11 +45,15 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
     }
 
     @Override
-    public DetailPaiement paiementCDMP(DetailPaiement detailPaiement) {
+    public Paiement paiementCDMP(DetailPaiement detailPaiement) {
 
         detailPaiement.setTypepaiement(TypePaiement.SICA_CDMP);
-        paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
-        return detailPaiementRepository.save(detailPaiement);
+        Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
+        detailPaiement.setPaiement(paiement);
+        paiement.getDetailPaiements().add(detailPaiementRepository.save(detailPaiement));
+        Paiement paiementSaved  = paiementService.savePaiement(paiement);
+        // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
+        return paiementSaved;
     }
 
     @Override

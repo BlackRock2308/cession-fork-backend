@@ -44,7 +44,7 @@ public class DetailPaiementController {
     @Autowired
     DetailPaiementService detailPaiementService;
 
-    @PostMapping(value = "pme")
+    @PostMapping(value = "cdmp-pme")
     public ResponseEntity<PaiementDto> addDetailPaiementPME(@RequestBody DetailPaiementDto detailPaiementDto,
                                                             HttpServletRequest request) {
         log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
@@ -56,6 +56,18 @@ public class DetailPaiementController {
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
+    @PostMapping(value = "sica-cdmp")
+    public ResponseEntity<PaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiementDto detailPaiementDto,
+                                                            HttpServletRequest request) {
+        log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
+
+        DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
+        log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
+        Paiement result = detailPaiementService.paiementCDMP(detailPaiement);
+        log.info("DetailPaiement create. Id:{} ", result.getIdPaiement());
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+    }
+/*
     @PostMapping(value = "cdmp")
     public ResponseEntity<DetailPaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiement detailPaiement,
                                                                HttpServletRequest request) {
@@ -64,6 +76,8 @@ public class DetailPaiementController {
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
+
+ */
     /*@PutMapping()
     public ResponseEntity<DetailPaiementDto> updateDetailPaiement(@RequestBody DetailPaiementDto detailPaiementDto,
                                                           HttpServletRequest request) {
