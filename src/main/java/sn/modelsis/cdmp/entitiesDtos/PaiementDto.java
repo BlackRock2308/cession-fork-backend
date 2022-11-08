@@ -16,6 +16,8 @@ public class PaiementDto implements Serializable {
 
     private Long cdmp;
 
+    private Long idPaiement;
+
     private double montantRecuCDMP;
 
     private double soldePME;

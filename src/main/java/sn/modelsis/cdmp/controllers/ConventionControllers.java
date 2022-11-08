@@ -62,7 +62,7 @@ public class ConventionControllers {
     convention.setDemandeCession(demandeCession);
     Convention result = conventionService.save(convention);
     demandeCession.setConventions(result.getDemandeCession().getConventions());
-    DemandeCession demandeCessionSaved= demandeCessionService.save(demandeCession);
+    DemandeCession demandeCessionSaved=demandeCessionService.save(demandeCession);
     log.info("Convention create. Id:{} ", result.getIdConvention());
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
   }
