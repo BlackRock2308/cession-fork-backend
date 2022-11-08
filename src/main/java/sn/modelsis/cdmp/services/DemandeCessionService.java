@@ -19,6 +19,8 @@ public interface DemandeCessionService {
 
     Optional<DemandeCessionDto> findById (Long id);
 
+    Optional<DemandeCession> findByIdDemande (Long id);
+
 //    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
 //    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
 

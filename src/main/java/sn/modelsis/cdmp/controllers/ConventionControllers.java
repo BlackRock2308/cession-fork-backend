@@ -46,19 +46,17 @@ public class ConventionControllers {
 
     final private ConventionService conventionService;
     final private DemandeCessionService demandeCessionService ;
-    final private DemandeCessionRepository demandeCessionRepository ;
 
-  public ConventionControllers(ConventionService conventionService, DemandeCessionService demandeCessionService, DemandeCessionRepository demandeCessionRepository) {
+  public ConventionControllers(ConventionService conventionService, DemandeCessionService demandeCessionService) {
     this.conventionService = conventionService;
     this.demandeCessionService = demandeCessionService;
-    this.demandeCessionRepository = demandeCessionRepository;
   }
 
   @PostMapping()
   public ResponseEntity<ConventionDto> addConvention(@RequestBody ConventionDto conventionDto,
       HttpServletRequest request) {
     Convention convention= new Convention();
-    DemandeCession demandeCession = demandeCessionRepository.findById(conventionDto.getIdDemande()).orElse(null);
+    DemandeCession demandeCession =demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
     convention.setDemandeCession(demandeCession);
     Convention result = conventionService.save(convention);
     demandeCession.setConventions(result.getDemandeCession().getConventions());

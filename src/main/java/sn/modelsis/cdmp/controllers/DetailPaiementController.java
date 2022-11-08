@@ -59,7 +59,6 @@ public class DetailPaiementController {
     @PostMapping(value = "cdmp")
     public ResponseEntity<DetailPaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiement detailPaiement,
                                                                HttpServletRequest request) {
-       // DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
         DetailPaiement result = detailPaiementService.paiementCDMP(detailPaiement);
         log.info("DetailPaiement create. Id:{} ", result.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));

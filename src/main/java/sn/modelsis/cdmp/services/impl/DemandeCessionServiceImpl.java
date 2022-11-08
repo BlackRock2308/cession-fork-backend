@@ -86,6 +86,11 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
+    public Optional<DemandeCession> findByIdDemande(Long id) {
+        return demandecessionRepository.findById(id);
+    }
+
+    @Override
     public Optional <DemandeCessionDto> getDemandeCession(Long id) {
         log.info("DemandeCessionService:getDemandeCession request started");
         log.debug("DemandeCessionService:getDemandeCession request params {}", id);
