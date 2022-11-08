@@ -18,6 +18,7 @@ import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -61,8 +62,14 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
+    public DemandeCession save(DemandeCession demandeCession) {
+        return demandecessionRepository.save(demandeCession);
+    }
+
+    @Override
     public Page<DemandeCessionDto> findAll(Pageable pageable){
         log.info("DemandeCessionService:findAll request started");
+        var x =demandecessionRepository.findAll();
         return demandecessionRepository
                 .findAll(pageable)
                 .map(cessionMapper::asDTO);

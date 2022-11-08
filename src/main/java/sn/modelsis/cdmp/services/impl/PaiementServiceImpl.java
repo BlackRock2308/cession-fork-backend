@@ -59,7 +59,6 @@ public class PaiementServiceImpl implements PaiementService {
 
         if(statusLibelle.equals("SOUMISE")){
             //paiement.setDemandeCession(demandeCession);
-
             paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
             paiement.setMontantRecuCDMP(0);
             demandeCession.setStatut(statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT"));
@@ -175,6 +174,10 @@ public class PaiementServiceImpl implements PaiementService {
 
     }
 
+    @Override
+    public Paiement savePaiement(Paiement paiement){
+        return paiementRepository.save(paiement);
+    }
 }
 
 

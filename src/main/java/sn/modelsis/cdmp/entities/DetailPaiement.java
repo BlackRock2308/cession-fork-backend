@@ -54,7 +54,7 @@ public class DetailPaiement implements Serializable {
     private Set<DPaiementDocuments> documents = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="paiementId", nullable = true, updatable = false, insertable = false)
+    @JoinColumn(name="paiementId")
     private Paiement paiement;
 
 

@@ -44,4 +44,6 @@ public interface PaiementService {
          * @param id
          */
         void delete(Long id);
+
+    Paiement savePaiement(Paiement paiement);
 }

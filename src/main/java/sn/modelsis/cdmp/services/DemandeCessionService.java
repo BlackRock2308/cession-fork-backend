@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public interface DemandeCessionService {
     DemandeCession saveCession(DemandeCession demandeCession);
+    DemandeCession save(DemandeCession demandeCession);
 
 //    DemandeCession addCession(DemandeCessionDto demandeCessionDto);
 
