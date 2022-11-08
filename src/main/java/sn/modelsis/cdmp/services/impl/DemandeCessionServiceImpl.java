@@ -15,9 +15,9 @@ import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -29,23 +29,17 @@ import java.util.stream.Collectors;
 public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     private final DemandeCessionRepository demandecessionRepository;
-    private final BonEngagementRepository bonEngagementRepository;
-    private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
-    private final ObservationRepository observationRepository;
-
     private final DemandeCessionMapper cessionMapper;
 
-    private final CreanceMapper creanceMapper;
 
-    private  final DemandeService demandeService;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCession saveCession(DemandeCession demandeCession) {
-        if(demandeCession.getIdDemande()==null){
-            demandeCession.setNumeroDemande(demandeService.getNumDemande());
-        }
+//        if(demandeCession.getIdDemande()==null){
+//            demandeCession.setNumeroDemande(demandeCession.getNumeroDemande());
+//        }
         DemandeCession newDemandeCession;
 
         try{
@@ -65,8 +59,14 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
+    public DemandeCession save(DemandeCession demandeCession) {
+        return demandecessionRepository.save(demandeCession);
+    }
+
+    @Override
     public Page<DemandeCessionDto> findAll(Pageable pageable){
         log.info("DemandeCessionService:findAll : fetching .....");
+        var x =demandecessionRepository.findAll();
         return demandecessionRepository
                 .findAll(pageable)
                 .map(cessionMapper::asDTO);
@@ -74,7 +74,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Optional<DemandeCessionDto> findById(Long id) {
-        log.info("DemandeCessionService:findById with param : {}", id);
+        log.info("DemandeCessionService:findById :fetching .....");
         log.debug("DemandeCessionService:findById request params {}", id);
         final Optional <DemandeCessionDto> optional = Optional.of(demandecessionRepository
                 .findById(id)
@@ -83,6 +83,11 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         ExceptionUtils.absentOrThrow(optional, ItemNotFoundException.DEMANDE_CESSION_BY_ID, id.toString());
         log.debug("DemandeCessionService:findById received from database {}", optional.get());
         return optional;
+    }
+
+    @Override
+    public Optional<DemandeCession> findByIdDemande(Long id) {
+        return demandecessionRepository.findById(id);
     }
 
     @Override
@@ -224,7 +229,18 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public List<DemandeCession> findAllPMEDemandes(Long id) {
-        return demandecessionRepository.findAllByPmeIdPME(id);
+        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);
+
+        return  demandecessionRepository.findAllByPmeIdPME(id);
+    }
+
+    @Override
+    public Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable,Long id) {
+        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);
+
+        return  demandecessionRepository
+                .findAllByPmeIdPME(pageable,id)
+                .map(cessionMapper::asDTO);
     }
 
 }

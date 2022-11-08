@@ -13,9 +13,12 @@ import java.util.List;
 public interface DemandeCessionRepository extends JpaRepository<DemandeCession,Long> {
 
 
-    public Page<DemandeCession> findAllByStatut_Libelle(org.springframework.data.domain.Pageable pageable, String statut);
+     Page<DemandeCession> findAllByStatut_Libelle(org.springframework.data.domain.Pageable pageable, String statut);
 
-    public List<DemandeCession> findAllByPmeIdPME(Long id);
+     List<DemandeCession> findAllByPmeIdPME(Long id);
+
+    Page<DemandeCession> findAllByPmeIdPME(org.springframework.data.domain.Pageable pageable, Long id);
+
 
     @Query("select p from DemandeCession  p where p.idDemande=:idDemande")
     DemandeCession findByDemandeId(Long idDemande);

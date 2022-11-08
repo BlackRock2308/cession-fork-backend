@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.services;
 import java.util.List;
 import java.util.Optional;
 
+import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypePaiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
@@ -16,7 +17,7 @@ public interface PaiementService {
          */
     //    Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement);
 
-        Paiement save(PaiementDto paiementDto);
+        DemandeCession save(PaiementDto paiementDto);
 
         /**
          *
@@ -43,4 +44,6 @@ public interface PaiementService {
          * @param id
          */
         void delete(Long id);
+
+    Paiement savePaiement(Paiement paiement);
 }

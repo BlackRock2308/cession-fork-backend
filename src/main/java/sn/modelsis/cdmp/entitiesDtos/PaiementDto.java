@@ -4,14 +4,19 @@ package sn.modelsis.cdmp.entitiesDtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.Statuts;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @ToString
-public class PaiementDto {
+public class PaiementDto implements Serializable {
 
     private Long cdmp;
+
+    private Long idPaiement;
 
     private double montantRecuCDMP;
 
@@ -27,8 +32,11 @@ public class PaiementDto {
 
     private StatutDto statutDto;
 
+//    private DemandeCessionDto demandeCession;
+
     private Long demandecessionid;
 
+    private Set<DetailPaiementDto> detailPaiements = new HashSet<>();
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     //private LocalDateTime datePaiement;
 

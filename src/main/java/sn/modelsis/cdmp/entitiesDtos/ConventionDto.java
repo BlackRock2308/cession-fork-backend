@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,8 +15,8 @@ import lombok.ToString;
  *
  */
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class ConventionDto {
  
   private Long idConvention;
@@ -29,6 +30,7 @@ public class ConventionDto {
   
   private PmeDto pmeDto;
 
+  private Long idDemande;
 
   private boolean activeConvention;
 

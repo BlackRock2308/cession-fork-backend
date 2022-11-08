@@ -14,7 +14,6 @@ import sn.modelsis.cdmp.util.DtoConverter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 @Service
 public class PaiementServiceImpl implements PaiementService {
@@ -42,15 +41,15 @@ public class PaiementServiceImpl implements PaiementService {
     private StatutRepository statutRepository;
 
 
-
     @Override
-    public Paiement save(PaiementDto paiementDto) {
+    public DemandeCession save(PaiementDto paiementDto) {
         DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
+
         String statusLibelle = demandeCession.getStatut().getLibelle() ;
         Paiement paiement = DtoConverter.convertToEntity(paiementDto);
         BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
         double montantCreance=bonEngagement.getMontantCreance();
-        double decote = 2000000 ;
+        double decote = 0 ;
         Set<Convention> conventions=  demandeCession.getConventions();
         for (Convention convention :conventions ) {
             if (convention.isActiveConvention()){
@@ -60,17 +59,14 @@ public class PaiementServiceImpl implements PaiementService {
 
         if(statusLibelle.equals("SOUMISE")){
             //paiement.setDemandeCession(demandeCession);
-
             paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
             paiement.setMontantRecuCDMP(0);
             demandeCession.setStatut(statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT"));
             demandeCession.setPaiement(paiement);
             demandeCessionRepository.save(demandeCession);
-
-
         }
-    //    return paiementRepository.save(paiement);
-        return paiementRepository.save(paiement);
+      return demandeCession;
+
     }
 
     @Override
@@ -178,6 +174,10 @@ public class PaiementServiceImpl implements PaiementService {
 
     }
 
+    @Override
+    public Paiement savePaiement(Paiement paiement){
+        return paiementRepository.save(paiement);
+    }
 }
 
 

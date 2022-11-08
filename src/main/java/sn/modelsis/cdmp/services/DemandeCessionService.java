@@ -13,14 +13,11 @@ import java.util.Optional;
 
 public interface DemandeCessionService {
     DemandeCession saveCession(DemandeCession demandeCession);
+    DemandeCession save(DemandeCession demandeCession);
 
     Page<DemandeCessionDto> findAll(Pageable pageable);
 
     Optional<DemandeCessionDto> findById (Long id);
-
-//    public DemandeCessionDto rejeterRecevabilite(DemandeCessionDto demandecessionDto);
-//    public DemandeCessionDto validerRecevabilite(DemandeCessionDto demandecessionDto);
-
 
     // Recevabilite Demande de Cession
     DemandeCession validerRecevabilite(Long idDemande );
@@ -31,10 +28,11 @@ public interface DemandeCessionService {
     DemandeCession analyseDemandeCessionNonRisque (Long idDemande );
     DemandeCession analyseDemandeCessionComplement (Long idDemande);
 
-
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
     List<DemandeCession> findAllPMEDemandes(Long id);
+
+    Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable,Long id);
 
     List<DemandeCession> findAllDemandeRejetee();
 
