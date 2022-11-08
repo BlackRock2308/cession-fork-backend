@@ -55,7 +55,7 @@ public class PersitUsers {
         dgRoles.add(DG);
 
         Set<Role> comptableRoles = new HashSet<>();
-        dgRoles.add(COMPTABLE);
+        comptableRoles.add(COMPTABLE);
 
         Set<Role> cgrRoles = new HashSet<>();
         cgrRoles.add(CGR);
