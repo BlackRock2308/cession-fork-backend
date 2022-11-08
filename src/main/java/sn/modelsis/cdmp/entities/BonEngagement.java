@@ -5,15 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -59,6 +51,10 @@ public class BonEngagement implements Serializable {
     
     @Column(name = "nomMarche")
     private String nomMarche;
+
+    @Column(name = "typeMarche")
+    @Enumerated( EnumType.STRING)
+    private TypeMarche typeMarche;
     
     @Column(name = "typeDepense")
     private String typeDepense;

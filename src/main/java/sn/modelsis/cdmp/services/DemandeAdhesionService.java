@@ -20,7 +20,7 @@ public interface DemandeAdhesionService {
      * @return
      */
 
-    DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto);
+    DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion);
 
 //    List<DemandeAdhesionDto> findAll();
 

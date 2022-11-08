@@ -7,14 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.PaiementService;
@@ -34,7 +32,7 @@ public class PaiementController {
     }
 
     @PostMapping
-    public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto){
+    public ResponseEntity<DemandeCessionDto> addPaiement(@RequestBody PaiementDto paiementDto){
 
         /*if(paiementDto.getDemandecessionid()==null ||  paiementDto.getIdPaiement()!=null)
             throw new  CustomException("L'id de la demande de cession ne doit pas etre null ");
@@ -42,8 +40,8 @@ public class PaiementController {
         if( paiementDto.getIdPaiement()!=null)
             throw new  CustomException("Le paiement exit déja ");*/
 
-        Paiement paiementCreated = paiementService.save(paiementDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(paiementCreated));
+        DemandeCession demandeCession = paiementService.save(paiementDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(demandeCession));
 
     }
 

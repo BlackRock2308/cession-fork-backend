@@ -9,6 +9,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import sn.modelsis.cdmp.entities.TypeMarche;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Data
 @NoArgsConstructor
@@ -16,6 +20,8 @@ import lombok.ToString;
 public class BonEngagementDto {
     private Long idBonEngagement;
     private double montantCreance;
+    @Enumerated( EnumType.STRING)
+    private TypeMarche typeMarche;
     private String reference;
     private String naturePrestation;
     private String natureDepense;

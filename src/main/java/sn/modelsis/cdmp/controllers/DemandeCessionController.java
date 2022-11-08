@@ -114,10 +114,21 @@ public class DemandeCessionController {
     @GetMapping(value = "pme/{id}")
     public ResponseEntity<List<DemandeCessionDto>> getAllPMEDemandeCession(@PathVariable Long id, HttpServletRequest request) {
         List<DemandeCession> demandeList = demandeCessionService.findAllPMEDemandes(id);
-        log.info("All Requests .");
+        log.info("DemandeCessionController:getAllPMEDemandeCession {} : ");
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
     }
+
+
+//    @GetMapping(value = "pme/{id}")
+//    public ResponseEntity<Page<DemandeCessionDto>> getAllPMEDemandeCession(Pageable pageable,@PathVariable Long id, HttpServletRequest request) {
+//        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllPMEDemandes(pageable,id);
+//        log.info("DemandeCessionController:getAllPMEDemandeCession {} : ");
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(demandeList);
+//    }
 
     /* **************** Filtering accepting and rejected Demande **************** */
 

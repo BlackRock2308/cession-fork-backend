@@ -1,23 +1,16 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.*;
+import sn.modelsis.cdmp.entities.*;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString @Getter @Setter
-public class DemandeCessionDto {
+@Getter @Setter
+public class DemandeCessionDto implements Serializable {
 
     private Long idDemande;
     private Date dateDemandeCession;
@@ -25,10 +18,9 @@ public class DemandeCessionDto {
     private Set<ObservationDto> observations = new HashSet<>();
     private Set<DocumentDto> documents = new HashSet<>();
     private Set<ConventionDto> conventions = new HashSet<>();
-    private PaiementDto paiementDto ;
+    private PaiementDto paiement ;
     @NotBlank
     private BonEngagementDto bonEngagement;
     @NotBlank
     private PmeDto pme;
-
 }

@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import sn.modelsis.cdmp.entities.DPaiementDocuments;
-import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.entities.TypeDocument;
-import sn.modelsis.cdmp.entities.TypePaiement;
+import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
 import sn.modelsis.cdmp.services.DetailPaiementService;
 import sn.modelsis.cdmp.services.DocumentService;
@@ -32,18 +29,31 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
 
     @Override
     public DetailPaiement paiementPME(DetailPaiement detailPaiement) {
-
-        detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
-        paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
-        return detailPaiementRepository.save(detailPaiement);
+        return null;
     }
 
     @Override
-    public DetailPaiement paiementCDMP(DetailPaiement detailPaiement) {
+    public Paiement getPaiement(DetailPaiement detailPaiement) {
+
+        detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
+        Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
+        detailPaiement.setPaiement(paiement);
+        paiement.getDetailPaiements().add(detailPaiementRepository.save(detailPaiement));
+        Paiement paiementSaved  = paiementService.savePaiement(paiement);
+       // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
+        return paiementSaved;
+    }
+
+    @Override
+    public Paiement paiementCDMP(DetailPaiement detailPaiement) {
 
         detailPaiement.setTypepaiement(TypePaiement.SICA_CDMP);
-        paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
-        return detailPaiementRepository.save(detailPaiement);
+        Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
+        detailPaiement.setPaiement(paiement);
+        paiement.getDetailPaiements().add(detailPaiementRepository.save(detailPaiement));
+        Paiement paiementSaved  = paiementService.savePaiement(paiement);
+        // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
+        return paiementSaved;
     }
 
     @Override

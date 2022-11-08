@@ -27,6 +27,8 @@ public class DetailPaiementDto {
 
     private String reference;
 
+    private Long idDemande;
+
     private String typepaiement;
 
     private PaiementDto paiementDto;

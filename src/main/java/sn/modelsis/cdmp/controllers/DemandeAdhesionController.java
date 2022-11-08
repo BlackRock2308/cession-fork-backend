@@ -41,7 +41,8 @@ public class DemandeAdhesionController {
     public ResponseEntity<DemandeAdhesionDto> addDemandeAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto,
                                                                  HttpServletRequest request) {
         log.info("DemandeAdhesionController:addDemandeAdhesion request started");
-        DemandeAdhesion result = demandeAdhesionService.saveAdhesion(demandeadhesionDto);
+        DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeadhesionDto);
+        DemandeAdhesion result = demandeAdhesionService.saveAdhesion(demandeAdhesion);
         log.info("DemandeAdhesionController:addDemandeAdhesion request params  {}", result.getIdDemande());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }

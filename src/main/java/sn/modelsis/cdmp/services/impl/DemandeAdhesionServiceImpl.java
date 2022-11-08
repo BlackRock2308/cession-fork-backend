@@ -39,24 +39,10 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
-        log.info("DemandeAdhesionService:saveAdhesion execution started ...");
-        DemandeAdhesion demandeAdhesion = adhesionMapper.asEntity(demandeAdhesionDto);
-        log.debug("DemandeAdhesionService:saveAdhesion request params {}",adhesionMapper.asEntity(demandeAdhesionDto));
-        pmeRepository.findById(demandeAdhesionDto.getIdPME()).ifPresentOrElse(
-                value
-                        -> {
-                    demandeAdhesion.setPme(value);
+    public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion) {
                     demandeAdhesion.setDateDemandeAdhesion(new Date());
                     Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
                     demandeAdhesion.setStatut(statut);
-                },
-                ()
-                        -> {
-                    log.error("Exception occured while adding new Demande Cession to database");
-                    throw new CustomException("La PME n'existe pas");
-                }
-        );
         if(demandeAdhesion.getIdDemande()==null){
             demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
         }
