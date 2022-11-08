@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
@@ -90,7 +89,7 @@ public class BonEngagement implements Serializable {
     @Column(name = "identificationcomptable")
     private String identificationComptable;
     
-    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER, mappedBy = "bonEngagement")
     private Set<DemandeCession> demandeCessions = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bonEngagement")

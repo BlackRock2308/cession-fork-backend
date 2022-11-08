@@ -4,7 +4,6 @@ package sn.modelsis.cdmp.entitiesDtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sn.modelsis.cdmp.entities.Statuts;
 
 @Data
 @NoArgsConstructor

@@ -1,15 +1,13 @@
 package sn.modelsis.cdmp.services;
 
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entities.TypeDocument;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.TypeDocument;
 
 public interface PmeService {
 

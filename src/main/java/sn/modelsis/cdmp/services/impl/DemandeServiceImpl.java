@@ -1,20 +1,24 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.repositories.DemandeRepository;
-import sn.modelsis.cdmp.repositories.StatutRepository;
-import sn.modelsis.cdmp.services.DemandeService;
-import sn.modelsis.cdmp.services.DocumentService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.entities.Demande;
+import sn.modelsis.cdmp.entities.DemandeDocuments;
+import sn.modelsis.cdmp.entities.Statuts;
+import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.repositories.DemandeRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.services.DemandeService;
+import sn.modelsis.cdmp.services.DocumentService;
 
 @RequiredArgsConstructor
 @Service

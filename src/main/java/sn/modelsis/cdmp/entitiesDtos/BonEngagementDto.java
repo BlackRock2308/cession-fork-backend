@@ -1,7 +1,6 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 

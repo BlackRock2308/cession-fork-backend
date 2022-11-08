@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.TypeDocument;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 
 public interface DemandeService {
 

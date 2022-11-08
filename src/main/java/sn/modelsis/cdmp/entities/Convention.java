@@ -53,9 +53,9 @@ public class Convention implements Serializable {
   @JoinColumn(name = "pmeid", nullable = true)
   private Pme pme;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "utilisateur_id", nullable = true)
-  private Utilisateur utilisateur;
+//  @ManyToOne(fetch = FetchType.EAGER)
+//  @JoinColumn(name = "utilisateur_id", nullable = true)
+//  private Utilisateur utilisateur;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="demandeid")
