@@ -77,7 +77,7 @@ public class PaiementServiceImpl implements PaiementService {
             paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
             paiement.setMontantRecuCDMP(0);
             demandeCession.setStatut(statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT"));
-            demandeCession.setPaiement(paiement);
+           // demandeCession.setPaiement(paiement);
             demandeCessionRepository.save(demandeCession);
         }
       return demandeCession;

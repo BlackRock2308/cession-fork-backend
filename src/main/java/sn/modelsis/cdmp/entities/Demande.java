@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,15 @@ public class Demande implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator="course")
+    @TableGenerator(
+            name="course",
+            table="demande",
+            pkColumnName = "key",
+            valueColumnName = "next",
+            pkColumnValue="course",
+            allocationSize=30
+        )
     @Column(name = "id")
     private Long idDemande;
 

@@ -61,7 +61,7 @@ public class PaiementController {
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);
-        log.info("Paiement . demandeId:{}", paiement.getDemandeCession().getIdDemande());
+        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
     }
 

@@ -32,9 +32,9 @@ CREATE TABLE public.pme
       dateimmatriculation timestamp without time zone,
       ninea character varying (15),
       raisonsocial character varying (100),
-      atd character varying (200),
-      nantissement character varying (200),
-      interdictionbancaire character varying (200),
+      atd boolean,
+      nantissement boolean,
+      interdictionbancaire boolean,
       identificationbudgetaire boolean,
       urlimageprofil character varying (250),
       email character varying (50),
@@ -58,7 +58,7 @@ CREATE TABLE public.pme
       nineaExistant boolean,
       isActive boolean,
       hasninea boolean,
-      agentid bigint
+      utilisateurid bigint
    );
 CREATE TABLE public.role
    (
@@ -76,6 +76,7 @@ CREATE TABLE public.utilisateur
       prenom character varying (250),
       nom character varying (250),
       password character varying (250),
+      update_password boolean,
       urlimagesignature character varying (250),
       telephone character varying (50),
       urlimageprofil character varying (250),
@@ -118,7 +119,7 @@ CREATE TABLE public.convention
       dateconvention timestamp without time zone,
       decote FLOAT (40),
       modepaiement character varying (50),
-      agentid bigint,
+      utilisateurid bigint,
       pmeid bigint,
       active_convention boolean,
       urlimagesignaturedg character varying (250),
@@ -150,7 +151,6 @@ CREATE TABLE public.demandeCession
       pmeid bigint NOT NULL,
       statutid bigint NOT NULL,
       bonengagementid bigint,
-      paiementid bigint,
       datedemandecession timestamp without time zone,
       demandeid bigint not null,
       numeroDemande character varying (100)
@@ -163,6 +163,7 @@ CREATE TABLE public.paiement
       id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
       demandeid bigint NOT NULL,
       soldePme FLOAT (40),
+      demandeCessionid bigint,
       montantRecuCdmp FLOAT (40)
    );
 CREATE TABLE public.detailsPaiement
@@ -184,7 +185,7 @@ CREATE TABLE public.observation
       id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
       libelle character varying (100),
       dateobservation timestamp without time zone,
-      agentid bigint NOT NULL,
+      utilisateurid bigint NOT NULL,
       demandeid bigint NOT NULL
    );
    --
@@ -202,23 +203,8 @@ CREATE TABLE public.parametrage
 CREATE TABLE public.statut
    (
       id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-      code character varying (25),
+      code character varying (100),
       libelle character varying (100)
-   );
-   --
-   -- Name: agent; Type: TABLE; Schema: public; Owner: -
-   --
-CREATE TABLE public.agent
-   (
-      id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-      prenom character varying (100),
-      nom character varying (50),
-      adresse character varying (100),
-      telephone character varying (50),
-      codepin character varying (250),
-      urlimageprofil character varying (250),
-      email character varying (50),
-      urlimagesignature character varying (250)
    );
    --
    -- Name: document; Type: TABLE; Schema: public; Owner: -
@@ -238,7 +224,6 @@ CREATE TABLE public.document
    --
 ALTER TABLE ONLY public.utilisateur ADD CONSTRAINT utilisateur_pkey PRIMARY KEY (idutilisateur);
 ALTER TABLE ONLY public.role ADD CONSTRAINT role_pkey PRIMARY KEY (id);
-ALTER TABLE ONLY public.agent ADD CONSTRAINT agent_pkey PRIMARY KEY (id);
    --
    -- Name: agent paiement_pkey; Type: CONSTRAINT; Schema: public; Owner: -
    --
@@ -290,13 +275,13 @@ ALTER TABLE ONLY public.demandecession ADD CONSTRAINT fk_demande_pme FOREIGN KEY
    --
    -- Name: pme fk_pme_agent; Type: FK CONSTRAINT; Schema: public; Owner: -
    --
-ALTER TABLE ONLY public.pme ADD CONSTRAINT fk_pme_agent FOREIGN KEY (agentid) REFERENCES public.agent (id);
+ALTER TABLE ONLY public.pme ADD CONSTRAINT fk_pme_utilisateur FOREIGN KEY (utilisateurid) REFERENCES public.utilisateur (idutilisateur);
    --
    -- Name: demande fk_demande_convention; Type: FK CONSTRAINT; Schema: public; Owner: -
    -- Name: demande fk_demande_bonengagement; Type: FK CONSTRAINT; Schema: public; Owner: -
    --
 ALTER TABLE ONLY public.demandecession ADD CONSTRAINT fk_demandecession_bonengagement FOREIGN KEY (bonengagementid) REFERENCES public.bonengagement (id);
-ALTER TABLE ONLY public.demandecession ADD CONSTRAINT fk_demandecession_paiement FOREIGN KEY (paiementid) REFERENCES public.paiement (id);
+ALTER TABLE ONLY public.paiement ADD CONSTRAINT fk_paiement_demandecession FOREIGN KEY (demandeCessionid) REFERENCES public.demandecession (id);
  
    --
    -- Name: detailsPaiement fk_detailsPaiement_paiement; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -317,14 +302,14 @@ ALTER TABLE ONLY public.convention ADD CONSTRAINT fk_convention_pme FOREIGN KEY 
    --
    -- Name: convention fk_convention_agent; Type: FK CONSTRAINT; Schema: public; Owner: -
    --
-ALTER TABLE ONLY public.convention ADD CONSTRAINT fk_convention_agent FOREIGN KEY (agentid) REFERENCES public.agent (id);
+ALTER TABLE ONLY public.convention ADD CONSTRAINT fk_convention_utilisateur FOREIGN KEY (utilisateurid) REFERENCES public.utilisateur (idutilisateur);
    --
    --
 ALTER TABLE ONLY public.convention ADD CONSTRAINT fk_convention_demande FOREIGN KEY (demandeid) REFERENCES public.demandecession (id);
  --
    -- Name: observation fk_observation_agent; Type: FK CONSTRAINT; Schema: public; Owner: -
    --
-ALTER TABLE ONLY public.observation ADD CONSTRAINT fk_observation_agent FOREIGN KEY (agentid) REFERENCES public.agent (id);
+ALTER TABLE ONLY public.observation ADD CONSTRAINT fk_observation_utilisateur FOREIGN KEY (utilisateurid) REFERENCES public.utilisateur (idutilisateur);
    --
    -- Name: observation fk_observation_demande; Type: FK CONSTRAINT; Schema: public; Owner: -
    --

@@ -24,7 +24,6 @@ public class Observation implements Serializable, Comparable<Observation> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private Long idDemande;
     
     @Column(name = "libelle")
     private String libelle;
@@ -38,16 +37,12 @@ public class Observation implements Serializable, Comparable<Observation> {
     private Demande demande;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="utilisateur_id")
+    @JoinColumn(name="utilisateurid")
     private Utilisateur utilisateur;
     
     @Override
     public int compareTo(Observation o) {
 
         return 0;
-    }
-
-    public Long getIdDemande() {
-        return idDemande;
     }
 }
