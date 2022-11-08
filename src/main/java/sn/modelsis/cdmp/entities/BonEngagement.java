@@ -2,6 +2,7 @@ package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,7 +66,7 @@ public class BonEngagement implements Serializable {
 
     @Column(name = "datebonengagement")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime datebonengagement;
+    private Date datebonengagement;
 
     @Column(name = "exercice")
     private String exercice;
