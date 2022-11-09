@@ -39,8 +39,8 @@ public class Convention implements Serializable {
   @Enumerated(EnumType.STRING)
   private ModePaiement modePaiement;
 
-  @Column(name = "id_decote")
-  private Long decote_id;
+  @Column(name = "decote")
+  private Float decote;
 
   @Column(name = "active_convention")
   private boolean activeConvention;
@@ -64,7 +64,8 @@ public class Convention implements Serializable {
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
   private Set<ConventionDocuments> documents = new HashSet<>();
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  private ParametrageDecote decote;
+//  @ManyToOne(fetch = FetchType.EAGER)
+//  @JoinColumn(name="decoteid")
+//  private ParametrageDecote decote;
 
 }

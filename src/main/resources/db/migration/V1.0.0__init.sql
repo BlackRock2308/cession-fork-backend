@@ -125,6 +125,7 @@ CREATE TABLE public.convention
       urlimagesignaturedg character varying (250),
       urlimagesignaturepme character varying (250),
       demandeid bigint
+      
    );
    --
    -- Name: demande; Type: TABLE; Schema: public; Owner: -
