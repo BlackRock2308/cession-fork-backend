@@ -128,7 +128,6 @@ public class UtilisateurController {
                     .ok()
                     .body(DtoConverter.convertToDto(result));
     }
-
     /**
      * {@code POST  /utilisateurs} : Create a new utilisateur.
      *

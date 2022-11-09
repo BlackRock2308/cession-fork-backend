@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DetailPaiementService;
@@ -56,17 +57,20 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
     }
 
     @Override
-    public Paiement paiementCDMP(DetailPaiement detailPaiement) {
+    public DetailPaiement paiementCDMP(DetailPaiement detailPaiement) {
 
         detailPaiement.setTypepaiement(TypePaiement.SICA_CDMP);
         Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
         Statut statut = statutRepository.findByCode("CDMP_PARTIELLEMENT_PAYEE");
         paiement.setStatutCDMP(statut);
         detailPaiement.setPaiement(paiement);
-        paiement.getDetailPaiements().add(detailPaiementRepository.save(detailPaiement));
+        DetailPaiement detailPaiementSaved = detailPaiementRepository.save(detailPaiement);
+        paiement.getDetailPaiements().add(detailPaiementSaved);
         Paiement paiementSaved  = paiementService.savePaiement(paiement);
+        if(paiement==null)
+            throw new CustomException("erreur lors de l'ajout du detail de paiement");
         // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
-        return paiementSaved;
+        return detailPaiementSaved;
     }
 
     @Override
