@@ -16,7 +16,7 @@ import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
-
+import sn.modelsis.cdmp.services.DemandeService;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +31,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionRepository demandecessionRepository;
     private final StatutRepository statutRepository;
     private final DemandeCessionMapper cessionMapper;
+     private final DemandeService demandeService;
 
 
 
@@ -50,6 +51,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
             Statut statut = statutRepository.findByLibelle("SOUMISE");
             demandeCession.setStatut(statut);
             log.debug("DemandeCessionService:saveCession request Parameters {}",demandeCession);
+
+             if(demandeCession.getIdDemande()==null){
+            demandeCession.setNumeroDemande(demandeService.getNumDemande());
+        }
             newDemandeCession = demandecessionRepository.save(demandeCession);
             log.debug("DemandeCessionService:saveCession received response from database {}",newDemandeCession);
         }catch(Exception e) {
