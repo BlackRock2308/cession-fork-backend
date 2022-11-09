@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PmeDto {
+public class PmeDto implements Serializable {
 
     private Long idPME;
     private String prenomRepresentant;

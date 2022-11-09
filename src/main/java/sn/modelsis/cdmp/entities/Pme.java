@@ -81,7 +81,7 @@ public class Pme implements Serializable {
     private String formeJuridique;
 
     @Email
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
     
     @Column(name = "codepin")
