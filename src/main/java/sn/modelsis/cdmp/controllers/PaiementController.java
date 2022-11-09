@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.DetailPaiement;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -13,9 +15,7 @@ import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.PaiementService;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/paiements")
@@ -70,6 +70,43 @@ public class PaiementController {
         log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
     }
+    @GetMapping(value = "/cdmp-pme/{id}")
+    public ResponseEntity<PaiementDto> getPaiementCDMP_PME(
+            @PathVariable Long id,
+            HttpServletRequest request) {
+        Paiement paiement = paiementService.getPaiement(id).orElse(null);
+        if (paiement==null)
+            throw new CustomException("Le paiement n'existe pas");
+        Set<DetailPaiement> detailPaiements= paiement.getDetailPaiements();
+        Set<DetailPaiement> sortDetailPaiements= new HashSet<>();
+        for (DetailPaiement detailPaiement:detailPaiements ) {
+            if (detailPaiement.getTypepaiement().name().equals("CDMP_PME"))
+                sortDetailPaiements.add(detailPaiement);
+        }
+        paiement.setDetailPaiements(sortDetailPaiements);
+        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
+    }
+
+    @GetMapping(value = "/sica-cdmp/{id}")
+    public ResponseEntity<PaiementDto> getPaiementSICA_CDMP(
+            @PathVariable Long id,
+            HttpServletRequest request) {
+        Paiement paiement = paiementService.getPaiement(id).orElse(null);
+        if (paiement==null)
+            throw new CustomException("Le paiement n'existe pas");
+        Set<DetailPaiement> detailPaiements= paiement.getDetailPaiements();
+        Set<DetailPaiement> sortDetailPaiements= new HashSet<>();
+        for (DetailPaiement detailPaiement:detailPaiements ) {
+            if (detailPaiement.getTypepaiement().name().equals("SICA_CDMP"))
+                sortDetailPaiements.add(detailPaiement);
+        }
+        paiement.setDetailPaiements(sortDetailPaiements);
+        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
+    }
+
+
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<PaiementDto> deletePaiement(
