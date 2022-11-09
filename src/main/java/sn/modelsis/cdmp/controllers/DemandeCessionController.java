@@ -123,15 +123,6 @@ public class DemandeCessionController {
     }
 
 
-//    @GetMapping(value = "pme/{id}")
-//    public ResponseEntity<Page<DemandeCessionDto>> getAllPMEDemandeCession(Pageable pageable,@PathVariable Long id, HttpServletRequest request) {
-//        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllPMEDemandes(pageable,id);
-//        log.info("DemandeCessionController:getAllPMEDemandeCession {} : ");
-//
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(demandeList);
-//    }
-
     /* **************** Filtering accepting and rejected Demande **************** */
 
     @GetMapping("/rejected")

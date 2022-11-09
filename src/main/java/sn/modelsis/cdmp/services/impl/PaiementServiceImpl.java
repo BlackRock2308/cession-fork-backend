@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sn.modelsis.cdmp.entities.BonEngagement;
@@ -36,19 +35,22 @@ public class PaiementServiceImpl implements PaiementService {
     private final BonEngagementRepository bonEngagementRepository;
 
     public PaiementServiceImpl(PaiementRepository paiementRepository,
-                               BonEngagementRepository bonEngagementRepository) {
+                               BonEngagementRepository bonEngagementRepository, DemandeCessionRepository demandeCessionRepository, ConventionRepository conventionRepository, StatutRepository statutRepository) {
         this.paiementRepository = paiementRepository;
         this.bonEngagementRepository = bonEngagementRepository;
+        this.demandeCessionRepository = demandeCessionRepository;
+        this.conventionRepository = conventionRepository;
+        this.statutRepository = statutRepository;
     }
 
-    @Autowired
-    private DemandeCessionRepository demandeCessionRepository;
 
-    @Autowired
-    private ConventionRepository conventionRepository;
+    final private DemandeCessionRepository demandeCessionRepository;
 
-    @Autowired
-    private StatutRepository statutRepository;
+
+    final private ConventionRepository conventionRepository;
+
+
+    final private StatutRepository statutRepository;
 
 
     @Override
@@ -61,6 +63,7 @@ public class PaiementServiceImpl implements PaiementService {
         DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
 
         String statusLibelle = demandeCession.getStatut().getLibelle() ;
+        Statut statut = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
         Paiement paiement = DtoConverter.convertToEntity(paiementDto);
         BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
         double montantCreance=bonEngagement.getMontantCreance();
@@ -76,8 +79,10 @@ public class PaiementServiceImpl implements PaiementService {
             //paiement.setDemandeCession(demandeCession);
             paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
             paiement.setMontantRecuCDMP(0);
-            demandeCession.setStatut(statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT"));
-           // demandeCession.setPaiement(paiement);
+            paiement.setStatutCDMP(statut);
+            paiement.setStatutPme(statut);
+            demandeCession.setStatut(statut);
+            demandeCession.setPaiement(paiement);
             demandeCessionRepository.save(demandeCession);
         }
       return demandeCession;
@@ -87,44 +92,15 @@ public class PaiementServiceImpl implements PaiementService {
     @Override
     public void update(Long idPaiement,double montant,TypePaiement typePaiement) {
 
-
-        //log.info("Demande:{} ",demande.isPresent());
-        //Paiement paiement=new Paiement();
-
-
         log.info("paiement:{} ",idPaiement);
         paiementRepository.findById(idPaiement).ifPresentOrElse(
                 (value)
                         -> {
-
-                    //paiement.setDemandecession(value);
-
-                    //double montantCreance=value.getBonEngagement().getMontantCreance();
                     Statut statut =value.getDemandeCession().getStatut();
                     log.info("statut:{} ",statut.getLibelle());
                     log.info("soldePME:{} ",value.getSoldePME());
 
-
-                    /*double soldePME= paiement.getSoldePME();
-                    double montantRecuCDMP=paiement.getMontantRecuCDMP();
-
-                     */
-
-                    /*if (statutLibelle==Statuts.CONVENTION_ACCEPTEE){
-                        Convention conventionAcceptee=conventionRepository.findConventionValideByDemande(paiement.getDemandecession().getIdDemande());
-                        double decote=conventionAcceptee.getDecote();
-                        paiement.setSoldePME((montantCreance*decote)/100);
-                        paiement.setMontantRecuCDMP(0);
-
-
-                        value.setStatut(this.statutRepository.findByLibelle(Statuts.PME_EN_ATTENTE_DE_PAIEMENT));
-                        demandeCessionRepository.save(value);
-                    }
-
-                     */
-
                     if (statut.getLibelle()=="PME_EN_ATTENTE_DE_PAIEMENT" || statut.getLibelle()=="CDMP_EN_ATTENTE_DE_PAIEMENT" || statut.getLibelle()=="PME_PARTIELLEMENT_PAYEE" || statut.getLibelle()=="CDMP_PARTIELLEMENT_PAYEE"){
-                        //paiement=paiementRepository.findById(idPaiement).orElse(null);
                         if (typePaiement==TypePaiement.SICA_CDMP) {
                             value.setMontantRecuCDMP(value.getMontantRecuCDMP()+montant);
 
@@ -152,29 +128,15 @@ public class PaiementServiceImpl implements PaiementService {
                     }
 
                 },
-                ()
-                        -> {
+                () -> {
                     throw new CustomException("le paiement n'est pas encore enregistré");
                      }
         );
-        /*
-
-         */
 
     }
 
     @Override
     public List<Paiement> findAll(){
-        /*List<DemandeCession> demandes=new DemandeCession();
-
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.CDMP_EN_ATTENTE_DE_PAIEMENT));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.PME_EN_ATTENTE_DE_PAIEMENT));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.CDMP_PARTIELLEMENT_PAYEE));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.PME_PARTIELLEMENT_PAYEE));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.CDMP_TOTALEMENT_PAYEE));
-        demandes.addAll(this.demandeCessionRepository.findAllByStatut_Libelle(Statuts.PME_TOTALEMENT_PAYEE));
-        */
-
         return paiementRepository.findAll();
     }
 

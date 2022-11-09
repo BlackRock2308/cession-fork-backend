@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+=======
+import sn.modelsis.cdmp.entities.Convention;
+>>>>>>> adaf8e92b427a2ac93f59b92ea5ea0fb60e1b7a6
 import sn.modelsis.cdmp.entities.Observation;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.services.ObservationService;
@@ -62,6 +66,15 @@ public class ObservationControllers {
     log.info("Observation . Id:{}", id);
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(observation));
   }
+
+    @GetMapping(value = "/{id}/demande-cession")
+    public ResponseEntity<ObservationDto> findObservationsByDemandeCession(@PathVariable Long id,
+                                                         HttpServletRequest request) {
+        log.info("ObservationService.findObservationsByDemandeCession request stated");
+        List<Observation> observationList;
+        observationList = observationService.findObservationsByDemandeCession(id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto((Observation) observationList));
+    }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ObservationDto> deleteObservation(

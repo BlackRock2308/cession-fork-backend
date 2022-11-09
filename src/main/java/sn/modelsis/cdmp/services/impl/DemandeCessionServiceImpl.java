@@ -7,18 +7,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.*;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
-import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
-import sn.modelsis.cdmp.repositories.*;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+=======
+>>>>>>> adaf8e92b427a2ac93f59b92ea5ea0fb60e1b7a6
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +56,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionRepository demandecessionRepository;
     private final StatutRepository statutRepository;
     private final DemandeCessionMapper cessionMapper;
+     private final DemandeService demandeService;
 
 
 
@@ -70,6 +76,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
             Statut statut = statutRepository.findByLibelle("SOUMISE");
             demandeCession.setStatut(statut);
             log.debug("DemandeCessionService:saveCession request Parameters {}",demandeCession);
+
+             if(demandeCession.getIdDemande()==null){
+            demandeCession.setNumeroDemande(demandeService.getNumDemande());
+        }
             newDemandeCession = demandecessionRepository.save(demandeCession);
             log.debug("DemandeCessionService:saveCession received response from database {}",newDemandeCession);
         }catch(Exception e) {
@@ -241,7 +251,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
-        log.info("DemandeCessionService:findAllByStatut request started");
+        log.info("DemandeCessionService:findAllByStatut .....");
         return demandecessionRepository
                 .findAllByStatut_Libelle(pageable,statut)
                 .map(cessionMapper::asDTO);

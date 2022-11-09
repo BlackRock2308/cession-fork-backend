@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DetailPaiementService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PaiementService;
@@ -18,14 +18,23 @@ import sn.modelsis.cdmp.services.PaiementService;
 @Service
 public class DetailPaiementServiceImpl implements DetailPaiementService {
 
-    @Autowired
-    private DetailPaiementRepository detailPaiementRepository;
-    
-    @Autowired
-    private DocumentService documentService;
 
-    @Autowired
-    private PaiementService paiementService;
+    final private DetailPaiementRepository detailPaiementRepository;
+    
+
+    final private DocumentService documentService;
+
+   final private StatutRepository statutRepository;
+
+
+    final private PaiementService paiementService;
+
+    public DetailPaiementServiceImpl(DetailPaiementRepository detailPaiementRepository, DocumentService documentService, StatutRepository statutRepository, PaiementService paiementService) {
+        this.detailPaiementRepository = detailPaiementRepository;
+        this.documentService = documentService;
+        this.statutRepository = statutRepository;
+        this.paiementService = paiementService;
+    }
 
     @Override
     public DetailPaiement paiementPME(DetailPaiement detailPaiement) {
@@ -37,6 +46,8 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
 
         detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
         Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
+        Statut statut = statutRepository.findByCode("PME_PARTIELLEMENT_PAYEE");
+        paiement.setStatutPme(statut);
         detailPaiement.setPaiement(paiement);
         paiement.getDetailPaiements().add(detailPaiementRepository.save(detailPaiement));
         Paiement paiementSaved  = paiementService.savePaiement(paiement);
@@ -49,6 +60,8 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
 
         detailPaiement.setTypepaiement(TypePaiement.SICA_CDMP);
         Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
+        Statut statut = statutRepository.findByCode("CDMP_PARTIELLEMENT_PAYEE");
+        paiement.setStatutCDMP(statut);
         detailPaiement.setPaiement(paiement);
         paiement.getDetailPaiements().add(detailPaiementRepository.save(detailPaiement));
         Paiement paiementSaved  = paiementService.savePaiement(paiement);
