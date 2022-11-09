@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.Observation;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.services.ObservationService;
@@ -65,6 +66,15 @@ public class ObservationControllers {
     log.info("Observation . Id:{}", id);
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(observation));
   }
+
+    @GetMapping(value = "/{id}/demande-cession")
+    public ResponseEntity<ObservationDto> findObservationsByDemandeCession(@PathVariable Long id,
+                                                         HttpServletRequest request) {
+        log.info("ObservationService.findObservationsByDemandeCession request stated");
+        List<Observation> observationList;
+        observationList = observationService.findObservationsByDemandeCession(id);
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto((Observation) observationList));
+    }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ObservationDto> deleteObservation(
