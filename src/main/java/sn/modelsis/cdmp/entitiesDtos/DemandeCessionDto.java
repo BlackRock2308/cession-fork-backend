@@ -1,8 +1,6 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 import lombok.*;
-import sn.modelsis.cdmp.entities.*;
-
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.*;

@@ -31,24 +31,30 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionRepository demandecessionRepository;
     private final StatutRepository statutRepository;
     private final DemandeCessionMapper cessionMapper;
+     private final DemandeService demandeService;
 
 
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCession saveCession(DemandeCession demandeCession) {
-//        if(demandeCession.getIdDemande()==null){
-//            demandeCession.setNumeroDemande(demandeCession.getNumeroDemande());
-//        }
         DemandeCession newDemandeCession;
 
         try{
             log.info("DemandeCessionService:saveCession request started");
             demandeCession.setDateDemandeCession(new Date());
 
+            Date dateBonEngagement = new Date();
+
+            demandeCession.getBonEngagement().setDatebonengagement(dateBonEngagement);
+
             Statut statut = statutRepository.findByLibelle("SOUMISE");
             demandeCession.setStatut(statut);
             log.debug("DemandeCessionService:saveCession request Parameters {}",demandeCession);
+
+             if(demandeCession.getIdDemande()==null){
+            demandeCession.setNumeroDemande(demandeService.getNumDemande());
+        }
             newDemandeCession = demandecessionRepository.save(demandeCession);
             log.debug("DemandeCessionService:saveCession received response from database {}",newDemandeCession);
         }catch(Exception e) {
@@ -220,7 +226,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
-        log.info("DemandeCessionService:findAllByStatut request started");
+        log.info("DemandeCessionService:findAllByStatut .....");
         return demandecessionRepository
                 .findAllByStatut_Libelle(pageable,statut)
                 .map(cessionMapper::asDTO);
