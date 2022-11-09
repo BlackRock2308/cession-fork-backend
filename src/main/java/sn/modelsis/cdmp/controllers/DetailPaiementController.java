@@ -58,17 +58,15 @@ public class DetailPaiementController {
     }
 
     @PostMapping(value = "sica-cdmp")
-    public ResponseEntity<PaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiementDto detailPaiementDto,
+    public ResponseEntity<DetailPaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiementDto detailPaiementDto,
                                                             HttpServletRequest request) {
         log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
         LocalDateTime date = LocalDateTime.now();
         DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
         log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
         detailPaiement.setDatePaiement(date);
-        Paiement result = detailPaiementService.paiementCDMP(detailPaiement);
-        var d =  result.getDetailPaiements().stream().reduce((prev, next) -> next).orElse(null);
-
-        log.info("DetailPaiement create. Id:{} ", result.getIdPaiement());
+        DetailPaiement result = detailPaiementService.paiementCDMP(detailPaiement);
+        log.info("DetailPaiement create. Id:{} ");
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 /*
