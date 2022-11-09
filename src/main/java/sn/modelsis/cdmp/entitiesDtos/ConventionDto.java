@@ -20,8 +20,6 @@ public class ConventionDto {
   private Long idConvention;
   
   private String modePaiement;
-
-  private String decote;
   
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime dateConvention; 

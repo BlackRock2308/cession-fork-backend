@@ -31,7 +31,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
             Optional<ParametrageDecoteDTO> optionalInf = repository.findParametrageByBorneInf(parametrageDecoteDTO.getBorneInf());
             Optional<ParametrageDecoteDTO> optionalSup = repository.findParametrageByBorneSup(parametrageDecoteDTO.getBorneSup());
 
-            if(optionalInf.isPresent() & optionalSup.isPresent()){
+            if(optionalInf.get().getBorneInf() == parametrageDecoteDTO.getBorneInf() ){
                 throw new CustomException("Un paramétrage similaire existe déja");
             }
         }catch (Exception ex){
