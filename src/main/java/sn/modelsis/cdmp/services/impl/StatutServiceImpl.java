@@ -21,6 +21,11 @@ public class StatutServiceImpl implements StatutService {
   }
 
   @Override
+  public Statut findByCode(String statut) {
+    return statutRepository.findByCode(statut);
+  }
+
+  @Override
   public List<Statut> findAll() {
     return statutRepository.findAll();
   }

@@ -20,7 +20,7 @@ public interface DetailPaiementService {
     DetailPaiement paiementPME(DetailPaiement detailPaiement);
     Paiement getPaiement(DetailPaiement detailPaiement);
 
-    Paiement paiementCDMP(DetailPaiement detailPaiement);
+    DetailPaiement paiementCDMP(DetailPaiement detailPaiement);
 
 
     /**

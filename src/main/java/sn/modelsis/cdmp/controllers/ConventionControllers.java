@@ -27,11 +27,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.StatutService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 /**
@@ -46,10 +48,12 @@ public class ConventionControllers {
 
 
     final private ConventionService conventionService;
+    final private StatutService statutService;
     final private DemandeCessionService demandeCessionService ;
 
-  public ConventionControllers(ConventionService conventionService, DemandeCessionService demandeCessionService) {
+  public ConventionControllers(ConventionService conventionService, StatutService statutService, DemandeCessionService demandeCessionService) {
     this.conventionService = conventionService;
+    this.statutService = statutService;
     this.demandeCessionService = demandeCessionService;
   }
 
@@ -60,6 +64,8 @@ public class ConventionControllers {
     DemandeCession demandeCession =demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
     convention.setDemandeCession(demandeCession);
     Convention result = conventionService.save(convention);
+    Statut statut = statutService.findByCode("CONVENTION_GENEREE");
+    demandeCession.setStatut(statut);
     demandeCession.setConventions(result.getDemandeCession().getConventions());
     DemandeCession demandeCessionSaved=demandeCessionService.save(demandeCession);
     log.info("Convention create. Id:{} ", result.getIdConvention());
