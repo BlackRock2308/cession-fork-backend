@@ -221,7 +221,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
-        log.info("DemandeCessionService:findAllByStatut request started");
+        log.info("DemandeCessionService:findAllByStatut .....");
         return demandecessionRepository
                 .findAllByStatut_Libelle(pageable,statut)
                 .map(cessionMapper::asDTO);
