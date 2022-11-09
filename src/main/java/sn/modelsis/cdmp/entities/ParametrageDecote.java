@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -29,6 +27,4 @@ public class ParametrageDecote implements Serializable {
     @Column(name = "valeur_decote")
     private Double decoteValue;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "decote_id")
-    private Set<Convention> conventions = new HashSet<>();
 }
