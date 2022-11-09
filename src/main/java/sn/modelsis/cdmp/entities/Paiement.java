@@ -39,19 +39,15 @@ public class Paiement implements Serializable {
     @Column(name = "soldepme")
     private double soldePME;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name="demandeCessionid")
-    private DemandeCession demandeCession;
+    @OneToOne
+    @JoinColumn(name="statutPmeid")
+    private Statut statutPme;
+
+    @OneToOne
+    @JoinColumn(name="statutCDMPid")
+    private Statut statutCDMP;
 
     @OneToMany(mappedBy = "paiement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    
-  @OneToOne
-  private Statut statutPme;
-
-  @OneToOne
-  private Statut statutCDMP;
-
-  @OneToMany(mappedBy = "paiement",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DetailPaiement> detailPaiements = new HashSet<>();
 
 }

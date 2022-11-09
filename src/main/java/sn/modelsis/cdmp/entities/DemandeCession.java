@@ -39,8 +39,8 @@ public class DemandeCession extends Demande{
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "demande")
     private Set<Observation> observations = new HashSet<>();
 
-//    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-//    @JoinColumn(name="paiementid")
-//    private Paiement paiement;
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name="paiementid")
+    private Paiement paiement;
 }
 

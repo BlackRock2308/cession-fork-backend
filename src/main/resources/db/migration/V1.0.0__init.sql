@@ -153,6 +153,7 @@ CREATE TABLE public.demandeCession
       bonengagementid bigint,
       datedemandecession timestamp without time zone,
       demandeid bigint not null,
+      paiementid bigint,
       numeroDemande character varying (100)
    );
    --
@@ -163,7 +164,8 @@ CREATE TABLE public.paiement
       id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
       demandeid bigint NOT NULL,
       soldePme FLOAT (40),
-      demandeCessionid bigint,
+      statutCDMPid bigint,
+      statutPmeid bigint,
       montantRecuCdmp FLOAT (40)
    );
 CREATE TABLE public.detailsPaiement
@@ -281,7 +283,7 @@ ALTER TABLE ONLY public.pme ADD CONSTRAINT fk_pme_utilisateur FOREIGN KEY (utili
    -- Name: demande fk_demande_bonengagement; Type: FK CONSTRAINT; Schema: public; Owner: -
    --
 ALTER TABLE ONLY public.demandecession ADD CONSTRAINT fk_demandecession_bonengagement FOREIGN KEY (bonengagementid) REFERENCES public.bonengagement (id);
-ALTER TABLE ONLY public.paiement ADD CONSTRAINT fk_paiement_demandecession FOREIGN KEY (demandeCessionid) REFERENCES public.demandecession (id);
+ALTER TABLE ONLY public.demandecession ADD CONSTRAINT fk_demandecession_paiement FOREIGN KEY (paiementid) REFERENCES public.paiement (id);
  
    --
    -- Name: detailsPaiement fk_detailsPaiement_paiement; Type: FK CONSTRAINT; Schema: public; Owner: -
