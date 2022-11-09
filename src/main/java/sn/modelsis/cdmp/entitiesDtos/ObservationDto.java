@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -15,7 +16,7 @@ import sn.modelsis.cdmp.entities.Demande;
 @Data
 @NoArgsConstructor
 @ToString
-public class ObservationDto {
+public class ObservationDto implements Serializable {
   
   private Long id;
 

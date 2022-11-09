@@ -36,15 +36,15 @@ public class PersistDemande {
 
             DemandeAdhesion dA1 = new DemandeAdhesion();
             dA1.setPme(pme.get());
-            this.demandeAdhesionService.saveAdhesion(dA1);
+            //this.demandeAdhesionService.saveAdhesion(dA1);
 
             DemandeAdhesion dA2 = new DemandeAdhesion();
             dA1.setPme(pme.get());
-            this.demandeAdhesionService.saveAdhesion(dA2);
+            //this.demandeAdhesionService.saveAdhesion(dA2);
 
             DemandeAdhesion dA3 = new DemandeAdhesion();
             dA1.setPme(pme.get());
-            this.demandeAdhesionService.saveAdhesion(dA3);
+            //this.demandeAdhesionService.saveAdhesion(dA3);
 
 
             Optional<BonEngagement> bE1 = this.bonEngagementRepository.findById(1L);
