@@ -32,15 +32,16 @@ import java.util.stream.Collectors;
 public class DemandeAdhesionController {
 
     private final DemandeAdhesionService demandeAdhesionService;
+
     @PostMapping
     public ResponseEntity<DemandeAdhesionDto> addDemandeAdhesion(@RequestBody DemandeAdhesionDto demandeadhesionDto,
                                                                  HttpServletRequest request) {
-        log.info("DemandeAdhesionController:addDemandeAdhesion request started");
-        DemandeAdhesion demandeAdhesion = DtoConverter.convertToEntity(demandeadhesionDto);
-        DemandeAdhesion result = demandeAdhesionService.saveAdhesion(demandeAdhesion);
-        log.info("DemandeAdhesionController:addDemandeAdhesion request params  {}", result.getIdDemande());
+
+        DemandeAdhesion result = demandeAdhesionService.saveAdhesion(demandeadhesionDto);
+        log.info("demande cession created. Id:{} ", result.getIdDemande());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
+
 
     @GetMapping
     public ResponseEntity<Page<DemandeAdhesionDto>> getAllDemandeAdhesion(Pageable pageable,

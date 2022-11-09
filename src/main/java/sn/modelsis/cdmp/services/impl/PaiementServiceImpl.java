@@ -61,7 +61,7 @@ public class PaiementServiceImpl implements PaiementService {
         Set<Convention> conventions=  demandeCession.getConventions();
         for (Convention convention :conventions ) {
             if (convention.isActiveConvention()){
-                decote=convention.getDecote() ;
+                decote=convention.getDecote().getDecoteValue() ;
             }
         }
 
