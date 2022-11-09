@@ -17,13 +17,10 @@ import java.util.Optional;
 
 public interface DemandeAdhesionService {
 
-    /**
-     *
-     * @param demandeAdhesionDto
-     * @return
-     */
 
-    DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion);
+    //DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion);
+
+    DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto);
 
 //    List<DemandeAdhesionDto> findAll();
 

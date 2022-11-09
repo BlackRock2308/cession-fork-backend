@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import javax.persistence.Enumerated;
 @Data
 @NoArgsConstructor
 @ToString
-public class BonEngagementDto {
+public class BonEngagementDto implements Serializable {
     private Long idBonEngagement;
     private double montantCreance;
     @Enumerated( EnumType.STRING)

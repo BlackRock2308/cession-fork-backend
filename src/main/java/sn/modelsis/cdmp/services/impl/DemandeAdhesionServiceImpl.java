@@ -37,20 +37,45 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 
     private  final DemandeService demandeService;
 
+//    @Override
+//    @Transactional(propagation = Propagation.REQUIRED)
+//    public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion) {
+//                    demandeAdhesion.setDateDemandeAdhesion(new Date());
+//                    Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
+//                    demandeAdhesion.setStatut(statut);
+//        if(demandeAdhesion.getIdDemande()==null){
+//            demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
+//        }
+//        DemandeAdhesion demandeAdhesion1 = demandeAdhesionRepository.save(demandeAdhesion);
+//        log.info("DemandeAdhesionService:saveAdhesion execution finished successfully");
+//        return demandeAdhesion1;
+//
+//    }
+
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion) {
+    public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
+        DemandeAdhesion demandeAdhesion = adhesionMapper.asEntity(demandeAdhesionDto);
+        pmeRepository.findById(demandeAdhesionDto.getIdPME()).ifPresentOrElse(
+                (value)
+                        -> {
+                    demandeAdhesion.setPme(value);
                     demandeAdhesion.setDateDemandeAdhesion(new Date());
                     Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
                     demandeAdhesion.setStatut(statut);
-        if(demandeAdhesion.getIdDemande()==null){
-            demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
-        }
-        DemandeAdhesion demandeAdhesion1 = demandeAdhesionRepository.save(demandeAdhesion);
-        log.info("DemandeAdhesionService:saveAdhesion execution finished successfully");
-        return demandeAdhesion1;
-
+                    if(demandeAdhesion.getIdDemande()==null){
+                        demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
+                    }
+                },
+                ()
+                        -> {
+                    throw new CustomException("La PME n'existe pas");
+                }
+        );
+        return demandeAdhesionRepository.save(demandeAdhesion);
     }
+
 
     @Override
     public Page<DemandeAdhesionDto> findAll(Pageable pageable){

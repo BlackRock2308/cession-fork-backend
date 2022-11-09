@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ import sn.modelsis.cdmp.entities.TypeMarche;
 @Data
 @NoArgsConstructor
 @ToString
-public class CreanceDto {
+public class CreanceDto implements Serializable {
 
     private Long idCreance;
 
