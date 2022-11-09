@@ -2,6 +2,7 @@ package sn.modelsis.cdmp.controllers;
 
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,9 +61,10 @@ public class DetailPaiementController {
     public ResponseEntity<PaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiementDto detailPaiementDto,
                                                             HttpServletRequest request) {
         log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
-
+        LocalDateTime date = LocalDateTime.now();
         DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
         log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
+        detailPaiement.setDatePaiement(date);
         Paiement result = detailPaiementService.paiementCDMP(detailPaiement);
         log.info("DetailPaiement create. Id:{} ", result.getIdPaiement());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
