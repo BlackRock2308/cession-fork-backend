@@ -19,11 +19,8 @@ import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.time.LocalDateTime;
-=======
->>>>>>> adaf8e92b427a2ac93f59b92ea5ea0fb60e1b7a6
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
