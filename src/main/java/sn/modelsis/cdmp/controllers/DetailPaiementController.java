@@ -66,6 +66,8 @@ public class DetailPaiementController {
         log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
         detailPaiement.setDatePaiement(date);
         Paiement result = detailPaiementService.paiementCDMP(detailPaiement);
+        var d =  result.getDetailPaiements().stream().reduce((prev, next) -> next).orElse(null);
+
         log.info("DetailPaiement create. Id:{} ", result.getIdPaiement());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
