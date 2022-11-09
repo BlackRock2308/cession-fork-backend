@@ -129,18 +129,6 @@ public class UtilisateurController {
                     .body(DtoConverter.convertToDto(result));
     }
 
-  @PatchMapping("/{id}")
-  public ResponseEntity<UtilisateurDto> update(@Valid @RequestBody UtilisateurDto utilisateurDto,@PathVariable("id") Long id)
-      throws Exception {
-        log.debug("REST request to update Utilisateur : {}", utilisateurDto);
-        if (utilisateurDto.getIdUtilisateur() == null)
-            throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
-        Utilisateur result = utilisateurService.update(DtoConverter.convertToEntity(utilisateurDto));
-            return ResponseEntity
-                    .ok()
-                    .body(DtoConverter.convertToDto(result));
-    }
-
     /**
      * {@code POST  /utilisateurs} : Create a new utilisateur.
      *
