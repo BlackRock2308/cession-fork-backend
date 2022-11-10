@@ -146,21 +146,21 @@ CREATE TABLE public.demande (
 );
 
 CREATE TABLE public.demandeadhesion (
-                                id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+                                id bigint NOT NULL,
                                 pmeid bigint NOT NULL,
                                 statutid bigint NOT NULL,
                                 datedemandeadhesion timestamp without time zone,
-                                demandeid bigint NOT NULL,
+                                demandeid bigint,
                                 numeroDemande character varying (100)
 );
 
 CREATE TABLE public.demandeCession (
-                                id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+                                id bigint NOT NULL,
                                 pmeid bigint NOT NULL,
                                 statutid bigint NOT NULL,
                                 bonengagementid bigint,
                                 datedemandecession timestamp without time zone,
-                                demandeid bigint not null,
+                                demandeid bigint ,
                                 paiementid bigint,
                                 numeroDemande character varying (100)
 );
