@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.services;
 
 import org.springframework.stereotype.Service;
+import sn.modelsis.cdmp.entities.ParametrageDecote;
 import sn.modelsis.cdmp.entitiesDtos.ParametrageDecoteDTO;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Optional;
 @Service
 public interface ParametrageDecoteService {
 
-    ParametrageDecoteDTO createNewDecote(ParametrageDecoteDTO parametrageDecoteDTO);
+    ParametrageDecote createNewDecote(ParametrageDecote parametrageDecote);
 
     List<ParametrageDecoteDTO> getAllDecode();
 

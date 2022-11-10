@@ -11,6 +11,8 @@ import java.io.Serializable;
 @ToString
 public class ParametrageDecoteDTO implements Serializable {
 
+    private Long IdDecote;
+
     private Long borneInf;
 
     private Long borneSup;

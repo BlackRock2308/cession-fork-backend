@@ -6,6 +6,9 @@ package sn.modelsis.cdmp.services.impl;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.ConventionDocuments;
 import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DocumentService;
@@ -22,16 +26,23 @@ import sn.modelsis.cdmp.services.DocumentService;
  *
  */
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ConventionServiceImpl implements ConventionService{
-  @Autowired
-  private ConventionRepository conventionRepository;
-  
-  @Autowired
-  private DocumentService documentService;
+  private final ConventionRepository conventionRepository;
+  private final DocumentService documentService;
  
   @Override
   public Convention save(Convention convention) {
-    return conventionRepository.save(convention);
+    Convention newConvention;
+    try
+      {
+        log.info("ConventionService:save ........");
+        newConvention = conventionRepository.save(convention);
+      } catch (Exception ex){
+        throw new CustomException("Error");
+    }
+    return newConvention;
 	}
 
   @Override
