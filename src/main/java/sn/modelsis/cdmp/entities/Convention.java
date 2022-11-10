@@ -43,9 +43,6 @@ public class Convention implements Serializable {
 
   private Double valeurDecote;
 
-//  @Column(name = "id_decote")
-//  private Long decote_id;
-
   @Column(name = "active_convention")
   private boolean activeConvention;
 

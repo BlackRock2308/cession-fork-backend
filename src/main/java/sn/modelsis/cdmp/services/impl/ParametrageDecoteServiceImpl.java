@@ -44,11 +44,10 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
             optional = repository.findParametrageByBorneSup(parametrageDecote.getBorneSup());
 
             if(parametrageDecote.getBorneInf() < parametrageDecote.getBorneSup()){
-                log.error("Exception occured while persisting new Parametrage Decote to database :" );
-                throw new CustomException("Exception occured while creating a new Decote ");
+                log.info("Error : Vérifiez vos bornes, borneSup > borneInf : Error message : {}" );
+                throw new CustomException("Exception occured : Borne inf and Borne Sup ");
 
             }
-
             newDecote = repository.saveAndFlush(parametrageDecote);
             log.debug("ParametrageDecoteService:createNewDecote received from database : {}",newDecote);
 
@@ -81,6 +80,10 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
             log.info("ParametrageDecoteService:updateDecoteParameter updating ........");
             existingDecote = repository.findById(id);
 
+            if(newParametrageDecote.getBorneInf() < newParametrageDecote.getBorneSup()){
+                log.error("Error : Vérifiez vos bornes, borneSup > borneInf : Error message : {}" );
+                throw new CustomException("Exception occured : Borne inf and Borne Sup ");
+            }
             existingDecote.get().setBorneInf(newParametrageDecote.getBorneInf());
             existingDecote.get().setBorneSup(newParametrageDecote.getBorneSup());
             existingDecote.get().setDecoteValue(newParametrageDecote.getDecoteValue());
@@ -118,13 +121,13 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
                     parametrageDecote = decote;
                     log.info("corresponding decote param : {}", parametrageDecote);
                 }
-                else {
-                    log.info("ParametrageDecoteService:findIntervalDecote : aucun p[aramétrage ne correspond");
-                    parametrageDecote = new ParametrageDecote(null,null, montant);
-                    repository.saveAndFlush(parametrageDecote);
-                    log.info("New Created Decote Param : {}", parametrageDecote);
-
-                }
+//                else {
+//                    log.info("ParametrageDecoteService:findIntervalDecote : aucun paramétrage ne correspond");
+//                    parametrageDecote = new ParametrageDecote(null,null, montant);
+//                    repository.saveAndFlush(parametrageDecote);
+//                    log.info("New Created Decote Param : {}", parametrageDecote);
+//
+//                }
             }
         }catch (Exception ex){
             log.info("Exception occured while finding the right interval. Error message : {}",  ex.getMessage());

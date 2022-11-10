@@ -24,7 +24,7 @@ public class ConventionDto {
 
   private Long idDemande;
 
-  private Long idDecote;
+  //private Long idDecote;
 
   private Double valeurDecote;
 

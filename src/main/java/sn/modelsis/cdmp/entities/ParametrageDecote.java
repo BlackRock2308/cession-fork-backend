@@ -29,7 +29,7 @@ public class ParametrageDecote implements Serializable {
     @Column(name = "valeur_decote")
     private Double decoteValue;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "decote")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL ,mappedBy = "decote")
     private Set<Convention> conventions = new HashSet<>();
 
     public ParametrageDecote(Long borneInf,

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import sn.modelsis.cdmp.dbPersist.*;
 
+import sn.modelsis.cdmp.entities.ParametrageDecote;
 import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.*;
 
@@ -185,6 +186,23 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
 
        // PersistPaiement persistPaiement= new PersistPaiement(demandeCessionRepository, paiementService, detailPaiementService);
         log.info("Initialisation des paiements et details paiements");
+  }
+
+  @Bean
+  public CommandLineRunner start(ParametrageDecoteRepository decoteRepository){
+      return args -> {
+          decoteRepository.saveAndFlush(new ParametrageDecote(1000000L,5000000L,0.01));
+          decoteRepository.saveAndFlush(new ParametrageDecote(5000000L,10000000L,0.02));
+          decoteRepository.saveAndFlush(new ParametrageDecote(10000000L,100000000L,0.001));
+          decoteRepository.saveAndFlush(new ParametrageDecote(100000000L,200000000L,0.002));
+
+
+
+          decoteRepository.findAll().forEach(cp ->{
+              System.out.println(cp.getDecoteValue());
+          });
+
+      };
   }
 
 }
