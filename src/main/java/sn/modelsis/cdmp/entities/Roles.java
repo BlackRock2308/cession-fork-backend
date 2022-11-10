@@ -1,9 +1,11 @@
 package sn.modelsis.cdmp.entities;
 
 public enum Roles {
-    CGR("cgr"),
+    DRC("drc"),
     PME("pme"),
-    COMPTABLE("comptable"),
+    DAF("daf"),
+    JURISTE("juriste"),
+    DSEAR("dsear"),
     ORDONNATEUR("ordonnateur"),
     DG("dg");
 

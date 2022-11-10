@@ -18,9 +18,9 @@ public interface DetailPaiementService {
      * @return
      */
     DetailPaiement paiementPME(DetailPaiement detailPaiement);
-    Paiement getPaiement(DetailPaiement detailPaiement);
+    DetailPaiement getPaiement(DetailPaiement detailPaiement);
 
-    Paiement paiementCDMP(DetailPaiement detailPaiement);
+    DetailPaiement paiementCDMP(DetailPaiement detailPaiement);
 
 
     /**

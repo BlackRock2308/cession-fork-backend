@@ -78,7 +78,7 @@ public class ObservationServiceImpl implements ObservationService{
 
     log.info("ObservationService.findObservationsByDemandeCession request params : {}", searchDemand.get().getIdDemande());
 
-    List<Observation> observationList = observationRepository.findAllObservationByIdDemande(idDemande);
+    List<Observation> observationList = observationRepository.findAllObservationByDemandeIdDemande(idDemande);
     log.info("ObservationService.findObservationsByDemandeCession request params : {}", observationList.stream().collect(Collectors.toList()));
 
     return observationList;

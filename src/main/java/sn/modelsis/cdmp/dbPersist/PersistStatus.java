@@ -1,7 +1,6 @@
 package sn.modelsis.cdmp.dbPersist;
 
 import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entities.Statuts;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 
 public class PersistStatus {

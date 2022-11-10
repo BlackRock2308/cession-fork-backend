@@ -39,14 +39,20 @@ public class PersitUsers {
         Role PME = new Role();
         PME.setLibelle("PME");
 
-        Role CGR = new Role();
-        CGR.setLibelle("CGR");
+        Role DRC = new Role();
+        DRC.setLibelle("DRC");
 
         Role ORDONNATEUR = new Role();
         ORDONNATEUR.setLibelle("ORDONNATEUR");
 
-        Role COMPTABLE = new Role();
-        COMPTABLE.setLibelle("COMPTABLE");
+        Role DAF = new Role();
+        DAF.setLibelle("DAF");
+        
+        Role DSEAR = new Role();
+        DSEAR.setLibelle("DSEAR");
+        
+        Role JURISTE = new Role();
+        JURISTE.setLibelle("JURISTE");
 
         Set<Role> pmeRoles = new HashSet<>();
         pmeRoles.add(PME);
@@ -54,11 +60,17 @@ public class PersitUsers {
         Set<Role> dgRoles = new HashSet<>();
         dgRoles.add(DG);
 
-        Set<Role> comptableRoles = new HashSet<>();
-        comptableRoles.add(COMPTABLE);
+        Set<Role> juristeRoles = new HashSet<>();
+        juristeRoles.add(JURISTE);
+       
+        Set<Role> dsearRoles = new HashSet<>();
+        dsearRoles.add(DSEAR);
+        
+        Set<Role> dafRoles = new HashSet<>();
+        dafRoles.add(DAF);
 
         Set<Role> cgrRoles = new HashSet<>();
-        cgrRoles.add(CGR);
+        cgrRoles.add(DRC);
 
         Set<Role> ordonnateurRoles = new HashSet<>();
         ordonnateurRoles.add(ORDONNATEUR);
@@ -81,26 +93,46 @@ public class PersitUsers {
         pme.setEmail("pme@gmail.com");
         pme.setRoles(pmeRoles);
 
-        Utilisateur cgr = new Utilisateur();
-        cgr.setAdresse("Mermoz");
-        cgr.setCodePin("123456");
-        cgr.setPassword(passwordEncoder.encode("passer"));
-        cgr.setPrenom("CGR");
-        cgr.setEmail("cgr@gmail.com");
-        cgr.setRoles(cgrRoles);
+        Utilisateur drc = new Utilisateur();
+        drc.setAdresse("Mermoz");
+        drc.setCodePin("123456");
+        drc.setPassword(passwordEncoder.encode("passer"));
+        drc.setPrenom("DRC");
+        drc.setEmail("drc@gmail.com");
+        drc.setRoles(cgrRoles);
 
-        utilisateurRepository.saveAndFlush(cgr);
+        utilisateurRepository.saveAndFlush(drc);
 
-        Utilisateur comptable = new Utilisateur();
-        comptable.setAdresse("Mermoz");
-        comptable.setCodePin("123456");
-        comptable.setPassword(passwordEncoder.encode("passer"));
-        comptable.setPrenom("COMPTABLE");
-        comptable.setEmail("comptable@gmail.com");
-        comptable.setRoles(comptableRoles);
+        Utilisateur juriste = new Utilisateur();
+        juriste.setAdresse("Mermoz");
+        juriste.setCodePin("123456");
+        juriste.setPassword(passwordEncoder.encode("passer"));
+        juriste.setPrenom("JURISTE");
+        juriste.setEmail("juriste@gmail.com");
+        juriste.setRoles(juristeRoles);
 
-        utilisateurRepository.saveAndFlush(comptable);
+        utilisateurRepository.saveAndFlush(juriste);
+        
+        Utilisateur dsear = new Utilisateur();
+        dsear.setAdresse("Mermoz");
+        dsear.setCodePin("123456");
+        dsear.setPassword(passwordEncoder.encode("passer"));
+        dsear.setPrenom("DSEAR");
+        dsear.setEmail("dsear@gmail.com");
+        dsear.setRoles(dsearRoles);
 
+        utilisateurRepository.saveAndFlush(dsear);
+
+        Utilisateur daf = new Utilisateur();
+        daf.setAdresse("Mermoz");
+        daf.setCodePin("123456");
+        daf.setPassword(passwordEncoder.encode("passer"));
+        daf.setPrenom("DAF");
+        daf.setEmail("daf@gmail.com");
+        daf.setRoles(dafRoles);
+
+        utilisateurRepository.saveAndFlush(daf);
+        
         Utilisateur ordonnateur = new Utilisateur();
         ordonnateur.setAdresse("Mermoz");
         ordonnateur.setCodePin("123456");
@@ -119,7 +151,6 @@ public class PersitUsers {
         pme1.setNinea("123456789088");
         pme1.setRccm("SN DK 2898 Y 9989");
         pme1.setTelephonePME("339809876");
-
         pme1.setEmail("pme@gmail.com");
         pme1.setActivitePrincipale("Solution Cloud and Big Data");
         pme1.setDateAdhesion(date);
