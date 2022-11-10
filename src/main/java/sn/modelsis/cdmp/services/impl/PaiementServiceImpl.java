@@ -53,7 +53,8 @@ public class PaiementServiceImpl implements PaiementService {
         DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
 
         String statusLibelle = demandeCession.getStatut().getLibelle() ;
-        Statut statut = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
+        Statut statutCDMP = statutRepository.findByCode("CDMP_EN_ATTENTE_DE_PAIEMENT");
+        Statut statutPme = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
         Paiement paiement = DtoConverter.convertToEntity(paiementDto);
         BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
         double montantCreance=bonEngagement.getMontantCreance();
@@ -69,9 +70,9 @@ public class PaiementServiceImpl implements PaiementService {
             //paiement.setDemandeCession(demandeCession);
             paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
             paiement.setMontantRecuCDMP(0);
-            paiement.setStatutCDMP(statut);
-            paiement.setStatutPme(statut);
-            demandeCession.setStatut(statut);
+            paiement.setStatutCDMP(statutCDMP);
+            paiement.setStatutPme(statutPme);
+            demandeCession.setStatut(statutPme);
             demandeCession.setPaiement(paiement);
             demandeCessionRepository.save(demandeCession);
         }

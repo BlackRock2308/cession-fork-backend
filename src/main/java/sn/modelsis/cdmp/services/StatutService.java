@@ -13,6 +13,12 @@ public interface StatutService {
     Statut save(Statut statut);
 
     /**
+     * @param statut
+     * @return
+     */
+    Statut findByCode(String statut);
+
+    /**
      * @return
      */
     List<Statut> findAll();
