@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ParametrageDecoteRepository extends JpaRepository<ParametrageDecote, Long> {
 
-    Optional<ParametrageDecoteDTO> findParametrageByBorneInf(Long borneInf);
+    Optional<ParametrageDecote> findParametrageByBorneInf(Long borneInf);
 
-    Optional<ParametrageDecoteDTO> findParametrageByBorneSup(Long borneSup);
+    Optional<ParametrageDecote> findParametrageByBorneSup(Long borneSup);
 }

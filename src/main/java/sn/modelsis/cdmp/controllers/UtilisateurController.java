@@ -222,4 +222,21 @@ public class UtilisateurController {
     public EmailMessageWithTemplate forgetPassword(@RequestBody String email)  {
         return utilisateurService.forgetPassword(email);
     }
+
+    /**
+     * {@code POST  /signer-convention} : signer convention
+     *
+     * @param  codePin of the user .
+     * @param  idUtilisateur of the user .
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+
+    @PostMapping("/{idUtilisateur}/signer-convention")
+    public  ResponseEntity<Boolean> signerConvention(@RequestBody String codePin,@PathVariable Long idUtilisateur)  {
+
+        log.info("codePin:{}",codePin);
+        return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));
+    }
+
+
 }

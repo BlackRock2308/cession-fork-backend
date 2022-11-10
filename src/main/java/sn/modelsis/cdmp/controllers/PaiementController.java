@@ -1,4 +1,8 @@
 package sn.modelsis.cdmp.controllers;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,6 +18,7 @@ import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.PaiementService;
+import sn.modelsis.cdmp.util.DtoConverter;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -26,22 +31,12 @@ public class PaiementController {
 
     final  private PaiementService paiementService;
 
-    final private DemandeCessionService demandeCessionService;
-
-    public PaiementController(PaiementService paiementService, DemandeCessionService demandeCessionService) {
+    public PaiementController(PaiementService paiementService ) {
         this.paiementService = paiementService;
-        this.demandeCessionService = demandeCessionService;
     }
 
     @PostMapping
     public ResponseEntity<DemandeCessionDto> addPaiement(@RequestBody PaiementDto paiementDto){
-
-        /*if(paiementDto.getDemandecessionid()==null ||  paiementDto.getIdPaiement()!=null)
-            throw new  CustomException("L'id de la demande de cession ne doit pas etre null ");
-
-        if( paiementDto.getIdPaiement()!=null)
-            throw new  CustomException("Le paiement exit déja ");*/
-
         DemandeCession demandeCession = paiementService.saveDemande(paiementDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(demandeCession));
 
@@ -71,7 +66,7 @@ public class PaiementController {
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
     }
     @GetMapping(value = "/cdmp-pme/{id}")
-    public ResponseEntity<PaiementDto> getPaiementCDMP_PME(
+    public ResponseEntity<PaiementDto> getPaiementAndDetailPaimentCDMP_PME(
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);
@@ -89,7 +84,7 @@ public class PaiementController {
     }
 
     @GetMapping(value = "/sica-cdmp/{id}")
-    public ResponseEntity<PaiementDto> getPaiementSICA_CDMP(
+    public ResponseEntity<PaiementDto> getPaiementAndDetailPaimentSICA_CDMP(
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);

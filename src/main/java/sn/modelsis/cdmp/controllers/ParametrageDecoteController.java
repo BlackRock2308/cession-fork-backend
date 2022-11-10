@@ -29,14 +29,28 @@ public class ParametrageDecoteController {
 
     private final DecodeMapper decodeMapper;
 
+//    @PostMapping()
+//    public ResponseEntity<ParametrageDecoteDTO> saveNewDecote(@RequestBody ParametrageDecoteDTO parametrageDecoteDTO,
+//                                                        HttpServletRequest request) {
+//        log.info("ParametrageDecoteController:saveNewDecote request started");
+//        ParametrageDecoteDTO result = decoteService.createNewDecote(parametrageDecoteDTO);
+//        log.info("ParametrageDecoteController:saveNewDecote request params : {}", parametrageDecoteDTO);
+//        //ParametrageDecote parametrageDecote = decodeMapper.asEntity(parametrageDecoteDTO);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+//    }
+
+
     @PostMapping()
     public ResponseEntity<ParametrageDecoteDTO> saveNewDecote(@RequestBody ParametrageDecoteDTO parametrageDecoteDTO,
-                                                        HttpServletRequest request) {
+                                                              HttpServletRequest request) {
         log.info("ParametrageDecoteController:saveNewDecote request started");
-        ParametrageDecoteDTO result = decoteService.createNewDecote(parametrageDecoteDTO);
-        log.info("ParametrageDecoteController:saveNewDecote request params : {}", parametrageDecoteDTO);
-        //ParametrageDecote parametrageDecote = decodeMapper.asEntity(parametrageDecoteDTO);
+        ParametrageDecote decoteDTO = decodeMapper.asEntity(parametrageDecoteDTO);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        log.info("ParametrageDecoteController:saveNewDecote request params : {}", parametrageDecoteDTO);
+
+        ParametrageDecote result = decoteService.createNewDecote(decoteDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(decodeMapper.asDTO(result));
     }
+
 }

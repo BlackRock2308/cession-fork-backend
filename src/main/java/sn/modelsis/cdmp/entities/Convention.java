@@ -5,6 +5,7 @@ package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -40,21 +41,21 @@ public class Convention implements Serializable {
   private ModePaiement modePaiement;
 
   @Column(name = "id_decote")
-  private Long decote_id;
+  private Long decote_id;;
 
   @Column(name = "active_convention")
   private boolean activeConvention;
 
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime dateConvention; 
+  private LocalDateTime dateConvention;
   
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "pmeid", nullable = true)
   private Pme pme;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "utilisateur_id", nullable = true)
+  @JoinColumn(name = "utilisateurid", nullable = true)
   private Utilisateur utilisateur;
 
   @ManyToOne(fetch = FetchType.EAGER)
@@ -65,6 +66,8 @@ public class Convention implements Serializable {
   private Set<ConventionDocuments> documents = new HashSet<>();
 
   @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name="decoteid")
   private ParametrageDecote decote;
+
 
 }

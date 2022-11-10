@@ -1,18 +1,28 @@
 package sn.modelsis.cdmp.services.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
-import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.repositories.*;
-import sn.modelsis.cdmp.services.PaiementService;
-import sn.modelsis.cdmp.util.DtoConverter;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import sn.modelsis.cdmp.entities.BonEngagement;
+import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Paiement;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.TypePaiement;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.repositories.BonEngagementRepository;
+import sn.modelsis.cdmp.repositories.ConventionRepository;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.PaiementRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.services.PaiementService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 @Service
 public class PaiementServiceImpl implements PaiementService {
@@ -66,7 +76,7 @@ public class PaiementServiceImpl implements PaiementService {
             }
         }
 
-        if(statusLibelle.equals("SOUMISE")){
+        if(statusLibelle.equals("CONVENTION_GENEREE")){
             //paiement.setDemandeCession(demandeCession);
             paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
             paiement.setMontantRecuCDMP(0);
