@@ -71,7 +71,7 @@ public class DemandeCessionController {
                 .body(demande);
     }
 
-    @GetMapping(value = "/statistiqueDemandeCession/{anne}")
+    @GetMapping(value = "statistiqueDemandeCession/{anne}")
     public ResponseEntity<List<StatistiqueDemandeCession>> getStatistiqueDemandeCession(@PathVariable int anne,
                                                                              HttpServletRequest request) {
        return ResponseEntity.status(HttpStatus.OK)

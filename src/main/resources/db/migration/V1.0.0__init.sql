@@ -437,22 +437,3 @@ ALTER TABLE ONLY public.utilisateur_roles
 ALTER TABLE ONLY public.utilisateur_roles
     ADD CONSTRAINT fk_utilisateur_roles_role FOREIGN KEY (roles_id) REFERENCES public.role(id);
 
-CREATE TABLE public.statistiqueDemande
-(
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    statut character varying,
-    datedemandecession Date DEFAULT current_date
-);
-
-CREATE SEQUENCE public.statistiqueDemande_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE public.statistiqueDemande ALTER COLUMN id DROP IDENTITY IF EXISTS;
-
-UPDATE public.statistiqueDemande SET id=nextval('public.statistiqueDemande_sequence');
-
-

@@ -23,8 +23,8 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
     @Query("select p from DemandeCession  p where p.idDemande=:idDemande")
     DemandeCession findByDemandeId(Long idDemande);
     @Query(nativeQuery = true,
-            value = "select * from public.statistiqueDemandeByStatutAndMoth(:statut, :datedemandecession)")
-    Integer DemandeByStautAntMonth(@Param("statut") String statut, @Param("datedemandecession") Date dateDemande);
+            value = "select * from public.statistiqueDemandeByStatutAndMoth(:statutDemande, :dateDemande)")
+    Integer DemandeByStautAntMonth(@Param("statutDemande") String statutDemande, @Param("dateDemande") Date dateDemande);
 
 
 
