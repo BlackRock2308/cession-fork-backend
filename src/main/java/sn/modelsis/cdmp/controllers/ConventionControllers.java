@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,10 +29,7 @@ import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
-import sn.modelsis.cdmp.services.BonEngagementService;
-import sn.modelsis.cdmp.services.ConventionService;
-import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.services.ParametrageDecoteService;
+import sn.modelsis.cdmp.services.*;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 /**
