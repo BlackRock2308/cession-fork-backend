@@ -46,6 +46,11 @@ public class Paiement implements Serializable {
     @OneToOne
     @JoinColumn(name = "statutCDMPid")
     private Statut statutCDMP;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "demandeCessionid")
+    private DemandeCession demandeCession;
+
 
     private double montantCreance;
 

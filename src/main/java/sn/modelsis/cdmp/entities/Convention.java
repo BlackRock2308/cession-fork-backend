@@ -40,8 +40,8 @@ public class Convention implements Serializable {
   @Enumerated(EnumType.STRING)
   private ModePaiement modePaiement;
 
-  @Column(name = "decote")
-  private Float decote;
+  @Column(name = "id_decote")
+  private Long decote_id;;
 
   @Column(name = "active_convention")
   private boolean activeConvention;

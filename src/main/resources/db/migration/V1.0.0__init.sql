@@ -76,6 +76,7 @@ CREATE TABLE public.utilisateur (
     prenom character varying(250),
     nom character varying(250),
     password character varying(250),
+    update_password boolean,
     urlimagesignature character varying(250),
     telephone character varying(50),
     urlimageprofil character varying(250),
@@ -108,12 +109,8 @@ CREATE TABLE public.bonengagement (
              typeDepense character varying(250),
              modeReglement character varying(100),
              dateSoumissionServiceDepensier timestamp without time zone,
-             nomMarche character varying(250)
-
-
-
-
-
+             nomMarche character varying(250),
+             typeMarche character varying(250)
 
 );
 
@@ -124,7 +121,8 @@ CREATE TABLE public.bonengagement (
 CREATE TABLE public.convention (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     dateconvention timestamp without time zone,
-    decote FLOAT(40),
+    id_decote bigint,
+    decoteid bigint,
     modepaiement character varying(50),
     utilisateurid bigint,
     pmeid bigint ,
@@ -163,6 +161,7 @@ CREATE TABLE public.demandeCession (
                                 bonengagementid bigint,
                                 datedemandecession timestamp without time zone,
                                 demandeid bigint not null,
+                                paiementid bigint,
                                 numeroDemande character varying (100)
 );
 
@@ -172,8 +171,9 @@ CREATE TABLE public.demandeCession (
 
 CREATE TABLE public.paiement (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-     demandeid bigint NOT NULL,
+     demandeCessionid bigint ,
       soldePme FLOAT (40),
+      montantCreance FLOAT (40),
       statutCDMPid bigint,
       statutPmeid bigint,
       montantRecuCdmp FLOAT (40)
@@ -218,7 +218,7 @@ CREATE TABLE public.parametrage (
 
 CREATE TABLE public.statut (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    code character varying(25),
+    code character varying(100),
     libelle character varying(100)
 );
 
@@ -238,9 +238,9 @@ CREATE TABLE public.document (
 
 CREATE TABLE public.parametrage_decote (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    bordeInf FLOAT(40 ,
-    borneSup FLOAT(40,
-    decoteValue FLOAT(40),
+    bordeInf bigint,
+    borneSup bigint,
+    decoteValue double precision
 );
 
 --
@@ -409,7 +409,7 @@ ALTER TABLE ONLY public.convention
 --
 
 ALTER TABLE ONLY public.paiement
-    ADD CONSTRAINT fk_paiement_demandecession FOREIGN KEY (demandeid) REFERENCES public.demandecession(id);
+    ADD CONSTRAINT fk_paiement_demandecession FOREIGN KEY (demandeCessionid) REFERENCES public.demandecession(id);
 
 
 

@@ -24,6 +24,8 @@ public class Observation implements Serializable, Comparable<Observation> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Transient
+    private Long idDemande;
     
     @Column(name = "libelle")
     private String libelle;

@@ -12,5 +12,5 @@ import java.util.List;
 public interface ObservationRepository extends JpaRepository<Observation, Long> {
 
 
-    List<Observation> findAllObservationByIdDemande(Long IdDemande);
+    List<Observation> findAllObservationByDemandeIdDemande(Long IdDemande);
 }
