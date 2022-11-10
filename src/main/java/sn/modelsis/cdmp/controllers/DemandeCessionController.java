@@ -15,6 +15,7 @@ import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
@@ -62,6 +63,12 @@ public class DemandeCessionController {
                 .body(demande);
     }
 
+    @GetMapping(value = "/statistiqueDemandeCession/{anne}")
+    public ResponseEntity<List<StatistiqueDemandeCession>> getStatistiqueDemandeCession(@PathVariable int anne,
+                                                                             HttpServletRequest request) {
+       return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeCessionService.getStatistiqueDemandeCession(anne));
+    }
     /******* Recevabilité : Endpoint pour rejeter une demande de cession -- accepter une demande de cession ******* ***/
 
     @PatchMapping(value ="/{idDemande}/rejeterRecevabilite")

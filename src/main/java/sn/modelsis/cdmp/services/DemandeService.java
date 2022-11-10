@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 
 public interface DemandeService {
 
@@ -58,5 +59,7 @@ public interface DemandeService {
    * @return le numréro de la demande
    */
   String getNumDemande();
+
+
 
 }
