@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,7 +25,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
+import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 @Validated
@@ -35,6 +39,8 @@ import sn.modelsis.cdmp.util.DtoConverter;
 public class DemandeCessionController {
 
     private final DemandeCessionService demandeCessionService;
+
+    private final UtilisateurService utilisateurService;
 
     @PostMapping
     public ResponseEntity<DemandeCessionDto> addDemandeCession(@RequestBody @Valid DemandeCessionDto demandecessionDto,
@@ -159,5 +165,48 @@ public class DemandeCessionController {
                 .body(demandeList);
     }
 
+    /**
+     * {@code POST  /signer-convention-dg} : signer convention par le dg
+     *
+     * @param  codePin of the user .
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+
+    @PostMapping("/{idDemande}/signer-convention-dg/{idUtilisateur}")
+    public  ResponseEntity<Boolean> signerConventionDG(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
+
+        log.info("codePin:{}",codePin);
+        if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
+            throw new NotFoundException("La demande de cession n'existe pas");
+
+        DemandeCession demandeSignee;
+        if (utilisateurService.signerConvention(idUtilisateur,codePin))
+            demandeCessionService.signerConventionDG(idDemande);
+
+        return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));
+
+    }
+
+    /**
+     * {@code POST  /signer-convention-pme} : signer convention par le pme
+     *
+     * @param  codePin of the user .
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+
+    @PostMapping("/{idDemande}/signer-convention-pme/{idUtilisateur}")
+    public  ResponseEntity<Boolean> signerConventionPME(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
+
+        log.info("codePin:{}",codePin);
+        if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
+            throw new NotFoundException("La demande de cession n'existe pas");
+
+        DemandeCession demandeSignee;
+        if (utilisateurService.signerConvention(idUtilisateur,codePin))
+            demandeCessionService.signerConventionPME(idDemande);
+
+        return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));
+
+    }
 
 }

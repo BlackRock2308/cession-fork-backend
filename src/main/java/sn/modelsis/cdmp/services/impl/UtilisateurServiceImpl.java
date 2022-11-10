@@ -12,6 +12,7 @@ import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
 import sn.modelsis.cdmp.security.dto.EmailMessageWithTemplate;
@@ -135,4 +136,22 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return response ;
     }
 
+    @Override
+    public boolean signerConvention(Long idUtilisateur,String codePin){
+        final String[] codePinValide = new String[1];
+        final String[] codePinEntree = new String[1];
+        utilisateurRepository.findById(idUtilisateur).ifPresentOrElse(
+                (value)->{
+                    codePinValide[0] =value.getCodePin();
+                    codePinEntree[0] =codePin;
+        },
+                ()->{
+                    throw new NotFoundException("Cette utilisateur n'existe pas");
+                }
+        );
+
+        return codePinEntree[0].equals(codePinValide[0]);
+
     }
+
+}
