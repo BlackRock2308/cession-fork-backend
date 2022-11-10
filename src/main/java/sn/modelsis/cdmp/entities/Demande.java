@@ -16,6 +16,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
@@ -37,14 +38,9 @@ public class Demande implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator="course")
-    @TableGenerator(
-            name="course",
-            table="demande",
-            pkColumnName = "key",
-            valueColumnName = "next",
-            pkColumnValue="course",
-            allocationSize=30
+    @GeneratedValue(generator = "public.document_sequence", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "public.document_sequence",allocationSize= 1
         )
     @Column(name = "id")
     private Long idDemande;
