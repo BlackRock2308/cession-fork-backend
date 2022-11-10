@@ -21,4 +21,6 @@ public class DemandeCessionDto implements Serializable {
     private BonEngagementDto bonEngagement;
     @NotBlank
     private PmeDto pme;
+
+    private String numeroDemande;
 }

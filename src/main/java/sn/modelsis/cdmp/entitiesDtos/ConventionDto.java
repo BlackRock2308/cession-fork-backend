@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,9 +21,13 @@ public class ConventionDto {
   private Long idConvention;
   
   private String modePaiement;
+
+  private Double valeurDecote;
+
+  private ParametrageDecoteDTO decoteDTO;
   
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime dateConvention; 
+  private LocalDateTime dateConvention;
   
   private PmeDto pmeDto;
 

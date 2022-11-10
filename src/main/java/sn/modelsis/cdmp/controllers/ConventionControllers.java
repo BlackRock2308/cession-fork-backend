@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,8 @@ import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.mappers.ConventionMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DemandeCessionService;
@@ -42,24 +46,21 @@ import sn.modelsis.cdmp.util.DtoConverter;
  */
 @RestController
 @RequestMapping("/api/conventions")
+@Slf4j
+@RequiredArgsConstructor
 public class ConventionControllers {
-
-    private final Logger log = LoggerFactory.getLogger(ConventionControllers.class);
-
 
     final private ConventionService conventionService;
     final private StatutService statutService;
     final private DemandeCessionService demandeCessionService ;
 
-  public ConventionControllers(ConventionService conventionService, StatutService statutService, DemandeCessionService demandeCessionService) {
-    this.conventionService = conventionService;
-    this.statutService = statutService;
-    this.demandeCessionService = demandeCessionService;
-  }
+    private final ConventionMapper conventionMapper;
+
 
   @PostMapping()
   public ResponseEntity<ConventionDto> addConvention(@RequestBody ConventionDto conventionDto,
       HttpServletRequest request) {
+    log.info("ConventionControllers:addConvention request started .......");
     Convention convention= new Convention();
     DemandeCession demandeCession =demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
     convention.setDemandeCession(demandeCession);
@@ -69,7 +70,7 @@ public class ConventionControllers {
     demandeCession.setConventions(result.getDemandeCession().getConventions());
     DemandeCession demandeCessionSaved=demandeCessionService.save(demandeCession);
     log.info("Convention create. Id:{} ", result.getIdConvention());
-    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
+    return ResponseEntity.status(HttpStatus.CREATED).body(conventionMapper.asDTO(result));
   }
 
     @PutMapping()
