@@ -13,6 +13,7 @@ public class DemandeCessionDto implements Serializable {
     private Long idDemande;
     private Date dateDemandeCession;
     private StatutDto statut;
+    private String numeroDemande;
     private Set<ObservationDto> observations = new HashSet<>();
     private Set<DocumentDto> documents = new HashSet<>();
     private Set<ConventionDto> conventions = new HashSet<>();
