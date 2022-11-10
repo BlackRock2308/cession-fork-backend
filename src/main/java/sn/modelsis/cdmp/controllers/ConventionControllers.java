@@ -67,8 +67,8 @@ public class ConventionControllers {
     DemandeCession demandeCession =demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 
     //default decote parametre
-    ParametrageDecote parametrageDecote = decoteService.findByIdDecote(conventionDto.getIdDecote()).orElse(null);
-    log.info("Valeur Decote : {}",parametrageDecote);
+//    ParametrageDecote parametrageDecote = decoteService.findByIdDecote(conventionDto.getIdDecote()).orElse(null);
+//    log.info("Valeur Decote : {}",parametrageDecote);
 
     Optional<BonEngagement> bonEngagement = bonEngagementService.getBonEngagement(demandeCession.getBonEngagement().getIdBonEngagement());
 
