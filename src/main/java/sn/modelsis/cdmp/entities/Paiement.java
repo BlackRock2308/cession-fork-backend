@@ -40,12 +40,14 @@ public class Paiement implements Serializable {
     private double soldePME;
 
     @OneToOne
-    @JoinColumn(name="statutPmeid")
+    @JoinColumn(name = "statutPmeid")
     private Statut statutPme;
 
     @OneToOne
-    @JoinColumn(name="statutCDMPid")
+    @JoinColumn(name = "statutCDMPid")
     private Statut statutCDMP;
+
+    private double montantCreance;
 
     @OneToMany(mappedBy = "paiement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DetailPaiement> detailPaiements = new HashSet<>();
