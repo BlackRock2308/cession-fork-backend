@@ -10,6 +10,6 @@ import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 public interface ObservationMapper {
 
     @Mapping(target = "dateObservation", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "demande", expression = "java(observation.getDemande().getIdDemande())")
+    @Mapping(target = "idDemande", expression = "java(observation.getDemande().getIdDemande())")
     Observation mapToDto(ObservationDto observation);
 }

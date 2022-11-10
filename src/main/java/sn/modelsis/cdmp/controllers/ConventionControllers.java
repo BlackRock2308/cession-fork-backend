@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,8 +67,8 @@ public class ConventionControllers {
     DemandeCession demandeCession =demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 
     //default decote parametre
-    ParametrageDecote parametrageDecote = decoteService.findByIdDecote(conventionDto.getIdDecote()).orElse(null);
-    log.info("Valeur Decote : {}",parametrageDecote);
+//    ParametrageDecote parametrageDecote = decoteService.findByIdDecote(conventionDto.getIdDecote()).orElse(null);
+//    log.info("Valeur Decote : {}",parametrageDecote);
 
     Optional<BonEngagement> bonEngagement = bonEngagementService.getBonEngagement(demandeCession.getBonEngagement().getIdBonEngagement());
 
