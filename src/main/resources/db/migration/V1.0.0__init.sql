@@ -121,7 +121,7 @@ CREATE TABLE public.bonengagement (
 CREATE TABLE public.convention (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     dateconvention timestamp without time zone,
-    id_decote bigint,
+    valeurDecote double precision,
     decoteid bigint,
     modepaiement character varying(50),
     utilisateurid bigint,

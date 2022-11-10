@@ -59,7 +59,7 @@ public class Convention implements Serializable {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JsonIgnore
-  @JoinColumn(name = "utilisateur_id", nullable = true)
+  @JoinColumn(name = "utilisateurid", nullable = true)
   private Utilisateur utilisateur;
 
   @ManyToOne(fetch = FetchType.EAGER)
