@@ -45,6 +45,8 @@ public class Paiement implements Serializable {
   @OneToOne
   private Statut statutPme;
 
+  private double montantCreance; 
+
   @OneToOne
   private Statut statutCDMP;
 

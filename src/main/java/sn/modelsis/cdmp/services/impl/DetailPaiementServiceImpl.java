@@ -43,17 +43,21 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
     }
 
     @Override
-    public Paiement getPaiement(DetailPaiement detailPaiement) {
+    public DetailPaiement getPaiement(DetailPaiement detailPaiement) {
 
         detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
         Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
         Statut statut = statutRepository.findByCode("PME_PARTIELLEMENT_PAYEE");
         paiement.setStatutPme(statut);
+        DetailPaiement detailPaiementSaved = detailPaiementRepository.save(detailPaiement);
         detailPaiement.setPaiement(paiement);
-        paiement.getDetailPaiements().add(detailPaiementRepository.save(detailPaiement));
+        paiement.getDetailPaiements().add(detailPaiementSaved);
         Paiement paiementSaved  = paiementService.savePaiement(paiement);
+
+        if(paiementSaved==null)
+            throw new CustomException("erreur lors de l'ajout du detail de paiement");
        // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
-        return paiementSaved;
+        return detailPaiementSaved;
     }
 
     @Override
@@ -67,7 +71,7 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
         DetailPaiement detailPaiementSaved = detailPaiementRepository.save(detailPaiement);
         paiement.getDetailPaiements().add(detailPaiementSaved);
         Paiement paiementSaved  = paiementService.savePaiement(paiement);
-        if(paiement==null)
+        if(paiementSaved==null)
             throw new CustomException("erreur lors de l'ajout du detail de paiement");
         // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
         return detailPaiementSaved;

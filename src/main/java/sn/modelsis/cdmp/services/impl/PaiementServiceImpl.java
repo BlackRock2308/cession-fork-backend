@@ -66,7 +66,7 @@ public class PaiementServiceImpl implements PaiementService {
             }
         }
 
-        if(statusLibelle.equals("SOUMISE")){
+        if(statusLibelle.equals("CONVENTION_GENEREE")){
             //paiement.setDemandeCession(demandeCession);
             paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
             paiement.setMontantRecuCDMP(0);

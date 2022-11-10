@@ -35,13 +35,6 @@ public class PaiementController {
 
     @PostMapping
     public ResponseEntity<DemandeCessionDto> addPaiement(@RequestBody PaiementDto paiementDto){
-
-        /*if(paiementDto.getDemandecessionid()==null ||  paiementDto.getIdPaiement()!=null)
-            throw new  CustomException("L'id de la demande de cession ne doit pas etre null ");
-
-        if( paiementDto.getIdPaiement()!=null)
-            throw new  CustomException("Le paiement exit déja ");*/
-
         DemandeCession demandeCession = paiementService.saveDemande(paiementDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(demandeCession));
 
@@ -71,7 +64,7 @@ public class PaiementController {
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
     }
     @GetMapping(value = "/cdmp-pme/{id}")
-    public ResponseEntity<PaiementDto> getPaiementCDMP_PME(
+    public ResponseEntity<PaiementDto> getPaiementAndDetailPaimentCDMP_PME(
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);
@@ -89,7 +82,7 @@ public class PaiementController {
     }
 
     @GetMapping(value = "/sica-cdmp/{id}")
-    public ResponseEntity<PaiementDto> getPaiementSICA_CDMP(
+    public ResponseEntity<PaiementDto> getPaiementAndDetailPaimentSICA_CDMP(
             @PathVariable Long id,
             HttpServletRequest request) {
         Paiement paiement = paiementService.getPaiement(id).orElse(null);
