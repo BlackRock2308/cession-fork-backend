@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,8 +41,10 @@ public class Convention implements Serializable {
   @Enumerated(EnumType.STRING)
   private ModePaiement modePaiement;
 
-  @Column(name = "id_decote")
-  private Long decote_id;;
+  private Double valeurDecote;
+
+//  @Column(name = "id_decote")
+//  private Long decote_id;
 
   @Column(name = "active_convention")
   private boolean activeConvention;
@@ -55,19 +58,22 @@ public class Convention implements Serializable {
   private Pme pme;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "utilisateurid", nullable = true)
+  @JsonIgnore
+  @JoinColumn(name = "utilisateur_id", nullable = true)
   private Utilisateur utilisateur;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="demandeid")
   private DemandeCession demandeCession;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
-  private Set<ConventionDocuments> documents = new HashSet<>();
-
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="decoteid")
   private ParametrageDecote decote;
+
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
+  private Set<ConventionDocuments> documents = new HashSet<>();
+
+
 
 
 }

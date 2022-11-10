@@ -9,6 +9,7 @@ import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 public interface ConventionMapper extends GenericMapper<Convention, ConventionDto> {
 
     @Mapping(target = "dateConvention", expression = "java(java.time.LocalDateTime.now())")
-    //@Mapping(target = "valeurDecote", expression = "java(convention.getDecote().getDecoteValue())")
+    @Mapping(target = "valeurDecote", expression = "java(convention.getDecote().getDecoteValue())")
+    @Mapping(target = "idDemande", expression = "java(convention.getDemandeCession().getIdDemande())")
     ConventionDto asDTO(Convention convention);
 }
