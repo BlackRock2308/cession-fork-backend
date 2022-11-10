@@ -31,4 +31,12 @@ public class ParametrageDecote implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "decote")
     private Set<Convention> conventions = new HashSet<>();
+
+    public ParametrageDecote(Long borneInf,
+                             Long borneSup,
+                             Double decoteValue) {
+        this.borneInf = borneInf;
+        this.borneSup = borneSup;
+        this.decoteValue = decoteValue;
+    }
 }

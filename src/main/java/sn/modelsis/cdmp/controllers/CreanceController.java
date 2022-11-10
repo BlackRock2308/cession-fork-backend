@@ -34,7 +34,7 @@ public class CreanceController {
     private final CreanceMapper creanceMapper;
 
     @GetMapping
-    public ResponseEntity<Page<CreanceDto>> CreanceController(Pageable pageable,
+    public ResponseEntity<Page<CreanceDto>> findAllCreance(Pageable pageable,
                                                                  HttpServletRequest request) {
         log.info("CreanceController.CreanceController request started ...");
         Page<DemandeCessionDto> demandeList = demandeCessionService

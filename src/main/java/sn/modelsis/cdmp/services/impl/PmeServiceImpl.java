@@ -123,7 +123,7 @@ public class PmeServiceImpl implements PmeService {
       log.info("PmeService:updatePme update Pme in the database with id = {}",existingPme.get().getIdPME());
     } catch(Exception ex){
       log.error("Exception occured while updating PME with id : {}",id );
-      throw new CustomException("Error, can't find and update PME with id ");
+      throw new CustomException("Error occured while updating this PME ");
     }
     return existingPme.get();
   }
