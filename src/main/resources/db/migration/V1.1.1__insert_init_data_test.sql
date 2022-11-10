@@ -8,25 +8,6 @@ INSERT INTO public.utilisateur(
 VALUES ('Mermoz/Dakar/Senegal','1232','Alioune',  'Ngom','pass',  '+221 77 661 83 40','test@gmail.com');
 ----
 
---Role--
-INSERT INTO public.role(
-    libelle)
-VALUES ('cgr');
-INSERT INTO public.role(
-    libelle)
-VALUES ('dg');
-INSERT INTO public.role(
-    libelle)
-VALUES ('pme');
-INSERT INTO public.role(
-    libelle)
-VALUES ('pme');
-INSERT INTO public.role(
-    libelle)
-VALUES ('comptable');
-INSERT INTO public.role(
-    libelle)
-VALUES ('ordonnateur');
 ----
 --Agent--
 
