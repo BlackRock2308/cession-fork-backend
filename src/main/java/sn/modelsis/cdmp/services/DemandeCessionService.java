@@ -47,4 +47,7 @@ public interface DemandeCessionService {
     Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut);
 
 
-    }
+    void signerConventionDG(Long idDemande);
+
+    void signerConventionPME(Long idDemande);
+}
