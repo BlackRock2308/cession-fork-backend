@@ -170,7 +170,7 @@ CREATE TABLE public.demandeCession (
 CREATE TABLE public.paiement (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     demandeid bigint NOT NULL,
-    soldePme FLOAT(40),
+    soldePme ),FLOAT(40
     montantRecuCdmp FLOAT(40)
 );
 
@@ -245,6 +245,13 @@ CREATE TABLE public.document (
     provenance character varying(50),
     url_file character varying(255),
     typeDocument character varying(50) NOT NULL
+);
+
+CREATE TABLE public.parametrage_decote (
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    bordeInf FLOAT(40 ,
+    borneSup FLOAT(40,
+    decoteValue FLOAT(40),
 );
 
 --

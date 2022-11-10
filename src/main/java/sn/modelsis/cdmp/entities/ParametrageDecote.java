@@ -20,15 +20,15 @@ public class ParametrageDecote implements Serializable {
     @Column(name = "id")
     private Long IdDecote;
 
-    @Column(name = "borne_inferieure")
+    @Column(name = "borne_inferieure",unique = true)
     private Long borneInf;
 
-    @Column(name = "borne_superieure")
+    @Column(name = "borne_superieure", unique = true)
     private Long borneSup;
 
     @Column(name = "valeur_decote")
     private Double decoteValue;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "decote_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "decote")
     private Set<Convention> conventions = new HashSet<>();
 }
