@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.ParametrageDecoteDTO;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.services.BonEngagementService;
@@ -62,11 +63,7 @@ public class ConventionControllers {
       HttpServletRequest request) {
     log.info("ConventionControllers:addConvention request started .......");
     Convention convention= new Convention();
-    DemandeCession demandeCession =demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
-
-    //default decote parametre
-//    ParametrageDecote parametrageDecote = decoteService.findByIdDecote(conventionDto.getIdDecote()).orElse(null);
-//    log.info("Valeur Decote : {}",parametrageDecote);
+    DemandeCession demandeCession = demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 
     Optional<BonEngagement> bonEngagement = bonEngagementService.getBonEngagement(demandeCession.getBonEngagement().getIdBonEngagement());
 
@@ -79,9 +76,9 @@ public class ConventionControllers {
 
     log.info("Correct Decote param: {}",exactParametrageDecote);
 
-
     convention.setDemandeCession(demandeCession);
     convention.setDecote(exactParametrageDecote);  //decote
+
     Convention result = conventionService.save(convention);
     log.info("Value Decote in Convention : {}",result.getDecote());
 
@@ -154,6 +151,15 @@ public class ConventionControllers {
       log.info("Document added. Id:{} ", be.get().getIdConvention());
       return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(be.get()));
     }
+
+  @GetMapping(value = "/{valeurCreance}/decote")
+  public ResponseEntity<ParametrageDecote> getDecoteInterval(
+          @PathVariable("valeurCreance") Double valeurCreance,
+          HttpServletRequest request) {
+    ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(valeurCreance).orElse(null);
+
+    return ResponseEntity.status(HttpStatus.OK).body(exactParametrageDecote);
+  }
 
 }
 
