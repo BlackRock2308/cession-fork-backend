@@ -62,4 +62,13 @@ public interface UtilisateurService {
      * @return   EmailMessageWithTemplate
      */
     EmailMessageWithTemplate forgetPassword(String email);
+
+    /**
+     * * cette methode permet de signer une convention.
+     *
+     * @return boolean
+     * @Param utilisateur
+     */
+    boolean signerConvention(Long idUtilisateur,String codePin);
+
 }

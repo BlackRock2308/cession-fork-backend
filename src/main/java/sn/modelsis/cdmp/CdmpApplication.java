@@ -1,7 +1,6 @@
 package sn.modelsis.cdmp;
 
 import java.net.InetAddress;
-
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,9 +12,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.env.Environment;
 import org.springframework.context.annotation.Bean;
-
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -142,7 +140,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
       return new WebMvcConfigurer() {
           @Override
           public void addCorsMappings(CorsRegistry registry) {
-              registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("GET", "POST", "OPTIONS", "PUT", "PATCH");
+              registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*");
           }
       };
   }
@@ -167,7 +165,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("Initialisation des differents statuts...");
 
-        PersistStatus persistStatus=new PersistStatus(statutRepository);
+        PersistStatus persistStatus= new PersistStatus(statutRepository);
         log.info("Initialisation des differents statuts terminée");
 
         log.info("Initialisation des differents profils utilisateurs...");

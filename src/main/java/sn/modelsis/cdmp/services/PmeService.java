@@ -8,6 +8,9 @@ import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.TypeDocument;
+
 public interface PmeService {
 
     Pme savePme(Pme pme);

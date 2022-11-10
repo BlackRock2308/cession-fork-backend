@@ -22,34 +22,39 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Paiement implements Serializable {
-  
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long idPaiement;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-  @Column(name = "montantrecucdmp")
-  private double montantRecuCDMP;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long idPaiement;
 
-  @Column(name = "soldepme")
-  private double soldePME;
+    @Column(name = "montantrecucdmp")
+    private double montantRecuCDMP;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  private DemandeCession demandeCession;
+    @Column(name = "soldepme")
+    private double soldePME;
 
-  @OneToOne
-  private Statut statutPme;
+    @OneToOne
+    @JoinColumn(name = "statutPmeid")
+    private Statut statutPme;
 
-  @OneToOne
-  private Statut statutCDMP;
+    @OneToOne
+    @JoinColumn(name = "statutCDMPid")
+    private Statut statutCDMP;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "demandeCessionid")
+    private DemandeCession demandeCession;
 
-  @OneToMany(mappedBy = "paiement",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    private double montantCreance;
+
+    @OneToMany(mappedBy = "paiement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DetailPaiement> detailPaiements = new HashSet<>();
-
 
 }

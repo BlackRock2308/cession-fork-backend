@@ -19,10 +19,31 @@ import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
+import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
+import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.util.ExceptionUtils;
 
 @AllArgsConstructor
 @Service
@@ -231,6 +252,32 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository
                 .findAllByStatut_Libelle(pageable,statut)
                 .map(cessionMapper::asDTO);
+    }
+
+    @Override
+    public void signerConventionDG(Long idDemande) {
+        log.info("DemandeCessionService:signerConventionDG request started");
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        log.debug("DemandeCessionService:signerConventionDG request params {}", idDemande);
+        Statut updatedStatut = statutRepository.findByLibelle("CONVENTION_SIGNEE_PAR_DG");
+        optional.get().setStatut(updatedStatut);
+
+        DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
+        log.info("DemandeCessionService:signerConventionDG received from Database {}", demandeCessionDto.getIdDemande());
+    }
+
+    @Override
+    public void signerConventionPME(Long idDemande) {
+        log.info("DemandeCessionService:signerConventionPME request started");
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        log.debug("DemandeCessionService:signerConventionPME request params {}", idDemande);
+        Statut updatedStatut = statutRepository.findByLibelle("CONVENTION_SIGNEE_PAR_PME");
+        optional.get().setStatut(updatedStatut);
+
+        DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
+        log.info("DemandeCessionService:signerConventionPME received from Database {}", demandeCessionDto.getIdDemande());
+
+
     }
 
 

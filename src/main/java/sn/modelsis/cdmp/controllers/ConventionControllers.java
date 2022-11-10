@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
@@ -36,6 +37,7 @@ import sn.modelsis.cdmp.services.BonEngagementService;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.ParametrageDecoteService;
+import sn.modelsis.cdmp.services.StatutService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 /**
@@ -49,6 +51,7 @@ import sn.modelsis.cdmp.util.DtoConverter;
 public class ConventionControllers {
 
     final private ConventionService conventionService;
+    final private StatutService statutService;
     final private DemandeCessionService demandeCessionService ;
 
     private final ParametrageDecoteService decoteService;
@@ -80,8 +83,8 @@ public class ConventionControllers {
     convention.setDecote(exactParametrageDecote);  //decote
 
     Convention result = conventionService.save(convention);
-    log.info("Value Decote in Convention : {}",result.getDecote());
-
+    Statut statut = statutService.findByCode("CONVENTION_GENEREE");
+    demandeCession.setStatut(statut);
     demandeCession.setConventions(result.getDemandeCession().getConventions());
     //parametrageDecote.setConventions(result.getDecote().getConventions());
     DemandeCession demandeCessionSaved=demandeCessionService.save(demandeCession);

@@ -1,6 +1,6 @@
 server:
   port: 8081
-  document_folder: ${DOCUMENT_FOLDER:C:/Users/snndiayeos/Desktop/Wootoo/DocumentLibrary}
+  document_folder: ${DOCUMENT_FOLDER:C:\Users\snndiayeos\Desktop\Wootoo\DocumentLibrary}
   notification: ${HOST:http://localhost:8087}
   email_cdmp: financeislamique@modelsis.sn
 spring:
@@ -16,14 +16,12 @@ spring:
     username: cdmp
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
-      ddl-auto=update:properties:
+    properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
         jdbc:
           lob:
             non_contextual_creation: true

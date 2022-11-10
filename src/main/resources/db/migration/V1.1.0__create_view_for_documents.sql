@@ -48,4 +48,8 @@ CREATE SEQUENCE public.document_sequence
 ALTER TABLE public.document ALTER COLUMN id DROP IDENTITY IF EXISTS;
 
 UPDATE public.document SET id=nextval('public.document_sequence');
+
+ALTER TABLE public.demande ALTER COLUMN id DROP IDENTITY IF EXISTS;
+
+UPDATE public.demande SET id=nextval('public.document_sequence');
     
