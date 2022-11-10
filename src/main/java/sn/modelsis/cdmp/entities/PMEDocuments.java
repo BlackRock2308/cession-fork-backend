@@ -1,7 +1,5 @@
 package sn.modelsis.cdmp.entities;
 
-import org.hibernate.annotations.Immutable;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +13,6 @@ import javax.persistence.Table;
 @Table(name="vw_PME_document")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorValue("PME")
-@Immutable
 public class PMEDocuments extends Documents {
 
   /**

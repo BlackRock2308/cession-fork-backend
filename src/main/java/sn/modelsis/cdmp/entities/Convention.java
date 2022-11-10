@@ -41,7 +41,7 @@ public class Convention implements Serializable {
   private ModePaiement modePaiement;
 
   @Column(name = "id_decote")
-  private Long decote_id;
+  private Long decote_id;;
 
   @Column(name = "active_convention")
   private boolean activeConvention;
@@ -55,7 +55,7 @@ public class Convention implements Serializable {
   private Pme pme;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "utilisateur_id", nullable = true)
+  @JoinColumn(name = "utilisateurid", nullable = true)
   private Utilisateur utilisateur;
 
   @ManyToOne(fetch = FetchType.EAGER)

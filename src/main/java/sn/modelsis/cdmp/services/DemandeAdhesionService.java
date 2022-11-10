@@ -1,19 +1,16 @@
 package sn.modelsis.cdmp.services;
 
+import java.io.IOException;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeAdhesion;
-import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.PmeDto;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 public interface DemandeAdhesionService {
 

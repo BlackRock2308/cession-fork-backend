@@ -1,27 +1,24 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.RequiredArgsConstructor;
 import sn.modelsis.cdmp.entities.BEDocuments;
 import sn.modelsis.cdmp.entities.BonEngagement;
-import sn.modelsis.cdmp.entities.DemandeAdhesion;
 import sn.modelsis.cdmp.entities.TypeDocument;
-import sn.modelsis.cdmp.exceptions.ItemExistsException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.services.BonEngagementService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

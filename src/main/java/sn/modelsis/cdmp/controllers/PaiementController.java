@@ -1,4 +1,8 @@
 package sn.modelsis.cdmp.controllers;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,6 +18,7 @@ import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.PaiementService;
+import sn.modelsis.cdmp.util.DtoConverter;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -26,11 +31,8 @@ public class PaiementController {
 
     final  private PaiementService paiementService;
 
-    final private DemandeCessionService demandeCessionService;
-
-    public PaiementController(PaiementService paiementService, DemandeCessionService demandeCessionService) {
+    public PaiementController(PaiementService paiementService ) {
         this.paiementService = paiementService;
-        this.demandeCessionService = demandeCessionService;
     }
 
     @PostMapping

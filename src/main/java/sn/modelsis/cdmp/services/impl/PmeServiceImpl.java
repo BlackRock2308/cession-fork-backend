@@ -21,7 +21,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.entities.PMEDocuments;
+import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.exceptions.ItemExistsException;
+import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.services.PmeService;
+import sn.modelsis.cdmp.util.ExceptionUtils;
 
 @Service
 @RequiredArgsConstructor

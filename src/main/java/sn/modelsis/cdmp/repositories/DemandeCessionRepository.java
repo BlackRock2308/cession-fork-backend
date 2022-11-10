@@ -1,14 +1,12 @@
 package sn.modelsis.cdmp.repositories;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Statuts;
 
-import java.util.List;
+import sn.modelsis.cdmp.entities.DemandeCession;
 
 public interface DemandeCessionRepository extends JpaRepository<DemandeCession,Long> {
 
