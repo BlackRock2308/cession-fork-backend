@@ -22,6 +22,10 @@ public class ConventionDto {
   
   private String modePaiement;
 
+  private Long idDemande;
+
+  private Long idDecote;
+
   private Double valeurDecote;
 
   private ParametrageDecoteDTO decoteDTO;
@@ -30,8 +34,6 @@ public class ConventionDto {
   private LocalDateTime dateConvention;
   
   private PmeDto pmeDto;
-
-  private Long idDemande;
 
   private boolean activeConvention;
 

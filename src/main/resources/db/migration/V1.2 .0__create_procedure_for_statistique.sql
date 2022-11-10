@@ -1,23 +1,6 @@
 --
 -- Statistiques sur les demandes de cession
 --
-CREATE TABLE public.statistiqueDemande
-(
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    statut character varying,
-    datedemandecession DEFAULT current_date
-);
-
-CREATE SEQUENCE public.statistiqueDemande_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE public.statistiqueDemande ALTER COLUMN id DROP IDENTITY IF EXISTS;
-
-UPDATE public.statistiqueDemande SET id=nextval('public.statistiqueDemande_sequence');
 
 CREATE OR REPLACE FUNCTION  public.trigger_statistiqueDemande()
     RETURNS trigger
@@ -26,11 +9,11 @@ CREATE OR REPLACE FUNCTION  public.trigger_statistiqueDemande()
     VOLATILE NOT LEAKPROOF
 AS $BODY$
 BEGIN
-    IF(New.statut.code = '03') THEN
+    IF(New.statut.code = 'REJETEE') THEN
         INSERT INTO public.statistiqueDemande(id, statut)
         VALUES (nextval('public.statistiqueDemande_sequence'), 'REJETE');
     END IF;
-    IF(New.statut.code = '04')THEN
+    IF(New.statut.code = 'NON_RISQUEE')THEN
         INSERT INTO public.statistiqueDemande(id, statut)
         VALUES (nextval('public.statistiqueDemande_sequence'), 'ACCEPTE');
     END IF;

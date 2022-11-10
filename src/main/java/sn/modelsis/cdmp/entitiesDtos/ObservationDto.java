@@ -2,12 +2,12 @@ package sn.modelsis.cdmp.entitiesDtos;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Value;
-import sn.modelsis.cdmp.entities.Demande;
 
 /**
  * @author SNDIAGNEF

@@ -19,8 +19,6 @@ import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -251,7 +249,29 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         todaysDate.setMonth(todaysDate.getMonth()+1);
         statistiqueDemandeCessions.add(statistiqueDemandeCession);
         }
-        return statistiqueDemandeCessions;
+        return statistiqueDemandeCessions;}
+    public void signerConventionDG(Long idDemande) {
+        log.info("DemandeCessionService:signerConventionDG request started");
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        log.debug("DemandeCessionService:signerConventionDG request params {}", idDemande);
+        Statut updatedStatut = statutRepository.findByLibelle("CONVENTION_SIGNEE_PAR_DG");
+        optional.get().setStatut(updatedStatut);
+
+        DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
+        log.info("DemandeCessionService:signerConventionDG received from Database {}", demandeCessionDto.getIdDemande());
+    }
+
+    @Override
+    public void signerConventionPME(Long idDemande) {
+        log.info("DemandeCessionService:signerConventionPME request started");
+        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        log.debug("DemandeCessionService:signerConventionPME request params {}", idDemande);
+        Statut updatedStatut = statutRepository.findByLibelle("CONVENTION_SIGNEE_PAR_PME");
+        optional.get().setStatut(updatedStatut);
+
+        DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
+        log.info("DemandeCessionService:signerConventionPME received from Database {}", demandeCessionDto.getIdDemande());
+
     }
 
 

@@ -241,7 +241,7 @@ public class DtoConverter {
 
 	public static  RecevabiliteDto convertToRecevabiliteDto(DemandeCession demandeCession) {
 		RecevabiliteDto recevabiliteDto = null;
-		if(null != recevabiliteDto) {
+		if(null != demandeCession) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			recevabiliteDto = modelMapper.map(demandeCession, RecevabiliteDto.class);
 

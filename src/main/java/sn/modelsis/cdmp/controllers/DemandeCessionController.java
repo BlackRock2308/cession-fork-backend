@@ -1,29 +1,35 @@
 package sn.modelsis.cdmp.controllers;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import sn.modelsis.cdmp.entities.Demande;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
+import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Validated
 @RestController
@@ -33,6 +39,8 @@ import java.util.stream.Collectors;
 public class DemandeCessionController {
 
     private final DemandeCessionService demandeCessionService;
+
+    private final UtilisateurService utilisateurService;
 
     @PostMapping
     public ResponseEntity<DemandeCessionDto> addDemandeCession(@RequestBody @Valid DemandeCessionDto demandecessionDto,
@@ -163,5 +171,48 @@ public class DemandeCessionController {
                 .body(demandeList);
     }
 
+    /**
+     * {@code POST  /signer-convention-dg} : signer convention par le dg
+     *
+     * @param  codePin of the user .
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+
+    @PostMapping("/{idDemande}/signer-convention-dg/{idUtilisateur}")
+    public  ResponseEntity<Boolean> signerConventionDG(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
+
+        log.info("codePin:{}",codePin);
+        if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
+            throw new NotFoundException("La demande de cession n'existe pas");
+
+        DemandeCession demandeSignee;
+        if (utilisateurService.signerConvention(idUtilisateur,codePin))
+            demandeCessionService.signerConventionDG(idDemande);
+
+        return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));
+
+    }
+
+    /**
+     * {@code POST  /signer-convention-pme} : signer convention par le pme
+     *
+     * @param  codePin of the user .
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+
+    @PostMapping("/{idDemande}/signer-convention-pme/{idUtilisateur}")
+    public  ResponseEntity<Boolean> signerConventionPME(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
+
+        log.info("codePin:{}",codePin);
+        if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
+            throw new NotFoundException("La demande de cession n'existe pas");
+
+        DemandeCession demandeSignee;
+        if (utilisateurService.signerConvention(idUtilisateur,codePin))
+            demandeCessionService.signerConventionPME(idDemande);
+
+        return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));
+
+    }
 
 }

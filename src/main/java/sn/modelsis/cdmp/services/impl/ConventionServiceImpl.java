@@ -6,6 +6,7 @@ package sn.modelsis.cdmp.services.impl;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.ConventionDocuments;
+import sn.modelsis.cdmp.entities.ParametrageDecote;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.services.ParametrageDecoteService;
 
 /**
  * @author SNDIAGNEF
@@ -31,13 +34,15 @@ import sn.modelsis.cdmp.services.DocumentService;
 public class ConventionServiceImpl implements ConventionService{
   private final ConventionRepository conventionRepository;
   private final DocumentService documentService;
+
+  private final ParametrageDecoteService decoteService;
  
   @Override
   public Convention save(Convention convention) {
     Convention newConvention;
     try
       {
-        log.info("ConventionService:save ........");
+        log.info("ConventionService:saving new convention ........");
         newConvention = conventionRepository.save(convention);
       } catch (Exception ex){
         throw new CustomException("Error");
@@ -47,12 +52,18 @@ public class ConventionServiceImpl implements ConventionService{
 
   @Override
   public List<Convention> findAll(){
-    return conventionRepository.findAll();
+    log.info("ConventionService:findAll fetching all conventions ........");
+
+    return conventionRepository
+            .findAll()
+            .stream()
+            .collect(Collectors.toList());
   }
 
   @Override
   public Optional<Convention> getConvention(Long id) {
-    return conventionRepository.findById(id);
+    return conventionRepository
+            .findById(id);
   }
 
   @Override
@@ -76,5 +87,6 @@ public class ConventionServiceImpl implements ConventionService{
     }
     return convention;
   }
+
 
 }
