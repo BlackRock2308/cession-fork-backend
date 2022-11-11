@@ -209,4 +209,20 @@ public class DemandeCessionController {
 
     }
 
+    /**
+     * {@code PATCH  /updateStatutDemande} : mettre à jour le statut de la demande de cession
+     *
+     * @param  idDemande of the demand .
+     * @param  statut of the demand .
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @PatchMapping(value ="/{idDemande}/statut")
+    public ResponseEntity<DemandeCessionDto> updateStatutDemande(@PathVariable("idDemande") Long idDemande,@RequestParam(value = "statut", required = true) String statut) {
+        log.info("DemandeCessionController:updateStatutDemande request started... ");
+        DemandeCession updatedDemande = demandeCessionService.updateStatut(idDemande,statut);
+        log.info("DemandeCessionController:updateStatutDemande request params  {}", updatedDemande.getIdDemande());
+
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(updatedDemande));
+    }
+
 }
