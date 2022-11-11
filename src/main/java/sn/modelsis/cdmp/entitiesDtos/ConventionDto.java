@@ -24,9 +24,11 @@ public class ConventionDto {
 
   private Long idDemande;
 
-  //private Long idDecote;
+  private double valeurDecoteByDG;
 
-  private Double valeurDecote;
+  private double valeurDecote;
+
+  private boolean activeConvention;
 
   private ParametrageDecoteDTO decoteDTO;
   
@@ -35,7 +37,7 @@ public class ConventionDto {
   
   private PmeDto pmeDto;
 
-  private boolean activeConvention;
+  //private boolean activeConvention;
 
   private UtilisateurDto utilisatuerDto;
   
