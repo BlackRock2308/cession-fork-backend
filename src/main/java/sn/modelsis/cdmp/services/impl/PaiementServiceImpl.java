@@ -15,6 +15,8 @@ import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypePaiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMP;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPME;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
@@ -155,6 +157,16 @@ public class PaiementServiceImpl implements PaiementService {
     @Override
     public Paiement savePaiement(Paiement paiement){
         return paiementRepository.save(paiement);
+    }
+
+    @Override
+    public StatistiquePaiementCDMP getStatistiquePaiementCDMP(int annee) {
+        return null;
+    }
+
+    @Override
+    public StatistiquePaiementPME getStatistiquePaiementPME(int annee) {
+        return null;
     }
 }
 

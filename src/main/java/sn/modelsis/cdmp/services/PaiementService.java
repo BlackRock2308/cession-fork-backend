@@ -7,6 +7,8 @@ import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypePaiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMP;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPME;
 
 public interface PaiementService {
 
@@ -54,4 +56,8 @@ public interface PaiementService {
         void delete(Long id);
 
     Paiement savePaiement(Paiement paiement);
+
+    StatistiquePaiementCDMP getStatistiquePaiementCDMP(int annee);
+
+    StatistiquePaiementPME getStatistiquePaiementPME(int annee);
 }
