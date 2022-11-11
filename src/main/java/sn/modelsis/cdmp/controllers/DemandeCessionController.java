@@ -256,7 +256,7 @@ public class DemandeCessionController {
 
 
     @GetMapping("searchByRef/{referenceBE}/{numeroDemande}/{nomMarche}")
-    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionBy2Params(
+    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByMultipleParams(
             @PathVariable("referenceBE") String referenceBE,
             @PathVariable("numeroDemande") String numeroDemande,
             @PathVariable("nomMarche") String nomMarche){
