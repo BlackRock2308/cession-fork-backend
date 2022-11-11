@@ -437,5 +437,3 @@ ALTER TABLE ONLY public.utilisateur_roles
 ALTER TABLE ONLY public.utilisateur_roles
     ADD CONSTRAINT fk_utilisateur_roles_role FOREIGN KEY (roles_id) REFERENCES public.role(id);
 
-
-

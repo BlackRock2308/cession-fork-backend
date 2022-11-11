@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.exceptions.*;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
@@ -17,31 +20,12 @@ import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
-import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
-import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
-import sn.modelsis.cdmp.repositories.StatutRepository;
-import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.util.ExceptionUtils;
 
 @AllArgsConstructor
 @Service
@@ -253,6 +237,18 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
+    public List<StatistiqueDemandeCession> getStatistiqueDemandeCession(int anne) {
+        List<StatistiqueDemandeCession> statistiqueDemandeCessions = new ArrayList<>();
+        LocalDate toDay =  LocalDate.of(anne, 1, 1);
+        for(int i=0 ; i<12;i++){
+        StatistiqueDemandeCession statistiqueDemandeCession = new StatistiqueDemandeCession();
+        statistiqueDemandeCession.setMois(toDay);
+        statistiqueDemandeCession.setNombreDemandeAccepte(demandecessionRepository.getDemandeByStautAntMonth("ACCEPTE", toDay));
+        statistiqueDemandeCession.setNombreDemandeRejete(demandecessionRepository.getDemandeByStautAntMonth("REJETE", toDay));
+        toDay = toDay.plusMonths(1);
+        statistiqueDemandeCessions.add(statistiqueDemandeCession);
+        }
+        return statistiqueDemandeCessions;}
     public void signerConventionDG(Long idDemande) {
         log.info("DemandeCessionService:signerConventionDG request started");
         Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
@@ -274,7 +270,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
         log.info("DemandeCessionService:signerConventionPME received from Database {}", demandeCessionDto.getIdDemande());
-
 
     }
 
