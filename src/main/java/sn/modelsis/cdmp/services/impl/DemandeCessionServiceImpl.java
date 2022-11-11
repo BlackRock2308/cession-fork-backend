@@ -35,7 +35,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionRepository demandecessionRepository;
     private final StatutRepository statutRepository;
     private final DemandeCessionMapper cessionMapper;
-     private final DemandeService demandeService;
+    private final DemandeService demandeService;
 
 
 
@@ -117,7 +117,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public DemandeCession rejeterRecevabilite(Long idDemande ){
         DemandeCession demandeCessionDto;
         try{
-            log.info("DemandeCessionService:rejectionDemandeCession request started", idDemande);
+            log.info("DemandeCessionService:rejectionDemandeCession ...... ");
             Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
             log.debug("DemandeCessionService:rejectionDemandeCession request params {}", idDemande);
             Statut updatedStatut = statutRepository.findByLibelle("REJETEE");
@@ -303,6 +303,30 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return  demandecessionRepository
                 .findAllByPmeIdPME(pageable,id)
                 .map(cessionMapper::asDTO);
+    }
+
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande){
+        log.info("DemandeCessionService:findDemandeCessionByMultipleCritere searching ......");
+
+        return demandecessionRepository
+                .findByNumeroDemandeContaining(numeroDemande)
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByDemande(String referenceBE,
+                                                               String numeroDemande,
+                                                               String nomMarche){
+        log.info("DemandeCessionService:findDemandeCessionByDemande searching ......");
+
+        return demandecessionRepository
+                .findByReferenceBE(referenceBE, numeroDemande,nomMarche)
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
     }
 
 }
