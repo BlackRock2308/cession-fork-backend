@@ -34,6 +34,8 @@ public interface DemandeCessionService {
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
+    Page<DemandeCessionDto> findAllByStatutAndPME(Pageable pageable, String statut, Long idPME);
+
     List<DemandeCession> findAllPMEDemandes(Long id);
 
     Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable,Long id);
@@ -56,6 +58,8 @@ public interface DemandeCessionService {
     void signerConventionPME(Long idDemande);
 
     DemandeCession updateStatut(Long idDemande, String statut);
+
+
 
     List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande);
 
