@@ -11,15 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.DetailPaiement;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.PaiementService;
-import sn.modelsis.cdmp.util.DtoConverter;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.*;
 
 @RestController
@@ -30,9 +28,11 @@ public class PaiementController {
 
 
     final  private PaiementService paiementService;
+    final  private DemandeCessionService demandeCessionService;
 
-    public PaiementController(PaiementService paiementService ) {
+    public PaiementController(PaiementService paiementService, DemandeCessionService demandeCessionService) {
         this.paiementService = paiementService;
+        this.demandeCessionService = demandeCessionService;
     }
 
     @PostMapping
@@ -57,6 +57,22 @@ public class PaiementController {
 
     }
 
+    @GetMapping("/pme/{id}")
+    public ResponseEntity<List<PaiementDto>> getAllPaiementsByPME(@PathVariable("id") Long id) {
+        if (id==null)
+            throw new CustomException("Is should nit be null") ;
+        List<PaiementDto> paiementDtos = new ArrayList<>();
+        List<DemandeCession> demandeCessions = demandeCessionService.findAllPMEDemandes(1L);
+        if(demandeCessions==null)
+            throw new CustomException("this pme don't have a payment ");
+        for (DemandeCession demandeCession :demandeCessions ) {
+            paiementDtos.add(DtoConverter.convertToDto(demandeCession.getPaiement()));
+        }
+        log.info("All paiements .");
+        return ResponseEntity.status(HttpStatus.OK).body(paiementDtos);
+
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<PaiementDto> getPaiement(
             @PathVariable Long id,
@@ -65,6 +81,7 @@ public class PaiementController {
         log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
     }
+
     @GetMapping(value = "/cdmp-pme/{id}")
     public ResponseEntity<PaiementDto> getPaiementAndDetailPaimentCDMP_PME(
             @PathVariable Long id,
