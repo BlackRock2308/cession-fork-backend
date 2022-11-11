@@ -33,6 +33,7 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
 
     List<DemandeCession> findByNumeroDemandeContaining(String numeroDemande);
 
+    Page<DemandeCession> findAllByPmeIdPMEAndStatut_Libelle(org.springframework.data.domain.Pageable pageable,Long idPME, String statut);
 
     @Query("select p from DemandeCession as p where" +
             " (:referenceBE is null or p.bonEngagement.reference like %:referenceBE%) " +

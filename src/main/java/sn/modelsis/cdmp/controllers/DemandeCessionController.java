@@ -172,6 +172,15 @@ public class DemandeCessionController {
                 .body(demandeList);
     }
 
+    @GetMapping(value="byStatutAndPme")
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatutAndPME(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String statut,@RequestParam(value = "pme", required = true, defaultValue = "") Long idPME,
+                                                                                HttpServletRequest request) {
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatutAndPME(pageable,statut,idPME);
+        log.info("Fetching All Deamndes Cession by statut {} and PME....",statut,idPME);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
+    }
+
     /**
      * {@code POST  /signer-convention-dg} : signer convention par le dg
      *

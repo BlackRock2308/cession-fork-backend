@@ -288,6 +288,13 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository.findById(idDemande).orElseThrow();
     }
 
+    @Override
+    public Page<DemandeCessionDto> findAllByStatutAndPME(Pageable pageable, String statut, Long idPME) {
+        log.info("DemandeCessionService:findAllByStatutAndPME .....");
+        return demandecessionRepository
+                .findAllByPmeIdPMEAndStatut_Libelle(pageable,idPME,statut)
+                .map(cessionMapper::asDTO);    }
+
 
     @Override
     public List<DemandeCession> findAllPMEDemandes(Long id) {
