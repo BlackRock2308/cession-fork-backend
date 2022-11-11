@@ -7,12 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
+import sn.modelsis.cdmp.exceptions.*;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
@@ -271,6 +271,21 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
         log.info("DemandeCessionService:signerConventionPME received from Database {}", demandeCessionDto.getIdDemande());
 
+    }
+
+    @Override
+    public DemandeCession updateStatut(Long idDemande, String statut) {
+        demandecessionRepository.findById(idDemande).ifPresentOrElse(
+                (value)
+                        -> {
+                    value.setStatut(statutRepository.findByLibelle(statut));
+                    demandecessionRepository.save(value);
+                },
+                () -> {
+                    throw new NotFoundException("La demande n'existe pas");
+                }
+        );
+        return demandecessionRepository.findById(idDemande).orElseThrow();
     }
 
 

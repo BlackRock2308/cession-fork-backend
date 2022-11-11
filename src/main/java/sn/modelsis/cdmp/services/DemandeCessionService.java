@@ -53,4 +53,6 @@ public interface DemandeCessionService {
     void signerConventionDG(Long idDemande);
 
     void signerConventionPME(Long idDemande);
+
+    DemandeCession updateStatut(Long idDemande, String statut);
 }
