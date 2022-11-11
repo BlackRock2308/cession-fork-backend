@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author SNDIAGNEF
@@ -41,10 +42,13 @@ public class Convention implements Serializable {
   @Enumerated(EnumType.STRING)
   private ModePaiement modePaiement;
 
-  private Double valeurDecote;
+  private double valeurDecote;
 
-  @Column(name = "active_convention")
-  private boolean activeConvention;
+  @Column(name = "valeur_decote_dg")
+  private double valeurDecoteByDG;
+
+  @Column(name = "active_convention",columnDefinition = "boolean default true")
+  private boolean activeConvention = true;
 
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -69,8 +73,6 @@ public class Convention implements Serializable {
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
   private Set<ConventionDocuments> documents = new HashSet<>();
-
-
 
 
 }

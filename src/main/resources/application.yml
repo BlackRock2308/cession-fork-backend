@@ -1,6 +1,6 @@
 server:
   port: 8081
-  document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
+  document_folder: ${DOCUMENT_FOLDER:C:\Users\snndiayeos\Desktop\Wootoo\DocumentLibrary}
   notification: ${HOST:http://localhost:8087}
   email_cdmp: financeislamique@modelsis.sn
 spring:
@@ -11,12 +11,12 @@ spring:
   application:
     name: Cession creance
   datasource:
-    password: passer
+    password: password
     url: jdbc:postgresql://localhost:5432/cdmp
     username: cdmp
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:

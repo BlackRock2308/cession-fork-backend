@@ -11,15 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.ParametrageDecoteDTO;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.services.BonEngagementService;
@@ -64,15 +58,15 @@ public class ConventionControllers {
       HttpServletRequest request) {
     log.info("ConventionControllers:addConvention request started .......");
     Convention convention= new Convention();
-    DemandeCession demandeCession =demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 
-    //default decote parametre
-//    ParametrageDecote parametrageDecote = decoteService.findByIdDecote(conventionDto.getIdDecote()).orElse(null);
-//    log.info("Valeur Decote : {}",parametrageDecote);
+    DemandeCession demandeCession =
+            demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 
-    Optional<BonEngagement> bonEngagement = bonEngagementService.getBonEngagement(demandeCession.getBonEngagement().getIdBonEngagement());
-
-    double valeurCreance = bonEngagement.get().getMontantCreance();
+    assert demandeCession != null;
+    Optional<BonEngagement> bonEngagement =
+            bonEngagementService.getBonEngagement(demandeCession.getBonEngagement().getIdBonEngagement());
+    double valeurCreance =
+            bonEngagement.get().getMontantCreance();
 
     log.info("Valeur du montant de la creance : {}",valeurCreance);
 
@@ -81,17 +75,18 @@ public class ConventionControllers {
 
     log.info("Correct Decote param: {}",exactParametrageDecote);
 
-
     convention.setDemandeCession(demandeCession);
     convention.setDecote(exactParametrageDecote);  //decote
+
+    assert exactParametrageDecote != null;
+    convention.setValeurDecote(exactParametrageDecote.getDecoteValue());  //decote
+
     Convention result = conventionService.save(convention);
     Statut statut = statutService.findByCode("CONVENTION_GENEREE");
     demandeCession.setStatut(statut);
     demandeCession.setConventions(result.getDemandeCession().getConventions());
-    //parametrageDecote.setConventions(result.getDecote().getConventions());
-    DemandeCession demandeCessionSaved=demandeCessionService.save(demandeCession);
-    //ParametrageDecote parametrageDecoteSaved = decoteService.createNewDecote(parametrageDecote);
 
+    demandeCessionService.save(demandeCession);
     log.info("ConventionControllers:addConvention saved in database with Id:{} ", result.getIdConvention());
     return ResponseEntity.status(HttpStatus.CREATED).body(conventionMapper.asDTO(result));
   }
@@ -156,6 +151,25 @@ public class ConventionControllers {
       log.info("Document added. Id:{} ", be.get().getIdConvention());
       return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(be.get()));
     }
+
+//  @GetMapping(value = "/{valeurCreance}/decote")
+//  public ResponseEntity<ParametrageDecote> getDecoteInterval(
+//          @PathVariable("valeurCreance") Double valeurCreance,
+//          HttpServletRequest request) {
+//    ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(valeurCreance).orElse(null);
+//
+//    return ResponseEntity.status(HttpStatus.OK).body(exactParametrageDecote);
+//  }
+
+  @PatchMapping(value ="/{idConvention}/{decote}")
+  public ResponseEntity<ConventionDto> updateValeurDecote(@PathVariable("idConvention") Long idConvention,
+                                                          @PathVariable("decote") double decote) {
+    log.info("ConventionControllers:updateValeurDecote request started ");
+   Convention updatedConvention = conventionService.updateValeurDecote(idConvention, decote);
+    log.info("ConventionControllers:updateValeurDecote request params  {}", updatedConvention.getIdConvention());
+
+    return ResponseEntity.status(HttpStatus.OK).body(conventionMapper.asDTO(updatedConvention));
+  }
 
 }
 

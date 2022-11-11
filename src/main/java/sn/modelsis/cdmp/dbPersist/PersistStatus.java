@@ -75,6 +75,18 @@ public class PersistStatus {
         demandeCessionConventionRejetee.setCode("CONVENTION_REJETEE");
         demandeCessionConventionRejetee.setLibelle("CONVENTION_REJETEE");
 
+        Statut demandeCessionConventionRejeteeParPME=new Statut();
+        demandeCessionConventionRejetee.setCode("CONVENTION_REJETEE_PAR_PME");
+        demandeCessionConventionRejetee.setLibelle("CONVENTION_REJETEE_PAR_PME");
+
+        Statut demandeCessionConventionRejeteeParDG=new Statut();
+        demandeCessionConventionRejetee.setCode("CONVENTION_REJETEE_PAR_DG");
+        demandeCessionConventionRejetee.setLibelle("CONVENTION_REJETEE_PAR_DG");
+
+        Statut demandeCessionConventionTransmise=new Statut();
+        demandeCessionConventionAcceptee.setCode("CONVENTION_TRANSMISE");
+        demandeCessionConventionAcceptee.setLibelle("CONVENTION_TRANSMISE");
+
         Statut demandeCessionPMEAttentePaiement=new Statut();
         demandeCessionPMEAttentePaiement.setCode("PME_EN_ATTENTE_DE_PAIEMENT");
         demandeCessionPMEAttentePaiement.setLibelle("PME_EN_ATTENTE_DE_PAIEMENT");
@@ -90,6 +102,7 @@ public class PersistStatus {
         Statut demandeCessionCDMPPaiementEnCours=new Statut();
         demandeCessionCDMPPaiementEnCours.setCode("CDMP_PARTIELLEMENT_PAYEE");
         demandeCessionCDMPPaiementEnCours.setLibelle("CDMP_PARTIELLEMENT_PAYEE");
+
 
         Statut demandeCessionPMEPayee=new Statut();
         demandeCessionPMEPayee.setCode("PME_TOTALEMENT_PAYEE");
@@ -115,6 +128,9 @@ public class PersistStatus {
         statutRepository.save(demandeCessionConventionSigneeDG);
         statutRepository.save(demandeCessionConventionAcceptee);
         statutRepository.save(demandeCessionConventionRejetee);
+        statutRepository.save(demandeCessionConventionRejeteeParPME);
+        statutRepository.save(demandeCessionConventionRejeteeParDG);
+        statutRepository.save(demandeCessionConventionTransmise);
         statutRepository.save(demandeCessionPMEAttentePaiement);
         statutRepository.save(demandeCessionCDMPAttentePaiement);
         statutRepository.save(demandeCessionPMEPaiementEnCours);

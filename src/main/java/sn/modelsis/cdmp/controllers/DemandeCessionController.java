@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.UtilisateurService;
@@ -71,6 +71,12 @@ public class DemandeCessionController {
                 .body(demande);
     }
 
+    @GetMapping(value = "statistiqueDemandeCession/{anne}")
+    public ResponseEntity<List<StatistiqueDemandeCession>> getStatistiqueDemandeCession(@PathVariable int anne,
+                                                                             HttpServletRequest request) {
+       return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeCessionService.getStatistiqueDemandeCession(anne));
+    }
     /******* Recevabilité : Endpoint pour rejeter une demande de cession -- accepter une demande de cession ******* ***/
 
     @PatchMapping(value ="/{idDemande}/rejeterRecevabilite")
@@ -207,6 +213,22 @@ public class DemandeCessionController {
 
         return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));
 
+    }
+
+    /**
+     * {@code PATCH  /updateStatutDemande} : mettre à jour le statut de la demande de cession
+     *
+     * @param  idDemande of the demand .
+     * @param  statut of the demand .
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @PatchMapping(value ="/{idDemande}/statut")
+    public ResponseEntity<DemandeCessionDto> updateStatutDemande(@PathVariable("idDemande") Long idDemande,@RequestParam(value = "statut", required = true) String statut) {
+        log.info("DemandeCessionController:updateStatutDemande request started... ");
+        DemandeCession updatedDemande = demandeCessionService.updateStatut(idDemande,statut);
+        log.info("DemandeCessionController:updateStatutDemande request params  {}", updatedDemande.getIdDemande());
+
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(updatedDemande));
     }
 
 }
