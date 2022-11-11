@@ -3,10 +3,12 @@ package sn.modelsis.cdmp.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,12 +51,15 @@ public interface DemandeCessionService {
 
    List<StatistiqueDemandeCession>  getStatistiqueDemandeCession(int anne);
 
-
     void signerConventionDG(Long idDemande);
 
     void signerConventionPME(Long idDemande);
 
     DemandeCession updateStatut(Long idDemande, String statut);
 
-    Page<DemandeCessionDto> findAllByStatutAndPME(Pageable pageable, String statut, Long idPME);
+    List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande);
+
+    List<DemandeCessionDto> findDemandeCessionByDemande(String referenceBE,
+                                                        String numeroDemande,
+                                                        String nomMarche);
 }

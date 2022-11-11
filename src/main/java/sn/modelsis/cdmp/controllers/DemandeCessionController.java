@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.controllers;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
@@ -238,6 +239,34 @@ public class DemandeCessionController {
         log.info("DemandeCessionController:updateStatutDemande request params  {}", updatedDemande.getIdDemande());
 
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(updatedDemande));
+    }
+
+
+    @GetMapping("search/{numeroDemande}")
+    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByParameters(
+            @PathVariable("numeroDemande") String numeroDemande){
+        log.info("DemandeCessionController:searchDemandeCessionByParameters request started");
+
+        List<DemandeCessionDto> demandeList = demandeCessionService
+                .findDemandeCessionByMultipleCritere(numeroDemande);
+        log.info("DemandeCessionController:searchDemandeCessionByParameters request params : {}",numeroDemande);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
+    }
+
+
+    @GetMapping("searchByRef/{referenceBE}/{numeroDemande}/{nomMarche}")
+    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionBy2Params(
+            @PathVariable("referenceBE") String referenceBE,
+            @PathVariable("numeroDemande") String numeroDemande,
+            @PathVariable("nomMarche") String nomMarche){
+        log.info("DemandeCessionController:searchDemandeCessionBy2Params request started");
+
+        List<DemandeCessionDto> demandeList = demandeCessionService
+                .findDemandeCessionByDemande(referenceBE, numeroDemande,nomMarche);
+        log.info("DemandeCessionController:searchDemandeCessionBy2Params: referenceBE : {}",referenceBE);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
     }
 
 }
