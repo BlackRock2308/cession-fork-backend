@@ -6,3 +6,4 @@ ALTER TABLE public.convention
 
 ALTER TABLE public.convention
 DROP COLUMN IF EXISTS id_decote;
+
