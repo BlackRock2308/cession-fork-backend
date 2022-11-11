@@ -55,4 +55,6 @@ public interface DemandeCessionService {
     void signerConventionPME(Long idDemande);
 
     DemandeCession updateStatut(Long idDemande, String statut);
+
+    Page<DemandeCessionDto> findAllByStatutAndPME(Pageable pageable, String statut, Long idPME);
 }
