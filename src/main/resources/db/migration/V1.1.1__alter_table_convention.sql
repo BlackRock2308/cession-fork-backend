@@ -1,5 +1,5 @@
---ALTER TABLE public.convention
-    --ADD COLUMN valeurDecote FLOAT(40);
+ALTER TABLE public.convention
+    ADD COLUMN IF NOT EXISTS valeurDecote FLOAT(40);
 
 ALTER TABLE public.convention
     ADD COLUMN utilisateur_id bigint;

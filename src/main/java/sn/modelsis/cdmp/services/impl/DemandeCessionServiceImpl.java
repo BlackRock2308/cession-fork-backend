@@ -19,6 +19,8 @@ import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -237,16 +239,13 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     public List<StatistiqueDemandeCession> getStatistiqueDemandeCession(int anne) {
         List<StatistiqueDemandeCession> statistiqueDemandeCessions = new ArrayList<>();
-        Date todaysDate = new Date();
-        todaysDate.setYear(anne);
-        todaysDate.setMonth(1);
-        todaysDate.setDate(1);
+        LocalDate toDay =  LocalDate.of(anne, 1, 1);
         for(int i=0 ; i<12;i++){
         StatistiqueDemandeCession statistiqueDemandeCession = new StatistiqueDemandeCession();
-        statistiqueDemandeCession.setMois(todaysDate);
-        statistiqueDemandeCession.setNombreDemandeAccepte(demandecessionRepository.DemandeByStautAntMonth("ACCEPTE", todaysDate));
-        statistiqueDemandeCession.setNombreDemandeRejete(demandecessionRepository.DemandeByStautAntMonth("REJETE", todaysDate));
-        todaysDate.setMonth(todaysDate.getMonth()+1);
+        statistiqueDemandeCession.setMois(toDay);
+        statistiqueDemandeCession.setNombreDemandeAccepte(demandecessionRepository.getDemandeByStautAntMonth("ACCEPTE", toDay));
+        statistiqueDemandeCession.setNombreDemandeRejete(demandecessionRepository.getDemandeByStautAntMonth("REJETE", toDay));
+        toDay = toDay.plusMonths(1);
         statistiqueDemandeCessions.add(statistiqueDemandeCession);
         }
         return statistiqueDemandeCessions;}

@@ -4,7 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Data
 @NoArgsConstructor
@@ -12,5 +13,5 @@ import java.util.Date;
 public class StatistiqueDemandeCession {
    Integer nombreDemandeAccepte;
    Integer nombreDemandeRejete;
-   Date mois;
+   LocalDate mois;
 }

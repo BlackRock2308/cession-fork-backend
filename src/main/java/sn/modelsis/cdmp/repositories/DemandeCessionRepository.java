@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
     DemandeCession findByDemandeId(Long idDemande);
     @Query(nativeQuery = true,
             value = "select * from public.statistiqueDemandeByStatutAndMoth(:statutDemande, :dateDemande)")
-    Integer DemandeByStautAntMonth(@Param("statutDemande") String statutDemande, @Param("dateDemande") Date dateDemande);
+    Integer getDemandeByStautAntMonth(@Param("statutDemande") String statutDemande, @Param("dateDemande") LocalDate dateDemande);
 
 
 
