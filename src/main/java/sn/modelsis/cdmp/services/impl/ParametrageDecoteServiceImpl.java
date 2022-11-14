@@ -117,7 +117,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
             List<ParametrageDecote> decoteList = repository.findAll();
 
             for(ParametrageDecote decote : decoteList ){
-                if(montant > decote.getBorneInf() && montant < decote.getBorneSup()){
+                if(montant >= decote.getBorneInf() && montant <= decote.getBorneSup()){
                     parametrageDecote = decote;
                     log.info("corresponding decote param : {}", parametrageDecote);
                 }
