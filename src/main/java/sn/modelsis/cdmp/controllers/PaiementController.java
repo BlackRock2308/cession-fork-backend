@@ -127,21 +127,21 @@ public class PaiementController {
 
     @GetMapping(value = "/getStatistiquePaiementByPME/{anne}/{idPME}")
     public ResponseEntity<StatistiquePaiementPMEDto> getStatistiquePaiementByPME(@PathVariable int anne, @PathVariable Long idPME,
-                                                                                  HttpServletRequest request) throws JsonProcessingException {
+                                                                                  HttpServletRequest request)  {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(paiementService.getStatistiquePaiementByPME(anne, idPME));
     }
 
     @GetMapping(value = "/getStatistiqueAllPaiementPME/{anne}")
     public ResponseEntity<StatistiquePaiementPMEDto> getStatistiqueAllPaiementPME(@PathVariable int anne,
-                                                                                   HttpServletRequest request) throws JsonProcessingException {
+                                                                                   HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(paiementService.getStatistiqueAllPaiementPME(anne));
     }
 
     @GetMapping(value = "/getStatistiquePaiementCDMP/{anne}")
     public ResponseEntity<StatistiquePaiementCDMPDto> getStatistiquePaiementCDMP(@PathVariable int anne,
-                                                                                  HttpServletRequest request) throws JsonProcessingException {
+                                                                                  HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(paiementService.getStatistiquePaiementCDMP(anne));
     }

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 public class StatistiquePaiementCDMP {
@@ -14,13 +17,19 @@ public class StatistiquePaiementCDMP {
 
 
 
-    public  void jsonToObeject(String json) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        StatistiquePaiementCDMP statistiquePaiementCDMP = objectMapper.readValue(json, StatistiquePaiementCDMP.class);
-        this.setDecote(statistiquePaiementCDMP.getDecote());
-        this.setRembourse(statistiquePaiementCDMP.getRembourse());
-        this.setMontantCreance(statistiquePaiementCDMP.getMontantCreance());
-        this.setSolde(statistiquePaiementCDMP.getSolde());
+    public  void jsonToObeject(String json)  {
+        json = json.replaceAll("null", "0.0");
+        String [] objs = json.split(",");
+        List<Double> donne = new ArrayList<>();
+        for(String obj : objs ){
+            donne.add(Double.parseDouble(obj));
+        }
+        /*if(statistiquePaiementCDMP!=null){
+            this.setDecote(statistiquePaiementCDMP.getDecote());
+            this.setRembourse(statistiquePaiementCDMP.getRembourse());
+            this.setMontantCreance(statistiquePaiementCDMP.getMontantCreance());
+            this.setSolde(statistiquePaiementCDMP.getSolde());
+        }*/
 
     }
 

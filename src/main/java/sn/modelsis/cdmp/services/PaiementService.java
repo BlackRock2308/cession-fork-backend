@@ -63,14 +63,14 @@ public interface PaiementService {
      * @param annee
      * @return
      */
-    StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee) throws JsonProcessingException;
+    StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee);
 
     /**
      *
      * @param annee
      * @return
      */
-    StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee) throws JsonProcessingException;
+    StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee);
 
     /**
      *
@@ -78,5 +78,5 @@ public interface PaiementService {
      * @param  idPME
      * @return
      */
-    StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME ) throws JsonProcessingException;
+    StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME );
 }

@@ -8,18 +8,18 @@ CREATE OR REPLACE FUNCTION public.cumlDecoteByMonth(
     VOLATILE PARALLEL UNSAFE
 
 AS $BODY$
-DECLARE
-cumulDecode NUMERIC;
-BEGIN
+    DECLARE
+        cumulDecode NUMERIC;
+    BEGIN
 
-SELECT SUM(COALESCE(conv.valeurDecote,0) * COALESCE(bE.montantCreance,0))  FROM
-    public.convention AS conv INNER JOIN  public.demandeCession AS dC ON  dC.id=conv.demandeid
-                              INNER JOIN  public.bonengagement AS bE ON  bE.id=dC.bonengagementid WHERE conv.dateconvention
-                                                                                                            BETWEEN monthConvention AND (monthConvention + interval '1 month')
-    INTO STRICT cumulDecode;
+        SELECT SUM(conv.valeurDecote * bE.montantCreance)  FROM public.convention AS conv
+            INNER JOIN  public.demandeCession AS dC ON  dC.id=conv.demandeid
+            INNER JOIN  public.bonengagement AS bE ON  bE.id=dC.bonengagementid WHERE conv.dateconvention
+            BETWEEN monthConvention AND (monthConvention + interval '1 month')
+            INTO STRICT cumulDecode;
 
-RETURN cumulDecode;
-END;
+        RETURN cumulDecode;
+    END;
 $BODY$;
 
 
@@ -33,17 +33,17 @@ CREATE FUNCTION public.cumlMontantCreanceByMonth(
     VOLATILE PARALLEL UNSAFE
 
 AS $BODY$
-DECLARE
-cumulmontantCreance  NUMERIC;
-BEGIN
+    DECLARE
+        cumulmontantCreance  NUMERIC;
+    BEGIN
 
-SELECT SUM(bE.montantCreance)  FROM
-    public.bonengagement AS bE WHERE bE.datebonengagement
-    BETWEEN monthEngagement AND (monthEngagement + interval '1 month')
-    INTO STRICT cumulmontantCreance;
+        SELECT SUM(bE.montantCreance)  FROM
+            public.bonengagement AS bE WHERE bE.datebonengagement
+            BETWEEN monthEngagement AND (monthEngagement + interval '1 month')
+            INTO STRICT cumulmontantCreance;
 
-RETURN cumulmontantCreance;
-END;
+        RETURN cumulmontantCreance;
+    END;
 $BODY$;
 
 
@@ -58,17 +58,17 @@ CREATE FUNCTION public.cumlMontantDetailsPaiementByMonth(
     VOLATILE PARALLEL UNSAFE
 
 AS $BODY$
-DECLARE
-cumulMontant  NUMERIC;
-BEGIN
+    DECLARE
+        cumulMontant  NUMERIC;
+    BEGIN
 
-SELECT SUM(dP.montant)  FROM
-    public.detailsPaiement AS dP  WHERE dP.typePaiement = typeDP AND dP.datePaiement
-    BETWEEN monthPaiement AND (monthPaiement + interval '1 month')
-    INTO STRICT cumulMontant;
+        SELECT SUM(dP.montant)  FROM
+            public.detailsPaiement AS dP  WHERE dP.typePaiement = typeDP AND dP.datePaiement
+            BETWEEN monthPaiement AND (monthPaiement + interval '1 month')
+            INTO STRICT cumulMontant;
 
-RETURN cumulMontant;
-END;
+        RETURN cumulMontant;
+    END;
 $BODY$;
 
 ---Fontion qui récupère le cumul des soldes PME par mois---
@@ -76,7 +76,6 @@ CREATE FUNCTION public.cumlSoldePMEByMonth(
     monthSolde timestamp without time zone,
     cumulMontantCreance double precision,
     cumulDebourse double precision
-
 )
     RETURNS NUMERIC
     LANGUAGE 'plpgsql'
@@ -84,11 +83,11 @@ CREATE FUNCTION public.cumlSoldePMEByMonth(
     VOLATILE PARALLEL UNSAFE
 
 AS $BODY$
-DECLARE
-cumulDecode NUMERIC;
-BEGIN
-    SELECT public.cumlDecoteByMonth(monthSolde) INTO STRICT cumulDecode;
-    RETURN cumulMontantCreance - cumulDecode - cumulDebourse ;
+    DECLARE
+        cumulDecode NUMERIC;
+    BEGIN
+        SELECT public.cumlDecoteByMonth(monthSolde) INTO STRICT cumulDecode;
+        RETURN cumulMontantCreance - cumulDecode - cumulDebourse ;
     END;
 $BODY$;
 
@@ -105,15 +104,15 @@ CREATE FUNCTION public.getStatistiquePaiementCDMP(
     VOLATILE PARALLEL UNSAFE
 
 AS $BODY$
-DECLARE
-resultat public.StatistiquePaiementCDMP;
-BEGIN
-    SELECT public.cumlDecoteByMonth(monthData) INTO STRICT resultat.decote;
-    SELECT public.cumlMontantCreanceByMonth(monthData) INTO STRICT resultat.montantCreance;
-    SELECT public.cumlMontantDetailsPaiementByMonth('SICA_CDMP', monthData) INTO STRICT resultat.rembourse;
-    resultat.solde := resultat.montantCreance - resultat.rembourse;
-    RETURN resultat;
-END;
+    DECLARE
+        resultat public.StatistiquePaiementCDMP;
+    BEGIN
+        SELECT public.cumlDecoteByMonth(monthData) INTO STRICT resultat.decote;
+        SELECT public.cumlMontantCreanceByMonth(monthData) INTO STRICT resultat.montantCreance;
+        SELECT public.cumlMontantDetailsPaiementByMonth('SICA_CDMP', monthData) INTO STRICT resultat.rembourse;
+        resultat.solde := resultat.montantCreance - resultat.rembourse;
+        RETURN resultat;
+    END;
 $BODY$;
 
 ---Fontion qui récupère les statistiques des paiements CDMP-PME par mois---
@@ -129,14 +128,14 @@ CREATE FUNCTION public.getStatistiquePaiementPME(
     VOLATILE PARALLEL UNSAFE
 
 AS $BODY$
-DECLARE
-resultat public.StatistiquePaiementPME;
-BEGIN
-    SELECT public.cumlMontantCreanceByMonth(monthData) INTO STRICT resultat.montantCreance;
-    SELECT public.cumlMontantDetailsPaiementByMonth('CDMP_PME', monthData) INTO STRICT resultat.debource;
-    SELECT public.cumlSoldePMEByMonth(monthData, resultat.montantCreance, resultat.debource) INTO STRICT resultat.solde;
-    RETURN resultat;
-END;
+    DECLARE
+        resultat public.StatistiquePaiementPME;
+    BEGIN
+        SELECT public.cumlMontantCreanceByMonth(monthData) INTO STRICT resultat.montantCreance;
+        SELECT public.cumlMontantDetailsPaiementByMonth('CDMP_PME', monthData) INTO STRICT resultat.debource;
+        SELECT public.cumlSoldePMEByMonth(monthData, resultat.montantCreance, resultat.debource) INTO STRICT resultat.solde;
+        RETURN resultat;
+    END;
 $BODY$;
 
 

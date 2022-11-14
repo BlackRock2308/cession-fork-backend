@@ -10,10 +10,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -218,6 +216,26 @@ public class Util {
     for (int i = 0; i < len; i++)
       sb.append(chars.charAt(rnd.nextInt(chars.length())));
     return sb.toString();
+  }
+
+  public static  Double[] donneStatistiquePaiementPME(String json) {
+    json = json.replaceAll("null", "0.0");
+    String [] objs = json.split(",");
+    Double[] donne = new Double[3];
+    for(int i=0; i<objs.length; i++ ){
+      donne[i] = Double.parseDouble(objs[i]);
+    }
+  return donne;
+  }
+
+  public static Double[] donneStatistiquePaiementCDMP(String json) {
+    json = json.replaceAll("null", "0.0");
+    String [] objs = json.split(",");
+    Double[] donne = new Double[4];
+    for(int i=0; i<objs.length; i++ ){
+      donne[i] = Double.parseDouble(objs[i]);
+    }
+    return donne;
   }
 
 }
