@@ -76,16 +76,16 @@ public class PersistStatus {
         demandeCessionConventionRejetee.setLibelle("CONVENTION_REJETEE");
 
         Statut demandeCessionConventionRejeteeParPME=new Statut();
-        demandeCessionConventionRejetee.setCode("CONVENTION_REJETEE_PAR_PME");
-        demandeCessionConventionRejetee.setLibelle("CONVENTION_REJETEE_PAR_PME");
+        demandeCessionConventionRejeteeParPME.setCode("CONVENTION_REJETEE_PAR_PME");
+        demandeCessionConventionRejeteeParPME.setLibelle("CONVENTION_REJETEE_PAR_PME");
 
         Statut demandeCessionConventionRejeteeParDG=new Statut();
-        demandeCessionConventionRejetee.setCode("CONVENTION_REJETEE_PAR_DG");
-        demandeCessionConventionRejetee.setLibelle("CONVENTION_REJETEE_PAR_DG");
+        demandeCessionConventionRejeteeParDG.setCode("CONVENTION_REJETEE_PAR_DG");
+        demandeCessionConventionRejeteeParDG.setLibelle("CONVENTION_REJETEE_PAR_DG");
 
         Statut demandeCessionConventionTransmise=new Statut();
-        demandeCessionConventionAcceptee.setCode("CONVENTION_TRANSMISE");
-        demandeCessionConventionAcceptee.setLibelle("CONVENTION_TRANSMISE");
+        demandeCessionConventionTransmise.setCode("CONVENTION_TRANSMISE");
+        demandeCessionConventionTransmise.setLibelle("CONVENTION_TRANSMISE");
 
         Statut demandeCessionPMEAttentePaiement=new Statut();
         demandeCessionPMEAttentePaiement.setCode("PME_EN_ATTENTE_DE_PAIEMENT");

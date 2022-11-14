@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,32 +36,16 @@ import sn.modelsis.cdmp.util.StatistiquePaiementPME;
 import javax.xml.crypto.Data;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class PaiementServiceImpl implements PaiementService {
-
-
-    private final Logger log = LoggerFactory.getLogger(PaiementServiceImpl.class);
 
     private final PaiementRepository paiementRepository;
 
     private final BonEngagementRepository bonEngagementRepository;
-
-    public PaiementServiceImpl(PaiementRepository paiementRepository,
-                               BonEngagementRepository bonEngagementRepository, DemandeCessionRepository demandeCessionRepository, ConventionRepository conventionRepository, StatutRepository statutRepository) {
-        this.paiementRepository = paiementRepository;
-        this.bonEngagementRepository = bonEngagementRepository;
-        this.demandeCessionRepository = demandeCessionRepository;
-        this.conventionRepository = conventionRepository;
-        this.statutRepository = statutRepository;
-    }
-
-
-    final private DemandeCessionRepository demandeCessionRepository;
-
-
-    final private ConventionRepository conventionRepository;
-
-
-    final private StatutRepository statutRepository;
+    private final DemandeCessionRepository demandeCessionRepository;
+    private final ConventionRepository conventionRepository;
+    private final StatutRepository statutRepository;
 
 
     @Override
@@ -68,11 +54,12 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
-    public DemandeCession saveDemande(PaiementDto paiementDto) {
+    public Paiement addPaiementToDemandeCession(PaiementDto paiementDto) {
         DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
 
         String statusLibelle = demandeCession.getStatut().getLibelle() ;
         Statut statutCDMP = statutRepository.findByCode("CDMP_EN_ATTENTE_DE_PAIEMENT");
+        Statut newDemandeStatus = statutRepository.findByCode("CONVENTION_ACCEPTEE");
         Statut statutPme = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
         Paiement paiement = DtoConverter.convertToEntity(paiementDto);
         BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
@@ -81,21 +68,28 @@ public class PaiementServiceImpl implements PaiementService {
         Set<Convention> conventions=  demandeCession.getConventions();
         for (Convention convention :conventions ) {
             if (convention.isActiveConvention()){
-                decote=convention.getDecote().getDecoteValue() ;
+                if (convention.getValeurDecoteByDG() != 0){
+                    decote=convention.getValeurDecoteByDG();
+                    log.info("Decote Convention DG : {}", decote);
+                }else {
+                    decote=convention.getValeurDecote();
+                    log.info("Decote Convention default : {}", decote);
+                }
             }
         }
 
-        if(statusLibelle.equals("CONVENTION_GENEREE")){
+        if(! statusLibelle.equals("CONVENTION_GENEREE"))
+            throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION_GENEREE ");
             //paiement.setDemandeCession(demandeCession);
-            paiement.setSoldePME(montantCreance- (montantCreance*decote)/100 );
+            paiement.setSoldePME(montantCreance- (montantCreance*decote) );
             paiement.setMontantRecuCDMP(0);
             paiement.setStatutCDMP(statutCDMP);
             paiement.setStatutPme(statutPme);
-            demandeCession.setStatut(statutPme);
+            demandeCession.setStatut(newDemandeStatus);
             demandeCession.setPaiement(paiement);
             demandeCessionRepository.save(demandeCession);
-        }
-      return demandeCession;
+
+      return demandeCession.getPaiement();
 
     }
 

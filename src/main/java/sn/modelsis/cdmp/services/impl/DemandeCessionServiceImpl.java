@@ -7,13 +7,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
-import sn.modelsis.cdmp.exceptions.*;
+import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
+import sn.modelsis.cdmp.mappers.DemandeCessionReturnMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeCessionService;
@@ -35,9 +38,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionRepository demandecessionRepository;
     private final StatutRepository statutRepository;
     private final DemandeCessionMapper cessionMapper;
-     private final DemandeService demandeService;
-
-
+    private final DemandeCessionReturnMapper cessionReturnMapper;
+    private final DemandeService demandeService;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -76,10 +78,17 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     public Page<DemandeCessionDto> findAll(Pageable pageable){
         log.info("DemandeCessionService:findAll : fetching .....");
-        var x =demandecessionRepository.findAll();
         return demandecessionRepository
                 .findAll(pageable)
                 .map(cessionMapper::asDTO);
+    }
+
+    @Override
+    public Page<NewDemandeCessionDto> findAllWithoutDemande(Pageable pageable) {
+        log.info("DemandeCessionService:findAll : fetching .....");
+        return demandecessionRepository
+                .findAll(pageable)
+                .map(cessionReturnMapper::asDTO);
     }
 
     @Override
@@ -117,7 +126,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public DemandeCession rejeterRecevabilite(Long idDemande ){
         DemandeCession demandeCessionDto;
         try{
-            log.info("DemandeCessionService:rejectionDemandeCession request started", idDemande);
+            log.info("DemandeCessionService:rejectionDemandeCession ...... ");
             Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
             log.debug("DemandeCessionService:rejectionDemandeCession request params {}", idDemande);
             Statut updatedStatut = statutRepository.findByLibelle("REJETEE");
@@ -288,6 +297,13 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository.findById(idDemande).orElseThrow();
     }
 
+    @Override
+    public Page<DemandeCessionDto> findAllByStatutAndPME(Pageable pageable, String statut, Long idPME) {
+        log.info("DemandeCessionService:findAllByStatutAndPME .....");
+        return demandecessionRepository
+                .findAllByPmeIdPMEAndStatut_Libelle(pageable,idPME,statut)
+                .map(cessionMapper::asDTO);    }
+
 
     @Override
     public List<DemandeCession> findAllPMEDemandes(Long id) {
@@ -303,6 +319,30 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return  demandecessionRepository
                 .findAllByPmeIdPME(pageable,id)
                 .map(cessionMapper::asDTO);
+    }
+
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande){
+        log.info("DemandeCessionService:findDemandeCessionByMultipleCritere searching ......");
+
+        return demandecessionRepository
+                .findByNumeroDemandeContaining(numeroDemande)
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByDemande(String referenceBE,
+                                                               String numeroDemande,
+                                                               String nomMarche){
+        log.info("DemandeCessionService:findDemandeCessionByDemande searching ......");
+
+        return demandecessionRepository
+                .findByReferenceBE(referenceBE, numeroDemande,nomMarche)
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
     }
 
 }
