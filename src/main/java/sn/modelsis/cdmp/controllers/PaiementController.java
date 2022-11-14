@@ -3,6 +3,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,18 +23,13 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/paiements")
+@RequiredArgsConstructor
+@Slf4j
 public class PaiementController {
-
-    private final Logger log = LoggerFactory.getLogger(PaiementController.class);
 
 
     final  private PaiementService paiementService;
     final  private DemandeCessionService demandeCessionService;
-
-    public PaiementController(PaiementService paiementService, DemandeCessionService demandeCessionService) {
-        this.paiementService = paiementService;
-        this.demandeCessionService = demandeCessionService;
-    }
 
     @PostMapping
     public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto){
