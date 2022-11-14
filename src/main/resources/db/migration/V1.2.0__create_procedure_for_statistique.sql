@@ -51,7 +51,7 @@ $BODY$;
     --OWNER TO cdmp;
 
 CREATE TRIGGER trigger_statistiqueDemande
-    AFTER INSERT or UPDATE on public.demandeCession
+    AFTER UPDATE on public.demandeCession
         FOR EACH ROW EXECUTE FUNCTION public.trigger_statistiqueDemande();
 
 
