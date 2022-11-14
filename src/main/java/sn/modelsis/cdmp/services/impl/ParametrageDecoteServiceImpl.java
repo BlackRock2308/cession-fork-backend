@@ -16,6 +16,7 @@ import sn.modelsis.cdmp.repositories.ParametrageRepository;
 import sn.modelsis.cdmp.services.ParametrageDecoteService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +110,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
     }
 
     @Override
-    public Optional<ParametrageDecote> findIntervalDecote(double montant){
+    public Optional<ParametrageDecote> findIntervalDecote(BigDecimal montant){
         ParametrageDecote parametrageDecote = null;
         try{
             log.info("ParametrageDecoteService:findIntervalDecote .....");
@@ -117,7 +118,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
             List<ParametrageDecote> decoteList = repository.findAll();
 
             for(ParametrageDecote decote : decoteList ){
-                if(montant > decote.getBorneInf() && montant < decote.getBorneSup()){
+                if(montant.toBigIntegerExact().longValueExact() > decote.getBorneInf() && montant.toBigIntegerExact().longValueExact() <= decote.getBorneSup()){
                     parametrageDecote = decote;
                     log.info("corresponding decote param : {}", parametrageDecote);
                 }

@@ -5,6 +5,7 @@ import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.ParametrageDecote;
 import sn.modelsis.cdmp.entitiesDtos.ParametrageDecoteDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,6 @@ public interface ParametrageDecoteService {
 
     Optional<ParametrageDecote> findByIdDecote (Long id);
 
-    Optional<ParametrageDecote> findIntervalDecote(double montant);
+    Optional<ParametrageDecote> findIntervalDecote(BigDecimal montant);
 
 }

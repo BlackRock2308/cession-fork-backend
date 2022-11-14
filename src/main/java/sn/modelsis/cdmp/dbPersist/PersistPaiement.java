@@ -40,7 +40,7 @@ private final DetailPaiementService detailPaiementService;
            paiementDto.setSoldePME(0);
            paiementDto.setRaisonSocial("GFPOIOI");
            paiementDto.setDemandecessionid(dC1.get().getIdDemande());
-           p1 = paiementService.savePaiement(paiementDto);
+        //   p1 = paiementService.savePaiement(paiementDto);
        }
 
 
@@ -53,7 +53,7 @@ private final DetailPaiementService detailPaiementService;
            paiementDto.setSoldePME(0);
            paiementDto.setRaisonSocial("GFPOIOI");
            paiementDto.setDemandecessionid(dC2.get().getIdDemande());
-           p2 = paiementService.savePaiement(paiementDto);
+       //    p2 = paiementService.savePaiement(paiementDto);
        }
        Optional<DemandeCession> dC3 = this.demandeCessionRepository.findById(3L);
        if (dC3.isPresent() && dC3 != null) {
@@ -64,7 +64,7 @@ private final DetailPaiementService detailPaiementService;
            paiementDto.setSoldePME(0);
            paiementDto.setRaisonSocial("GFPOIOI");
            paiementDto.setDemandecessionid(dC3.get().getIdDemande());
-           p3 = paiementService.savePaiement(paiementDto);
+         //  p3 = paiementService.savePaiement(paiementDto);
        }
 
        DetailPaiement pme1 = new DetailPaiement();
@@ -72,14 +72,14 @@ private final DetailPaiementService detailPaiementService;
        detailPaiementService.paiementPME(pme1);
        DetailPaiement cdmp1 = new DetailPaiement();
        cdmp1.setPaiement(p1);
-       detailPaiementService.paiementCDMP(cdmp1);
+     //  detailPaiementService.paiementCDMP(cdmp1);
 
        DetailPaiement pme2 = new DetailPaiement();
        pme1.setPaiement(p2);
        detailPaiementService.paiementPME(pme2);
        DetailPaiement cdmp2 = new DetailPaiement();
        cdmp1.setPaiement(p2);
-       detailPaiementService.paiementCDMP(cdmp2);
+     //  detailPaiementService.paiementCDMP(cdmp2);
 
 
        DetailPaiement pme3 = new DetailPaiement();
@@ -87,7 +87,7 @@ private final DetailPaiementService detailPaiementService;
        detailPaiementService.paiementPME(pme3);
        DetailPaiement cdmp3 = new DetailPaiement();
        cdmp1.setPaiement(p3);
-       detailPaiementService.paiementCDMP(cdmp3);
+       //detailPaiementService.paiementCDMP(cdmp3);
 
 
    }

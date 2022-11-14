@@ -3,21 +3,21 @@
  */
 package sn.modelsis.cdmp.services.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Observation;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.mappers.ObservationMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
-import sn.modelsis.cdmp.repositories.DemandeRepository;
 import sn.modelsis.cdmp.repositories.ObservationRepository;
 import sn.modelsis.cdmp.services.ObservationService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -32,8 +32,6 @@ import sn.modelsis.cdmp.util.DtoConverter;
 public class ObservationServiceImpl implements ObservationService{
   private final ObservationRepository observationRepository;
 
-  private final DemandeRepository demandeRepository;
-
   private final DemandeCessionRepository demandeCessionRepository;
   private final ObservationMapper observationMapper;
 
@@ -45,6 +43,7 @@ public class ObservationServiceImpl implements ObservationService{
       log.info("ObservationService.saveNewObservation request started...");
       newObservation = observationMapper.mapToDto(observation);
       log.debug("ObservationService.saveNewObservation request params : {}", newObservation);
+      newObservation.setDateObservation(LocalDateTime.now());
       observationRepository.save(newObservation);
     } catch (Exception ex){
       log.info("Exception occured while adding new Observation to database.Exception message : {}", ex.getMessage());

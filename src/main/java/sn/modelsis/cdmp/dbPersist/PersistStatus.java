@@ -112,31 +112,31 @@ public class PersistStatus {
         demandeCessionCDMPPayee.setCode("CDMP_TOTALEMENT_PAYEE");
         demandeCessionCDMPPayee.setLibelle("CDMP_TOTALEMENT_PAYEE");
 
-        statutRepository.save(adhesionSoumise);
-        statutRepository.save(adhesionAcceptee);
-        statutRepository.save(adhesionRejetee);
-        statutRepository.save(demandeCessionSoumise);
-        statutRepository.save(demandeCessionRecevable);
-        statutRepository.save(demandeCessionNonRecevable);
-        statutRepository.save(demandeCessionComplementRequis);
-        statutRepository.save(demandeCessionCompletee);
-        statutRepository.save(demandeCessionNonRisquee);
-        statutRepository.save(demandeCessionRisquee);
-        statutRepository.save(demandeCessionConventionGeneree);
-        statutRepository.save(demandeCessionConventionCorrigee);
-        statutRepository.save(demandeCessionConventionSigneePme);
-        statutRepository.save(demandeCessionConventionSigneeDG);
-        statutRepository.save(demandeCessionConventionAcceptee);
-        statutRepository.save(demandeCessionConventionRejetee);
-        statutRepository.save(demandeCessionConventionRejeteeParPME);
-        statutRepository.save(demandeCessionConventionRejeteeParDG);
-        statutRepository.save(demandeCessionConventionTransmise);
-        statutRepository.save(demandeCessionPMEAttentePaiement);
-        statutRepository.save(demandeCessionCDMPAttentePaiement);
-        statutRepository.save(demandeCessionPMEPaiementEnCours);
-        statutRepository.save(demandeCessionCDMPPaiementEnCours);
-        statutRepository.save(demandeCessionPMEPayee);
-        statutRepository.save(demandeCessionCDMPPayee);
+//        statutRepository.save(adhesionSoumise);
+//        statutRepository.save(adhesionAcceptee);
+//        statutRepository.save(adhesionRejetee);
+//        statutRepository.save(demandeCessionSoumise);
+//        statutRepository.save(demandeCessionRecevable);
+//        statutRepository.save(demandeCessionNonRecevable);
+//        statutRepository.save(demandeCessionComplementRequis);
+//        statutRepository.save(demandeCessionCompletee);
+//        statutRepository.save(demandeCessionNonRisquee);
+//        statutRepository.save(demandeCessionRisquee);
+//        statutRepository.save(demandeCessionConventionGeneree);
+//        statutRepository.save(demandeCessionConventionCorrigee);
+//        statutRepository.save(demandeCessionConventionSigneePme);
+//        statutRepository.save(demandeCessionConventionSigneeDG);
+//        statutRepository.save(demandeCessionConventionAcceptee);
+//        statutRepository.save(demandeCessionConventionRejetee);
+//        statutRepository.save(demandeCessionConventionRejeteeParPME);
+//        statutRepository.save(demandeCessionConventionRejeteeParDG);
+//        statutRepository.save(demandeCessionConventionTransmise);
+//        statutRepository.save(demandeCessionPMEAttentePaiement);
+//        statutRepository.save(demandeCessionCDMPAttentePaiement);
+//        statutRepository.save(demandeCessionPMEPaiementEnCours);
+//        statutRepository.save(demandeCessionCDMPPaiementEnCours);
+//        statutRepository.save(demandeCessionPMEPayee);
+//        statutRepository.save(demandeCessionCDMPPayee);
 
 
     }

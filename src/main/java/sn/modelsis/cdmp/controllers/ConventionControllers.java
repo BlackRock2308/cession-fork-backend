@@ -1,17 +1,24 @@
 package sn.modelsis.cdmp.controllers;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,12 +26,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entities.BonEngagement;
+import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.ParametrageDecote;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.ParametrageDecoteDTO;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
-import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.services.BonEngagementService;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DemandeCessionService;
@@ -67,11 +76,12 @@ public class ConventionControllers {
             bonEngagementService.getBonEngagement(demandeCession.getBonEngagement().getIdBonEngagement());
     double valeurCreance =
             bonEngagement.get().getMontantCreance();
+    BigDecimal bigDecimal = new BigDecimal(valeurCreance);
 
-    log.info("Valeur du montant de la creance : {}",valeurCreance);
+    log.info("Valeur du montant de la creance : {}",bigDecimal);
 
     //this method allows to find the right decote interval depending on montantCreance
-    ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(valeurCreance).orElse(null);
+    ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(bigDecimal).orElse(null);
 
     log.info("Correct Decote param: {}",exactParametrageDecote);
 
