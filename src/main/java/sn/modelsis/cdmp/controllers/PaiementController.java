@@ -3,6 +3,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -112,21 +113,21 @@ public class PaiementController {
 
     @GetMapping(value = "/getStatistiquePaiementByPME/{anne}/{idPME}")
     public ResponseEntity<StatistiquePaiementPMEDto> getStatistiquePaiementByPME(@PathVariable int anne, @PathVariable Long idPME,
-                                                                                  HttpServletRequest request) {
+                                                                                  HttpServletRequest request) throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(paiementService.getStatistiquePaiementByPME(anne, idPME));
     }
 
     @GetMapping(value = "/getStatistiqueAllPaiementPME/{anne}")
     public ResponseEntity<StatistiquePaiementPMEDto> getStatistiqueAllPaiementPME(@PathVariable int anne,
-                                                                                   HttpServletRequest request) {
+                                                                                   HttpServletRequest request) throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(paiementService.getStatistiqueAllPaiementPME(anne));
     }
 
     @GetMapping(value = "/getStatistiquePaiementCDMP/{anne}")
     public ResponseEntity<StatistiquePaiementCDMPDto> getStatistiquePaiementCDMP(@PathVariable int anne,
-                                                                                  HttpServletRequest request) {
+                                                                                  HttpServletRequest request) throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(paiementService.getStatistiquePaiementCDMP(anne));
     }

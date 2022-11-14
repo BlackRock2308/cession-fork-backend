@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -166,15 +167,15 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
-    public StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee) {
+    public StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee) throws JsonProcessingException {
         LocalDateTime today = LocalDateTime.now();
         StatistiquePaiementCDMPDto statistiquePaiementCDMPDto = new StatistiquePaiementCDMPDto();
         if(annee <= today.getYear()){
             statistiquePaiementCDMPDto.setYear(annee);
-            StatistiquePaiementCDMP statistiquePaiementCDMP;
+            StatistiquePaiementCDMP statistiquePaiementCDMP = new StatistiquePaiementCDMP();
             today= LocalDateTime.of(annee, 1, 1,0,0,0);
             for(int i=0 ; i<12;i++){
-                statistiquePaiementCDMP = paiementRepository.getStatistiquePaiementCDMP(today);
+                statistiquePaiementCDMP.jsonToObeject(paiementRepository.getStatistiquePaiementCDMP(today));
                 statistiquePaiementCDMPDto.getCmulRembourses().add(new ObjetMontantMois(statistiquePaiementCDMP.getRembourse(),today));
                 statistiquePaiementCDMPDto.getCumulDecotes().add(new ObjetMontantMois(statistiquePaiementCDMP.getDecote(),today));
                 statistiquePaiementCDMPDto.getCumulMontantCreance().add(new ObjetMontantMois(statistiquePaiementCDMP.getMontantCreance(),today));
@@ -186,15 +187,15 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
-    public StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee) {
+    public StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee) throws JsonProcessingException {
         LocalDateTime today = LocalDateTime.now();
         StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
         if(annee <= today.getYear()){
             statistiquePaiementPMEDto.setYear(annee);
-            StatistiquePaiementPME statistiquePaiementPME;
+            StatistiquePaiementPME statistiquePaiementPME= new StatistiquePaiementPME();
             today= LocalDateTime.of(annee, 1, 1,0,0,0);
             for(int i=0 ; i<12;i++){
-                statistiquePaiementPME = paiementRepository.getStatistiquePaiementPME(today);
+                statistiquePaiementPME.jsonToObeject(paiementRepository.getStatistiquePaiementPME(today));
                 statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(statistiquePaiementPME.getDebource(),today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(statistiquePaiementPME.getMontantCreance(),today));
                 statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(statistiquePaiementPME.getSolde(),today));
@@ -205,15 +206,15 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
-    public StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME ) {
+    public StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME ) throws JsonProcessingException {
         LocalDateTime today = LocalDateTime.now();
         StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
         if(annee <= today.getYear()){
             statistiquePaiementPMEDto.setYear(annee);
-            StatistiquePaiementPME statistiquePaiementPME;
+            StatistiquePaiementPME statistiquePaiementPME = new StatistiquePaiementPME();
             today= LocalDateTime.of(annee, 1, 1,0,0,0);
             for(int i=0 ; i<12;i++){
-                statistiquePaiementPME = paiementRepository.getStatistiquePaiementPME(today);
+                statistiquePaiementPME.jsonToObeject(paiementRepository.getStatistiquePaiementPME(today));
                 statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(statistiquePaiementPME.getDebource(),today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(statistiquePaiementPME.getMontantCreance(),today));
                 statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(statistiquePaiementPME.getSolde(),today));

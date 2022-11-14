@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 public interface PaiementRepository extends JpaRepository<Paiement, Long> {
     @Query(nativeQuery = true,
             value = "select * from public.getStatistiquePaiementCDMP(:monthData)")
-    StatistiquePaiementCDMP getStatistiquePaiementCDMP(@Param("monthData") LocalDateTime monthData);
+    String getStatistiquePaiementCDMP(@Param("monthData") LocalDateTime monthData);
 
     @Query(nativeQuery = true,
             value = "select * from public.getStatistiquePaiementPME(:monthData)")
-    StatistiquePaiementPME getStatistiquePaiementPME(@Param("monthData") LocalDateTime monthData);
+    String getStatistiquePaiementPME(@Param("monthData") LocalDateTime monthData);
 
 }

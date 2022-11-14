@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypePaiement;
@@ -62,14 +63,14 @@ public interface PaiementService {
      * @param annee
      * @return
      */
-    StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee);
+    StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee) throws JsonProcessingException;
 
     /**
      *
      * @param annee
      * @return
      */
-    StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee);
+    StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee) throws JsonProcessingException;
 
     /**
      *
@@ -77,5 +78,5 @@ public interface PaiementService {
      * @param  idPME
      * @return
      */
-    StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME );
+    StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME ) throws JsonProcessingException;
 }
