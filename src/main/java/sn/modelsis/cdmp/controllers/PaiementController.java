@@ -36,9 +36,9 @@ public class PaiementController {
     }
 
     @PostMapping
-    public ResponseEntity<DemandeCessionDto> addPaiement(@RequestBody PaiementDto paiementDto){
+    public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto){
         DemandeCession demandeCession = paiementService.saveDemande(paiementDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(demandeCession));
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(demandeCession.getPaiement()));
 
     }
 
