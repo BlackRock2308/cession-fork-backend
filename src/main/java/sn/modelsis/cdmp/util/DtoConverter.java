@@ -223,7 +223,8 @@ public class DtoConverter {
 		//	paiementDto.setDemandeId(paiement.getDemandeCession().getIdDemande());
 		//	paiementDto.setMontantCreance(paiement.getDemandeCession().getBonEngagement().getMontantCreance());
 		//	paiementDto.setStatutDto(DtoConverter.convertToDto(paiement.getDemandeCession().getStatut()));
-		//	paiementDto.setRaisonSocial(paiement.getDemandeCession().getPme().getRaisonSocial());
+		paiementDto.setMontantCreance(paiement.getMontantCreance());
+
 		}
 		return paiementDto;
 	}
