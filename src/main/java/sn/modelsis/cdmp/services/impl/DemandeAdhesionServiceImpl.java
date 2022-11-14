@@ -1,7 +1,7 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageDetailWithoutTemplate;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
@@ -23,9 +24,11 @@ import java.util.Optional;
 import sn.modelsis.cdmp.repositories.DemandeAdhesionRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.util.Constants;
+import sn.modelsis.cdmp.util.RestTemplateUtil;
 
 
-@AllArgsConstructor
+
 @Service
 @Slf4j
 public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
@@ -37,7 +40,28 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 
     private  final DemandeService demandeService;
 
-//    @Override
+    private final RestTemplateUtil restTemplateUtil;
+
+    private final String sendMail = Constants.SEND_MAIL_WItHOUT_TEMPLATE;
+
+    @Value("${server.notification}")
+    private String HOST_NOTIFICATION;
+
+    @Value("${server.email_cdmp}")
+    private String EMAIL_CDMP;
+
+    public DemandeAdhesionServiceImpl(DemandeAdhesionRepository demandeAdhesionRepository, PmeRepository pmeRepository, StatutRepository statutRepository, DocumentService documentService, DemandeAdhesionMapper adhesionMapper, DemandeService demandeService, RestTemplateUtil restTemplateUtil) {
+        this.demandeAdhesionRepository = demandeAdhesionRepository;
+        this.pmeRepository = pmeRepository;
+        this.statutRepository = statutRepository;
+        this.documentService = documentService;
+        this.adhesionMapper = adhesionMapper;
+        this.demandeService = demandeService;
+        this.restTemplateUtil = restTemplateUtil;
+    }
+
+
+    //    @Override
 //    @Transactional(propagation = Propagation.REQUIRED)
 //    public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion) {
 //                    demandeAdhesion.setDateDemandeAdhesion(new Date());
@@ -124,6 +148,11 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             log.debug("DemandeAdhesionService:validerAdhesion request params {}", id);
             Statut updatedStatut=statutRepository.findByLibelle("ADHESION_ACCEPTEE");
             optional.get().setStatut(updatedStatut);
+            if(optional.isEmpty())
+                throw new CustomException("Can not find this Demand");
+            String email = optional.get().getPme().getEmail();
+            EmailMessageDetailWithoutTemplate emailMessageDetailWithoutTemplate = sendEmailDemandeAdhesion("andiaye@modelsis.sn");
+            restTemplateUtil.sendEmailWithoutTemplate(HOST_NOTIFICATION+sendMail,emailMessageDetailWithoutTemplate);
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
         }catch (Exception ex){
             log.error("Exception occured while Accepting Demande Adhesion. Exception message : {}", ex.getMessage());
@@ -150,4 +179,15 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     }
 
 
+    public EmailMessageDetailWithoutTemplate sendEmailDemandeAdhesion(String email){
+        EmailMessageDetailWithoutTemplate emailMessageDetailWithoutTemplate = new EmailMessageDetailWithoutTemplate();
+        emailMessageDetailWithoutTemplate.setTypeMessage("email");
+        emailMessageDetailWithoutTemplate.setContent("Bonjour et Bienvenue sur la plateforme ");
+        emailMessageDetailWithoutTemplate.setExpediteur(EMAIL_CDMP);
+        emailMessageDetailWithoutTemplate.setCodeApp("CDMP");
+        emailMessageDetailWithoutTemplate.setDestinataire(email);
+        emailMessageDetailWithoutTemplate.setObjetDeLEmail("Acceptation Demande");
+
+        return emailMessageDetailWithoutTemplate ;
+    }
 }

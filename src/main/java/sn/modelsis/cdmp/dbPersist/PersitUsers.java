@@ -90,7 +90,7 @@ public class PersitUsers {
         pme.setCodePin("123456");
         pme.setPassword(passwordEncoder.encode("passer"));
         pme.setPrenom("PME");
-        pme.setEmail("pme@gmail.com");
+        pme.setEmail("andiaye@modelsis.sn");
         pme.setRoles(pmeRoles);
 
         Utilisateur drc = new Utilisateur();

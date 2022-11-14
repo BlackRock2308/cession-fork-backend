@@ -3,7 +3,7 @@ package sn.modelsis.cdmp.services;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
-import sn.modelsis.cdmp.security.dto.EmailMessageWithTemplate;
+import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 
 import java.util.List;
 
