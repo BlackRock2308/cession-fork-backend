@@ -59,7 +59,7 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
-    public DemandeCession saveDemande(PaiementDto paiementDto) {
+    public Paiement addPaiementToDemandeCession(PaiementDto paiementDto) {
         DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
 
         String statusLibelle = demandeCession.getStatut().getLibelle() ;
@@ -88,7 +88,7 @@ public class PaiementServiceImpl implements PaiementService {
             demandeCession.setPaiement(paiement);
             demandeCessionRepository.save(demandeCession);
 
-      return demandeCession;
+      return demandeCession.getPaiement();
 
     }
 
