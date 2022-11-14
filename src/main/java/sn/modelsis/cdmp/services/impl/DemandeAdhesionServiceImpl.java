@@ -187,7 +187,6 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         emailMessageDetailWithoutTemplate.setCodeApp("CDMP");
         emailMessageDetailWithoutTemplate.setDestinataire(email);
         emailMessageDetailWithoutTemplate.setObjetDeLEmail("Acceptation Demande");
-
         return emailMessageDetailWithoutTemplate ;
     }
 }
