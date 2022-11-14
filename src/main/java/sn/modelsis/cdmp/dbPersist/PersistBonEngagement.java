@@ -19,7 +19,7 @@ public class PersistBonEngagement {
         bE1.setMontantCreance(500000);
         bE1.setModeReglement("DMRI");
         bE1.setObjetDepense("REGULARISATIONS");
-       this.bonEngagementService.save(bE1);
+    //   this.bonEngagementService.save(bE1);
 
         BonEngagement bE2 = new BonEngagement();
         bE1.setNatureDepense("Frais de mission à l'intérieur du \n" +
@@ -29,7 +29,7 @@ public class PersistBonEngagement {
         bE1.setMontantCreance(4500000);
         bE1.setModeReglement("DMRI");
         bE1.setObjetDepense("REGULARISATIONS");
-        this.bonEngagementService.save(bE2);
+     //   this.bonEngagementService.save(bE2);
 
     }
 

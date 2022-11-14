@@ -172,6 +172,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			
 
 			<!--plugin>
 				<groupId>org.flywaydb</groupId>
@@ -184,6 +185,7 @@
 				</configuration>
 			</plugin-->
 		</plugins>
+		<finalName>wootoo</finalName>
 	</build>
 
 </project>

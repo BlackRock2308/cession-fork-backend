@@ -16,6 +16,7 @@ import sn.modelsis.cdmp.repositories.ParametrageRepository;
 import sn.modelsis.cdmp.services.ParametrageDecoteService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +110,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
     }
 
     @Override
-    public Optional<ParametrageDecote> findIntervalDecote(double montant){
+    public Optional<ParametrageDecote> findIntervalDecote(Double montant){
         ParametrageDecote parametrageDecote = null;
         try{
             log.info("ParametrageDecoteService:findIntervalDecote .....");

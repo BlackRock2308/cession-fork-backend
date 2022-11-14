@@ -28,25 +28,25 @@ public class PersistConvention {
             Convention c1 = new Convention();
             c1.setDemandeCession(dC1.get());
             c1.setPme(pme.get());
-            conventionService.save(c1);
+            //conventionService.save(c1);
 
             Convention c2 = new Convention();
             c2.setDemandeCession(dC1.get());
             c2.setPme(pme.get());
-            conventionService.save(c2);
+          //  conventionService.save(c2);
         }
         Optional<DemandeCession> dC2 = demandeCessionRepository.findById(2L);
         if (dC2.isPresent() && dC2 != null && pme.isPresent() && pme != null){
             Convention c3 = new Convention();
             c3.setDemandeCession(dC1.get());
             c3.setPme(pme.get());
-            conventionService.save(c3);
+          //  conventionService.save(c3);
         }
 
         Optional<DemandeCession> dC3 = demandeCessionRepository.findById(3L);
         if(dC3.isPresent() && dC3 != null && pme.isPresent() && pme != null){
             Convention c4 = new Convention();
-            conventionService.save(c4);
+           // conventionService.save(c4);
         }
 
 
