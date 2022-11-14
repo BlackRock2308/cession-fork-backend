@@ -39,9 +39,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final StatutRepository statutRepository;
     private final DemandeCessionMapper cessionMapper;
     private final DemandeCessionReturnMapper cessionReturnMapper;
-     private final DemandeService demandeService;
-
-
+    private final DemandeService demandeService;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
