@@ -59,6 +59,8 @@ public interface ConventionService {
     Optional<Convention> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
 
     Convention updateValeurDecote(Long idConvention, double newValue);
+
+    Convention updateEntireConvention(Long id, Convention newConvention);
     
     
 }
