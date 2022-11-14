@@ -101,13 +101,14 @@ public class ConventionControllers {
     return ResponseEntity.status(HttpStatus.CREATED).body(conventionMapper.asDTO(result));
   }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     public ResponseEntity<ConventionDto> updateConvention(@RequestBody ConventionDto conventionDto,
+                                                          @PathVariable("id") Long id ,
         HttpServletRequest request) {
       log.info("ConventionControllers:updateConvention request started ");
 
       Convention convention = DtoConverter.convertToEntity(conventionDto);
-      Convention result = conventionService.save(convention);
+      Convention result = conventionService.updateEntireConvention(id,convention);
       log.info("ConventionControllers:updateConvention updated in database with Id:{} ", result.getIdConvention());
       return ResponseEntity.status(HttpStatus.OK).body(conventionMapper.asDTO(result));
     }
@@ -162,14 +163,14 @@ public class ConventionControllers {
       return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(be.get()));
     }
 
-//  @GetMapping(value = "/{valeurCreance}/decote")
-//  public ResponseEntity<ParametrageDecote> getDecoteInterval(
-//          @PathVariable("valeurCreance") Double valeurCreance,
-//          HttpServletRequest request) {
-//    ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(valeurCreance).orElse(null);
-//
-//    return ResponseEntity.status(HttpStatus.OK).body(exactParametrageDecote);
-//  }
+  @GetMapping(value = "/{valeurCreance}/decote")
+  public ResponseEntity<ParametrageDecote> getDecoteInterval(
+          @PathVariable("valeurCreance") Double valeurCreance,
+          HttpServletRequest request) {
+    ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(valeurCreance).orElse(null);
+
+    return ResponseEntity.status(HttpStatus.OK).body(exactParametrageDecote);
+  }
 
   @PatchMapping(value ="/{idConvention}/{decote}")
   public ResponseEntity<ConventionDto> updateValeurDecote(@PathVariable("idConvention") Long idConvention,

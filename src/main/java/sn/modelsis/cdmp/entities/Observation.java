@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -41,10 +42,14 @@ public class Observation implements Serializable, Comparable<Observation> {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="utilisateurid")
     private Utilisateur utilisateur;
+
+    @OneToOne
+    @JoinColumn(name = "statut")
+    private Statut statut;
     
     @Override
     public int compareTo(Observation o) {
-
+      this.dateObservation.compareTo(o.dateObservation);
         return 0;
     }
 }

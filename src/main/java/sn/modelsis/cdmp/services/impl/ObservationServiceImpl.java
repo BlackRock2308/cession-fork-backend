@@ -14,11 +14,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Observation;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.mappers.ObservationMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.ObservationRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.ObservationService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
@@ -32,6 +34,10 @@ import sn.modelsis.cdmp.util.DtoConverter;
 public class ObservationServiceImpl implements ObservationService{
   private final ObservationRepository observationRepository;
 
+  private final DemandeRepository demandeRepository;
+
+  private final StatutRepository statutRepository;
+
   private final DemandeCessionRepository demandeCessionRepository;
   private final ObservationMapper observationMapper;
 
@@ -39,9 +45,13 @@ public class ObservationServiceImpl implements ObservationService{
   @Override
   public ObservationDto saveNewObservation(ObservationDto observation) {
     Observation newObservation;
+
+    Statut statut = statutRepository.findByLibelle(observation.getStatut().getLibelle());
+
     try{
       log.info("ObservationService.saveNewObservation request started...");
       newObservation = observationMapper.mapToDto(observation);
+      newObservation.setStatut(statut);
       log.debug("ObservationService.saveNewObservation request params : {}", newObservation);
       newObservation.setDateObservation(LocalDateTime.now());
       observationRepository.save(newObservation);

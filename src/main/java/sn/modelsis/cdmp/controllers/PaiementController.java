@@ -3,6 +3,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -10,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -22,23 +23,18 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/paiements")
+@RequiredArgsConstructor
+@Slf4j
 public class PaiementController {
-
-    private final Logger log = LoggerFactory.getLogger(PaiementController.class);
 
 
     final  private PaiementService paiementService;
     final  private DemandeCessionService demandeCessionService;
 
-    public PaiementController(PaiementService paiementService, DemandeCessionService demandeCessionService) {
-        this.paiementService = paiementService;
-        this.demandeCessionService = demandeCessionService;
-    }
-
     @PostMapping
-    public ResponseEntity<DemandeCessionDto> addPaiement(@RequestBody PaiementDto paiementDto){
-        DemandeCession demandeCession = paiementService.saveDemande(paiementDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(demandeCession));
+    public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto){
+        Paiement paiement = paiementService.addPaiementToDemandeCession(paiementDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(paiement));
 
     }
 

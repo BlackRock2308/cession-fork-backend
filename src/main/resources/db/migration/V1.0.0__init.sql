@@ -199,6 +199,7 @@ CREATE TABLE public.observation (
     libelle character varying(100),
     dateobservation timestamp without time zone,
     utilisateurid bigint NOT NULL,
+    statut bigint,
     demandeid bigint NOT NULL
 );
 
