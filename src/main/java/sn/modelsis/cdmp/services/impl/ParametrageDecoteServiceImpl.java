@@ -110,7 +110,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
     }
 
     @Override
-    public Optional<ParametrageDecote> findIntervalDecote(BigDecimal montant){
+    public Optional<ParametrageDecote> findIntervalDecote(Double montant){
         ParametrageDecote parametrageDecote = null;
         try{
             log.info("ParametrageDecoteService:findIntervalDecote .....");

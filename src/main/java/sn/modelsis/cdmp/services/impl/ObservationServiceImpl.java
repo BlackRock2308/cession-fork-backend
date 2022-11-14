@@ -34,8 +34,6 @@ import sn.modelsis.cdmp.util.DtoConverter;
 public class ObservationServiceImpl implements ObservationService{
   private final ObservationRepository observationRepository;
 
-  private final DemandeRepository demandeRepository;
-
   private final StatutRepository statutRepository;
 
   private final DemandeCessionRepository demandeCessionRepository;

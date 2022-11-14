@@ -81,7 +81,7 @@ public class ConventionControllers {
     log.info("Valeur du montant de la creance : {}",bigDecimal);
 
     //this method allows to find the right decote interval depending on montantCreance
-    ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(bigDecimal).orElse(null);
+    ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(valeurCreance).orElse(null);
 
     log.info("Correct Decote param: {}",exactParametrageDecote);
 
