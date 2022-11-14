@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.services.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,8 +16,8 @@ import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypePaiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
-import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMP;
-import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPME;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMPDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPMEDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
@@ -25,6 +26,11 @@ import sn.modelsis.cdmp.repositories.PaiementRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.PaiementService;
 import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.ObjetMontantMois;
+import sn.modelsis.cdmp.util.StatistiquePaiementCDMP;
+import sn.modelsis.cdmp.util.StatistiquePaiementPME;
+
+import javax.xml.crypto.Data;
 
 @Service
 public class PaiementServiceImpl implements PaiementService {
@@ -160,13 +166,61 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
-    public StatistiquePaiementCDMP getStatistiquePaiementCDMP(int annee) {
-        return null;
+    public StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee) {
+        LocalDateTime today = LocalDateTime.now();
+        StatistiquePaiementCDMPDto statistiquePaiementCDMPDto = new StatistiquePaiementCDMPDto();
+        if(annee <= today.getYear()){
+            statistiquePaiementCDMPDto.setYear(annee);
+            StatistiquePaiementCDMP statistiquePaiementCDMP;
+            today= LocalDateTime.of(annee, 1, 1,0,0,0);
+            for(int i=0 ; i<12;i++){
+                statistiquePaiementCDMP = paiementRepository.getStatistiquePaiementCDMP(today);
+                statistiquePaiementCDMPDto.getCmulRembourses().add(new ObjetMontantMois(statistiquePaiementCDMP.getRembourse(),today));
+                statistiquePaiementCDMPDto.getCumulDecotes().add(new ObjetMontantMois(statistiquePaiementCDMP.getDecote(),today));
+                statistiquePaiementCDMPDto.getCumulMontantCreance().add(new ObjetMontantMois(statistiquePaiementCDMP.getMontantCreance(),today));
+                statistiquePaiementCDMPDto.getCumulSoldes().add(new ObjetMontantMois(statistiquePaiementCDMP.getSolde(),today));
+                today= today.plusMonths(1);
+            }
+        }
+        return statistiquePaiementCDMPDto;
     }
 
     @Override
-    public StatistiquePaiementPME getStatistiquePaiementPME(int annee) {
-        return null;
+    public StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee) {
+        LocalDateTime today = LocalDateTime.now();
+        StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
+        if(annee <= today.getYear()){
+            statistiquePaiementPMEDto.setYear(annee);
+            StatistiquePaiementPME statistiquePaiementPME;
+            today= LocalDateTime.of(annee, 1, 1,0,0,0);
+            for(int i=0 ; i<12;i++){
+                statistiquePaiementPME = paiementRepository.getStatistiquePaiementPME(today);
+                statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(statistiquePaiementPME.getDebource(),today));
+                statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(statistiquePaiementPME.getMontantCreance(),today));
+                statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(statistiquePaiementPME.getSolde(),today));
+                today= today.plusMonths(1);
+            }
+        }
+        return statistiquePaiementPMEDto;
+    }
+
+    @Override
+    public StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME ) {
+        LocalDateTime today = LocalDateTime.now();
+        StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
+        if(annee <= today.getYear()){
+            statistiquePaiementPMEDto.setYear(annee);
+            StatistiquePaiementPME statistiquePaiementPME;
+            today= LocalDateTime.of(annee, 1, 1,0,0,0);
+            for(int i=0 ; i<12;i++){
+                statistiquePaiementPME = paiementRepository.getStatistiquePaiementPME(today);
+                statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(statistiquePaiementPME.getDebource(),today));
+                statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(statistiquePaiementPME.getMontantCreance(),today));
+                statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(statistiquePaiementPME.getSolde(),today));
+                today= today.plusMonths(1);
+            }
+        }
+        return statistiquePaiementPMEDto;
     }
 }
 

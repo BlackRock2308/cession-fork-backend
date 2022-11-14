@@ -1,16 +1,14 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import sn.modelsis.cdmp.util.ObjetMontantMois;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@ToString
-public class StatistiquePaiementCDMP {
+@Getter
+@Setter
+public class StatistiquePaiementCDMPDto {
 
     int year;
 

@@ -1,16 +1,14 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import sn.modelsis.cdmp.util.ObjetMontantMois;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@ToString
-public class StatistiquePaiementPME {
+@Getter
+@Setter
+public class StatistiquePaiementPMEDto {
     int year;
 
     List<ObjetMontantMois> cumulSoldes = new ArrayList<>();

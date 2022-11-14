@@ -7,8 +7,8 @@ import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypePaiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
-import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMP;
-import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPME;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMPDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPMEDto;
 
 public interface PaiementService {
 
@@ -57,7 +57,25 @@ public interface PaiementService {
 
     Paiement savePaiement(Paiement paiement);
 
-    StatistiquePaiementCDMP getStatistiquePaiementCDMP(int annee);
+    /**
+     *
+     * @param annee
+     * @return
+     */
+    StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee);
 
-    StatistiquePaiementPME getStatistiquePaiementPME(int annee);
+    /**
+     *
+     * @param annee
+     * @return
+     */
+    StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee);
+
+    /**
+     *
+     * @param annee
+     * @param  idPME
+     * @return
+     */
+    StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME );
 }
