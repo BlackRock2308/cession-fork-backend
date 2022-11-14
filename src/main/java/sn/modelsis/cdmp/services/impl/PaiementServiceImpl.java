@@ -205,7 +205,7 @@ public class PaiementServiceImpl implements PaiementService {
             Double[] donnes = new Double[3];
             today = LocalDateTime.of(annee, 1, 1, 0, 0, 0);
             for (int i = 0; i < 12; i++) {
-                donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementPME(today));
+                donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementByPME(idPME,today));
                 statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(donnes[2], today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(donnes[1], today));
                 statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(donnes[0], today));
