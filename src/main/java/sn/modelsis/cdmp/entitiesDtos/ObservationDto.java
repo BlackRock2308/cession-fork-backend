@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,9 +15,10 @@ import lombok.ToString;
  * @author SNDIAGNEF
  *
  */
-@Data
-@NoArgsConstructor
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class ObservationDto implements Serializable {
   
   private Long id;

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 
 
@@ -16,6 +17,8 @@ public interface DemandeCessionService {
     DemandeCession save(DemandeCession demandeCession);
 
     Page<DemandeCessionDto> findAll(Pageable pageable);
+
+    Page<NewDemandeCessionDto> findAllWithoutDemande(Pageable pageable);
 
     Optional<DemandeCessionDto> findById (Long id);
 

@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
@@ -53,9 +54,9 @@ public class DemandeCessionController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCession(Pageable pageable,
-                                                                        HttpServletRequest request) {
-        Page<DemandeCessionDto> demandeList = demandeCessionService.findAll(pageable);
+    public ResponseEntity<Page<NewDemandeCessionDto>> getAllDemandeCession(Pageable pageable,
+                                                                                             HttpServletRequest request) {
+        Page<NewDemandeCessionDto> demandeList = demandeCessionService.findAllWithoutDemande(pageable);
         log.info("DemandeCessionController:getAllDemandeCession request started");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
