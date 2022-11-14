@@ -2,7 +2,7 @@ package sn.modelsis.cdmp.controllers;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -12,11 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.DetailPaiement;
+import sn.modelsis.cdmp.entitiesDtos.*;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.entities.Paiement;
-import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.services.PaiementService;
 
 import java.util.*;
@@ -123,6 +123,27 @@ public class PaiementController {
         paiementService.delete(id);
         log.warn("Paiement deleted. Id:{}", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping(value = "/getStatistiquePaiementByPME/{anne}/{idPME}")
+    public ResponseEntity<StatistiquePaiementPMEDto> getStatistiquePaiementByPME(@PathVariable int anne, @PathVariable Long idPME,
+                                                                                  HttpServletRequest request)  {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(paiementService.getStatistiquePaiementByPME(anne, idPME));
+    }
+
+    @GetMapping(value = "/getStatistiqueAllPaiementPME/{anne}")
+    public ResponseEntity<StatistiquePaiementPMEDto> getStatistiqueAllPaiementPME(@PathVariable int anne,
+                                                                                   HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(paiementService.getStatistiqueAllPaiementPME(anne));
+    }
+
+    @GetMapping(value = "/getStatistiquePaiementCDMP/{anne}")
+    public ResponseEntity<StatistiquePaiementCDMPDto> getStatistiquePaiementCDMP(@PathVariable int anne,
+                                                                                  HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(paiementService.getStatistiquePaiementCDMP(anne));
     }
 
 }
