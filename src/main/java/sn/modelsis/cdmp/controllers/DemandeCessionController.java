@@ -255,17 +255,32 @@ public class DemandeCessionController {
                 .body(demandeList);
     }
 
+    /* ************* Search by ReferenceBR, numeroDemande, nomMarche, statutLibelle ************* */
 
-    @GetMapping("searchByRef/{referenceBE}/{numeroDemande}/{nomMarche}")
+    @GetMapping("searchByRef/{referenceBE}/{numeroDemande}/{nomMarche}/{statutLibelle}")
     public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByMultipleParams(
             @PathVariable("referenceBE") String referenceBE,
             @PathVariable("numeroDemande") String numeroDemande,
-            @PathVariable("nomMarche") String nomMarche){
+            @PathVariable("nomMarche") String nomMarche,
+            @PathVariable("statutLibelle") String statutLibelle){
         log.info("DemandeCessionController:searchDemandeCessionBy2Params request started");
 
         List<DemandeCessionDto> demandeList = demandeCessionService
-                .findDemandeCessionByDemande(referenceBE, numeroDemande,nomMarche);
+                .findDemandeCessionByMultipleParams(referenceBE, numeroDemande,nomMarche,statutLibelle);
         log.info("DemandeCessionController:searchDemandeCessionBy2Params: referenceBE : {}",referenceBE);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
+    }
+
+    /* ************************ Search by Statut Libellé ************************ */
+    @GetMapping("searchByStatut/{statutLibelle}")
+    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByStatutLibelle(
+            @PathVariable("statutLibelle") String statutLibelle){
+        log.info("DemandeCessionController:searchDemandeCessionByStatutLibelle request started");
+
+        List<DemandeCessionDto> demandeList = demandeCessionService
+                .findDemandeCessionByStatutLibelle(statutLibelle);
+        log.info("DemandeCessionController:searchDemandeCessionByStatutLibelle: statutLibelle : {}",statutLibelle);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
     }

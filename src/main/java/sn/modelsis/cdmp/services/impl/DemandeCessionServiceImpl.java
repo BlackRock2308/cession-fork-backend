@@ -333,13 +333,26 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
-    public List<DemandeCessionDto> findDemandeCessionByDemande(String referenceBE,
+    public List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                                String numeroDemande,
-                                                               String nomMarche){
+                                                               String nomMarche,
+                                                               String statutLibelle){
         log.info("DemandeCessionService:findDemandeCessionByDemande searching ......");
 
         return demandecessionRepository
-                .findByReferenceBE(referenceBE, numeroDemande,nomMarche)
+                .findByReferenceBE(referenceBE, numeroDemande,nomMarche,statutLibelle)
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle){
+        log.info("DemandeCessionService:findDemandeCessionByStatutLibelle searching ......");
+
+        return demandecessionRepository
+                .findByLibelleStatutDemande(statutLibelle)
                 .stream()
                 .map(cessionMapper::asDTO)
                 .collect(Collectors.toList());
