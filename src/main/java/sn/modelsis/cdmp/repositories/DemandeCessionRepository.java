@@ -57,6 +57,7 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
     List<DemandeCession> findDemandeCessionByDate(@Param("demandeDate") LocalDateTime demandeDate);
 
 
+    List<DemandeCession> findDemandeCessionByDateDemandeCession(@Param("demandeDate") LocalDateTime demandeDate);
 //@Query("select * from demandecession where datedemandecession='2022-11-15 12:32:27.869177';")
 
 //    @Query(value = "SELECT e FROM EmployeeProjectView as e WHERE e.employeeId=:employeeId and (:inputString is null or e.lastName like %:inputString% ) and " +
