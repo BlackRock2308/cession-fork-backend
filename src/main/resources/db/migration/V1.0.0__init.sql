@@ -77,6 +77,7 @@ CREATE TABLE public.utilisateur (
     nom character varying(250),
     password character varying(250),
     update_password boolean,
+    update_codepin boolean,
     urlimagesignature character varying(250),
     telephone character varying(50),
     urlimageprofil character varying(250),
