@@ -51,8 +51,9 @@ public class PmeController {
                                               HttpServletRequest request) {
     log.info("PmeController:savePme request started");
 
-    log.info("PmeController:savePme request body : {}", pmeDto);
     Pme pme = DtoConverter.convertToEntity(pmeDto);
+
+    log.info("PmeController:savePme request body : {}", pme);
 
     Pme result = pmeService.savePme(pme);
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
