@@ -9,6 +9,7 @@ import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -72,4 +73,8 @@ public interface DemandeCessionService {
                                                         String statutLibelle);
 
     List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle);
+
+
+    List<DemandeCessionDto> findDemandeCessionByDate(LocalDateTime seachDate);
+
 }

@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.controllers;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +10,8 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -263,11 +266,11 @@ public class DemandeCessionController {
             @PathVariable("numeroDemande") String numeroDemande,
             @PathVariable("nomMarche") String nomMarche,
             @PathVariable("statutLibelle") String statutLibelle){
-        log.info("DemandeCessionController:searchDemandeCessionBy2Params request started");
+        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams request started");
 
         List<DemandeCessionDto> demandeList = demandeCessionService
                 .findDemandeCessionByMultipleParams(referenceBE, numeroDemande,nomMarche,statutLibelle);
-        log.info("DemandeCessionController:searchDemandeCessionBy2Params: referenceBE : {}",referenceBE);
+        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams: referenceBE : {}",referenceBE);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
     }
@@ -281,6 +284,22 @@ public class DemandeCessionController {
         List<DemandeCessionDto> demandeList = demandeCessionService
                 .findDemandeCessionByStatutLibelle(statutLibelle);
         log.info("DemandeCessionController:searchDemandeCessionByStatutLibelle: statutLibelle : {}",statutLibelle);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
+    }
+
+    /* ************************ Search by Date de Deamnde de Cession ************************ */
+    @GetMapping("/dateSearch")
+    public ResponseEntity<List<DemandeCessionDto>> findDemandeCessionByDate(
+            @RequestParam("dateSearch")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateSearch){
+
+        log.info("DemandeCessionController:findDemandeCessionByDate request started");
+
+        log.info("DemandeCessionController:findDemandeCessionByDate: Date : {}",dateSearch);
+        List<DemandeCessionDto> demandeList = demandeCessionService
+                .findDemandeCessionByDate(dateSearch);
+        log.info("DemandeCessionController:findDemandeCessionByDate: Date : {}",dateSearch);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
     }

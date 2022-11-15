@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.entitiesDtos;
 import lombok.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @NoArgsConstructor
@@ -11,7 +12,7 @@ import java.util.*;
 public class DemandeCessionDto implements Serializable {
 
     private Long idDemande;
-    private Date dateDemandeCession;
+    private LocalDateTime dateDemandeCession;
     private StatutDto statut;
     private String numeroDemande;
     private Set<ObservationDto> observations = new HashSet<>();

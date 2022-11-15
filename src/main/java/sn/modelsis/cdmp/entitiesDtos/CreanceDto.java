@@ -35,7 +35,7 @@ public class CreanceDto implements Serializable {
 
     private Statut statut; //DemandeCession
 
-    private Date dateDemandeCession; //DemandeCession
+    private LocalDateTime dateDemandeCession; //DemandeCession
 
     private LocalDateTime dateMarche; //DemandeCession
 
