@@ -11,12 +11,12 @@ spring:
   application:
     name: Cession creance
   datasource:
-    password: passer
+    password: password
     url: jdbc:postgresql://localhost:5432/cdmp
     username: cdmp
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
