@@ -23,14 +23,14 @@ public class ObservationDto implements Serializable {
   
   private Long id;
 
-  private Long idDemande;
+  private Long utilisateurid;
+
+  private Long demandeid;
   
   private String libelle;
 
   private StatutDto statut;
 
-  private DemandeCessionDto demande;
-  
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime dateObservation;
 

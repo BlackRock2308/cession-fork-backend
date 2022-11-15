@@ -52,6 +52,9 @@ public class Utilisateur implements Serializable {
    @Column(name="update_password")
    private boolean updatePassword;
 
+   @Column(name="update_codepin")
+   private boolean updateCodePin;
+
    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private Set<Role> roles ;
 
