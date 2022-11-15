@@ -38,10 +38,19 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
     @Query("select p from DemandeCession as p where" +
             " (:referenceBE is null or p.bonEngagement.reference like %:referenceBE%) " +
             "or (:numeroDemande is null or p.numeroDemande like %:numeroDemande% )" +
-            "or (:nomMarche is null or p.bonEngagement.nomMarche like %:nomMarche%) ")
+            "or (:nomMarche is null or p.bonEngagement.nomMarche like %:nomMarche%)" +
+            "or (:statutLibelle is null or p.statut.libelle like %:statutLibelle%) "
+    )
     List<DemandeCession> findByReferenceBE(@Param("referenceBE") String referenceBE,
                                            @Param("numeroDemande") String numeroDemande,
-                                           @Param("nomMarche") String nomMarche);
+                                           @Param("nomMarche") String nomMarche,
+                                           @Param("statutLibelle") String statutLibelle);
+
+
+
+    @Query("select p from DemandeCession as p where" +
+            " (:statutLibelle is null or p.statut.libelle like %:statutLibelle%) ")
+    List<DemandeCession> findByLibelleStatutDemande(@Param("statutLibelle") String statutLibelle);
 
 
 //    @Query(value = "SELECT e FROM EmployeeProjectView as e WHERE e.employeeId=:employeeId and (:inputString is null or e.lastName like %:inputString% ) and " +
