@@ -15,10 +15,10 @@ import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
+import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 import sn.modelsis.cdmp.security.dto.AuthentificationResponseDto;
-import sn.modelsis.cdmp.security.dto.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.security.service.UtilisateurDetailService;
 import sn.modelsis.cdmp.security.utils.JWTUtility;
 import sn.modelsis.cdmp.services.PmeService;
@@ -148,6 +148,7 @@ public class UtilisateurController {
             listeRole.add(roleRepository.save(role));
         });
         utilisateurDto.setUpdatePassword(true);
+        utilisateurDto.setUpdateCodePin(true);
         utilisateurDto.setPassword(passwordEncoder.encode(utilisateurDto.getPassword()));
         Utilisateur result = utilisateurService.save(DtoConverter.convertToEntity(utilisateurDto));
 
