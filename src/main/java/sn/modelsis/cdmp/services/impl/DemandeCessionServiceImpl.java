@@ -24,6 +24,8 @@ import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +50,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         try{
             log.info("DemandeCessionService:saveCession request started");
-            demandeCession.setDateDemandeCession(new Date());
+            //demandeCession.setDateDemandeCession(new Date());
+
+            LocalDateTime dateTime = LocalDateTime.now();
+            demandeCession.setDateDemandeCession(dateTime);
 
             Date dateBonEngagement = new Date();
 
@@ -353,6 +358,18 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         return demandecessionRepository
                 .findByLibelleStatutDemande(statutLibelle)
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByDate(LocalDateTime seachDate){
+        log.info("DemandeCessionService:findDemandeCessionByDate searching ......");
+        LocalDateTime seachDemandeCessionByDate = seachDate.truncatedTo(ChronoUnit.MINUTES);
+
+        return demandecessionRepository
+                .findDemandeCessionByDate(seachDemandeCessionByDate)
                 .stream()
                 .map(cessionMapper::asDTO)
                 .collect(Collectors.toList());

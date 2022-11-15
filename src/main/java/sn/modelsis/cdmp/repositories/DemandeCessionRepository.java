@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.repositories;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -47,11 +48,16 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
                                            @Param("statutLibelle") String statutLibelle);
 
 
-
     @Query("select p from DemandeCession as p where" +
             " (:statutLibelle is null or p.statut.libelle like %:statutLibelle%) ")
     List<DemandeCession> findByLibelleStatutDemande(@Param("statutLibelle") String statutLibelle);
 
+
+    @Query("select p from DemandeCession as p where p.dateDemandeCession = :demandeDate")
+    List<DemandeCession> findDemandeCessionByDate(@Param("demandeDate") LocalDateTime demandeDate);
+
+
+//@Query("select * from demandecession where datedemandecession='2022-11-15 12:32:27.869177';")
 
 //    @Query(value = "SELECT e FROM EmployeeProjectView as e WHERE e.employeeId=:employeeId and (:inputString is null or e.lastName like %:inputString% ) and " +
 //            "(:inputString is null or e.firstName like %:inputString%) and (:inputString is null or concat(e.projectId,'') like %:inputString%) and " +
@@ -60,9 +66,5 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
 //    )
 //    Page<EmployeeProjectView> findAllByInputString(Long employeeId, String inputString, Pageable pageable);
 
-//    @Query("select p from DemandeCession  p where p.bonEngagement.reference=:referenceBE and p.numeroDemande=:numeroDemande")
-//    List<DemandeCession> findByReferenceBEAndNumeroDemande(@Param("referenceBE") String referenceBE ,@Param("numeroDemande") String numeroDemande);
 
-//    @Query("select p from DemandeCession  p where p.bonEngagement.reference=:referenceBE")
-//    List<DemandeCession> findByReferenceBE(@Param("referenceBE") String referenceBE);
 }
