@@ -59,10 +59,10 @@ public class PmeServiceImpl implements PmeService {
       log.info("PmeService:savePme .....");
 
       Optional<Pme> optional = Optional.ofNullable(pmeRepository.findByMail(pme.getEmail()));
-       ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
+    //   ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
 
        optional = pmeRepository.findByPhone(pme.getTelephonePME());
-      ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
+    //  ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
 
       newPme = pmeRepository.saveAndFlush(pme);
       log.debug("PmeService:savePme received from database : {}",newPme);

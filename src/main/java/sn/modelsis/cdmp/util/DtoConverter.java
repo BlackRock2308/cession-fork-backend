@@ -52,10 +52,12 @@ public class DtoConverter {
 	}
 
 	public static ObservationDto convertToDto(Observation observation) {
-		ObservationDto observationDto = null;
+		ObservationDto observationDto = new ObservationDto();
 		if (null != observation) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			observationDto = modelMapper.map(observation, ObservationDto.class);
+			observationDto.setDemandeid(observation.getDemande().getIdDemande());
+			observationDto.setUtilisateurid(observation.getUtilisateur().getIdUtilisateur());
 		}
 		return observationDto;
 	}

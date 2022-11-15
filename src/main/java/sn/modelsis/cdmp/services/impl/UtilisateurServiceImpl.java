@@ -12,10 +12,10 @@ import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
-import sn.modelsis.cdmp.security.dto.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.Constants;
@@ -43,7 +43,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     final private RoleRepository roleRepository ;
 
-    final private String sendMail=Constants.SEND_MAIL ;
+    final private String sendMail=Constants.SEND_MAIL_WITH_TEMPLATE ;
 
     @Value("${server.notification}")
     private String HOST_NOTIFICATION ;
@@ -112,7 +112,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         creationComptePmeDto.getEmailMessageWithTemplate().getTemplateVariable().put("codePin",codePin);
         creationComptePmeDto.getEmailMessageWithTemplate().getTemplateVariable().put("username",email);
         pme.setUtilisateur(utilisateurRepository.save(utilisateur));
-        restTemplateUtil.post(HOST_NOTIFICATION+sendMail , creationComptePmeDto.getEmailMessageWithTemplate());
+        restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail , creationComptePmeDto.getEmailMessageWithTemplate());
         return DtoConverter.convertToDto(pme) ;
     }
 
@@ -132,7 +132,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setPassword(passwordEncoder.encode(password));
         utilisateur.setUpdatePassword(true);
         utilisateurRepository.save(utilisateur);
-        EmailMessageWithTemplate response = restTemplateUtil.post(HOST_NOTIFICATION+sendMail , emailMessageWithTemplate);
+        EmailMessageWithTemplate response = restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail , emailMessageWithTemplate);
         return response ;
     }
 
