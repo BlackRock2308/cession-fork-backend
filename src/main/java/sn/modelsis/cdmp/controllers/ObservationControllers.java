@@ -72,8 +72,8 @@ public class ObservationControllers {
       int listeSize = observationList.size() -1;
       return ResponseEntity.status(HttpStatus.OK)
           .body(DtoConverter.convertToDto(observationList.get(listeSize)));
-
 }
+
     @GetMapping
     public ResponseEntity<List<ObservationDto>> getAllObservations(
         HttpServletRequest request) {
