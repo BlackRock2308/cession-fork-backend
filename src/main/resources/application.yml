@@ -2,7 +2,7 @@ server:
   port: 8081
   document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
   notification: ${HOST:http://localhost:8087}
-  email_cdmp: financeislamique@modelsis.sn
+  email_cdmp: notifications-wootoo-@modelsis.sn
 spring:
   sql:
     init:

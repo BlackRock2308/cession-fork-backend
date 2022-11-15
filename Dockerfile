@@ -7,5 +7,5 @@ RUN mvn clean install -Dmaven.test.skip=true
 
 FROM openjdk:11
 WORKDIR /app
-COPY --from=builder /opt/app/target/wootoo.jar /app/wootoo.jar
-ENTRYPOINT ["java", "-jar", "wootoo.jar"]
+COPY --from=builder /opt/app/target/wootoo-back.jar /app/wootoo-back.jar
+ENTRYPOINT ["java", "-jar", "wootoo-back.jar"]
