@@ -148,6 +148,7 @@ public class UtilisateurController {
             listeRole.add(roleRepository.save(role));
         });
         utilisateurDto.setUpdatePassword(true);
+        utilisateurDto.setUpdateCodePin(true);
         utilisateurDto.setPassword(passwordEncoder.encode(utilisateurDto.getPassword()));
         Utilisateur result = utilisateurService.save(DtoConverter.convertToEntity(utilisateurDto));
 

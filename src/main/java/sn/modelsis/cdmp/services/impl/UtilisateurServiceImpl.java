@@ -105,6 +105,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         String password = util.generateRandomPassword(8);
         int codePin = (int) (Math.random()*(9999-1003)+1002);
         utilisateur.setUpdatePassword(true);
+        utilisateur.setUpdateCodePin(true);
         utilisateur.setPassword(passwordEncoder.encode(password));
         utilisateur.setEmail(email);
         utilisateur.setCodePin(Integer.toString(codePin));

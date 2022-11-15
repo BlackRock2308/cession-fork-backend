@@ -37,6 +37,8 @@ public class UtilisateurDto {
 
     private boolean updatePassword;
 
+    private boolean updateCodePin;
+
     // private Set<RoleUtilisateur> rolesUtilisateurs ;
 
 
