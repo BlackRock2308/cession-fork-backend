@@ -66,7 +66,10 @@ public interface DemandeCessionService {
 
     List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande);
 
-    List<DemandeCessionDto> findDemandeCessionByDemande(String referenceBE,
+    List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                         String numeroDemande,
-                                                        String nomMarche);
+                                                        String nomMarche,
+                                                        String statutLibelle);
+
+    List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle);
 }
