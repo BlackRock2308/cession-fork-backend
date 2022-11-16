@@ -368,11 +368,18 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         log.info("DemandeCessionService:findDemandeCessionByDate searching ......");
         LocalDateTime seachDemandeCessionByDate = seachDate.truncatedTo(ChronoUnit.MINUTES);
 
+//        return demandecessionRepository
+//                .findDemandeCessionByDate(seachDemandeCessionByDate)
+//                .stream()
+//                .map(cessionMapper::asDTO)
+//                .collect(Collectors.toList());
+
         return demandecessionRepository
-                .findDemandeCessionByDate(seachDemandeCessionByDate)
+                .findDemandeCessionByDateDemandeCession(seachDemandeCessionByDate)
                 .stream()
                 .map(cessionMapper::asDTO)
                 .collect(Collectors.toList());
+
     }
 
 }

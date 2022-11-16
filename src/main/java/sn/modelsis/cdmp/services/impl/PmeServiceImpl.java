@@ -58,9 +58,6 @@ public class PmeServiceImpl implements PmeService {
     try {
       log.info("PmeService:savePme , saving.....");
 
-      Optional<Pme> optional = pmeRepository.findByPhone(pme.getTelephonePME());
-      ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
-
       newPme = pmeRepository.saveAndFlush(pme);
       log.debug("PmeService:savePme received from database : {}",newPme);
 

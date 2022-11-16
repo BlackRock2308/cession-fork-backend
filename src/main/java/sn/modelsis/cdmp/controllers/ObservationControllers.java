@@ -62,15 +62,24 @@ public class ObservationControllers {
       
     }
 
+  @GetMapping("/last-observation/{id}")
+  public ResponseEntity<ObservationDto> getLastObservation(
+      @PathVariable Long id) {
+    List<Observation> observationList;
+    observationList = observationService.findObservationsByDemandeCession(id);
+    if (observationList == null)
+      throw new CustomException("We can not find the Observation");
+      int listeSize = observationList.size() -1;
+      return ResponseEntity.status(HttpStatus.OK)
+          .body(DtoConverter.convertToDto(observationList.get(listeSize)));
+}
+
     @GetMapping
     public ResponseEntity<List<ObservationDto>> getAllObservations(
         HttpServletRequest request) {
      List<Observation> observations =
           observationService.findAll();
       log.info("All observations .");
-        List<Observation> observationList = observationService.findObservationsByDemandeCession(1L);
-        var x =2;
-        log.info("All observations .");
        return ResponseEntity.status(HttpStatus.OK).body(observations.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
 
     }
