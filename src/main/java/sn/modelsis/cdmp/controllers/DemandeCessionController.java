@@ -289,7 +289,7 @@ public class DemandeCessionController {
     }
 
     /* ************************ Search by Date de Deamnde de Cession ************************ */
-    @GetMapping("/dateSearch")
+    @GetMapping("/searchByLocalDate/dateSearch")
     public ResponseEntity<List<DemandeCessionDto>> findDemandeCessionByDate(
             @RequestParam("dateSearch")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateSearch){
@@ -298,7 +298,7 @@ public class DemandeCessionController {
 
         log.info("DemandeCessionController:findDemandeCessionByDate: Date : {}",dateSearch);
         List<DemandeCessionDto> demandeList = demandeCessionService
-                .findDemandeCessionByDate(dateSearch);
+                .findDemandeCessionByLocalDateTime(dateSearch);
         log.info("DemandeCessionController:findDemandeCessionByDate: Date : {}",dateSearch);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);

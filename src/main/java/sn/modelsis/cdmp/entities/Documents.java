@@ -50,7 +50,7 @@ public class Documents implements Serializable {
   @Column(name = "url_file")
   private String urlFile;
 
-  @Column(name = "provenance")
+  @Column(name = "provenance", updatable = false)
   private String provenance;
   
   @Column(name = "nom")
@@ -60,7 +60,7 @@ public class Documents implements Serializable {
   @Column(name = "typeDocument")
   private TypeDocument typeDocument;
 
-  @Column(name = "id_provenance")
+  @Column(name = "id_provenance", updatable = false)
   private Long idprovenance;
 
 }

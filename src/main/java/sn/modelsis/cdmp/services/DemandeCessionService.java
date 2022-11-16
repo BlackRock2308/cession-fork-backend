@@ -75,6 +75,6 @@ public interface DemandeCessionService {
     List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle);
 
 
-    List<DemandeCessionDto> findDemandeCessionByDate(LocalDateTime seachDate);
+    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime seachDate);
 
 }
