@@ -83,7 +83,7 @@ public class PersitUsers {
         dg.setEmail("dg@gmail.com");
         dg.setRoles(dgRoles);
 
-        utilisateurRepository.save(dg);
+       // utilisateurRepository.save(dg);
 
         Utilisateur pme = new Utilisateur();
         pme.setAdresse("Mermoz");
@@ -101,7 +101,7 @@ public class PersitUsers {
         drc.setEmail("drc@gmail.com");
         drc.setRoles(cgrRoles);
 
-        utilisateurRepository.saveAndFlush(drc);
+        //utilisateurRepository.saveAndFlush(drc);
 
         Utilisateur juriste = new Utilisateur();
         juriste.setAdresse("Mermoz");
@@ -111,7 +111,7 @@ public class PersitUsers {
         juriste.setEmail("juriste@gmail.com");
         juriste.setRoles(juristeRoles);
 
-        utilisateurRepository.saveAndFlush(juriste);
+       // utilisateurRepository.saveAndFlush(juriste);
         
         Utilisateur dsear = new Utilisateur();
         dsear.setAdresse("Mermoz");
@@ -121,7 +121,7 @@ public class PersitUsers {
         dsear.setEmail("dsear@gmail.com");
         dsear.setRoles(dsearRoles);
 
-        utilisateurRepository.saveAndFlush(dsear);
+       // utilisateurRepository.saveAndFlush(dsear);
 
         Utilisateur daf = new Utilisateur();
         daf.setAdresse("Mermoz");
@@ -131,7 +131,7 @@ public class PersitUsers {
         daf.setEmail("daf@gmail.com");
         daf.setRoles(dafRoles);
 
-        utilisateurRepository.saveAndFlush(daf);
+      //  utilisateurRepository.saveAndFlush(daf);
         
         Utilisateur ordonnateur = new Utilisateur();
         ordonnateur.setAdresse("Mermoz");
@@ -141,7 +141,7 @@ public class PersitUsers {
         ordonnateur.setEmail("ordonnateur@gmail.com");
         ordonnateur.setRoles(ordonnateurRoles);
 
-        utilisateurRepository.saveAndFlush(ordonnateur);
+      //  utilisateurRepository.saveAndFlush(ordonnateur);
 
 
         LocalDateTime date = LocalDateTime.now();
@@ -155,7 +155,7 @@ public class PersitUsers {
         pme1.setActivitePrincipale("Solution Cloud and Big Data");
         pme1.setDateAdhesion(date);
         pme1.setUtilisateur(pme);
-        pmeRepository.save(pme1);
+      //  pmeRepository.save(pme1);
 
 
 
