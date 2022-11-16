@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.controllers;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -246,33 +247,54 @@ public class DemandeCessionController {
     }
 
 
-    @GetMapping("search/{numeroDemande}")
-    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByParameters(
-            @PathVariable("numeroDemande") String numeroDemande){
-        log.info("DemandeCessionController:searchDemandeCessionByParameters request started");
-
-        List<DemandeCessionDto> demandeList = demandeCessionService
-                .findDemandeCessionByMultipleCritere(numeroDemande);
-        log.info("DemandeCessionController:searchDemandeCessionByParameters request params : {}",numeroDemande);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList);
-    }
-
     /* ************* Search by ReferenceBR, numeroDemande, nomMarche, statutLibelle ************* */
 
-    @GetMapping("searchByRef/{referenceBE}/{numeroDemande}/{nomMarche}/{statutLibelle}")
-    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByMultipleParams(
-            @PathVariable("referenceBE") String referenceBE,
-            @PathVariable("numeroDemande") String numeroDemande,
-            @PathVariable("nomMarche") String nomMarche,
-            @PathVariable("statutLibelle") String statutLibelle){
+
+
+    @GetMapping("search-by-multi-params")
+    public ResponseEntity<List<DemandeCessionDto>> filterDemandeCessionByMultipleParams(
+            @RequestParam("referenceBE") String referenceBE,
+            @RequestParam("numeroDemande") String numeroDemande,
+            @RequestParam("nomMarche") String nomMarche,
+            @RequestParam("statutLibelle") String statutLibelle,
+            @RequestParam("startDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam("endDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
+
+    ){
         log.info("DemandeCessionController:searchDemandeCessionByMultipleParams request started");
 
-        List<DemandeCessionDto> demandeList = demandeCessionService
-                .findDemandeCessionByMultipleParams(referenceBE, numeroDemande,nomMarche,statutLibelle);
-        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams: referenceBE : {}",referenceBE);
+
+        List<DemandeCessionDto> cessionListByDate = demandeCessionService.findDemandeCessionByLocalDateTime(startDate, endDate);
+        log.info("DemandeCessionService:filterExactDemandeCession cessionListByDate : {} ",cessionListByDate);
+
+
+        List<DemandeCessionDto> cessionListByOthersCriteria = demandeCessionService.findDemandeCessionByMultipleParams(referenceBE,
+                numeroDemande,
+                nomMarche,
+                statutLibelle);
+        log.info("DemandeCessionService:filterExactDemandeCession cessionListByOthersCriteria : {} ",cessionListByOthersCriteria);
+
+        List<DemandeCessionDto> similarities = new ArrayList<>();
+
+        if(!cessionListByOthersCriteria.isEmpty()){
+            similarities = cessionListByOthersCriteria
+                    .stream()
+                    .filter(element -> !cessionListByDate.contains(element))
+                    .collect(Collectors.toList());
+            log.info("Demande similaire based on criteres: {} ",similarities);
+
+        }else{
+            similarities = cessionListByDate;
+            log.info("Demande similaire based Date: {} ",similarities);
+
+        }
+        log.info("DemandeCessionService:filterExactDemandeCession similarities : {} ",similarities);
+
+        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams ----> reulst : {}",similarities);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList);
+                .body(similarities);
     }
 
     /* ************************ Search by Statut Libellé ************************ */
@@ -291,17 +313,55 @@ public class DemandeCessionController {
     /* ************************ Search by Date de Deamnde de Cession ************************ */
     @GetMapping("/searchByLocalDate/dateSearch")
     public ResponseEntity<List<DemandeCessionDto>> findDemandeCessionByDate(
-            @RequestParam("dateSearch")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateSearch){
+            @RequestParam("startDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+
+            @RequestParam("endDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate){
 
         log.info("DemandeCessionController:findDemandeCessionByDate request started");
 
-        log.info("DemandeCessionController:findDemandeCessionByDate: Date : {}",dateSearch);
+        log.info("DemandeCessionController:findDemandeCessionByDate: startDate : {} and endDate : {}",startDate, endDate);
         List<DemandeCessionDto> demandeList = demandeCessionService
-                .findDemandeCessionByLocalDateTime(dateSearch);
-        log.info("DemandeCessionController:findDemandeCessionByDate: Date : {}",dateSearch);
+                .findDemandeCessionByLocalDateTime(startDate, endDate);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
     }
+
+
+
+
+    //    @GetMapping("search-by-multi-params")
+//    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByMultipleParams(
+//            @RequestParam("referenceBE") String referenceBE,
+//            @RequestParam("numeroDemande") String numeroDemande,
+//            @RequestParam("nomMarche") String nomMarche,
+//            @RequestParam("statutLibelle") String statutLibelle
+//
+//            ){
+//        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams request started");
+//
+//        List<DemandeCessionDto> demandeList = demandeCessionService
+//                .findDemandeCessionByMultipleParams(referenceBE, numeroDemande,nomMarche,statutLibelle);
+//        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams: referenceBE : {}",referenceBE);
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(demandeList);
+//    }
+
+
+
+
+    //
+//    @GetMapping("search/{numeroDemande}")
+//    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByParameters(
+//            @PathVariable("numeroDemande") String numeroDemande){
+//        log.info("DemandeCessionController:searchDemandeCessionByParameters request started");
+//
+//        List<DemandeCessionDto> demandeList = demandeCessionService
+//                .findDemandeCessionByMultipleCritere(numeroDemande);
+//        log.info("DemandeCessionController:searchDemandeCessionByParameters request params : {}",numeroDemande);
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(demandeList);
+//    }
 
 }

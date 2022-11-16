@@ -65,7 +65,7 @@ public interface DemandeCessionService {
 
 
 
-    List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande);
+//    List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande);
 
     List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                         String numeroDemande,
@@ -75,6 +75,16 @@ public interface DemandeCessionService {
     List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle);
 
 
-    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime seachDate);
+//    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime seachDate);
+
+    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate,LocalDateTime endDate);
+
+
+
+//    public List<DemandeCessionDto> filterExactDemandeCession(String referenceBE,
+//                                                             String numeroDemande,
+//                                                             String nomMarche,
+//                                                             String statutLibelle,
+//                                                             LocalDateTime seachDate);
 
 }
