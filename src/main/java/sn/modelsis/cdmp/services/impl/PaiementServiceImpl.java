@@ -74,10 +74,6 @@ public class PaiementServiceImpl implements PaiementService {
                 }
             }
         }
-
-        if(! statusLibelle.equals("CONVENTION_GENEREE"))
-            throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION_GENEREE ");
-            //paiement.setDemandeCession(demandeCession);
             paiement.setSoldePME(montantCreance- (montantCreance*decote) );
             paiement.setMontantRecuCDMP(0);
             paiement.setStatutCDMP(statutCDMP);

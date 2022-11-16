@@ -45,5 +45,18 @@ public class PmeDto implements Serializable {
     private String urlImageSignature;
     private Set<DocumentDto> documents ;
 
+    private String  enseigne ;
+    private int cniRepresentant ;
+    private String localite;
+    private int controle;
+    private String activitePrincipale;
+    private String autorisationMinisterielle;
+    private String registre;
+    private Date dateCreation;
+    private int capitalSocial;
+    private int effectifPermanent;
+    private int chiffresDaffaires;
+    private int nombreEtablissementSecondaires;
+
 }
 

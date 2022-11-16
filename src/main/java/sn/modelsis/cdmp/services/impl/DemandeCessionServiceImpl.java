@@ -26,10 +26,7 @@ import sn.modelsis.cdmp.util.ExceptionUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -326,34 +323,33 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(cessionMapper::asDTO);
     }
 
-    @Override
-    public List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande){
-        log.info("DemandeCessionService:findDemandeCessionByMultipleCritere searching ......");
 
-        return demandecessionRepository
-                .findByNumeroDemandeContaining(numeroDemande)
-                .stream()
-                .map(cessionMapper::asDTO)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                                String numeroDemande,
                                                                String nomMarche,
-                                                               String statutLibelle
-                                                                ){
+                                                               String statutLibelle){
         log.info("DemandeCessionService:findDemandeCessionByDemande searching ......");
-//        LocalDateTime startDate = seachDate.minusDays(1);
-//        LocalDateTime endDate = seachDate.plusDays(1);
-
         return demandecessionRepository
                 .findByReferenceBE(referenceBE, numeroDemande,nomMarche,statutLibelle)
                 .stream()
                 .map(cessionMapper::asDTO)
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate, LocalDateTime endDate){
+        log.info("DemandeCessionService:findDemandeCessionByLocalDateTime searching ......");
+//        LocalDateTime startDate = seachDate.minusDays(1);
+//        LocalDateTime endDate = seachDate.plusDays(1);
+        List<DemandeCession> cessionArrayList = demandecessionRepository.findDemandeCessionByMyDate(startDate, endDate);
+        log.info("La liste des demandes filtrées par date est : {}", cessionArrayList);
 
+        return  cessionArrayList
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle){
@@ -368,25 +364,51 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
 
 
-    @Override
-    public List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime seachDate){
-        log.info("DemandeCessionService:findDemandeCessionByLocalDateTime searching ......");
-        LocalDateTime startDate = seachDate.minusDays(1);
-        LocalDateTime endDate = seachDate.plusDays(1);
 
-        List<DemandeCession> cessionArrayList = demandecessionRepository.findDemandeCessionByMyDate(startDate, endDate);
 
-        log.info("La liste des demandes filtrées par date est : {}", cessionArrayList);
-
-        return  cessionArrayList
-                .stream()
-                .map(cessionMapper::asDTO)
-                .collect(Collectors.toList());
-
-    }
+//    @Override
+//    public List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande){
+//        log.info("DemandeCessionService:findDemandeCessionByMultipleCritere searching ......");
+//
+//        return demandecessionRepository
+//                .findByNumeroDemandeContaining(numeroDemande)
+//                .stream()
+//                .map(cessionMapper::asDTO)
+//                .collect(Collectors.toList());
+//    }
 
 
 
+
+
+//    @Override
+//    public List<DemandeCessionDto> filterExactDemandeCession(String referenceBE,
+//                                                             String numeroDemande,
+//                                                             String nomMarche,
+//                                                             String statutLibelle,
+//                                                             LocalDateTime seachDate){
+//
+//        log.info("DemandeCessionService:filterExactDemandeCession searching ......");
+//
+//        List<DemandeCessionDto> cessionListByDate = findDemandeCessionByLocalDateTime(seachDate);
+//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByDate : {} ",cessionListByDate);
+//
+//        List<DemandeCessionDto> cessionListByOthersCriteria = findDemandeCessionByMultipleParams(referenceBE,
+//                    numeroDemande,
+//                    nomMarche,
+//                    statutLibelle);
+//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByOthersCriteria : {} ",cessionListByOthersCriteria);
+//
+//        List<DemandeCessionDto> similarDemande = cessionListByDate;
+//
+//
+//        similarDemande.retainAll( cessionListByOthersCriteria );
+//
+//        log.info("DemandeCessionService:filterExactDemandeCession similarDemande : {} ",similarDemande);
+//
+//
+//        return similarDemande;
+//    }
 
 
 }
