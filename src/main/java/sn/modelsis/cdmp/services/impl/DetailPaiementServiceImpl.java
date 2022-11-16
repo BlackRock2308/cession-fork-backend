@@ -48,6 +48,7 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
         detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
         Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
         Statut statut = statutRepository.findByCode("PME_PARTIELLEMENT_PAYEE");
+        Statut statutEnd = statutRepository.findByCode("PME_TOTALEMENT_PAYEE");
         paiement.setStatutPme(statut);
         DetailPaiement detailPaiementSaved = detailPaiementRepository.save(detailPaiement);
         detailPaiement.setPaiement(paiement);
@@ -66,6 +67,7 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
         detailPaiement.setTypepaiement(TypePaiement.SICA_CDMP);
         Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
         Statut statut = statutRepository.findByCode("CDMP_PARTIELLEMENT_PAYEE");
+        Statut statutEnd = statutRepository.findByCode("CDMP_TOTALEMENT_PAYEE");
         paiement.setStatutCDMP(statut);
         detailPaiement.setPaiement(paiement);
         DetailPaiement detailPaiementSaved = detailPaiementRepository.save(detailPaiement);
