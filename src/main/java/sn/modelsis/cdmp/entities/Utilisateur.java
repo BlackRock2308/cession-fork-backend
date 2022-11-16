@@ -58,8 +58,8 @@ public class Utilisateur implements Serializable {
    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private Set<Role> roles ;
 
-   @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   private Set<Observation> observations = new HashSet<>();
+ //  @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+ //  private Set<Observation> observations = new HashSet<>();
 //
 //   @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //   private Set<Convention> conventions = new HashSet<>();
