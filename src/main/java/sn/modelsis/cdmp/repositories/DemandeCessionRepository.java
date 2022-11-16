@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Pme;
@@ -40,6 +41,7 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
             " (:referenceBE is null or p.bonEngagement.reference like %:referenceBE%) " +
             "or (:numeroDemande is null or p.numeroDemande like %:numeroDemande% )" +
             "or (:nomMarche is null or p.bonEngagement.nomMarche like %:nomMarche%)" +
+            "or (:statutLibelle is null or p.statut.libelle like %:statutLibelle%) " +
             "or (:statutLibelle is null or p.statut.libelle like %:statutLibelle%) "
     )
     List<DemandeCession> findByReferenceBE(@Param("referenceBE") String referenceBE,
@@ -47,25 +49,13 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
                                            @Param("nomMarche") String nomMarche,
                                            @Param("statutLibelle") String statutLibelle);
 
+    @Query("select p from DemandeCession as p where p.dateDemandeCession between :startDate and :endDate")
+    List<DemandeCession> findDemandeCessionByMyDate(@Param("startDate") LocalDateTime startDate,@Param("endDate") LocalDateTime endDate);
+
+    List<DemandeCession> findDemandeCessionByDateDemandeCessionBetween(@Param("startDate") LocalDateTime startDate,@Param("endDate") LocalDateTime endDate);
 
     @Query("select p from DemandeCession as p where" +
             " (:statutLibelle is null or p.statut.libelle like %:statutLibelle%) ")
     List<DemandeCession> findByLibelleStatutDemande(@Param("statutLibelle") String statutLibelle);
-
-
-    @Query("select p from DemandeCession as p where p.dateDemandeCession = :demandeDate")
-    List<DemandeCession> findDemandeCessionByDate(@Param("demandeDate") LocalDateTime demandeDate);
-
-
-    List<DemandeCession> findDemandeCessionByDateDemandeCession(@Param("demandeDate") LocalDateTime demandeDate);
-//@Query("select * from demandecession where datedemandecession='2022-11-15 12:32:27.869177';")
-
-//    @Query(value = "SELECT e FROM EmployeeProjectView as e WHERE e.employeeId=:employeeId and (:inputString is null or e.lastName like %:inputString% ) and " +
-//            "(:inputString is null or e.firstName like %:inputString%) and (:inputString is null or concat(e.projectId,'') like %:inputString%) and " +
-//            " (:inputString is null or e.projectName like %:inputString%) and  (:inputString is null or concat(e.projectBudget,'') like %:inputString%) and "+
-//            " (:inputString is null or e.projectLocation like %:inputString%)"
-//    )
-//    Page<EmployeeProjectView> findAllByInputString(Long employeeId, String inputString, Pageable pageable);
-
 
 }
