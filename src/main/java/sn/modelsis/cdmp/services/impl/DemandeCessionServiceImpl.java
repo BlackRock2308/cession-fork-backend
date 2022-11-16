@@ -341,8 +341,11 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     public List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                                String numeroDemande,
                                                                String nomMarche,
-                                                               String statutLibelle){
+                                                               String statutLibelle
+                                                                ){
         log.info("DemandeCessionService:findDemandeCessionByDemande searching ......");
+//        LocalDateTime startDate = seachDate.minusDays(1);
+//        LocalDateTime endDate = seachDate.plusDays(1);
 
         return demandecessionRepository
                 .findByReferenceBE(referenceBE, numeroDemande,nomMarche,statutLibelle)
@@ -363,23 +366,27 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .collect(Collectors.toList());
     }
 
+
+
     @Override
-    public List<DemandeCessionDto> findDemandeCessionByDate(LocalDateTime seachDate){
-        log.info("DemandeCessionService:findDemandeCessionByDate searching ......");
-        LocalDateTime seachDemandeCessionByDate = seachDate.truncatedTo(ChronoUnit.MINUTES);
+    public List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime seachDate){
+        log.info("DemandeCessionService:findDemandeCessionByLocalDateTime searching ......");
+        LocalDateTime startDate = seachDate.minusDays(1);
+        LocalDateTime endDate = seachDate.plusDays(1);
 
-//        return demandecessionRepository
-//                .findDemandeCessionByDate(seachDemandeCessionByDate)
-//                .stream()
-//                .map(cessionMapper::asDTO)
-//                .collect(Collectors.toList());
+        List<DemandeCession> cessionArrayList = demandecessionRepository.findDemandeCessionByMyDate(startDate, endDate);
 
-        return demandecessionRepository
-                .findDemandeCessionByDateDemandeCession(seachDemandeCessionByDate)
+        log.info("La liste des demandes filtrées par date est : {}", cessionArrayList);
+
+        return  cessionArrayList
                 .stream()
                 .map(cessionMapper::asDTO)
                 .collect(Collectors.toList());
 
     }
+
+
+
+
 
 }
