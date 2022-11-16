@@ -47,6 +47,9 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
 
         detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
         Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
+       if(paiement==null)
+           throw new CustomException("payement not found");
+        paiement.setSoldePME(paiement.getSoldePME()-detailPaiement.getMontant());
         Statut statut = statutRepository.findByCode("PME_PARTIELLEMENT_PAYEE");
         Statut statutEnd = statutRepository.findByCode("PME_TOTALEMENT_PAYEE");
         paiement.setStatutPme(statut);
@@ -54,7 +57,6 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
         detailPaiement.setPaiement(paiement);
         paiement.getDetailPaiements().add(detailPaiementSaved);
         Paiement paiementSaved  = paiementService.savePaiement(paiement);
-
         if(paiementSaved==null)
             throw new CustomException("erreur lors de l'ajout du detail de paiement");
        // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
@@ -66,8 +68,11 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
 
         detailPaiement.setTypepaiement(TypePaiement.SICA_CDMP);
         Paiement paiement = paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
+        if(paiement==null)
+            throw new CustomException("payment not found ");
         Statut statut = statutRepository.findByCode("CDMP_PARTIELLEMENT_PAYEE");
         Statut statutEnd = statutRepository.findByCode("CDMP_TOTALEMENT_PAYEE");
+        paiement.setMontantRecuCDMP(paiement.getMontantRecuCDMP()+detailPaiement.getMontant());
         paiement.setStatutCDMP(statut);
         detailPaiement.setPaiement(paiement);
         DetailPaiement detailPaiementSaved = detailPaiementRepository.save(detailPaiement);
