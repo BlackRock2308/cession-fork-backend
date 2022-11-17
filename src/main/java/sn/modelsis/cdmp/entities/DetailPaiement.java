@@ -39,7 +39,7 @@ public class DetailPaiement implements Serializable {
     @Column(name = "comptable")
     private String comptable;
 
-    @Column(name = "montant")
+    @Column(name = "montant",nullable = false)
     private double montant;
 
     @Column(name = "reference")

@@ -18,6 +18,7 @@ import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypePaiement;
+import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMPDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPMEDto;
@@ -75,8 +76,8 @@ public class PaiementServiceImpl implements PaiementService {
             }
         }
 
-        if(! statusLibelle.equals("CONVENTION_ACCEPTEE"))
-            throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
+        //if(! statusLibelle.equals("CONVENTION_ACCEPTEE"))
+          //  throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
             //paiement.setDemandeCession(demandeCession);
             paiement.setSoldePME(montantCreance- (montantCreance*decote) );
             paiement.setMontantRecuCDMP(0);
