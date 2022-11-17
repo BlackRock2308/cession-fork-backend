@@ -61,6 +61,7 @@ public class PaiementServiceImpl implements PaiementService {
         Statut statutPme = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
         Paiement paiement = DtoConverter.convertToEntity(paiementDto);
         BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
+        double montantCreanceInitial = bonEngagement.getMontantCreance();
         double montantCreance=bonEngagement.getMontantCreance();
         double decote = 0 ;
         Set<Convention> conventions=  demandeCession.getConventions();
@@ -75,14 +76,16 @@ public class PaiementServiceImpl implements PaiementService {
                 }
             }
         }
-
+            //TODO
         //if(! statusLibelle.equals("CONVENTION_ACCEPTEE"))
-          //  throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
-            //paiement.setDemandeCession(demandeCession);
+         //  throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
+            paiement.setDemandeCession(demandeCession);
             paiement.setSoldePME(montantCreance- (montantCreance*decote) );
             paiement.setMontantRecuCDMP(0);
+            paiement.setMontantCreance(paiement.getSoldePME());
             paiement.setStatutCDMP(statutCDMP);
             paiement.setStatutPme(statutPme);
+            paiement.setMontantCreanceInitial(montantCreanceInitial);
             demandeCession.setStatut(newDemandeStatus);
             demandeCession.setPaiement(paiement);
             demandeCessionRepository.save(demandeCession);

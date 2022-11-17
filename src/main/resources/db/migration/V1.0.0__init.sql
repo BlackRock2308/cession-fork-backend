@@ -179,7 +179,8 @@ CREATE TABLE public.paiement (
       montantCreance FLOAT (40),
       statutCDMPid bigint,
       statutPmeid bigint,
-      montantRecuCdmp FLOAT (40)
+      montantRecuCdmp FLOAT (40),
+      montant_creance_initial FLOAT (40)
 );
 
 

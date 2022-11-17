@@ -49,16 +49,17 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
   @Override
   public DetailPaiement paiementPME(DetailPaiement detailPaiement) {
 
+    double montant = detailPaiement.getMontant();
+    if(montant<=0)
+      throw new CustomException("Le montant doit etre supérieur a ZERO");
     detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
     Paiement paiement =
         paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
     if (paiement == null) throw new CustomException("payement not found");
     double soldePme = paiement.getSoldePME();
-    double montant = detailPaiement.getMontant();
     if(soldePme<montant)
       throw new CustomException("Erreur Revoir le montant de paiment il doit etre inferieur au Solde du PME ");
     paiement.setSoldePME(paiement.getSoldePME() - detailPaiement.getMontant());
-
     Statut statut = statutRepository.findByCode("PME_PARTIELLEMENT_PAYEE");
     Statut statutEnd = statutRepository.findByCode("PME_TOTALEMENT_PAYEE");
     paiement.setStatutPme(statut);
@@ -76,16 +77,23 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
 
   @Override
   public DetailPaiement paiementCDMP(DetailPaiement detailPaiement) {
-
+    double montant = detailPaiement.getMontant();
+    if(montant<=0)
+      throw new CustomException("Le montant doit etre supérieur a ZERO");
     detailPaiement.setTypepaiement(TypePaiement.SICA_CDMP);
     Paiement paiement =
         paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
     if (paiement == null) throw new CustomException("payment not found ");
     Statut statut = statutRepository.findByCode("CDMP_PARTIELLEMENT_PAYEE");
     Statut statutEnd = statutRepository.findByCode("CDMP_TOTALEMENT_PAYEE");
-    paiement.setMontantRecuCDMP(paiement.getMontantRecuCDMP() + detailPaiement.getMontant());
+    double montantRecuCDMP = paiement.getMontantRecuCDMP();
+    double montantCreanceInitial = paiement.getMontantCreanceInitial();
+    if(montant>montantCreanceInitial || montantCreanceInitial< montantRecuCDMP+montant)
+      throw new CustomException("Erreur Revoir le montant de paiment il doit etre inferieur au montant de creance ");
+    paiement.setMontantRecuCDMP(paiement.getMontantRecuCDMP() + montant);
     paiement.setStatutCDMP(statut);
-    Set<DetailPaiement> detailPaiements = paiement.getDetailPaiements();
+    if(montantRecuCDMP+montant == paiement.getMontantCreanceInitial())
+      paiement.setStatutCDMP(statutEnd);
     detailPaiement.setPaiement(paiement);
     DetailPaiement detailPaiementSaved = detailPaiementRepository.save(detailPaiement);
     paiement.getDetailPaiements().add(detailPaiementSaved);
