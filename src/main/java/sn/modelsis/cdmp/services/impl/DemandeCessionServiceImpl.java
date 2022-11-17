@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.services.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -240,10 +241,11 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
-    public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
+    public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String[] statuts) {
         log.info("DemandeCessionService:findAllByStatut .....");
+
         return demandecessionRepository
-                .findAllByStatut_Libelle(pageable,statut)
+                .findAllByStatut_LibelleIn(pageable,statuts)
                 .map(cessionMapper::asDTO);
     }
 
