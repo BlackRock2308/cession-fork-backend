@@ -52,7 +52,7 @@ public interface DemandeCessionService {
 
 //    Page<DemandeCessionDto> findAllDemandeComplementRequis(Pageable pageable);
 
-    Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut);
+    Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String[] statuts);
 
 
    List<StatistiqueDemandeCession>  getStatistiqueDemandeCession(int anne);

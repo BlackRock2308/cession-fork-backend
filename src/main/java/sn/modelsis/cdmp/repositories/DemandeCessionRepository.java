@@ -21,6 +21,8 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
 
      Page<DemandeCession> findAllByStatut_Libelle(org.springframework.data.domain.Pageable pageable, String statut);
 
+    Page<DemandeCession> findAllByStatut_LibelleIn(org.springframework.data.domain.Pageable pageable, String[] statuts);
+
      List<DemandeCession> findAllByPmeIdPME(Long id);
 
     Page<DemandeCession> findAllByPmeIdPME(org.springframework.data.domain.Pageable pageable, Long id);

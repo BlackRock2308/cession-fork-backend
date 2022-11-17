@@ -169,9 +169,9 @@ public class DemandeCessionController {
 
 
     @GetMapping(value="bystatut")
-    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatut(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String statut,
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatut(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String[] statuts,
                                                                                 HttpServletRequest request) {
-        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatut(pageable,statut);
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatut(pageable,statuts);
         log.info("Fetching All Deamndes Cession ....");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
