@@ -30,6 +30,8 @@ public class PaiementDto implements Serializable {
 
     private double montantCreance;
 
+    private double montantCreanceInitial;
+
     private StatutDto statutCDMP;
 
     private StatutDto statutPme;
