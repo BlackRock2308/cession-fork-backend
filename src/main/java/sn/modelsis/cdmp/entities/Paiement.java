@@ -51,8 +51,14 @@ public class Paiement implements Serializable {
     @JoinColumn(name = "demandeCessionid")
     private DemandeCession demandeCession;
 
+    private String nomMarche;
+
+    private String raisonSocial;
 
     private double montantCreance;
+
+    @Column(name = "montant_creance_initial")
+    private double montantCreanceInitial;
 
     @OneToMany(mappedBy = "paiement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DetailPaiement> detailPaiements = new HashSet<>();
