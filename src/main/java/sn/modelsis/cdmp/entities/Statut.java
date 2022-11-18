@@ -25,10 +25,10 @@ public class Statut implements Serializable {
     @Column(name = "id")
     private Long idStatut;
     
-    @Column(name = "code")
+    @Column(name = "code",unique = true)
     private String code;
 
-    @Column(name = "libelle")
+    @Column(name = "libelle",unique = true)
     private String libelle;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "statut")

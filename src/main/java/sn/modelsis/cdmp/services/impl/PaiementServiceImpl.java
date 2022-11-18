@@ -76,11 +76,11 @@ public class PaiementServiceImpl implements PaiementService {
                 }
             }
         }
-            //TODO
-        //if(! statusLibelle.equals("CONVENTION_ACCEPTEE"))
-         //  throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
-            paiement.setDemandeCession(demandeCession);
-            paiement.setSoldePME(montantCreance- (montantCreance*decote) );
+        if(! statusLibelle.equals("CONVENTION_ACCEPTEE"))
+          throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
+        paiement.setDemandeCession(demandeCession);
+
+        paiement.setSoldePME(montantCreance- (montantCreance*decote) );
             paiement.setMontantRecuCDMP(0);
             paiement.setMontantCreance(paiement.getSoldePME());
             paiement.setStatutCDMP(statutCDMP);

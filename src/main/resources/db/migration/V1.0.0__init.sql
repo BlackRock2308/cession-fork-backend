@@ -178,6 +178,8 @@ CREATE TABLE public.paiement (
       soldePme FLOAT (40),
       montantCreance FLOAT (40),
       statutCDMPid bigint,
+      raisonSocial character varying(100),
+      nomMarche   character varying(100),
       statutPmeid bigint,
       montantRecuCdmp FLOAT (40),
       montant_creance_initial FLOAT (40)

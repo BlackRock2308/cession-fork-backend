@@ -51,6 +51,9 @@ public class Paiement implements Serializable {
     @JoinColumn(name = "demandeCessionid")
     private DemandeCession demandeCession;
 
+    private String nomMarche;
+
+    private String raisonSocial;
 
     private double montantCreance;
 
