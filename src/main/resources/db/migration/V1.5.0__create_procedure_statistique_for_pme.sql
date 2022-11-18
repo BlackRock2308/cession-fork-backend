@@ -66,7 +66,7 @@ cumulMontant  NUMERIC;
 BEGIN
 
 SELECT SUM(dP.montant)  FROM
-    public.detailsPaiement AS dP  INNER JOIN  public.demandeCession AS dC ON  dC.id=dP.paiementid
+    public.detailsPaiement AS dP  INNER JOIN  public.demandeCession AS dC ON  dC.paiementid=dP.paiementid
     WHERE dP.typePaiement = 'CDMP_PME' AND dC.pmeid = idPME AND
     dP.datePaiement BETWEEN monthPaiement AND (monthPaiement + interval '1 month')
     INTO STRICT cumulMontant;
