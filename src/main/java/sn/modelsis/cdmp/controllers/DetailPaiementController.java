@@ -57,10 +57,9 @@ public class DetailPaiementController {
     public ResponseEntity<DetailPaiementDto> addDetailPaiementPME(@RequestBody DetailPaiementDto detailPaiementDto,
                                                             HttpServletRequest request) {
         log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
-
         DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
         log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
-        DetailPaiement result = detailPaiementService.getPaiement(detailPaiement);
+        DetailPaiement result = detailPaiementService.paiementPME(detailPaiement);
         log.info("DetailPaiement create. Id:{} ");
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
@@ -152,32 +151,16 @@ public class DetailPaiementController {
     public ResponseEntity<Set<DetailPaiementDto>> getDetailPaiementSICA_CDMP(
             @PathVariable Long id,
             HttpServletRequest request) {
-        Paiement paiement = paiementService.getPaiement(id).orElse(null);
-        if (paiement==null)
-            throw new CustomException("Le paiement n'existe pas");
-        Set<DetailPaiement> detailPaiements= paiement.getDetailPaiements();
-        Set<DetailPaiementDto> sortDetailPaiements= new HashSet<>();
-        for (DetailPaiement detailPaiement:detailPaiements ) {
-            if (detailPaiement.getTypepaiement().name().equals("SICA_CDMP"))
-                sortDetailPaiements.add(DtoConverter.convertToDto(detailPaiement));
-        }
-        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
-        return ResponseEntity.status(HttpStatus.OK).body(sortDetailPaiements);
+        Set<DetailPaiementDto> sortedDetailPaiements =  detailPaiementService.getDetailPaiementByTypePaiement(id,"SICA_CDMP");
+        log.info("Paiement . demandeId:{}");
+        return ResponseEntity.status(HttpStatus.OK).body(sortedDetailPaiements);
     }
 
     @GetMapping(value = "/cdmp-pme/{id}")
     public ResponseEntity<Set<DetailPaiementDto>> getDetailPaiementCDMP_PME(
             @PathVariable Long id) {
-        Paiement paiement = paiementService.getPaiement(id).orElse(null);
-        if (paiement==null)
-            throw new CustomException("Le paiement n'existe pas");
-        Set<DetailPaiement> detailPaiements= paiement.getDetailPaiements();
-        Set<DetailPaiementDto> sortDetailPaiements= new HashSet<>();
-        for (DetailPaiement detailPaiement:detailPaiements ) {
-            if (detailPaiement.getTypepaiement().name().equals("CDMP_PME"))
-                sortDetailPaiements.add(DtoConverter.convertToDto(detailPaiement));
-        }
-        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
-        return ResponseEntity.status(HttpStatus.OK).body(sortDetailPaiements);
+        Set<DetailPaiementDto> sortedDetailPaiements =  detailPaiementService.getDetailPaiementByTypePaiement(id,"CDMP_PME");
+        log.info("Paiement . demandeId:{}");
+        return ResponseEntity.status(HttpStatus.OK).body(sortedDetailPaiements);
     }
 }
