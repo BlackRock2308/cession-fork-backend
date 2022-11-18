@@ -173,6 +173,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
        PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
         log.info("Initialisation des differents profils terminée");
 
+
         PersistBonEngagement PersistBonEngagement = new PersistBonEngagement(bonEngagementService);
         log.info("Initialisation des bon d'engagement");
 

@@ -40,7 +40,9 @@ public class ConventionDto {
   //private boolean activeConvention;
 
   private UtilisateurDto utilisatuerDto;
-  
+
+  private Long utilisatuerId;
+
   private Set<DocumentDto> documents = new HashSet<>();
 
 }
