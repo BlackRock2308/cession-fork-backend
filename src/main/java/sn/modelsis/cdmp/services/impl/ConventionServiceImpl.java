@@ -74,10 +74,11 @@ public class ConventionServiceImpl implements ConventionService{
   }
 
   @Override
+  @Transactional
   public void delete(Long id) {
     log.info("ConventionService:delete deleting convention with id : {}", id);
 
-    conventionRepository.deleteById(id);
+    conventionRepository.deleteConvention(id);
 
   }
   
