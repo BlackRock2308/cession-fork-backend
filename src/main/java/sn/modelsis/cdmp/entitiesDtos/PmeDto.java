@@ -57,6 +57,7 @@ public class PmeDto implements Serializable {
     private int effectifPermanent;
     private int chiffresDaffaires;
     private int nombreEtablissementSecondaires;
+    private Long utilisateurid;
 
 }
 

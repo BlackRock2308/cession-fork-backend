@@ -38,10 +38,17 @@ public interface PaiementService {
         void update(Long idPaiement, double montant, TypePaiement typePaiement);
 
         /**
-         *
+         * @param idMPE
          * @return
          */
-        List<Paiement> findAll();
+        List<Paiement> findAllByPME(Long idMPE);
+
+
+    /**
+     *
+     * @return
+     */
+    List<Paiement> findAll();
 
         /**
          *
