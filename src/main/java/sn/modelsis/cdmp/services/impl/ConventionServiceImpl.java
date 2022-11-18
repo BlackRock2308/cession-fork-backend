@@ -19,11 +19,13 @@ import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.ConventionDocuments;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.ParametrageDecoteService;
+import sn.modelsis.cdmp.util.ExceptionUtils;
 
 /**
  * @author SNDIAGNEF
@@ -48,7 +50,8 @@ public class ConventionServiceImpl implements ConventionService{
         log.info("ConventionService:saving new convention ........");
         newConvention = conventionRepository.save(convention);
       } catch (Exception ex){
-        throw new CustomException("Error");
+      log.error("Exception occured while adding convention. Error message : {}", ex.getMessage());
+        throw new CustomException("Exception occured while adding new convention");
     }
     return newConvention;
 	}
@@ -63,12 +66,17 @@ public class ConventionServiceImpl implements ConventionService{
 
   @Override
   public Optional<Convention> getConvention(Long id) {
+    log.info("ConventionService:getConvention fetching single convention with id : {}", id);
+
     return conventionRepository
-            .findById(id);
+            .findById(id)
+            ;
   }
 
   @Override
   public void delete(Long id) {
+    log.info("ConventionService:delete deleting convention with id : {}", id);
+
     conventionRepository.deleteById(id);
 
   }
@@ -109,24 +117,55 @@ public class ConventionServiceImpl implements ConventionService{
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public Convention updateEntireConvention (Long id,
+  public Convention transmettreConvention (Long id,
                                                  Convention newConvention) {
     Optional <Convention> existingConvention;
     try{
-      log.info("ConventionService:updateEntireConvention updating ........");
+      log.info("ConventionService:transmettreConvention updating ........");
       existingConvention = conventionRepository.findById(id);
 
       existingConvention.get().setValeurDecote(newConvention.getValeurDecote());
       existingConvention.get().setModePaiement(newConvention.getModePaiement());
-     existingConvention.get().setValeurDecoteByDG(newConvention.getValeurDecoteByDG());
+      existingConvention.get().setValeurDecoteByDG(newConvention.getValeurDecoteByDG());
+      existingConvention.get().setActiveConvention(newConvention.isActiveConvention());
+      existingConvention.get().setDateConvention(newConvention.getDateConvention());
+      //existingConvention.get().setDemandeCession(newConvention.getDemandeCession());
+      existingConvention.get().setPme(newConvention.getPme());
+     // existingConvention.get().setUtilisateur(newConvention.getUtilisateur());
+      existingConvention.get().setDocuments(newConvention.getDocuments());
+
+      log.info("ConventionService:transmettreConvention with document : {}",existingConvention.get().getDocuments());
 
       conventionRepository.saveAndFlush(existingConvention.get());
-      log.info("ConventionService:updateDecoteInConvention  update Pme with id : {}",existingConvention.get().getIdConvention());
+      log.info("ConventionService:transmettreConvention update convention with id : {}",existingConvention.get().getIdConvention());
     }catch (Exception ex){
-      log.error("Exception occured while updating Decote with id : {}",id );
-      throw new CustomException("Error occured while updating this Decote param ");
+      log.error("Exception occured while updating convention with id : {}",id );
+      throw new CustomException("Error occured while updating this convention");
     }
     return existingConvention.get();
+  }
+
+
+  /*La correction d'une convention consiste en la création d'une toute nouvelle convention*/
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void corrigerConvention (Long id) {
+    Optional <Convention> existingConvention;
+    try{
+      log.info("ConventionService:corrigerConvention  ........");
+      existingConvention = conventionRepository.findById(id);
+      log.info("convention á corriger : {}", existingConvention.get());
+      ExceptionUtils.absentOrThrow(existingConvention, ItemNotFoundException.CONVENTION_BY_ID, id.toString());
+      log.info("existingConvention : {} ,", existingConvention.get());
+      if(existingConvention.isPresent()){
+        conventionRepository.deleteById(id);
+        log.info("convention with id : {} deleted successfully",existingConvention.get().getIdConvention());
+      }
+    }catch (Exception ex){
+      log.error("Exception occured while making correction on convention with id : {}",id );
+      throw new CustomException("Error occured while making correction");
+    }
+
   }
 
 }
