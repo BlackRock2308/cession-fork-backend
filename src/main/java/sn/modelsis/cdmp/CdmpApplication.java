@@ -168,11 +168,11 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
        // PersistStatus persistStatus= new PersistStatus(statutRepository);
         //log.info("Initialisation des differents statuts terminée");
 
-
        // log.info("Initialisation des differents profils utilisateurs...");
 
-       // PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
-        //log.info("Initialisation des differents profils terminée");
+       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
+        log.info("Initialisation des differents profils terminée");
+
 
         PersistBonEngagement PersistBonEngagement = new PersistBonEngagement(bonEngagementService);
         log.info("Initialisation des bon d'engagement");
