@@ -22,6 +22,9 @@ public class DtoConverter {
 //		  conventionDto.setC
           modelMapper.getConfiguration().setAmbiguityIgnored(true);
           conventionDto = modelMapper.map(convention, ConventionDto.class);
+		  conventionDto.setIdDemande(convention.getDemandeCession().getIdDemande());
+		//  conventionDto.setUtilisatuerId(convention.getUtilisateur().getIdUtilisateur());
+
       }
       return conventionDto;
   }
@@ -58,6 +61,7 @@ public class DtoConverter {
 			observationDto = modelMapper.map(observation, ObservationDto.class);
 			observationDto.setDemandeid(observation.getDemande().getIdDemande());
 			observationDto.setUtilisateurid(observation.getUtilisateur().getIdUtilisateur());
+			observationDto.setDemandeid(observation.getDemande().getIdDemande());
 		}
 		return observationDto;
 	}
