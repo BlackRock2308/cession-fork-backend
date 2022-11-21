@@ -53,6 +53,20 @@ public class PaiementController {
 
     }
 
+    @GetMapping("/bypme/{id}")
+    public ResponseEntity<List<PaiementDto>> getPaiementsByPME(@PathVariable("id") Long id,
+            HttpServletRequest request) {
+        List<Paiement> paiements =
+                paiementService.findAllByPME(id);
+        List<PaiementDto> paiementDtos = new ArrayList<>();
+        for (Paiement paiement :paiements ) {
+            paiementDtos.add(DtoConverter.convertToDto(paiement));
+        }
+        log.info("All paiements .");
+        return ResponseEntity.status(HttpStatus.OK).body(paiementDtos);
+
+    }
+
     @GetMapping("/pme/{id}")
     public ResponseEntity<List<PaiementDto>> getAllPaiementsByPME(@PathVariable("id") Long id) {
         if (id==null)

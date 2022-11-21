@@ -9,6 +9,9 @@ public class ItemNotFoundException  extends RuntimeException {
     public static final String DEFAUL_MESSAGE="Impossible de retrouver l'élément recherché";
     public static final String PME_BY_ID="Impossible de retrouver une PME avec l'identifiant %s";
     public static final String CREANCE_BY_ID="Impossible de retrouver une Creance avec l'identifiant %s";
+
+    public static final String CONVENTION_BY_ID="Impossible de retrouver une convention avec l'identifiant %s";
+
     public static final String DEMANDE_CESSION_BY_ID="Impossible de retrouver une demande de cession l'identifiant %s";
     public static final String DEMANDE_ADHESION_ID="Impossible de retrouver une demande d'adhesion d'identifiants %s";
     public static final String PAIEMENT_BY_ID="Impossible de retrouver le paiement d'identifiants %s";

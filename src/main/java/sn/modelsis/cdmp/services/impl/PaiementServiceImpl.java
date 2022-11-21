@@ -100,6 +100,11 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
+    public List<Paiement> findAllByPME(Long idMPE) {
+        return paiementRepository.findAllByDemandeCessionPmeIdPME(idMPE);
+    }
+
+    @Override
     public List<Paiement> findAll(){
         return paiementRepository.findAll();
     }
