@@ -61,7 +61,7 @@ public class ConventionControllers {
     log.info("ConventionControllers:addConvention request started .......");
     Convention convention= new Convention();
 
-    Utilisateur utilisateur = utilisateurService.findById(conventionDto.getUtilisatuerId());
+   // Utilisateur utilisateur = utilisateurService.findById(conventionDto.getUtilisatuerId());
     DemandeCession demandeCession =
             demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 
@@ -84,7 +84,7 @@ public class ConventionControllers {
 
     assert exactParametrageDecote != null;
     convention.setValeurDecote(exactParametrageDecote.getDecoteValue());  //decote
-    convention.setUtilisateur(utilisateur);
+  //  convention.setUtilisateur(utilisateur);
     Convention result = conventionService.save(convention);
     Statut statut = statutService.findByCode("CONVENTION_GENEREE");
     demandeCession.setStatut(statut);
