@@ -1,6 +1,6 @@
 server:
   port: 8081
-  DOCUMENT_FOLDER: ${DOCUMENT_FOLDER:/app/documents}
+  DOCUMENT_FOLDER: ${DOCUMENT_FOLDER:/app/documents/cdmp}
   #notification: ${HOST:http://localhost:8087}
   notification: ${HOST:http://app-dev.modelsis.net:8087}
   #email_cdmp: notifications-wootoo-@modelsis.sn
