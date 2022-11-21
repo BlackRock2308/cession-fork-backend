@@ -24,6 +24,13 @@ public interface UtilisateurService {
      */
 
     Utilisateur findByEmail(String email);
+    /**
+     ** cette methode permet de retrouver un
+     * @Param id
+     * @return   Utilisateur
+     */
+
+    Utilisateur findById(Long id);
 
     /**
      ** cette methode permet d'enregistrer un utilisateur

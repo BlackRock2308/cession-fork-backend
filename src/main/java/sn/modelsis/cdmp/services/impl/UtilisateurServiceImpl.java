@@ -71,6 +71,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public Utilisateur findById(Long id) {
+        return utilisateurRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public Utilisateur save(Utilisateur utilisateur) {
         return utilisateurRepository.save(utilisateur);
     }
