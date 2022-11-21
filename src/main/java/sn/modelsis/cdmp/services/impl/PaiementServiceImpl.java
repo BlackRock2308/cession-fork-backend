@@ -1,37 +1,23 @@
 package sn.modelsis.cdmp.services.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import sn.modelsis.cdmp.entities.BonEngagement;
-import sn.modelsis.cdmp.entities.Convention;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Paiement;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entities.TypePaiement;
-import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
+import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMPDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPMEDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.repositories.BonEngagementRepository;
-import sn.modelsis.cdmp.repositories.ConventionRepository;
-import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
-import sn.modelsis.cdmp.repositories.PaiementRepository;
-import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.repositories.*;
 import sn.modelsis.cdmp.services.PaiementService;
-import sn.modelsis.cdmp.util.*;
+import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.ObjetMontantMois;
+import sn.modelsis.cdmp.util.Util;
 
-import javax.xml.crypto.Data;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -53,44 +39,17 @@ public class PaiementServiceImpl implements PaiementService {
 
     @Override
     public Paiement addPaiementToDemandeCession(PaiementDto paiementDto) {
-        DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
 
-        String statusLibelle = demandeCession.getStatut().getLibelle() ;
-        Statut statutCDMP = statutRepository.findByCode("CDMP_EN_ATTENTE_DE_PAIEMENT");
         Statut newDemandeStatus = statutRepository.findByCode("CONVENTION_ACCEPTEE");
-        Statut statutPme = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
-        Paiement paiement = DtoConverter.convertToEntity(paiementDto);
-        BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
-        double montantCreanceInitial = bonEngagement.getMontantCreance();
-        double montantCreance=bonEngagement.getMontantCreance();
-        double decote = 0 ;
-        Set<Convention> conventions=  demandeCession.getConventions();
-        for (Convention convention :conventions ) {
-            if (convention.isActiveConvention()){
-                if (convention.getValeurDecoteByDG() != 0){
-                    decote=convention.getValeurDecoteByDG();
-                    log.info("Decote Convention DG : {}", decote);
-                }else {
-                    decote=convention.getValeurDecote();
-                    log.info("Decote Convention default : {}", decote);
-                }
-            }
-        }
+        DemandeCession demandeCession = initPaiement(paiementDto);
+        demandeCession.setStatut(newDemandeStatus);
+        String statusLibelle = demandeCession.getStatut().getLibelle() ;
         if(! statusLibelle.equals("CONVENTION_ACCEPTEE"))
-          throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
-        paiement.setDemandeCession(demandeCession);
+            throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
 
-        paiement.setSoldePME(montantCreance- (montantCreance*decote) );
-            paiement.setMontantRecuCDMP(0);
-            paiement.setMontantCreance(paiement.getSoldePME());
-            paiement.setStatutCDMP(statutCDMP);
-            paiement.setStatutPme(statutPme);
-            paiement.setMontantCreanceInitial(montantCreanceInitial);
-            demandeCession.setStatut(newDemandeStatus);
-            demandeCession.setPaiement(paiement);
-            demandeCessionRepository.save(demandeCession);
+         Paiement paiement =  demandeCession.getPaiement();
 
-      return demandeCession.getPaiement();
+      return paiement;
 
     }
 
@@ -213,6 +172,51 @@ public class PaiementServiceImpl implements PaiementService {
                 today = today.plusMonths(1);
         }
         return statistiquePaiementPMEDto;
+    }
+
+    private double setDecote(DemandeCession demandeCession){
+        double decote = 0 ;
+        Set<Convention> conventions=  demandeCession.getConventions();
+        for (Convention convention :conventions ) {
+            if (convention.isActiveConvention()){
+                if (convention.getValeurDecoteByDG() != 0){
+                    decote=convention.getValeurDecoteByDG();
+                    log.info("Decote Convention DG : {}", decote);
+                }else {
+                    decote=convention.getValeurDecote();
+                    log.info("Decote Convention default : {}", decote);
+                }
+            }
+        }
+        return decote ;
+
+    }
+    private DemandeCession  initPaiement(PaiementDto paiementDto ){
+        DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
+        BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
+        double montantCreanceInitial = bonEngagement.getMontantCreance();
+        double montantCreance=bonEngagement.getMontantCreance();
+        double decote = 0 ;
+        decote = setDecote(demandeCession);
+        Paiement paiement = DtoConverter.convertToEntity(paiementDto);
+        paiement.setDemandeCession(demandeCession);
+        paiement.setNomMarche(bonEngagement.getNomMarche());
+        paiement.setRaisonSocial(demandeCession.getPme().getRaisonSocial() );
+        paiement.setSoldePME(montantCreance- (montantCreance*decote) );
+        paiement.setMontantRecuCDMP(0);
+        paiement.setMontantCreance(paiement.getSoldePME());
+        paiement.setMontantCreanceInitial(montantCreanceInitial);
+        paiement = setStatusPaiement(paiement);
+        demandeCession.setPaiement(paiement);
+        return demandeCession;
+    }
+
+    private Paiement setStatusPaiement(Paiement paiement){
+        Statut statutCDMP = statutRepository.findByCode("CDMP_EN_ATTENTE_DE_PAIEMENT");
+        Statut statutPme = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
+        paiement.setStatutCDMP(statutCDMP);
+        paiement.setStatutPme(statutPme);
+        return paiement;
     }
 }
 

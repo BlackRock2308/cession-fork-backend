@@ -11,7 +11,8 @@ public interface ConventionMapper extends GenericMapper<Convention, ConventionDt
     @Mapping(target = "dateConvention", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "valeurDecote", expression = "java(convention.getDecote().getDecoteValue())")
     @Mapping(target = "valeurDecoteByDG", expression = "java(convention.getValeurDecoteByDG())")
-    //@Mapping(target = "pmeDto", expression = "java(convention.getPme())")
-   //@Mapping(target = "utilisatuerDto", expression = "java(convention.getUtilisateur()")
+    @Mapping(target = "idDemande", expression = "java(convention.getDemandeCession().getIdDemande())")
+    @Mapping(target = "utilisatuerId", expression = "java(convention.getUtilisateur().getIdUtilisateur())")
     ConventionDto asDTO(Convention convention);
+
 }
