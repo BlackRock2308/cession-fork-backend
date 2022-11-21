@@ -23,7 +23,7 @@ public class DtoConverter {
           modelMapper.getConfiguration().setAmbiguityIgnored(true);
           conventionDto = modelMapper.map(convention, ConventionDto.class);
 		  conventionDto.setIdDemande(convention.getDemandeCession().getIdDemande());
-		//  conventionDto.setUtilisatuerId(convention.getUtilisateur().getIdUtilisateur());
+		  conventionDto.setUtilisatuerId(convention.getUtilisateur().getIdUtilisateur());
 
       }
       return conventionDto;
