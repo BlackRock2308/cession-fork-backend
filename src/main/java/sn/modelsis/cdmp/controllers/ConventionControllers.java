@@ -26,19 +26,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.BonEngagement;
-import sn.modelsis.cdmp.entities.Convention;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.ParametrageDecote;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
-import sn.modelsis.cdmp.services.BonEngagementService;
-import sn.modelsis.cdmp.services.ConventionService;
-import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.services.ParametrageDecoteService;
-import sn.modelsis.cdmp.services.StatutService;
+import sn.modelsis.cdmp.services.*;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 /**
@@ -59,6 +50,8 @@ public class ConventionControllers {
 
     private final ConventionMapper conventionMapper;
 
+    private final UtilisateurService utilisateurService;
+
     private final BonEngagementService bonEngagementService;
 
 
@@ -68,6 +61,7 @@ public class ConventionControllers {
     log.info("ConventionControllers:addConvention request started .......");
     Convention convention= new Convention();
 
+    Utilisateur utilisateur = utilisateurService.findById(conventionDto.getUtilisatuerId());
     DemandeCession demandeCession =
             demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 
@@ -90,7 +84,7 @@ public class ConventionControllers {
 
     assert exactParametrageDecote != null;
     convention.setValeurDecote(exactParametrageDecote.getDecoteValue());  //decote
-
+    convention.setUtilisateur(utilisateur);
     Convention result = conventionService.save(convention);
     Statut statut = statutService.findByCode("CONVENTION_GENEREE");
     demandeCession.setStatut(statut);
