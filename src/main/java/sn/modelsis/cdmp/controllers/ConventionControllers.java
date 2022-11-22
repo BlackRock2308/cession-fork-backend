@@ -84,7 +84,13 @@ public class ConventionControllers {
 
     assert exactParametrageDecote != null;
     convention.setValeurDecote(exactParametrageDecote.getDecoteValue());  //decote
-  //  convention.setUtilisateur(utilisateur);
+
+    if(convention.getValeurDecoteByDG() == 0){
+      convention.setValeurDecoteByDG(exactParametrageDecote.getDecoteValue()); //valeurDecoteDG take the value of the params decote
+    }
+
+    log.info("Valeur Decote DG: {}",convention.getValeurDecoteByDG());
+
     Convention result = conventionService.save(convention);
     Statut statut = statutService.findByCode("CONVENTION_GENEREE");
     demandeCession.setStatut(statut);
@@ -112,13 +118,10 @@ public class ConventionControllers {
                                                           @PathVariable("id") Long id ,
                                                      HttpServletRequest request) {
     log.info("ConventionControllers:corrigerConvention request started .......");
-    //Convention convention= new Convention();
 
     Convention convention= conventionMapper.asEntity(conventionDto);
 
     conventionService.delete(id);
-
-    //ConventionDto correctConvention = conventionMapper.asDTO(result);
 
     DemandeCession demandeCession =
             demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
@@ -146,6 +149,7 @@ public class ConventionControllers {
 
       assert exactParametrageDecote != null;
       convention.setValeurDecote(exactParametrageDecote.getDecoteValue());  //decote
+
     }
 
     Convention savedConvention = conventionService.save(convention);
