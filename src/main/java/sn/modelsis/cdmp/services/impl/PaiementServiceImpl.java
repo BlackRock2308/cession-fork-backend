@@ -41,14 +41,16 @@ public class PaiementServiceImpl implements PaiementService {
     public Paiement addPaiementToDemandeCession(PaiementDto paiementDto) {
 
         Statut newDemandeStatus = statutRepository.findByCode("CONVENTION_ACCEPTEE");
+        Paiement paiement =new Paiement();
         DemandeCession demandeCession = initPaiement(paiementDto);
         demandeCession.setStatut(newDemandeStatus);
         String statusLibelle = demandeCession.getStatut().getLibelle() ;
         if(! statusLibelle.equals("CONVENTION_ACCEPTEE"))
             throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
 
-         Paiement paiement =  demandeCession.getPaiement();
-
+         DemandeCession demandeCessionSaved = demandeCessionRepository.save(demandeCession);
+          if (demandeCessionSaved!=null)
+              return demandeCessionSaved.getPaiement();
       return paiement;
 
     }

@@ -65,7 +65,8 @@ CREATE TABLE public.pme
 CREATE TABLE public.role
 (
     id      bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    libelle character varying(100)
+    libelle character varying(100) unique ,
+    description  character varying(100)
 );
 --
 -- Name: bonengagement; Type: TABLE; Schema: public; Owner: -
@@ -83,7 +84,7 @@ CREATE TABLE public.utilisateur (
     urlimagesignature character varying(250),
     telephone character varying(50),
     urlimageprofil character varying(250),
-    email character varying(250)
+    email character varying(250) UNIQUE
 
 
 );
@@ -225,8 +226,8 @@ CREATE TABLE public.parametrage (
 
 CREATE TABLE public.statut (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    code character varying(100),
-    libelle character varying(100)
+    code character varying(100) unique ,
+    libelle character varying(100) unique
 );
 
 --
