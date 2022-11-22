@@ -187,22 +187,22 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         log.info("Initialisation des paiements et details paiements");
   }
 
-  @Bean
-  public CommandLineRunner start(ParametrageDecoteRepository decoteRepository){
-      return args -> {
-          decoteRepository.saveAndFlush(new ParametrageDecote(0L,1_000_000L,0.1));
-          decoteRepository.saveAndFlush(new ParametrageDecote(1_000_000L,5_000_000L,0.1));
-          decoteRepository.saveAndFlush(new ParametrageDecote(5_000_000L,10_000_000L,0.2));
-          decoteRepository.saveAndFlush(new ParametrageDecote(10_000_000L,100_000_000L,0.1));
-          decoteRepository.saveAndFlush(new ParametrageDecote(100_000_000L,200_000_000L,0.002));
-
-
-
-          decoteRepository.findAll().forEach(cp ->{
-              System.out.println(cp.getDecoteValue());
-          });
-
-      };
-  }
+//  @Bean
+//  public CommandLineRunner start(ParametrageDecoteRepository decoteRepository){
+//      return args -> {
+//          decoteRepository.saveAndFlush(new ParametrageDecote(0L,1_000_000L,0.1));
+//          decoteRepository.saveAndFlush(new ParametrageDecote(1_000_000L,5_000_000L,0.15));
+//          decoteRepository.saveAndFlush(new ParametrageDecote(5_000_000L,10_000_000L,0.2));
+//          decoteRepository.saveAndFlush(new ParametrageDecote(10_000_000L,100_000_000L,0.3));
+//          decoteRepository.saveAndFlush(new ParametrageDecote(100_000_000L,200_000_000L,0.35));
+//
+//
+//
+//          decoteRepository.findAll().forEach(cp ->{
+//              System.out.println(cp.getDecoteValue());
+//          });
+//
+//      };
+//  }
 
 }
