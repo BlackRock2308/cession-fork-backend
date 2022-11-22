@@ -246,9 +246,9 @@ CREATE TABLE public.document (
 
 CREATE TABLE public.parametrage_decote (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    bordeInf bigint,
-    borneSup bigint,
-    decoteValue double precision
+    borne_inf bigint,
+    borne_sup bigint,
+    decote_value double precision
 );
 
 --
