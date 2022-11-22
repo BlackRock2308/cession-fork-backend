@@ -1,17 +1,19 @@
 package sn.modelsis.cdmp.dbPersist;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
-
-import java.time.LocalDateTime;
-import java.util.*;
 
 @Transactional
 public class PersitUsers {
@@ -30,7 +32,7 @@ public class PersitUsers {
                        UtilisateurRepository utilisateurRepository,
                        PmeRepository pmeRepository) {
         this.roleRepository = roleRepository;
-        this.utilisateurRepository = utilisateurRepository;
+        this.utilisateurRepository = utilisateurRepository; 
         this.pmeRepository = pmeRepository;
 
         Role DG = new Role();
@@ -82,8 +84,13 @@ public class PersitUsers {
         dg.setPrenom("DG");
         dg.setEmail("dg@gmail.com");
         dg.setRoles(dgRoles);
-
-        utilisateurRepository.save(dg);
+        
+        Utilisateur user = utilisateurRepository.findUtilisateurByEmail("dg@gmail.com");
+        
+        if(user == null) {
+            utilisateurRepository.save(dg);
+        }
+        
 
         Utilisateur pme = new Utilisateur();
         pme.setAdresse("Mermoz");
@@ -101,7 +108,12 @@ public class PersitUsers {
         drc.setEmail("drc@gmail.com");
         drc.setRoles(cgrRoles);
 
-        utilisateurRepository.saveAndFlush(drc);
+        Utilisateur user1 = utilisateurRepository.findUtilisateurByEmail("drc@gmail.com");
+        
+        if(user1 == null) {
+            utilisateurRepository.saveAndFlush(drc);
+        }
+        
 
         Utilisateur juriste = new Utilisateur();
         juriste.setAdresse("Mermoz");
@@ -110,9 +122,11 @@ public class PersitUsers {
         juriste.setPrenom("JURISTE");
         juriste.setEmail("juriste@gmail.com");
         juriste.setRoles(juristeRoles);
-
-        utilisateurRepository.saveAndFlush(juriste);
+        Utilisateur user2 = utilisateurRepository.findUtilisateurByEmail("juriste@gmail.com");
         
+        if(user2 == null) { 
+        utilisateurRepository.saveAndFlush(juriste);
+        }
         Utilisateur dsear = new Utilisateur();
         dsear.setAdresse("Mermoz");
         dsear.setCodePin("123456");
@@ -121,8 +135,11 @@ public class PersitUsers {
         dsear.setEmail("dsear@gmail.com");
         dsear.setRoles(dsearRoles);
 
+        Utilisateur user3 = utilisateurRepository.findUtilisateurByEmail("dsear@gmail.com");
+        
+        if(user3 == null) {
         utilisateurRepository.saveAndFlush(dsear);
-
+        }
         Utilisateur daf = new Utilisateur();
         daf.setAdresse("Mermoz");
         daf.setCodePin("123456");
@@ -130,9 +147,11 @@ public class PersitUsers {
         daf.setPrenom("DAF");
         daf.setEmail("daf@gmail.com");
         daf.setRoles(dafRoles);
-
-        utilisateurRepository.saveAndFlush(daf);
+        Utilisateur user4 = utilisateurRepository.findUtilisateurByEmail("daf@gmail.com");
         
+        if(user4 == null) {
+        utilisateurRepository.saveAndFlush(daf);
+        }
         Utilisateur ordonnateur = new Utilisateur();
         ordonnateur.setAdresse("Mermoz");
         ordonnateur.setCodePin("123456");
@@ -140,9 +159,15 @@ public class PersitUsers {
         ordonnateur.setPrenom("ORDONNATEUR");
         ordonnateur.setEmail("ordonnateur@gmail.com");
         ordonnateur.setRoles(ordonnateurRoles);
-
+        Utilisateur user5 = utilisateurRepository.findUtilisateurByEmail("ordonnateur@gmail.com");
+        
+        if(user5 == null) {
         utilisateurRepository.saveAndFlush(ordonnateur);
+        }
 
+        Utilisateur user6 = utilisateurRepository.findUtilisateurByEmail("andiaye@modelsis.sn");
+        
+        if(user6 == null) {
 
         LocalDateTime date = LocalDateTime.now();
         Pme pme1 = new Pme();
@@ -156,9 +181,7 @@ public class PersitUsers {
         pme1.setDateAdhesion(date);
         pme1.setUtilisateur(pme);
         pmeRepository.save(pme1);
-
-
-
+        }
 
     }
 }

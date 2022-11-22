@@ -31,6 +31,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -142,11 +143,12 @@ public class UtilisateurController {
         if (utilisateurDto.getIdUtilisateur() != null) {
             throw new Exception("A new utilisateur cannot already have an ID  exists");
         }
-        Set<Role> listeRole = utilisateurDto.getRoles( ) ;
-
+        Set<Role> listeRole = utilisateurDto.getRoles() ;
+        Set<Role> setRoles = new HashSet<>(); ;
         listeRole.forEach(role -> {
-            listeRole.add(roleRepository.save(role));
+            setRoles.add(roleRepository.findByLibelle(role.getLibelle()));
         });
+        utilisateurDto.setRoles(setRoles);
         utilisateurDto.setUpdatePassword(true);
         utilisateurDto.setUpdateCodePin(true);
         utilisateurDto.setPassword(passwordEncoder.encode(utilisateurDto.getPassword()));
