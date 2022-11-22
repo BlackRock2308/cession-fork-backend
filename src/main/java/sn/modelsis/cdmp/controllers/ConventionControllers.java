@@ -2,6 +2,7 @@ package sn.modelsis.cdmp.controllers;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +80,7 @@ public class ConventionControllers {
 
     log.info("Correct Decote param: {}",exactParametrageDecote);
 
+    convention.setDateConvention(LocalDateTime.now());
     convention.setDemandeCession(demandeCession);
     convention.setDecote(exactParametrageDecote);  //decote
 
