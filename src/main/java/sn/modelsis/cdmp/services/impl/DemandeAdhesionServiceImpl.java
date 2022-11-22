@@ -88,9 +88,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                         -> {
                     demandeAdhesion.setPme(value);
                     demandeAdhesion.setDateDemandeAdhesion(new Date());
-                   // Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
-                    Statut statut = new Statut();
-                    statut.setIdStatut(1L);
+                    Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
+                   // Statut statut = new Statut();
+                   // statut.setIdStatut(1L);
                     demandeAdhesion.setStatut(statut);
                     if(demandeAdhesion.getIdDemande()==null){
                         demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
