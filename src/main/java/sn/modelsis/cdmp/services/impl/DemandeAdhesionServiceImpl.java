@@ -154,9 +154,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             optional.get().setStatut(updatedStatut);
             if(optional.isEmpty())
                 throw new CustomException("Can not find this Demand");
-            String email = optional.get().getPme().getEmail();
-            EmailMessageWithTemplate emailMessageWithTemplate = sendEmailDemandeAdhesion(email);
-            restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
+          //  String email = optional.get().getPme().getEmail();
+          //  EmailMessageWithTemplate emailMessageWithTemplate = sendEmailDemandeAdhesion(email);
+          //  restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
         }catch (Exception ex){
             log.error("Exception occured while Accepting Demande Adhesion. Exception message : {}", ex.getMessage());
