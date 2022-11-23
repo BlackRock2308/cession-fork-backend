@@ -23,6 +23,7 @@ import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.RestTemplateUtil;
 import sn.modelsis.cdmp.util.Util;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -82,15 +83,41 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public Utilisateur update(Utilisateur utilisateur) {
+        Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
+        utilisateurToUpdate.setCodePin(utilisateur.getCodePin());
+        utilisateurToUpdate.setUpdateCodePin(false);
+        return utilisateurRepository.save(utilisateurToUpdate);
+    }
+
+    @Override
+    public Utilisateur updateCodePin(Utilisateur utilisateur) {
+        Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
+        utilisateurToUpdate.setCodePin(utilisateur.getCodePin());
+        utilisateurToUpdate.setUpdateCodePin(false);
+        return utilisateurRepository.save(utilisateurToUpdate);
+    }
+
+
+    @Override
+    public Utilisateur updatePassword(Utilisateur utilisateur) {
+        Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
+        utilisateurToUpdate.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
+        utilisateurToUpdate.setUpdatePassword(false);
+        return utilisateurRepository.save(utilisateurToUpdate);
+    }
+
+    @Override
+    public Utilisateur updateRoles(Utilisateur utilisateur) {
+
+        Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
+
+        Set<Role> newRoles = new HashSet<>();
         if ( utilisateur.getRoles()!=null){
              Set<Role> roles = utilisateur.getRoles();
-             Set<Role> newRoles = utilisateur.getRoles();
-             roles.forEach(role -> newRoles.add(roleRepository.save(role)));
-             utilisateur.setRoles(newRoles);
+             roles.forEach(role -> newRoles.add(roleRepository.findByLibelle(role.getLibelle())));
+            utilisateurToUpdate.setRoles(newRoles);
         }
-        if(utilisateur.getPassword()!=null)
-            utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
-        return utilisateurRepository.save(utilisateur);
+        return utilisateurRepository.save(utilisateurToUpdate);
     }
 
     @Override
