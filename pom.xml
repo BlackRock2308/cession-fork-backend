@@ -185,7 +185,7 @@
 				</configuration>
 			</plugin-->
 		</plugins>
-		<finalName>wootoo</finalName>
+		<finalName>wootoo-back</finalName>
 	</build>
 
 </project>

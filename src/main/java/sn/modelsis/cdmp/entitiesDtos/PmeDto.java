@@ -34,6 +34,8 @@ public class PmeDto implements Serializable {
     private String raisonSocial;
     private boolean atd;
     private boolean nantissement;
+    private boolean hasninea;
+    private boolean isactive;
     private boolean interdictionBancaire;
     private boolean identificationBudgetaire;
     private String formeJuridique;
@@ -44,6 +46,21 @@ public class PmeDto implements Serializable {
     private String urlImageProfile;
     private String urlImageSignature;
     private Set<DocumentDto> documents ;
+
+    private String  enseigne ;
+    private String cniRepresentant ;
+    private String localite;
+    private int controle;
+    private String activitePrincipale;
+    private String autorisationMinisterielle;
+    private String registre;
+    private Date dateCreation;
+    private int capitalSocial;
+    private int effectifPermanent;
+    private int chiffresDaffaires;
+    private int nombreEtablissementSecondaires;
+    private Long utilisateurid;
+ 
 
 }
 

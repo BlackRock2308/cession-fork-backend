@@ -13,10 +13,10 @@ AS $BODY$
 cumulDecode NUMERIC;
 BEGIN
 
-SELECT SUM(conv.valeurDecote * bE.montantCreance)  FROM public.convention AS conv
+SELECT SUM(conv.valeur_decote_dg * bE.montantCreance)  FROM public.convention AS conv
     INNER JOIN  public.demandeCession AS dC ON  dC.id=conv.demandeid
-    INNER JOIN  public.bonengagement AS bE ON  bE.id=dC.bonengagementid WHERE
-        dC.pmeid = idPME AND conv.dateconvention BETWEEN monthConvention AND (monthConvention + interval '1 month')
+    INNER JOIN  public.bonengagement AS bE ON  bE.id=dC.bonengagementid WHERE dC.paiementid IS NOT NULL AND
+        dC.pmeid=idPME AND conv.dateconvention BETWEEN monthConvention AND (monthConvention + interval '1 month')
     INTO STRICT cumulDecode;
 
 RETURN cumulDecode;
@@ -41,8 +41,8 @@ cumulDecode NUMERIC;
 BEGIN
 
 SELECT SUM(bE.montantCreance)  FROM public.demandeCession AS dC
-    INNER JOIN public.bonengagement AS bE ON bE.id = dC.bonengagementid WHERE
-    dC.pmeid = idPME  AND  bE.datebonengagement
+    INNER JOIN public.bonengagement AS bE ON bE.id=dC.bonengagementid WHERE
+    dC.pmeid=idPME AND dC.paiementid IS NOT NULL AND  bE.datebonengagement
     BETWEEN monthEngagement AND (monthEngagement + interval '1 month')
     INTO STRICT cumulmontantCreance;
 SELECT public.cumlDecoteByMonthAndPME(idPME,monthEngagement) INTO STRICT cumulDecode;
@@ -67,9 +67,9 @@ DECLARE
 cumulMontant  NUMERIC;
 BEGIN
 
-SELECT SUM(dP.montant)  FROM
-    public.detailsPaiement AS dP  INNER JOIN  public.demandeCession AS dC ON  dC.id=dP.paiementid
-    WHERE dP.typePaiement = 'CDMP_PME' AND dC.pmeid = idPME AND
+SELECT SUM(dP.montant)  FROM public.demandeCession AS dC INNER JOIN
+    public.detailsPaiement AS dP ON dC.paiementid=dP.paiementid
+    WHERE dP.typePaiement='CDMP_PME' AND dC.pmeid=idPME AND
     dP.datePaiement BETWEEN monthPaiement AND (monthPaiement + interval '1 month')
     INTO STRICT cumulMontant;
 

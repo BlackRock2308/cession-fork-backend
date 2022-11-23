@@ -1,20 +1,30 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
+import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionReturnMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
@@ -22,13 +32,6 @@ import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -41,6 +44,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionReturnMapper cessionReturnMapper;
     private final DemandeService demandeService;
 
+    private final CreanceMapper creanceMapper;
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCession saveCession(DemandeCession demandeCession) {
@@ -48,9 +53,12 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         try{
             log.info("DemandeCessionService:saveCession request started");
-            demandeCession.setDateDemandeCession(new Date());
+            //demandeCession.setDateDemandeCession(new Date());
 
-            Date dateBonEngagement = new Date();
+            LocalDateTime dateTime = LocalDateTime.now();
+            demandeCession.setDateDemandeCession(dateTime);
+
+            LocalDateTime dateBonEngagement = LocalDateTime.now();
 
             demandeCession.getBonEngagement().setDatebonengagement(dateBonEngagement);
 
@@ -238,10 +246,11 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
     @Override
-    public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut) {
+    public Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String[] statuts) {
         log.info("DemandeCessionService:findAllByStatut .....");
+
         return demandecessionRepository
-                .findAllByStatut_Libelle(pageable,statut)
+                .findAllByStatut_LibelleIn(pageable,statuts)
                 .map(cessionMapper::asDTO);
     }
 
@@ -321,28 +330,170 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(cessionMapper::asDTO);
     }
 
-    @Override
-    public List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande){
-        log.info("DemandeCessionService:findDemandeCessionByMultipleCritere searching ......");
 
-        return demandecessionRepository
-                .findByNumeroDemandeContaining(numeroDemande)
-                .stream()
-                .map(cessionMapper::asDTO)
-                .collect(Collectors.toList());
-    }
 
     @Override
-    public List<DemandeCessionDto> findDemandeCessionByDemande(String referenceBE,
+    public List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                                String numeroDemande,
-                                                               String nomMarche){
-        log.info("DemandeCessionService:findDemandeCessionByDemande searching ......");
-
+                                                               String nomMarche,
+                                                               String statutLibelle){
+        log.info("DemandeCessionService:findDemandeCessionByMultipleParams searching ......");
         return demandecessionRepository
-                .findByReferenceBE(referenceBE, numeroDemande,nomMarche)
+                .findDemandeCessionByMultiParams(referenceBE, numeroDemande,nomMarche,statutLibelle)
                 .stream()
                 .map(cessionMapper::asDTO)
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate, LocalDateTime endDate){
+        log.info("DemandeCessionService:findDemandeCessionByLocalDateTime searching ......");
+//        LocalDateTime startDate = seachDate.minusDays(1);
+//        LocalDateTime endDate = seachDate.plusDays(1);
+        List<DemandeCession> cessionArrayList = demandecessionRepository.findDemandeCessionByMyDate(startDate, endDate);
+        log.info("La liste des demandes filtrées par date est : {}", cessionArrayList);
+
+        return  cessionArrayList
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle){
+        log.info("DemandeCessionService:findDemandeCessionByStatutLibelle searching ......");
+
+        return demandecessionRepository
+                .findByLibelleStatutDemande(statutLibelle)
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    /***************  Filter Creance based on multiple parameters ****************** */
+
+    @Override
+    public List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
+                                                               String raisonSocial,
+                                                               String statutLibelle){
+        log.info("DemandeCessionService:findCreanceByMultipleParams searching ......");
+
+        List<DemandeCession> demandeCessionList = demandecessionRepository
+                .searchCreanceByMultiParams(nomMarche,raisonSocial,statutLibelle);
+
+        List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoList
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<CreanceDto> findCreanceByRaisonSocial(String raisonSocial){
+        log.info("DemandeCessionService:findCreanceByRaisonSocial searching ......");
+
+        List<DemandeCession> demandeCessionList = demandecessionRepository
+                .searchCreanceByRaisonSocial(raisonSocial);
+
+        List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoList
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<CreanceDto> findCreanceByNomMarche(String nomMarche){
+        log.info("DemandeCessionService:findCreanceByNomMarche searching ......");
+
+        List<DemandeCession> demandeCessionListMarche = demandecessionRepository
+                .searchCreanceByNomMarche(nomMarche);
+
+        List<DemandeCessionDto> demandeCessionDtoListMarche = demandeCessionListMarche
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoListMarche
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CreanceDto> findCreanceByMontantCreance(double montantCreance){
+        log.info("DemandeCessionService:findCreanceByMontantCreance searching ......");
+
+        List<DemandeCession> demandeCessionListMontant = demandecessionRepository
+                .searchCreanceByMontantCreance(montantCreance);
+
+        List<DemandeCessionDto> demandeCessionDtoListMontant = demandeCessionListMontant
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoListMontant
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+
+
+
+//    @Override
+//    public List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande){
+//        log.info("DemandeCessionService:findDemandeCessionByMultipleCritere searching ......");
+//
+//        return demandecessionRepository
+//                .findByNumeroDemandeContaining(numeroDemande)
+//                .stream()
+//                .map(cessionMapper::asDTO)
+//                .collect(Collectors.toList());
+//    }
+
+
+
+
+
+//    @Override
+//    public List<DemandeCessionDto> filterExactDemandeCession(String referenceBE,
+//                                                             String numeroDemande,
+//                                                             String nomMarche,
+//                                                             String statutLibelle,
+//                                                             LocalDateTime seachDate){
+//
+//        log.info("DemandeCessionService:filterExactDemandeCession searching ......");
+//
+//        List<DemandeCessionDto> cessionListByDate = findDemandeCessionByLocalDateTime(seachDate);
+//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByDate : {} ",cessionListByDate);
+//
+//        List<DemandeCessionDto> cessionListByOthersCriteria = findDemandeCessionByMultipleParams(referenceBE,
+//                    numeroDemande,
+//                    nomMarche,
+//                    statutLibelle);
+//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByOthersCriteria : {} ",cessionListByOthersCriteria);
+//
+//        List<DemandeCessionDto> similarDemande = cessionListByDate;
+//
+//
+//        similarDemande.retainAll( cessionListByOthersCriteria );
+//
+//        log.info("DemandeCessionService:filterExactDemandeCession similarDemande : {} ",similarDemande);
+//
+//
+//        return similarDemande;
+//    }
+
 
 }

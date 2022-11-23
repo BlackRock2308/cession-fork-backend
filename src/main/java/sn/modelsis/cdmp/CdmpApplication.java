@@ -163,15 +163,16 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("Initialisation des differents statuts...");
+       // log.info("Initialisation des differents statuts...");
 
-        PersistStatus persistStatus= new PersistStatus(statutRepository);
-        log.info("Initialisation des differents statuts terminée");
+       // PersistStatus persistStatus= new PersistStatus(statutRepository);
+        //log.info("Initialisation des differents statuts terminée");
 
-        log.info("Initialisation des differents profils utilisateurs...");
+       // log.info("Initialisation des differents profils utilisateurs...");
 
-        PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
+       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
         log.info("Initialisation des differents profils terminée");
+
 
         PersistBonEngagement PersistBonEngagement = new PersistBonEngagement(bonEngagementService);
         log.info("Initialisation des bon d'engagement");
@@ -186,21 +187,22 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         log.info("Initialisation des paiements et details paiements");
   }
 
-  @Bean
-  public CommandLineRunner start(ParametrageDecoteRepository decoteRepository){
-      return args -> {
-          decoteRepository.saveAndFlush(new ParametrageDecote(1000000L,5000000L,0.01));
-          decoteRepository.saveAndFlush(new ParametrageDecote(5000000L,10000000L,0.02));
-          decoteRepository.saveAndFlush(new ParametrageDecote(10000000L,100000000L,0.001));
-          decoteRepository.saveAndFlush(new ParametrageDecote(100000000L,200000000L,0.002));
-
-
-
-          decoteRepository.findAll().forEach(cp ->{
-              System.out.println(cp.getDecoteValue());
-          });
-
-      };
-  }
+//  @Bean
+//  public CommandLineRunner start(ParametrageDecoteRepository decoteRepository){
+//      return args -> {
+//          decoteRepository.saveAndFlush(new ParametrageDecote(0L,1_000_000L,0.1));
+//          decoteRepository.saveAndFlush(new ParametrageDecote(1_000_000L,5_000_000L,0.15));
+//          decoteRepository.saveAndFlush(new ParametrageDecote(5_000_000L,10_000_000L,0.2));
+//          decoteRepository.saveAndFlush(new ParametrageDecote(10_000_000L,100_000_000L,0.3));
+//          decoteRepository.saveAndFlush(new ParametrageDecote(100_000_000L,200_000_000L,0.35));
+//
+//
+//
+//          decoteRepository.findAll().forEach(cp ->{
+//              System.out.println(cp.getDecoteValue());
+//          });
+//
+//      };
+//  }
 
 }

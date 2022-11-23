@@ -45,7 +45,9 @@ CREATE TABLE public.pme
       formejuridique character varying (250),
       numCNIRepresentant integer,
       localite character varying (250),
+      registre character varying (250),
       controle int,
+      cnirepresentant character varying (250),
       activiteprincipale character varying (250),
       autorisationMinisterielle character varying (250),
       registreCommerce character varying (250),
@@ -63,7 +65,8 @@ CREATE TABLE public.pme
 CREATE TABLE public.role
 (
     id      bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    libelle character varying(100)
+    libelle character varying(100) unique ,
+    description  character varying(100)
 );
 --
 -- Name: bonengagement; Type: TABLE; Schema: public; Owner: -
@@ -77,10 +80,11 @@ CREATE TABLE public.utilisateur (
     nom character varying(250),
     password character varying(250),
     update_password boolean,
+    update_codepin boolean,
     urlimagesignature character varying(250),
     telephone character varying(50),
     urlimageprofil character varying(250),
-    email character varying(250)
+    email character varying(250) UNIQUE
 
 
 );
@@ -175,8 +179,11 @@ CREATE TABLE public.paiement (
       soldePme FLOAT (40),
       montantCreance FLOAT (40),
       statutCDMPid bigint,
+      raisonSocial character varying(100),
+      nomMarche   character varying(100),
       statutPmeid bigint,
-      montantRecuCdmp FLOAT (40)
+      montantRecuCdmp FLOAT (40),
+      montant_creance_initial FLOAT (40)
 );
 
 
@@ -219,8 +226,8 @@ CREATE TABLE public.parametrage (
 
 CREATE TABLE public.statut (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    code character varying(100),
-    libelle character varying(100)
+    code character varying(100) unique ,
+    libelle character varying(100) unique
 );
 
 --
@@ -239,9 +246,9 @@ CREATE TABLE public.document (
 
 CREATE TABLE public.parametrage_decote (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    bordeInf bigint,
-    borneSup bigint,
-    decoteValue double precision
+    borne_inf bigint,
+    borne_sup bigint,
+    decote_value double precision
 );
 
 --

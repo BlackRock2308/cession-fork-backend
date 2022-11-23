@@ -4,11 +4,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +53,7 @@ public interface DemandeCessionService {
 
 //    Page<DemandeCessionDto> findAllDemandeComplementRequis(Pageable pageable);
 
-    Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String statut);
+    Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String[] statuts);
 
 
    List<StatistiqueDemandeCession>  getStatistiqueDemandeCession(int anne);
@@ -64,9 +66,31 @@ public interface DemandeCessionService {
 
 
 
-    List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande);
+//    List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande);
 
-    List<DemandeCessionDto> findDemandeCessionByDemande(String referenceBE,
+    List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                         String numeroDemande,
-                                                        String nomMarche);
+                                                        String nomMarche,
+                                                        String statutLibelle);
+
+    List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle);
+
+
+//    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime seachDate);
+
+    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate,LocalDateTime endDate);
+
+/*Filter Creance using multpile parameters*/
+
+    List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
+                                                 String raisonSocial,
+                                                 String statutLibelle);
+
+
+    List<CreanceDto> findCreanceByRaisonSocial(String raisonSocial);
+
+    List<CreanceDto> findCreanceByNomMarche(String nomMarche);
+
+    List<CreanceDto> findCreanceByMontantCreance(double montantCreance);
+
 }

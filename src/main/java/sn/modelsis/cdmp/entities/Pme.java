@@ -2,6 +2,7 @@ package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,6 +43,10 @@ public class Pme implements Serializable {
     @Column(name = "id")
     private Long idPME;
 
+    @Column(name ="prenomrepresentant")
+    private String prenomRepresentant;
+    @Column(name ="nomrepresentant")
+    private String nomRepresentant;
     @NotNull
     @Column(name = "rccm")
     private String rccm;
@@ -141,4 +146,10 @@ public class Pme implements Serializable {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "utilisateurid")
     private Utilisateur utilisateur ;
+    
+    @Column(name = "cnirepresentant")
+    private String cniRepresentant ;
+    
+    @Column(name = "registre")
+    private String registre;
 }

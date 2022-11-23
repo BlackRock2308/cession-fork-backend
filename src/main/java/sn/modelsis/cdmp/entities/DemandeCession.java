@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.entities;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +28,7 @@ import lombok.Setter;
 public class DemandeCession extends Demande{
 
     @Column(name = "datedemandecession")
-    private Date dateDemandeCession;
+    private LocalDateTime dateDemandeCession;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name="bonengagementid")

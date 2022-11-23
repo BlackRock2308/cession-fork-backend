@@ -1,8 +1,11 @@
 server:
   port: 8081
+  # document_folder: ${document_folder:/app/documents/cdmp}
   document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
-  notification: ${HOST:http://localhost:8087}
-  email_cdmp: financeislamique@modelsis.sn
+  #notification: ${HOST:http://localhost:8087}
+  notification: ${HOST:http://app-dev.modelsis.net:8087}
+  #email_cdmp: notifications-wootoo-@modelsis.sn
+  email_cdmp: notifications-wootoo@modelsis.sn
 spring:
   sql:
     init:
@@ -11,8 +14,8 @@ spring:
   application:
     name: Cession creance
   datasource:
-    password: password
-    url: jdbc:postgresql://localhost:5432/cdmp
+    password: passer
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/cdmp
     username: cdmp
   jpa:
     hibernate:

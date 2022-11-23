@@ -56,13 +56,7 @@ public class PmeServiceImpl implements PmeService {
     Pme newPme;
 
     try {
-      log.info("PmeService:savePme .....");
-
-      Optional<Pme> optional = Optional.ofNullable(pmeRepository.findByMail(pme.getEmail()));
-       ExceptionUtils.absentOrThrow(optional, ItemExistsException.MAIL_EXISTS, pme.getEmail());
-
-       optional = pmeRepository.findByPhone(pme.getTelephonePME());
-      ExceptionUtils.absentOrThrow(optional, ItemExistsException.PHONE_EXISTS, pme.getTelephonePME());
+      log.info("PmeService:savePme , saving.....");
 
       newPme = pmeRepository.saveAndFlush(pme);
       log.debug("PmeService:savePme received from database : {}",newPme);
@@ -123,6 +117,8 @@ public class PmeServiceImpl implements PmeService {
       log.info("PmeService:updatePme ........");
       existingPme = pmeRepository.findById(id);
       existingPme.get().setAdressePME(pme.getAdressePME());
+      existingPme.get().setNomRepresentant(pme.getNomRepresentant());
+      existingPme.get().setPrenomRepresentant(pme.getNomRepresentant());
       existingPme.get().setActivitePrincipale(pme.getActivitePrincipale());
       existingPme.get().setFormeJuridique(pme.getFormeJuridique());
       existingPme.get().setEffectifPermanent(pme.getEffectifPermanent());
@@ -132,11 +128,17 @@ public class PmeServiceImpl implements PmeService {
       existingPme.get().setRaisonSocial(pme.getRaisonSocial());
       existingPme.get().setCodePin(pme.getCodePin());
       existingPme.get().setAtd(pme.isAtd());
+      existingPme.get().setCniRepresentant(pme.getCniRepresentant());
       existingPme.get().setEnseigne(pme.getEnseigne());
       existingPme.get().setNombreEtablissementSecondaires(pme.getNombreEtablissementSecondaires());
+      existingPme.get().setRaisonSocial(pme.getRaisonSocial());
+      existingPme.get().setRegistre(pme.getRegistre());
+      existingPme.get().setIsactive(pme.getIsactive());
+      existingPme.get().setControle(pme.getControle());
+      existingPme.get().setAutorisationMinisterielle(pme.getAutorisationMinisterielle());
 
       pmeRepository.saveAndFlush(existingPme.get());
-      log.info("PmeService:updatePme update Pme in the database with id = {}",existingPme.get().getIdPME());
+      log.info("PmeService:updatePme update Pme in the database with id = {}",existingPme.get());
     } catch(Exception ex){
       log.error("Exception occured while updating PME with id : {}",id );
       throw new CustomException("Error occured while updating this PME ");

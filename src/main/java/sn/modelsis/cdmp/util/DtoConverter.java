@@ -22,6 +22,9 @@ public class DtoConverter {
 //		  conventionDto.setC
           modelMapper.getConfiguration().setAmbiguityIgnored(true);
           conventionDto = modelMapper.map(convention, ConventionDto.class);
+		  conventionDto.setIdDemande(convention.getDemandeCession().getIdDemande());
+		//  conventionDto.setUtilisatuerId(convention.getUtilisateur().getIdUtilisateur());
+
       }
       return conventionDto;
   }
@@ -52,10 +55,13 @@ public class DtoConverter {
 	}
 
 	public static ObservationDto convertToDto(Observation observation) {
-		ObservationDto observationDto = null;
+		ObservationDto observationDto = new ObservationDto();
 		if (null != observation) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			observationDto = modelMapper.map(observation, ObservationDto.class);
+			observationDto.setDemandeid(observation.getDemande().getIdDemande());
+			observationDto.setUtilisateurid(observation.getUtilisateur().getIdUtilisateur());
+			observationDto.setDemandeid(observation.getDemande().getIdDemande());
 		}
 		return observationDto;
 	}
@@ -73,6 +79,8 @@ public class DtoConverter {
 		if(null != pme) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			pmeDto = modelMapper.map(pme, PmeDto.class);
+			if(null!=pme.getUtilisateur())
+			pmeDto.setUtilisateurid(pme.getUtilisateur().getIdUtilisateur());
 		}
 		return pmeDto;
 	}
@@ -263,39 +271,39 @@ public class DtoConverter {
 		return demandeCession;
 	}
 
-	public static  CreanceDto convertToCreanceDto(DemandeCession demandeCession) {
-		CreanceDto creanceDto = null;
-		if(null != demandeCession) {
-			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
-			//renseigner les mapping ambigue
-			creanceDto.setIdCreance(demandeCession.getIdDemande());
-			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
-			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
-			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
-			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
-			creanceDto.setRccm(demandeCession.getPme().getRccm());
-			creanceDto.setStatut(demandeCession.getStatut());
-		}
-		return creanceDto;
-	}
+//	public static  CreanceDto convertToCreanceDto(DemandeCession demandeCession) {
+//		CreanceDto creanceDto = null;
+//		if(null != demandeCession) {
+//			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+//			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
+//			//renseigner les mapping ambigue
+//			creanceDto.setIdCreance(demandeCession.getIdDemande());
+//			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+//			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
+//			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
+//			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
+//			creanceDto.setRccm(demandeCession.getPme().getRccm());
+//			creanceDto.setStatut(demandeCession.getStatut());
+//		}
+//		return creanceDto;
+//	}
 
-	public static Page<CreanceDto> convertToListCreanceDto(DemandeCession demandeCession) {
-		CreanceDto creanceDto = null;
-		if(null != demandeCession) {
-			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
-			//renseigner les mapping ambigue
-			creanceDto.setIdCreance(demandeCession.getIdDemande());
-			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
-			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
-			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
-			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
-			creanceDto.setRccm(demandeCession.getPme().getRccm());
-			creanceDto.setStatut(demandeCession.getStatut());
-		}
-		return (Page<CreanceDto>) creanceDto;
-	}
+//	public static Page<CreanceDto> convertToListCreanceDto(DemandeCession demandeCession) {
+//		CreanceDto creanceDto = null;
+//		if(null != demandeCession) {
+//			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+//			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
+//			//renseigner les mapping ambigue
+//			creanceDto.setIdCreance(demandeCession.getIdDemande());
+//			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+//			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
+//			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
+//			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
+//			creanceDto.setRccm(demandeCession.getPme().getRccm());
+//			creanceDto.setStatut(demandeCession.getStatut());
+//		}
+//		return (Page<CreanceDto>) creanceDto;
+//	}
 
 	public static  UtilisateurDto convertToDto(Utilisateur utilisateur) {
 		UtilisateurDto utilisateurDto = null;

@@ -1,31 +1,36 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entities.DemandeAdhesion;
+import sn.modelsis.cdmp.entities.DemandeDocuments;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
+import sn.modelsis.cdmp.repositories.DemandeAdhesionRepository;
+import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.util.Constants;
+import sn.modelsis.cdmp.util.RestTemplateUtil;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
-import sn.modelsis.cdmp.repositories.DemandeAdhesionRepository;
-import sn.modelsis.cdmp.repositories.PmeRepository;
-import sn.modelsis.cdmp.repositories.StatutRepository;
 
 
-@AllArgsConstructor
 @Service
 @Slf4j
 public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
@@ -37,7 +42,28 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 
     private  final DemandeService demandeService;
 
-//    @Override
+    private final RestTemplateUtil restTemplateUtil;
+
+    private final String sendMail = Constants.SEND_MAIL_WITH_TEMPLATE;
+
+    @Value("${server.notification}")
+    private String HOST_NOTIFICATION;
+
+    @Value("${server.email_cdmp}")
+    private String EMAIL_CDMP;
+
+    public DemandeAdhesionServiceImpl(DemandeAdhesionRepository demandeAdhesionRepository, PmeRepository pmeRepository, StatutRepository statutRepository, DocumentService documentService, DemandeAdhesionMapper adhesionMapper, DemandeService demandeService, RestTemplateUtil restTemplateUtil) {
+        this.demandeAdhesionRepository = demandeAdhesionRepository;
+        this.pmeRepository = pmeRepository;
+        this.statutRepository = statutRepository;
+        this.documentService = documentService;
+        this.adhesionMapper = adhesionMapper;
+        this.demandeService = demandeService;
+        this.restTemplateUtil = restTemplateUtil;
+    }
+
+
+    //    @Override
 //    @Transactional(propagation = Propagation.REQUIRED)
 //    public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion) {
 //                    demandeAdhesion.setDateDemandeAdhesion(new Date());
@@ -63,6 +89,8 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
                     demandeAdhesion.setPme(value);
                     demandeAdhesion.setDateDemandeAdhesion(new Date());
                     Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
+                   // Statut statut = new Statut();
+                   // statut.setIdStatut(1L);
                     demandeAdhesion.setStatut(statut);
                     if(demandeAdhesion.getIdDemande()==null){
                         demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
@@ -124,6 +152,11 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             log.debug("DemandeAdhesionService:validerAdhesion request params {}", id);
             Statut updatedStatut=statutRepository.findByLibelle("ADHESION_ACCEPTEE");
             optional.get().setStatut(updatedStatut);
+            if(optional.isEmpty())
+                throw new CustomException("Can not find this Demand");
+          //  String email = optional.get().getPme().getEmail();
+          //  EmailMessageWithTemplate emailMessageWithTemplate = sendEmailDemandeAdhesion(email);
+          //  restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
         }catch (Exception ex){
             log.error("Exception occured while Accepting Demande Adhesion. Exception message : {}", ex.getMessage());
@@ -150,4 +183,12 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     }
 
 
+    public EmailMessageWithTemplate sendEmailDemandeAdhesion(String email){
+        EmailMessageWithTemplate emailMessageWithTemplate = new EmailMessageWithTemplate();
+        emailMessageWithTemplate.setTemplateName("cdmp-accepte-adhesion");
+        emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
+        emailMessageWithTemplate.setDestinataire(email);
+        emailMessageWithTemplate.setObjet("Acceptation Demande");
+        return emailMessageWithTemplate ;
+    }
 }
