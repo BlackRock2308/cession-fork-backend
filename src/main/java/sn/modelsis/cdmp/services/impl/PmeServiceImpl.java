@@ -137,8 +137,6 @@ public class PmeServiceImpl implements PmeService {
       existingPme.get().setControle(pme.getControle());
       existingPme.get().setAutorisationMinisterielle(pme.getAutorisationMinisterielle());
 
-
-
       pmeRepository.saveAndFlush(existingPme.get());
       log.info("PmeService:updatePme update Pme in the database with id = {}",existingPme.get().getIdPME());
     } catch(Exception ex){
