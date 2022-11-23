@@ -146,8 +146,10 @@ public class Pme implements Serializable {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "utilisateurid")
     private Utilisateur utilisateur ;
+    
     @Column(name = "cnirepresentant")
-    private int cniRepresentant ;
+    private String cniRepresentant ;
+    
     @Column(name = "registre")
     private String registre;
 }

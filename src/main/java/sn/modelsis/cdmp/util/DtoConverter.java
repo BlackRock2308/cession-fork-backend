@@ -271,39 +271,39 @@ public class DtoConverter {
 		return demandeCession;
 	}
 
-	public static  CreanceDto convertToCreanceDto(DemandeCession demandeCession) {
-		CreanceDto creanceDto = null;
-		if(null != demandeCession) {
-			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
-			//renseigner les mapping ambigue
-			creanceDto.setIdCreance(demandeCession.getIdDemande());
-			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
-			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
-			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
-			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
-			creanceDto.setRccm(demandeCession.getPme().getRccm());
-			creanceDto.setStatut(demandeCession.getStatut());
-		}
-		return creanceDto;
-	}
+//	public static  CreanceDto convertToCreanceDto(DemandeCession demandeCession) {
+//		CreanceDto creanceDto = null;
+//		if(null != demandeCession) {
+//			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+//			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
+//			//renseigner les mapping ambigue
+//			creanceDto.setIdCreance(demandeCession.getIdDemande());
+//			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+//			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
+//			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
+//			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
+//			creanceDto.setRccm(demandeCession.getPme().getRccm());
+//			creanceDto.setStatut(demandeCession.getStatut());
+//		}
+//		return creanceDto;
+//	}
 
-	public static Page<CreanceDto> convertToListCreanceDto(DemandeCession demandeCession) {
-		CreanceDto creanceDto = null;
-		if(null != demandeCession) {
-			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
-			//renseigner les mapping ambigue
-			creanceDto.setIdCreance(demandeCession.getIdDemande());
-			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
-			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
-			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
-			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
-			creanceDto.setRccm(demandeCession.getPme().getRccm());
-			creanceDto.setStatut(demandeCession.getStatut());
-		}
-		return (Page<CreanceDto>) creanceDto;
-	}
+//	public static Page<CreanceDto> convertToListCreanceDto(DemandeCession demandeCession) {
+//		CreanceDto creanceDto = null;
+//		if(null != demandeCession) {
+//			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+//			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
+//			//renseigner les mapping ambigue
+//			creanceDto.setIdCreance(demandeCession.getIdDemande());
+//			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
+//			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
+//			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
+//			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
+//			creanceDto.setRccm(demandeCession.getPme().getRccm());
+//			creanceDto.setStatut(demandeCession.getStatut());
+//		}
+//		return (Page<CreanceDto>) creanceDto;
+//	}
 
 	public static  UtilisateurDto convertToDto(Utilisateur utilisateur) {
 		UtilisateurDto utilisateurDto = null;

@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
+import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionReturnMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
@@ -40,6 +42,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionMapper cessionMapper;
     private final DemandeCessionReturnMapper cessionReturnMapper;
     private final DemandeService demandeService;
+
+    private final CreanceMapper creanceMapper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -332,9 +336,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                                                                String numeroDemande,
                                                                String nomMarche,
                                                                String statutLibelle){
-        log.info("DemandeCessionService:findDemandeCessionByDemande searching ......");
+        log.info("DemandeCessionService:findDemandeCessionByMultipleParams searching ......");
         return demandecessionRepository
-                .findByReferenceBE(referenceBE, numeroDemande,nomMarche,statutLibelle)
+                .findDemandeCessionByMultiParams(referenceBE, numeroDemande,nomMarche,statutLibelle)
                 .stream()
                 .map(cessionMapper::asDTO)
                 .collect(Collectors.toList());
@@ -364,6 +368,84 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .collect(Collectors.toList());
     }
 
+
+    /***************  Filter Creance based on multiple parameters ****************** */
+
+    @Override
+    public List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
+                                                               String raisonSocial,
+                                                               String statutLibelle){
+        log.info("DemandeCessionService:findCreanceByMultipleParams searching ......");
+
+        List<DemandeCession> demandeCessionList = demandecessionRepository
+                .searchCreanceByMultiParams(nomMarche,raisonSocial,statutLibelle);
+
+        List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoList
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<CreanceDto> findCreanceByRaisonSocial(String raisonSocial){
+        log.info("DemandeCessionService:findCreanceByRaisonSocial searching ......");
+
+        List<DemandeCession> demandeCessionList = demandecessionRepository
+                .searchCreanceByRaisonSocial(raisonSocial);
+
+        List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoList
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<CreanceDto> findCreanceByNomMarche(String nomMarche){
+        log.info("DemandeCessionService:findCreanceByNomMarche searching ......");
+
+        List<DemandeCession> demandeCessionListMarche = demandecessionRepository
+                .searchCreanceByNomMarche(nomMarche);
+
+        List<DemandeCessionDto> demandeCessionDtoListMarche = demandeCessionListMarche
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoListMarche
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CreanceDto> findCreanceByMontantCreance(double montantCreance){
+        log.info("DemandeCessionService:findCreanceByMontantCreance searching ......");
+
+        List<DemandeCession> demandeCessionListMontant = demandecessionRepository
+                .searchCreanceByMontantCreance(montantCreance);
+
+        List<DemandeCessionDto> demandeCessionDtoListMontant = demandeCessionListMontant
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoListMontant
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
 
 
 

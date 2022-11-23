@@ -31,7 +31,7 @@ public class BonEngagementDto implements Serializable {
     private String imputation;
     private String nomMarche;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private Date dateBonEngagement;
+    private LocalDateTime dateBonEngagement;
     private String identificationComptable;
     private String typeDepense;
     private String modeReglement;
@@ -42,4 +42,6 @@ public class BonEngagementDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateSoumissionServiceDepensier;
     private Set<DocumentDto> documents = new HashSet<>();
+
+
 }
