@@ -46,6 +46,13 @@ public interface UtilisateurService {
      */
 
     Utilisateur update(Utilisateur utilisateur);
+
+    Utilisateur updateCodePin(Utilisateur utilisateur);
+
+    Utilisateur updatePassword(Utilisateur utilisateur);
+
+    Utilisateur updateRoles(Utilisateur utilisateur);
+
     /**
      ** cette methode permet d'enregistrer un utilisateur
      * @Param utilisateur

@@ -35,26 +35,26 @@ public class PersitUsers {
         this.utilisateurRepository = utilisateurRepository; 
         this.pmeRepository = pmeRepository;
 
-        Role DG = new Role();
-        DG.setLibelle("DG");
+        Role DG = roleRepository.findByLibelle("DG");
+      //  DG.setLibelle("DG");
 
-        Role PME = new Role();
-        PME.setLibelle("PME");
+        Role PME = roleRepository.findByLibelle("PME");
+       // PME.setLibelle("PME");
 
-        Role DRC = new Role();
-        DRC.setLibelle("DRC");
+        Role DRC = roleRepository.findByLibelle("DRC");
+       // DRC.setLibelle("DRC");
 
-        Role ORDONNATEUR = new Role();
-        ORDONNATEUR.setLibelle("ORDONNATEUR");
+        Role ORDONNATEUR = roleRepository.findByLibelle("ORDONNATEUR");
+        //ORDONNATEUR.setLibelle("ORDONNATEUR");
 
-        Role DAF = new Role();
-        DAF.setLibelle("DAF");
+        Role DAF = roleRepository.findByLibelle("ORDONNATEUR");
+      //  DAF.setLibelle("DAF");
         
-        Role DSEAR = new Role();
-        DSEAR.setLibelle("DSEAR");
-        
-        Role JURISTE = new Role();
-        JURISTE.setLibelle("JURISTE");
+        Role DSEAR = roleRepository.findByLibelle("DSEAR");
+      //  DSEAR.setLibelle("DSEAR");
+
+        Role JURISTE =roleRepository.findByLibelle("JURISTE");
+       // JURISTE.setLibelle("JURISTE");
 
         Set<Role> pmeRoles = new HashSet<>();
         pmeRoles.add(PME);

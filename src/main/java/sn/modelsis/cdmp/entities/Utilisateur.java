@@ -54,7 +54,7 @@ public class Utilisateur implements Serializable {
    @Column(name="update_codepin")
    private boolean updateCodePin;
 
-   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @ManyToMany(fetch = FetchType.EAGER,cascade =CascadeType.DETACH)
    private Set<Role> roles ;
 
  //  @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
