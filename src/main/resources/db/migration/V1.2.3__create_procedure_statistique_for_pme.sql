@@ -1,5 +1,5 @@
 ---Fontion qui récupère le cumul des decotes par mois: decode = convention.valeurDecote*bonengagement.montantCreance---
-CREATE OR REPLACE FUNCTION public.cumlDecoteByMonthAndPME(
+CREATE  FUNCTION public.cumlDecoteByMonthAndPME(
     idPME bigint,
     monthConvention timestamp without time zone
 )
@@ -37,6 +37,7 @@ CREATE FUNCTION public.cumlMontantCreanceByMonthAndPME(
 AS $BODY$
 DECLARE
 cumulmontantCreance  NUMERIC;
+cumulDecode NUMERIC;
 BEGIN
 
 SELECT SUM(bE.montantCreance)  FROM public.demandeCession AS dC
@@ -44,7 +45,8 @@ SELECT SUM(bE.montantCreance)  FROM public.demandeCession AS dC
     dC.pmeid = idPME  AND  bE.datebonengagement
     BETWEEN monthEngagement AND (monthEngagement + interval '1 month')
     INTO STRICT cumulmontantCreance;
-
+SELECT public.cumlDecoteByMonthAndPME(idPME,monthEngagement) INTO STRICT cumulDecode;
+cumulmontantCreance := cumulmontantCreance - cumulDecode;
 RETURN cumulmontantCreance;
 END;
 $BODY$;
@@ -75,29 +77,6 @@ RETURN cumulMontant;
 END;
 $BODY$;
 
----Fontion qui récupère le cumul des soldes PME par mois---
-CREATE FUNCTION public.cumlSoldePMEByMonthAndPME(
-    idPME bigint,
-    monthSolde timestamp without time zone,
-    cumulMontantCreance double precision,
-    cumulDebourse double precision
-)
-    RETURNS NUMERIC
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-
-AS $BODY$
-DECLARE
-cumulDecode NUMERIC;
-BEGIN
-SELECT public.cumlDecoteByMonthAndPME(idPME,monthSolde) INTO STRICT cumulDecode;
-RETURN cumulMontantCreance - cumulDecode - cumulDebourse ;
-END;
-$BODY$;
-
-
-
 ---Fontion qui récupère les statistiques des paiements CDMP-PME par mois et PME---
 
 CREATE FUNCTION public.getStatistiquePaiementByPME(
@@ -115,7 +94,7 @@ resultat public.StatistiquePaiementPME;
 BEGIN
 SELECT public.cumlMontantCreanceByMonthAndPME(idPME,monthData) INTO STRICT resultat.montantCreance;
 SELECT public.cumlMontantDetailsPaiementByMonthAndPME(idPME, monthData) INTO STRICT resultat.debource;
-SELECT public.cumlSoldePMEByMonthAndPME(idPME,monthData, resultat.montantCreance, resultat.debource) INTO STRICT resultat.solde;
+resultat.solde := resultat.montantCreance - resultat.debource;
 RETURN resultat;
 END;
 $BODY$;
