@@ -35,33 +35,26 @@ public class PersitUsers {
         this.utilisateurRepository = utilisateurRepository; 
         this.pmeRepository = pmeRepository;
 
-        Role DG = new Role();
-        DG.setLibelle("DG");
-        DG.setDescription("Directeur Général");
+        Role DG = roleRepository.findByLibelle("DG");
+      //  DG.setLibelle("DG");
 
-        Role PME = new Role();
-        PME.setLibelle("PME");
-        PME.setDescription("Petite et moyenne entreprise");
+        Role PME = roleRepository.findByLibelle("PME");
+       // PME.setLibelle("PME");
 
-        Role DRC = new Role();
-        DRC.setLibelle("DRC");
-        DRC.setDescription("Direction des risques et du contentieux");
+        Role DRC = roleRepository.findByLibelle("DRC");
+       // DRC.setLibelle("DRC");
 
-        Role ORDONNATEUR = new Role();
-        ORDONNATEUR.setLibelle("ORDONNATEUR");
-        ORDONNATEUR.setDescription("Ordonnateur");
+        Role ORDONNATEUR = roleRepository.findByLibelle("ORDONNATEUR");
+        //ORDONNATEUR.setLibelle("ORDONNATEUR");
 
-        Role DAF = new Role();
-        DAF.setLibelle("DAF");
-        DAF.setDescription("Direction Administrative et Financière");
+        Role DAF = roleRepository.findByLibelle("ORDONNATEUR");
+      //  DAF.setLibelle("DAF");
         
-        Role DSEAR = new Role();
-        DSEAR.setLibelle("DSEAR");
-        DSEAR.setDescription("Direction du suivi des engagements et de l’animation du réseau");
-        
-        Role JURISTE = new Role();
-        JURISTE.setLibelle("JURISTE");
-        JURISTE.setDescription("Juriste");
+        Role DSEAR = roleRepository.findByLibelle("DSEAR");
+      //  DSEAR.setLibelle("DSEAR");
+
+        Role JURISTE =roleRepository.findByLibelle("JURISTE");
+       // JURISTE.setLibelle("JURISTE");
 
         Set<Role> pmeRoles = new HashSet<>();
         pmeRoles.add(PME);

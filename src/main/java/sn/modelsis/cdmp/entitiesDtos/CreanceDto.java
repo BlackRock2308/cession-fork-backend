@@ -33,11 +33,14 @@ public class CreanceDto implements Serializable {
 
     private double soldePME; //Paiement
 
-    private Statut statut; //DemandeCession
+    private StatutDto statut; //DemandeCession
 
     private LocalDateTime dateDemandeCession; //DemandeCession
 
     private LocalDateTime dateMarche; //DemandeCession
+
+    private double montantDebourse;
+
 
 
 

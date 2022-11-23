@@ -41,7 +41,12 @@ public class PaiementDto implements Serializable {
     private Long demandecessionid;
 
     private Set<DetailPaiementDto> detailPaiements = new HashSet<>();
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    //private LocalDateTime datePaiement;
 
+    public double getMontantRecuCDMP() {
+        return montantRecuCDMP;
+    }
+
+    public void setMontantRecuCDMP(double montantRecuCDMP) {
+        this.montantRecuCDMP = montantRecuCDMP;
+    }
 }

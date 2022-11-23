@@ -108,7 +108,7 @@ public class UtilisateurController {
     }
 
     /**
-     * {@code PUT  /utilisateurs/:id} : Updates an existing utilisateur.
+     * {@code PATCH  /utilisateurs/:id} : Updates an existing utilisateur.
      *
      * @param utilisateurDto the utilisateur to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated utilisateur,
@@ -124,11 +124,83 @@ public class UtilisateurController {
         log.debug("REST request to update Utilisateur : {}", utilisateurDto);
         if (utilisateurDto.getIdUtilisateur() == null)
             throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
+        Utilisateur utilisateur = utilisateurService.findById(utilisateurDto.getIdUtilisateur());
+
         Utilisateur result = utilisateurService.update(DtoConverter.convertToEntity(utilisateurDto));
             return ResponseEntity
                     .ok()
                     .body(DtoConverter.convertToDto(result));
     }
+    /**
+     * {@code PATCH  /utilisateurs/:id} : Updates an existing utilisateur.
+     *
+     * @param utilisateurDto the utilisateur to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated utilisateur,
+     * or with status {@code 400 (Bad Request)} if the utilisateur is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the utilisateur couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+
+    @PatchMapping("/update/codepin")
+    public ResponseEntity<UtilisateurDto> updateCodePin(
+            @Valid @RequestBody UtilisateurDto utilisateurDto
+    ) throws Exception {
+        log.debug("REST request to update Utilisateur : {}", utilisateurDto);
+        if (utilisateurDto.getIdUtilisateur() == null)
+            throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
+        Utilisateur result = utilisateurService.updateCodePin(DtoConverter.convertToEntity(utilisateurDto));
+            return ResponseEntity
+                    .ok()
+                    .body(DtoConverter.convertToDto(result));
+    }
+
+    /**
+     * {@code PATCH  /utilisateurs/:id} : Updates an existing utilisateur.
+     *
+     * @param utilisateurDto the utilisateur to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated utilisateur,
+     * or with status {@code 400 (Bad Request)} if the utilisateur is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the utilisateur couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+
+    @PatchMapping("/update/password")
+    public ResponseEntity<UtilisateurDto> updatePassword(
+            @Valid @RequestBody UtilisateurDto utilisateurDto
+    ) throws Exception {
+        log.debug("REST request to update Utilisateur : {}", utilisateurDto);
+        if (utilisateurDto.getIdUtilisateur() == null)
+            throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
+        Utilisateur result = utilisateurService.updatePassword(DtoConverter.convertToEntity(utilisateurDto));
+        return ResponseEntity
+                .ok()
+                .body(DtoConverter.convertToDto(result));
+    }
+
+
+    /**
+     * {@code PATCH  /utilisateurs/:id} : Updates an existing utilisateur.
+     *
+     * @param utilisateurDto the utilisateur to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated utilisateur,
+     * or with status {@code 400 (Bad Request)} if the utilisateur is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the utilisateur couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+
+    @PatchMapping("/update/roles")
+    public ResponseEntity<UtilisateurDto> updateRoles(
+            @Valid @RequestBody UtilisateurDto utilisateurDto
+    ) throws Exception {
+        log.debug("REST request to update Utilisateur : {}", utilisateurDto);
+        if (utilisateurDto.getIdUtilisateur() == null)
+            throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
+        Utilisateur result = utilisateurService.updateRoles(DtoConverter.convertToEntity(utilisateurDto));
+        return ResponseEntity
+                .ok()
+                .body(DtoConverter.convertToDto(result));
+    }
+
     /**
      * {@code POST  /utilisateurs} : Create a new utilisateur.
      *
