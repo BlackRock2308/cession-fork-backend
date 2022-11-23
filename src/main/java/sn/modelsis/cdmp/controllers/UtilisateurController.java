@@ -50,9 +50,9 @@ public class UtilisateurController {
 
     final private RoleRepository roleRepository ;
 
-    final   private JWTUtility jwtUtility;
+    final private JWTUtility jwtUtility;
 
-    final   private Util util;
+    final private Util util;
 
     final private UtilisateurDetailService utilisateurDetailService;
 
@@ -60,9 +60,9 @@ public class UtilisateurController {
 
     final private RestTemplateUtil restTemplateUtil ;
 
-    final   private AuthenticationManager authenticationManager;
+    final private AuthenticationManager authenticationManager;
 
-    final  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    final private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     final private UtilisateurService utilisateurService ;
