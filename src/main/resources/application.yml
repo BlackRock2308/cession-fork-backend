@@ -14,7 +14,7 @@ spring:
     name: Cession creance
   datasource:
     password: password
-    url: jdbc:postgresql://${DB_HOST:localhost}:5432/cdmp
+    url: jdbc:postgresql://localhost:5432/cdmp
     username: cdmp
   jpa:
     hibernate:
