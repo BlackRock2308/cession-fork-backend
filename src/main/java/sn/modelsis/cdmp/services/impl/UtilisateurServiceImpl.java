@@ -146,7 +146,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         if (utilisateurSaved==null)
             throw new CustomException("Error while saving the user ");
         pme.setUtilisateur(utilisateurSaved);
-        sendAccepetAdhesionEmail(email);
+        sendAccepetAdhesionEmail(email ,password,codePin);
         pmeService.savePme(pme);
         return DtoConverter.convertToDto(pme) ;
     }
@@ -189,9 +189,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     }
 
-    private EmailMessageWithTemplate  sendAccepetAdhesionEmail(String email ){
-        String password = generatePassword();
-        int codePin = generateCodePin();
+    private EmailMessageWithTemplate  sendAccepetAdhesionEmail(String email  ,String password ,int codePin){
+
+
        EmailMessageWithTemplate emailMessageWithTemplate = new EmailMessageWithTemplate();
         emailMessageWithTemplate.getTemplateVariable().put("password",password);
         emailMessageWithTemplate.setTemplateName("cdmp-create-account");
