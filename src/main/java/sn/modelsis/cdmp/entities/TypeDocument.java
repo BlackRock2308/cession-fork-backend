@@ -8,6 +8,8 @@ public enum TypeDocument {
   FACTURE("FACTURE") ,
   DECHARGE("DECHARGE") ,
   BE("BE"),
+  CONVENTION("CONVENTION"),
+  DOCUMENT_MARCHE("DOCUMENT DU MARCHE"),
 
   AUTRE("AUTRE");
 
