@@ -138,7 +138,7 @@ public class PmeServiceImpl implements PmeService {
       existingPme.get().setAutorisationMinisterielle(pme.getAutorisationMinisterielle());
 
       pmeRepository.saveAndFlush(existingPme.get());
-      log.info("PmeService:updatePme update Pme in the database with id = {}",existingPme.get().getIdPME());
+      log.info("PmeService:updatePme update Pme in the database with id = {}",existingPme.get());
     } catch(Exception ex){
       log.error("Exception occured while updating PME with id : {}",id );
       throw new CustomException("Error occured while updating this PME ");

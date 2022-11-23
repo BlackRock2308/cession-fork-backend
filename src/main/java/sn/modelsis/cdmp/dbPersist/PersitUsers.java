@@ -47,7 +47,7 @@ public class PersitUsers {
         Role ORDONNATEUR = roleRepository.findByLibelle("ORDONNATEUR");
         //ORDONNATEUR.setLibelle("ORDONNATEUR");
 
-        Role DAF = roleRepository.findByLibelle("ORDONNATEUR");
+        Role DAF = roleRepository.findByLibelle("DAF");
       //  DAF.setLibelle("DAF");
         
         Role DSEAR = roleRepository.findByLibelle("DSEAR");
