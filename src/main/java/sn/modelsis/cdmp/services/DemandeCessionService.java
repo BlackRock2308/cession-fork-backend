@@ -84,7 +84,8 @@ public interface DemandeCessionService {
 
     List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
                                                  String raisonSocial,
-                                                 String statutLibelle);
+                                                 double montantCreance
+                                                 );
 
 
     List<CreanceDto> findCreanceByRaisonSocial(String raisonSocial);
@@ -92,5 +93,14 @@ public interface DemandeCessionService {
     List<CreanceDto> findCreanceByNomMarche(String nomMarche);
 
     List<CreanceDto> findCreanceByMontantCreance(double montantCreance);
+
+    List<CreanceDto> findDemandeCessionByPmeRaisonSocialOrBonEngagementNomMarche(
+            String nomMarche,
+            String raisonSocial);
+
+    double findRightDecoteForCreanceDTO(DemandeCession demandeCession);
+
+
+
 
 }

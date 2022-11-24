@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,10 +40,6 @@ public class ConventionServiceImpl implements ConventionService{
   private final ConventionRepository conventionRepository;
   private final DocumentService documentService;
 
-  private final ParametrageDecoteService decoteService;
-
-  private final ConventionMapper conventionMapper;
- 
   @Override
   public Convention save(Convention convention) {
     Convention newConvention;
@@ -175,6 +172,10 @@ public class ConventionServiceImpl implements ConventionService{
       throw new CustomException("Error occured while making correction");
     }
 
+
   }
+
+
+
 
 }
