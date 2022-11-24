@@ -85,7 +85,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         DemandeAdhesion demandeAdhesion = adhesionMapper.asEntity(demandeAdhesionDto);
         pmeRepository.findById(demandeAdhesionDto.getIdPME()).ifPresentOrElse(
                 (value)
-                        -> {
+                        -> { 
                     demandeAdhesion.setPme(value);
                     demandeAdhesion.setDateDemandeAdhesion(new Date());
                     Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
