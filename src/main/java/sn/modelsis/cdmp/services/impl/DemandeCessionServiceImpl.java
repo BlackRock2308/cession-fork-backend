@@ -484,38 +484,38 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
 
-    @Override
-    public Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable){
-        log.info("DemandeCessionService:findAll : fetching .....");
-        String[] statutWithNoPayment = {"CONVENTION_GENEREE", "CONVENTION_CORRIGEE",
-                "CONVENTION_SIGNEE_PAR_PME", "CONVENTION_SIGNEE_PAR_DG", "RISQUEE","NON_RISQUEE",
-                "COMPLETEE", "COMPLEMENT_REQUIS", "CDMP_TOTALEMENT_PAYEE","CONVENTION_TRANSMISE",
-                "CONVENTION_REJETEE_PAR_DG", "CONVENTION_REJETEE_PAR_PME","CONVENTION_REJETEE",
-                "CDMP_EN_ATTENTE_DE_PAIEMENT", "PME_EN_ATTENTE_DE_PAIEMENT,CONVENTION_ACCEPTEE"};
-
-        String[] statutWithPayment = {"CONVENTION_ACCEPTEE","CDMP_PARTIELLEMENT_PAYEE","PME_PARTIELLEMENT_PAYEE","PME_TOTALEMENT_PAYEE",};
-        Set<String> statutList = new HashSet<>();
-        statutList.addAll(List.of(statutWithPayment));
-        Page<DemandeCession> cessionList;
-        List<DemandeCession> correctDemandeList = null;
-        cessionList = demandecessionRepository.findAll(pageable);
-        log.info("Starting List : {}",cessionList);
-
-        for(DemandeCession element : cessionList){
-            if (element.getStatut().getLibelle() == "COMPLEMENT_REQUIS"){
-                correctDemandeList.add(element);
-            }
-        }
-//        cessionList.forEach((e)->{
-//            if (e.getStatut().getLibelle().equals("COMPLEMENT_REQUIS")){
-//                correctDemandeList.add(e);
+//    @Override
+//    public Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable){
+//        log.info("DemandeCessionService:findAll : fetching .....");
+//        String[] statutWithNoPayment = {"CONVENTION_GENEREE", "CONVENTION_CORRIGEE",
+//                "CONVENTION_SIGNEE_PAR_PME", "CONVENTION_SIGNEE_PAR_DG", "RISQUEE","NON_RISQUEE",
+//                "COMPLETEE", "COMPLEMENT_REQUIS", "CDMP_TOTALEMENT_PAYEE","CONVENTION_TRANSMISE",
+//                "CONVENTION_REJETEE_PAR_DG", "CONVENTION_REJETEE_PAR_PME","CONVENTION_REJETEE",
+//                "CDMP_EN_ATTENTE_DE_PAIEMENT", "PME_EN_ATTENTE_DE_PAIEMENT,CONVENTION_ACCEPTEE"};
+//
+//        String[] statutWithPayment = {"CONVENTION_ACCEPTEE","CDMP_PARTIELLEMENT_PAYEE","PME_PARTIELLEMENT_PAYEE","PME_TOTALEMENT_PAYEE",};
+//        Set<String> statutList = new HashSet<>();
+//        statutList.addAll(List.of(statutWithPayment));
+//        Page<DemandeCession> cessionList;
+//        List<DemandeCession> correctDemandeList = null;
+//        cessionList = demandecessionRepository.findAll(pageable);
+//        log.info("Starting List : {}",cessionList);
+//
+//        for(DemandeCession element : cessionList){
+//            if (element.getStatut().getLibelle() == "COMPLEMENT_REQUIS"){
+//                correctDemandeList.add(element);
 //            }
-//        });
-        log.info("Correct List : {}",correctDemandeList);
-        return (Page<DemandeCessionDto>) correctDemandeList
-                .stream()
-                .map(cessionMapper::asDTO);
-    }
+//        }
+////        cessionList.forEach((e)->{
+////            if (e.getStatut().getLibelle().equals("COMPLEMENT_REQUIS")){
+////                correctDemandeList.add(e);
+////            }
+////        });
+//        log.info("Correct List : {}",correctDemandeList);
+//        return (Page<DemandeCessionDto>) correctDemandeList
+//                .stream()
+//                .map(cessionMapper::asDTO);
+//    }
 
 
 
