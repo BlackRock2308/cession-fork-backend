@@ -47,7 +47,7 @@ CREATE TABLE public.pme
       localite character varying (250),
       registre character varying (250),
       controle int,
-      cnirepresentant int,
+      cnirepresentant character varying (250),
       activiteprincipale character varying (250),
       autorisationMinisterielle character varying (250),
       registreCommerce character varying (250),

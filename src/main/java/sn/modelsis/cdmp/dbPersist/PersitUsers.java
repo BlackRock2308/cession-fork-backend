@@ -35,26 +35,26 @@ public class PersitUsers {
         this.utilisateurRepository = utilisateurRepository; 
         this.pmeRepository = pmeRepository;
 
-        Role DG = new Role();
-        DG.setLibelle("DG");
+        Role DG = roleRepository.findByLibelle("DG");
+      //  DG.setLibelle("DG");
 
-        Role PME = new Role();
-        PME.setLibelle("PME");
+        Role PME = roleRepository.findByLibelle("PME");
+       // PME.setLibelle("PME");
 
-        Role DRC = new Role();
-        DRC.setLibelle("DRC");
+        Role DRC = roleRepository.findByLibelle("DRC");
+       // DRC.setLibelle("DRC");
 
-        Role ORDONNATEUR = new Role();
-        ORDONNATEUR.setLibelle("ORDONNATEUR");
+        Role ORDONNATEUR = roleRepository.findByLibelle("ORDONNATEUR");
+        //ORDONNATEUR.setLibelle("ORDONNATEUR");
 
-        Role DAF = new Role();
-        DAF.setLibelle("DAF");
+        Role DAF = roleRepository.findByLibelle("DAF");
+      //  DAF.setLibelle("DAF");
         
-        Role DSEAR = new Role();
-        DSEAR.setLibelle("DSEAR");
-        
-        Role JURISTE = new Role();
-        JURISTE.setLibelle("JURISTE");
+        Role DSEAR = roleRepository.findByLibelle("DSEAR");
+      //  DSEAR.setLibelle("DSEAR");
+
+        Role JURISTE =roleRepository.findByLibelle("JURISTE");
+       // JURISTE.setLibelle("JURISTE");
 
         Set<Role> pmeRoles = new HashSet<>();
         pmeRoles.add(PME);
@@ -81,7 +81,8 @@ public class PersitUsers {
         dg.setAdresse("Mermoz");
         dg.setCodePin("123456");
         dg.setPassword(passwordEncoder.encode("passer"));
-        dg.setPrenom("DG");
+        dg.setPrenom("Abdou");
+        dg.setNom("MBACKE");
         dg.setEmail("dg@gmail.com");
         dg.setRoles(dgRoles);
         
@@ -96,7 +97,8 @@ public class PersitUsers {
         pme.setAdresse("Mermoz");
         pme.setCodePin("123456");
         pme.setPassword(passwordEncoder.encode("passer"));
-        pme.setPrenom("PME");
+        pme.setPrenom("Alassane");
+        pme.setNom("NDIAYE");
         pme.setEmail("andiaye@modelsis.sn");
         pme.setRoles(pmeRoles);
 
@@ -104,7 +106,8 @@ public class PersitUsers {
         drc.setAdresse("Mermoz");
         drc.setCodePin("123456");
         drc.setPassword(passwordEncoder.encode("passer"));
-        drc.setPrenom("DRC");
+        drc.setPrenom("Sokhna");
+        drc.setNom("DIOP");
         drc.setEmail("drc@gmail.com");
         drc.setRoles(cgrRoles);
 
@@ -119,7 +122,8 @@ public class PersitUsers {
         juriste.setAdresse("Mermoz");
         juriste.setCodePin("123456");
         juriste.setPassword(passwordEncoder.encode("passer"));
-        juriste.setPrenom("JURISTE");
+        juriste.setPrenom("Oumar");
+        juriste.setNom("NDIAYE");
         juriste.setEmail("juriste@gmail.com");
         juriste.setRoles(juristeRoles);
         Utilisateur user2 = utilisateurRepository.findUtilisateurByEmail("juriste@gmail.com");
@@ -131,7 +135,8 @@ public class PersitUsers {
         dsear.setAdresse("Mermoz");
         dsear.setCodePin("123456");
         dsear.setPassword(passwordEncoder.encode("passer"));
-        dsear.setPrenom("DSEAR");
+        dsear.setPrenom("Mbaye");
+        dsear.setNom("SENE");
         dsear.setEmail("dsear@gmail.com");
         dsear.setRoles(dsearRoles);
 
@@ -144,7 +149,8 @@ public class PersitUsers {
         daf.setAdresse("Mermoz");
         daf.setCodePin("123456");
         daf.setPassword(passwordEncoder.encode("passer"));
-        daf.setPrenom("DAF");
+        daf.setPrenom("Soda");
+        daf.setNom("NDIAYE");
         daf.setEmail("daf@gmail.com");
         daf.setRoles(dafRoles);
         Utilisateur user4 = utilisateurRepository.findUtilisateurByEmail("daf@gmail.com");
@@ -156,7 +162,8 @@ public class PersitUsers {
         ordonnateur.setAdresse("Mermoz");
         ordonnateur.setCodePin("123456");
         ordonnateur.setPassword(passwordEncoder.encode("passer"));
-        ordonnateur.setPrenom("ORDONNATEUR");
+        ordonnateur.setPrenom("Ndèye");
+        ordonnateur.setNom("NGOM");
         ordonnateur.setEmail("ordonnateur@gmail.com");
         ordonnateur.setRoles(ordonnateurRoles);
         Utilisateur user5 = utilisateurRepository.findUtilisateurByEmail("ordonnateur@gmail.com");

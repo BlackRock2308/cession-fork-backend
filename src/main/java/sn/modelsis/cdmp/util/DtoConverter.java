@@ -79,6 +79,8 @@ public class DtoConverter {
 		if(null != pme) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			pmeDto = modelMapper.map(pme, PmeDto.class);
+			if(null!=pme.getUtilisateur())
+			pmeDto.setUtilisateurid(pme.getUtilisateur().getIdUtilisateur());
 		}
 		return pmeDto;
 	}

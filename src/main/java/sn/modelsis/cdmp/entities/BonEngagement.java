@@ -65,7 +65,7 @@ public class BonEngagement implements Serializable {
 
     @Column(name = "datebonengagement")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private Date datebonengagement;
+    private LocalDateTime datebonengagement;
 
     @Column(name = "exercice")
     private String exercice;

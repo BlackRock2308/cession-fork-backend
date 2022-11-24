@@ -13,6 +13,7 @@ import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
+import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
@@ -23,6 +24,7 @@ import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.RestTemplateUtil;
 import sn.modelsis.cdmp.util.Util;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -82,15 +84,41 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public Utilisateur update(Utilisateur utilisateur) {
+        Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
+        utilisateurToUpdate.setCodePin(utilisateur.getCodePin());
+        utilisateurToUpdate.setUpdateCodePin(false);
+        return utilisateurRepository.save(utilisateurToUpdate);
+    }
+
+    @Override
+    public Utilisateur updateCodePin(Utilisateur utilisateur) {
+        Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
+        utilisateurToUpdate.setCodePin(utilisateur.getCodePin());
+        utilisateurToUpdate.setUpdateCodePin(false);
+        return utilisateurRepository.save(utilisateurToUpdate);
+    }
+
+
+    @Override
+    public Utilisateur updatePassword(Utilisateur utilisateur) {
+        Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
+        utilisateurToUpdate.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
+        utilisateurToUpdate.setUpdatePassword(false);
+        return utilisateurRepository.save(utilisateurToUpdate);
+    }
+
+    @Override
+    public Utilisateur updateRoles(Utilisateur utilisateur) {
+
+        Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
+
+        Set<Role> newRoles = new HashSet<>();
         if ( utilisateur.getRoles()!=null){
              Set<Role> roles = utilisateur.getRoles();
-             Set<Role> newRoles = utilisateur.getRoles();
-             roles.forEach(role -> newRoles.add(roleRepository.save(role)));
-             utilisateur.setRoles(newRoles);
+             roles.forEach(role -> newRoles.add(roleRepository.findByLibelle(role.getLibelle())));
+            utilisateurToUpdate.setRoles(newRoles);
         }
-        if(utilisateur.getPassword()!=null)
-            utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
-        return utilisateurRepository.save(utilisateur);
+        return utilisateurRepository.save(utilisateurToUpdate);
     }
 
     @Override
@@ -107,18 +135,19 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         log.debug("REST request to save Create account for pme  : {}", creationComptePmeDto.getEmail());
         Pme pme = pmeService.findPmeByEmail(email);
         Utilisateur utilisateur = new Utilisateur();
-        String password = util.generateRandomPassword(8);
-        int codePin = (int) (Math.random()*(9999-1003)+1002);
+        String password = generatePassword();
+        int codePin = generateCodePin();
         utilisateur.setUpdatePassword(true);
         utilisateur.setUpdateCodePin(true);
         utilisateur.setPassword(passwordEncoder.encode(password));
         utilisateur.setEmail(email);
         utilisateur.setCodePin(Integer.toString(codePin));
-        creationComptePmeDto.getEmailMessageWithTemplate().getTemplateVariable().put("password",password);
-        creationComptePmeDto.getEmailMessageWithTemplate().getTemplateVariable().put("codePin",codePin);
-        creationComptePmeDto.getEmailMessageWithTemplate().getTemplateVariable().put("username",email);
-        pme.setUtilisateur(utilisateurRepository.save(utilisateur));
-        restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail , creationComptePmeDto.getEmailMessageWithTemplate());
+        Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
+        if (utilisateurSaved==null)
+            throw new CustomException("Error while saving the user ");
+        pme.setUtilisateur(utilisateurSaved);
+        sendAccepetAdhesionEmail(email ,password,codePin);
+        pmeService.savePme(pme);
         return DtoConverter.convertToDto(pme) ;
     }
 
@@ -160,4 +189,28 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     }
 
+    private EmailMessageWithTemplate  sendAccepetAdhesionEmail(String email  ,String password ,int codePin){
+
+
+       EmailMessageWithTemplate emailMessageWithTemplate = new EmailMessageWithTemplate();
+        emailMessageWithTemplate.getTemplateVariable().put("password",password);
+        emailMessageWithTemplate.setTemplateName("cdmp-create-account");
+        emailMessageWithTemplate.setObjet("Creation Compte CDMP ");
+        emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
+        emailMessageWithTemplate.setDestinataire(email);
+        emailMessageWithTemplate.getTemplateVariable().put("codePin",codePin);
+        emailMessageWithTemplate.getTemplateVariable().put("username",email);
+       EmailMessageWithTemplate emailMessageWithTemplateSent =  restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail , emailMessageWithTemplate);
+
+        return emailMessageWithTemplateSent;
+    }
+
+    private String  generatePassword(){
+        String password = util.generateRandomPassword(8);
+        return password;
+    }
+    private int  generateCodePin(){
+        int codePin = (int) (Math.random()*(9999-1003)+1002);
+        return  codePin;
+    }
 }
