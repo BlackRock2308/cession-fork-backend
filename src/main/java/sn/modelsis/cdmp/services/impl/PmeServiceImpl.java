@@ -15,6 +15,7 @@ import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
+import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.io.IOException;
@@ -112,38 +113,15 @@ public class PmeServiceImpl implements PmeService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public Pme updatePme(Long id, Pme pme) {
-    Optional <Pme> existingPme;
+
     try {
       log.info("PmeService:updatePme ........");
-      existingPme = pmeRepository.findById(id);
-      existingPme.get().setAdressePME(pme.getAdressePME());
-      existingPme.get().setNomRepresentant(pme.getNomRepresentant());
-      existingPme.get().setPrenomRepresentant(pme.getNomRepresentant());
-      existingPme.get().setActivitePrincipale(pme.getActivitePrincipale());
-      existingPme.get().setFormeJuridique(pme.getFormeJuridique());
-      existingPme.get().setEffectifPermanent(pme.getEffectifPermanent());
-      existingPme.get().setEmail(pme.getEmail());
-      existingPme.get().setTelephonePME(pme.getTelephonePME());
-      existingPme.get().setLocalite(pme.getLocalite());
-      existingPme.get().setRaisonSocial(pme.getRaisonSocial());
-      existingPme.get().setCodePin(pme.getCodePin());
-      existingPme.get().setAtd(pme.isAtd());
-      existingPme.get().setCniRepresentant(pme.getCniRepresentant());
-      existingPme.get().setEnseigne(pme.getEnseigne());
-      existingPme.get().setNombreEtablissementSecondaires(pme.getNombreEtablissementSecondaires());
-      existingPme.get().setRaisonSocial(pme.getRaisonSocial());
-      existingPme.get().setRegistre(pme.getRegistre());
-      existingPme.get().setIsactive(pme.getIsactive());
-      existingPme.get().setControle(pme.getControle());
-      existingPme.get().setAutorisationMinisterielle(pme.getAutorisationMinisterielle());
-
-      pmeRepository.saveAndFlush(existingPme.get());
-      log.info("PmeService:updatePme update Pme in the database with id = {}",existingPme.get());
+      log.info("PmeService:updatePme update Pme in the database with id = {}");
+      return pmeRepository.saveAndFlush(pme);
     } catch(Exception ex){
       log.error("Exception occured while updating PME with id : {}",id );
       throw new CustomException("Error occured while updating this PME ");
     }
-    return existingPme.get();
   }
 
   
