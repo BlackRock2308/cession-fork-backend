@@ -21,7 +21,9 @@ import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.mappers.CreanceMapper;
+import sn.modelsis.cdmp.mappers.CreanceWithNoPaymentMapper;
 import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 @AllArgsConstructor
 @RestController
@@ -32,7 +34,9 @@ public class CreanceController {
     private final DemandeCessionService demandeCessionService;
     private final CreanceMapper creanceMapper;
 
-    @GetMapping
+    private final CreanceWithNoPaymentMapper noPaymentMapper;
+
+    @GetMapping("processing")
     public ResponseEntity<Page<CreanceDto>> findAllCreance(Pageable pageable,
                                                                  HttpServletRequest request) {
 
@@ -51,13 +55,35 @@ public class CreanceController {
                 .body(demandeList.map(creanceMapper::mapToDto));
     }
 
+    @GetMapping()
+    public ResponseEntity<Page<CreanceDto>> findNoPaidCreance(Pageable pageable,
+                                                           HttpServletRequest request) {
+
+        Page<DemandeCessionDto> demandeList;
+
+
+        log.info("CreanceController.findAllCreance request started ...");
+        try{
+            demandeList = demandeCessionService
+                    .findAllCreance(pageable);
+            log.info("la liste : {}",demandeList);
+
+        }catch (Exception e){
+            log.info("Create a payment before getting the list of creances");
+            throw new CustomException("Can't get all creance curently. You need to create an instance of paiement first");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList.map(noPaymentMapper::mapToDto));
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<Optional<CreanceDto>> getCreance(@PathVariable Long id,
                                                     HttpServletRequest request) {
         log.info("CreanceController.getCreance request started ...");
         Optional<CreanceDto> creanceDto = demandeCessionService
                     .getDemandeCession(id)
-                    .map(creanceMapper::mapToDto);
+                    .map(noPaymentMapper::mapToDto);
         log.debug("CreanceController.getCreance request params : {}", id);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(creanceDto);

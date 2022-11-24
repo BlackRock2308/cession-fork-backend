@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
@@ -27,6 +28,7 @@ import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.mappers.CreanceMapper;
+import sn.modelsis.cdmp.mappers.CreanceWithNoPaymentMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionReturnMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
@@ -45,8 +47,10 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionMapper cessionMapper;
     private final DemandeCessionReturnMapper cessionReturnMapper;
     private final DemandeService demandeService;
-
     private final CreanceMapper creanceMapper;
+
+    private final CreanceWithNoPaymentMapper noPaymentMapper;
+
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -93,6 +97,15 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(cessionMapper::asDTO);
     }
 
+
+    @Override
+    public Page<DemandeCessionDto> findAllCreance(Pageable pageable){
+        log.info("DemandeCessionService:findAll : fetching .....");
+        return demandecessionRepository
+                .findAll(pageable)
+                .map(cessionMapper::asDTO);
+    }
+
     @Override
     public Page<NewDemandeCessionDto> findAllWithoutDemande(Pageable pageable) {
         log.info("DemandeCessionService:findAll : fetching .....");
@@ -129,7 +142,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
 
-    /** ********** [RECEVABILITE} Demande de Cession REJETTEE ou RECEVABLE  ************* **/
+    /** ********** [RECEVABILITE] Demande de Cession REJETTEE ou RECEVABLE  ************* **/
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -219,7 +232,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     }
 
-    /** ************** FIlter les demandes en fonction de leur statut*************************** **/
+    /** ************** Filtrer les demandes en fonction de leur statut*************************** **/
     @Override
     public List<DemandeCession> findAllDemandeRejetee(){
         log.info("DemandeCessionService:findAllDemandeRejetee : fetching .....");
@@ -332,7 +345,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(cessionMapper::asDTO);
     }
 
-
+    /** ************** Search Demande de Cession based on mulpiples criterias *************************** **/
 
     @Override
     public List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
@@ -468,6 +481,40 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
             }
         }
         return creanceDecote;
+    }
+
+
+    @Override
+    public Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable){
+        log.info("DemandeCessionService:findAll : fetching .....");
+        String[] statutWithNoPayment = {"CONVENTION_GENEREE", "CONVENTION_CORRIGEE",
+                "CONVENTION_SIGNEE_PAR_PME", "CONVENTION_SIGNEE_PAR_DG", "RISQUEE","NON_RISQUEE",
+                "COMPLETEE", "COMPLEMENT_REQUIS", "CDMP_TOTALEMENT_PAYEE","CONVENTION_TRANSMISE",
+                "CONVENTION_REJETEE_PAR_DG", "CONVENTION_REJETEE_PAR_PME","CONVENTION_REJETEE",
+                "CDMP_EN_ATTENTE_DE_PAIEMENT", "PME_EN_ATTENTE_DE_PAIEMENT,CONVENTION_ACCEPTEE"};
+
+        String[] statutWithPayment = {"CONVENTION_ACCEPTEE","CDMP_PARTIELLEMENT_PAYEE","PME_PARTIELLEMENT_PAYEE","PME_TOTALEMENT_PAYEE",};
+        Set<String> statutList = new HashSet<>();
+        statutList.addAll(List.of(statutWithPayment));
+        Page<DemandeCession> cessionList;
+        List<DemandeCession> correctDemandeList = null;
+        cessionList = demandecessionRepository.findAll(pageable);
+        log.info("Starting List : {}",cessionList);
+
+        for(DemandeCession element : cessionList){
+            if (element.getStatut().getLibelle() == "COMPLEMENT_REQUIS"){
+                correctDemandeList.add(element);
+            }
+        }
+//        cessionList.forEach((e)->{
+//            if (e.getStatut().getLibelle().equals("COMPLEMENT_REQUIS")){
+//                correctDemandeList.add(e);
+//            }
+//        });
+        log.info("Correct List : {}",correctDemandeList);
+        return (Page<DemandeCessionDto>) correctDemandeList
+                .stream()
+                .map(cessionMapper::asDTO);
     }
 
 

@@ -271,20 +271,28 @@ public class DtoConverter {
 		return demandeCession;
 	}
 
-//	public static  CreanceDto convertToCreanceDto(DemandeCession demandeCession) {
-//		CreanceDto creanceDto = null;
-//		if(null != demandeCession) {
-//			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-//			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
-//			//renseigner les mapping ambigue
-//			creanceDto.setIdCreance(demandeCession.getIdDemande());
-//			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
-//			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
-//			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
-//			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
-//			creanceDto.setRccm(demandeCession.getPme().getRccm());
-//			creanceDto.setStatut(demandeCession.getStatut());
+//	public static CreanceDto convertToCreanceDto(DemandeCessionDto demandeCessionDto) {
+//		if ( demandeCessionDto == null ) {
+//			return null;
 //		}
+//
+//		CreanceDto creanceDto = new CreanceDto();
+//
+//		creanceDto.setIdCreance( demandeCessionDto.getIdDemande() );
+//		creanceDto.setNinea( demandeCessionDto.getPme().getNinea() );
+//		creanceDto.setRccm( demandeCessionDto.getPme().getRccm() );
+//		creanceDto.setRaisonSocial( demandeCessionDto.getPme().getRaisonSocial() );
+//		creanceDto.setTypeMarche( demandeCessionDto.getBonEngagement().getTypeMarche() );
+//		creanceDto.setNomMarche( demandeCessionDto.getBonEngagement().getNomMarche() );
+//		creanceDto.setMontantCreance( demandeCessionDto.getBonEngagement().getMontantCreance() );
+//		creanceDto.setDateDemandeCession( demandeCessionDto.getDateDemandeCession() );
+//		creanceDto.setDateMarche( demandeCessionDto.getDateDemandeCession() );
+//		creanceDto.setStatut( demandeCessionDto.getStatut() );
+//		if(demandeCessionDto.getPaiement() != null){
+//			creanceDto.setSoldePME( demandeCessionDto.getPaiement().getSoldePME() );
+//			creanceDto.setMontantDebourse( demandeCessionDto.getPaiement().getMontantRecuCDMP() );
+//		}
+//
 //		return creanceDto;
 //	}
 
