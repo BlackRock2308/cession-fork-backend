@@ -94,7 +94,7 @@ public interface DemandeCessionService {
 
     List<CreanceDto> findCreanceByMontantCreance(double montantCreance);
 
-    Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable);
+//    Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable);
 
     Page<DemandeCessionDto> findAllCreance(Pageable pageable);
 
