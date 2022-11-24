@@ -64,16 +64,6 @@ public class JWTUtility implements Serializable {
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
-
-    public String generateTokenEtudiant(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateTokenEtudiant(claims, userDetails.getUsername());
-    }
-    public String generateTokenAdmin(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateTokenAdmin(claims, userDetails.getUsername());
-    }
-
     //while creating the token -
     //1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
     //2. Sign the JWT using the HS512 algorithm and secret key.
@@ -83,16 +73,6 @@ public class JWTUtility implements Serializable {
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
     }
 
-    private String doGenerateTokenEtudiant(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_ETUDIANT * 1000))
-                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
-    }
-    private String doGenerateTokenAdmin(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_ADMIN * 1000))
-                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
-    }
 
 
     //validate token
