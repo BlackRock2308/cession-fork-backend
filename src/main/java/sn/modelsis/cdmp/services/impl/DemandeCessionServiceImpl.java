@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
@@ -371,14 +372,35 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     /***************  Filter Creance based on multiple parameters ****************** */
 
+
     @Override
-    public List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
-                                                               String raisonSocial,
-                                                               String statutLibelle){
+    public List<CreanceDto> findDemandeCessionByPmeRaisonSocialOrBonEngagementNomMarche(
+                                                        String nomMarche,
+                                                        String raisonSocial){
         log.info("DemandeCessionService:findCreanceByMultipleParams searching ......");
 
         List<DemandeCession> demandeCessionList = demandecessionRepository
-                .searchCreanceByMultiParams(nomMarche,raisonSocial,statutLibelle);
+                .findDemandeCessionByPmeRaisonSocialOrBonEngagementNomMarche(nomMarche,raisonSocial);
+
+        List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoList
+                .stream()
+                .map(creanceMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
+                                                        String raisonSocial,
+                                                        double montantCreance){
+        log.info("DemandeCessionService:findCreanceByMultipleParams searching ......");
+
+        List<DemandeCession> demandeCessionList = demandecessionRepository
+                .searchCreanceByMultiParams(nomMarche,raisonSocial,montantCreance);
 
         List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
                 .stream()
@@ -446,6 +468,25 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(creanceMapper::mapToDto)
                 .collect(Collectors.toList());
     }
+
+
+
+    /***************  Find the right decote inside the list ****************** */
+
+    public double findRightDecoteForCreanceDTO(DemandeCession demandeCession) {
+
+        double creanceDecote = 0;
+        Set<Convention> conventions = demandeCession.getConventions();
+        for (Convention convention : conventions) {
+            if (convention.isActiveConvention()) {
+                creanceDecote = convention.getValeurDecoteByDG();
+
+                return creanceDecote;
+            }
+        }
+        return creanceDecote;
+    }
+
 
 
 
