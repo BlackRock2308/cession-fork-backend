@@ -70,12 +70,13 @@ public class CreanceController {
     public ResponseEntity<List<CreanceDto>> findCreanceByMultipleParams(
             @RequestParam("nomMarche") String nomMarche,
             @RequestParam("raisonSocial") String raisonSocial,
-            @RequestParam("montantCreance") double montantCreance){
+            @RequestParam("montantCreance") double montantCreance,
+            @RequestParam("statutLibelle") String statutLibelle){
 
         log.info("CreanceController:findCreanceByMultipleParams request started");
 
         List<CreanceDto> creanceList = demandeCessionService
-                .findCreanceByMultipleParams(nomMarche,raisonSocial,montantCreance);
+                .findCreanceByMultipleParams(nomMarche,raisonSocial,montantCreance,statutLibelle);
         log.info("CreanceController:findCreanceByMultipleParams: creanceList : {}",creanceList);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(creanceList);
