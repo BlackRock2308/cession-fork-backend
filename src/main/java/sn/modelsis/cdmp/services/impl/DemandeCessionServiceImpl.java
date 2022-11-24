@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
@@ -347,8 +349,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     public List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate, LocalDateTime endDate){
         log.info("DemandeCessionService:findDemandeCessionByLocalDateTime searching ......");
-//        LocalDateTime startDate = seachDate.minusDays(1);
-//        LocalDateTime endDate = seachDate.plusDays(1);
+
         List<DemandeCession> cessionArrayList = demandecessionRepository.findDemandeCessionByMyDate(startDate, endDate);
         log.info("La liste des demandes filtrées par date est : {}", cessionArrayList);
 
@@ -372,14 +373,17 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     /***************  Filter Creance based on multiple parameters ****************** */
 
+
+
     @Override
     public List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
-                                                               String raisonSocial,
-                                                               String statutLibelle){
+                                                        String raisonSocial,
+                                                        double montantCreance,
+                                                        String statutLibelle){
         log.info("DemandeCessionService:findCreanceByMultipleParams searching ......");
 
         List<DemandeCession> demandeCessionList = demandecessionRepository
-                .searchCreanceByMultiParams(nomMarche,raisonSocial,statutLibelle);
+                .searchCreanceByMultiParams(nomMarche,raisonSocial,montantCreance,statutLibelle);
 
         List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
                 .stream()
@@ -447,6 +451,25 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(creanceMapper::mapToDto)
                 .collect(Collectors.toList());
     }
+
+
+
+    /***************  Find the right decote inside the list ****************** */
+
+    public double findRightDecoteForCreanceDTO(DemandeCession demandeCession) {
+
+        double creanceDecote = 0;
+        Set<Convention> conventions = demandeCession.getConventions();
+        for (Convention convention : conventions) {
+            if (convention.isActiveConvention()) {
+                creanceDecote = convention.getValeurDecoteByDG();
+
+                return creanceDecote;
+            }
+        }
+        return creanceDecote;
+    }
+
 
 
 

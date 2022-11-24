@@ -43,6 +43,8 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
 
     /************** Filtering creance by multiple parameters **************/
 
+//    List<DemandeCession> findDemandeCessionByPmeRaisonSocialOrBonEngagementNomMarche(String raisonSocial,String nomMarche);
+
     @Query("select p from DemandeCession as p where" +
             " (:raisonSocial is null or p.pme.raisonSocial like %:raisonSocial%) ")
     List<DemandeCession> searchCreanceByRaisonSocial(@Param("raisonSocial") String raisonSocial);
@@ -60,12 +62,15 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
     @Query("select p from DemandeCession as p where" +
             "(:nomMarche is null or p.bonEngagement.nomMarche like %:nomMarche%) " +
             "or (:raisonSocial is null or p.pme.raisonSocial like %:raisonSocial% )" +
+            "or (:montantCreance is null or p.bonEngagement.montantCreance =:montantCreance)"+
             "or (:statutLibelle is null or p.statut.libelle like %:statutLibelle%) "
 
     )
     List<DemandeCession> searchCreanceByMultiParams(@Param("nomMarche") String nomMarche,
-                                                       @Param("raisonSocial") String raisonSocial,
-                                                       @Param("statutLibelle") String statutLibelle);
+                                                    @Param("raisonSocial") String raisonSocial,
+                                                    @Param("montantCreance") double montantCreance,
+                                                    @Param("statutLibelle") String statutLibelle
+                                                       );
 
 
     /************** Filtering DemandeCession by multiple parameters **************/

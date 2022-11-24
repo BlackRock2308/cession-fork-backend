@@ -247,9 +247,7 @@ public class DemandeCessionController {
     }
 
 
-    /* ************* Search by ReferenceBR, numeroDemande, nomMarche, statutLibelle ************* */
-
-
+    /* ************* Search Demande Cession by ReferenceBR, numeroDemande, nomMarche, statutLibelle ************* */
 
     @GetMapping("search-by-multi-params")
     public ResponseEntity<List<DemandeCessionDto>> filterDemandeCessionByMultipleParams(

@@ -82,6 +82,7 @@ public class PmeController {
                                           HttpServletRequest request) {
     log.info("PmeController:updatePme request started");
     Pme pme = DtoConverter.convertToEntity(pmeDto);
+    pme.setIdPME(id);
     log.info("PmeController:updatePme Started with request params id={}", id);
     Pme result = pmeService.updatePme(id,pme);
     log.info("PmeController:updatePme updated with id = {} ", result.getIdPME());
