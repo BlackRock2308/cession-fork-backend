@@ -37,7 +37,6 @@ CREATE FUNCTION public.cumlMontantCreanceByMonthAndPME(
 AS $BODY$
 DECLARE
 cumulmontantCreance  NUMERIC;
-cumulDecode NUMERIC;
 BEGIN
 
 SELECT SUM(bE.montantCreance)  FROM public.demandeCession AS dC
@@ -45,8 +44,6 @@ SELECT SUM(bE.montantCreance)  FROM public.demandeCession AS dC
     dC.pmeid=idPME AND dC.paiementid IS NOT NULL AND  bE.datebonengagement
     BETWEEN monthEngagement AND (monthEngagement + interval '1 month')
     INTO STRICT cumulmontantCreance;
-SELECT public.cumlDecoteByMonthAndPME(idPME,monthEngagement) INTO STRICT cumulDecode;
-cumulmontantCreance := cumulmontantCreance - cumulDecode;
 RETURN cumulmontantCreance;
 END;
 $BODY$;
@@ -92,9 +89,11 @@ AS $BODY$
 DECLARE
 resultat public.StatistiquePaiementPME;
 BEGIN
-SELECT public.cumlMontantCreanceByMonthAndPME(idPME,monthData) INTO STRICT resultat.montantCreance;
-SELECT public.cumlMontantDetailsPaiementByMonthAndPME(idPME, monthData) INTO STRICT resultat.debource;
-resultat.solde := resultat.montantCreance - resultat.debource;
-RETURN resultat;
+    SELECT public.cumlDecoteByMonthAndPME(idPME,monthData) INTO STRICT resultat.decote;
+    SELECT public.cumlMontantCreanceByMonthAndPME(idPME,monthData) INTO STRICT resultat.montantCreance;
+    SELECT public.cumlMontantDetailsPaiementByMonthAndPME(idPME, monthData) INTO STRICT resultat.debource;
+    resultat.montantCreance:= resultat.montantCreance - resultat.decote;
+    resultat.solde:= resultat.montantCreance - resultat.debource;
+    RETURN resultat;
 END;
 $BODY$;
