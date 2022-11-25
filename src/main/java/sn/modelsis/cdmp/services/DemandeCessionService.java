@@ -18,6 +18,7 @@ import java.util.Optional;
 
 public interface DemandeCessionService {
     DemandeCession saveCession(DemandeCession demandeCession);
+
     DemandeCession save(DemandeCession demandeCession);
 
     Page<DemandeCessionDto> findAll(Pageable pageable);
@@ -30,11 +31,14 @@ public interface DemandeCessionService {
     
     // Recevabilite Demande de Cession
     DemandeCession validerRecevabilite(Long idDemande );
+
     DemandeCession rejeterRecevabilite(Long idDemande );
 
     // Analyse de risques Demande de Cession
     DemandeCession analyseDemandeCessionRisque(Long idDemande );
+
     DemandeCession analyseDemandeCessionNonRisque (Long idDemande );
+
     DemandeCession analyseDemandeCessionComplement (Long idDemande);
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
@@ -51,10 +55,7 @@ public interface DemandeCessionService {
 
     List<DemandeCession> findAllDemandeComplementRequis();
 
-//    Page<DemandeCessionDto> findAllDemandeComplementRequis(Pageable pageable);
-
     Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String[] statuts);
-
 
    List<StatistiqueDemandeCession>  getStatistiqueDemandeCession(int anne);
 
@@ -66,8 +67,6 @@ public interface DemandeCessionService {
 
 
 
-//    List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande);
-
     List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                         String numeroDemande,
                                                         String nomMarche,
@@ -76,7 +75,6 @@ public interface DemandeCessionService {
     List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle);
 
 
-//    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime seachDate);
 
     List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate,LocalDateTime endDate);
 
@@ -87,21 +85,17 @@ public interface DemandeCessionService {
                                                  double montantCreance,
                                                  String statutLibelle);
 
-
     List<CreanceDto> findCreanceByRaisonSocial(String raisonSocial);
 
     List<CreanceDto> findCreanceByNomMarche(String nomMarche);
 
     List<CreanceDto> findCreanceByMontantCreance(double montantCreance);
 
-    Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable);
-
     Page<DemandeCessionDto> findAllCreance(Pageable pageable);
 
     //find all filtering with the right statut libele
     Page<DemandeCessionDto> findAllCreanceWithTheRightStatut(Pageable pageable);
 
-    double findRightDecoteForCreanceDTO(DemandeCession demandeCession);
 
 
 
