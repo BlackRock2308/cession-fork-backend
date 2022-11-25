@@ -55,10 +55,8 @@ public class JWTUtility implements Serializable {
 
 
     //generate token for user
-    public String generateToken(Utilisateur user , UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-       // List<String> claimsList = userDetails.getAuthorities();
-       // List<String> claimsListe = userDetails.getUsername();
         claims.put("roles",userDetails.getAuthorities());
 
         return doGenerateToken(claims, userDetails.getUsername());

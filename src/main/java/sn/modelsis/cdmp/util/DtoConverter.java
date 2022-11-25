@@ -165,6 +165,7 @@ public class DtoConverter {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
 			demandecessionDto = modelMapper.map(demandecession, DemandeCessionDto.class);
+			demandecessionDto.setPme(DtoConverter.convertToDto(demandecession.getPme()));
 		}
 		return demandecessionDto;
 	}
@@ -335,7 +336,7 @@ public class DtoConverter {
 //			creanceDto.setRccm(demandeCession.getPme().getRccm());
 //			creanceDto.setStatut(demandeCession.getStatut());
 //		}
-//		return (Page<CreanceDto>) creanceDto;
+//		return (Page<CreanceDto>) creanceDto ;
 //	}
 
 	public static  UtilisateurDto convertToDto(Utilisateur utilisateur) {
