@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
@@ -32,9 +33,11 @@ import sn.modelsis.cdmp.mappers.CreanceWithNoPaymentMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionReturnMapper;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
+import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 @AllArgsConstructor
@@ -47,6 +50,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionMapper cessionMapper;
     private final DemandeCessionReturnMapper cessionReturnMapper;
     private final DemandeService demandeService;
+    private final PmeRepository pmeRepository;
+
     private final CreanceMapper creanceMapper;
 
     private final CreanceWithNoPaymentMapper noPaymentMapper;
@@ -59,7 +64,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         try {
             log.info("DemandeCessionService:saveCession request started");
             // demandeCession.setDateDemandeCession(new Date());
-
+            Pme pme = pmeRepository.findById(demandeCession.getPme().getIdPME()).orElse(null);
+            demandeCession.setPme(pme);
             LocalDateTime dateTime = LocalDateTime.now();
             demandeCession.setDateDemandeCession(dateTime);
 
@@ -95,7 +101,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         log.info("DemandeCessionService:findAll : fetching .....");
         return demandecessionRepository
                 .findAll(pageable)
-                .map(cessionMapper::asDTO);
+                .map(demandeCession -> DtoConverter.convertToDto(demandeCession));
     }
 
     @Override
