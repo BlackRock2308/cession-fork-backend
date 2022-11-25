@@ -183,6 +183,7 @@ public class PersitUsers {
         pme1.setNinea("123456789088");
         pme1.setRccm("SN DK 2898 Y 9989");
         pme1.setTelephonePME("339809876");
+        pme1.setRaisonSocial("Fintech");
         pme1.setEmail("pme@gmail.com");
         pme1.setActivitePrincipale("Solution Cloud and Big Data");
         pme1.setDateAdhesion(date);
