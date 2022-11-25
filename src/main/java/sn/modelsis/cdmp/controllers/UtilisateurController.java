@@ -16,9 +16,11 @@ import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
+import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 import sn.modelsis.cdmp.security.dto.AuthentificationResponseDto;
+import sn.modelsis.cdmp.security.dto.RefreshToken;
 import sn.modelsis.cdmp.security.service.UtilisateurDetailService;
 import sn.modelsis.cdmp.security.utils.JWTUtility;
 import sn.modelsis.cdmp.services.PmeService;
@@ -31,6 +33,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -49,9 +52,9 @@ public class UtilisateurController {
 
     final private RoleRepository roleRepository ;
 
-    final   private JWTUtility jwtUtility;
+    final private JWTUtility jwtUtility;
 
-    final   private Util util;
+    final private Util util;
 
     final private UtilisateurDetailService utilisateurDetailService;
 
@@ -59,9 +62,9 @@ public class UtilisateurController {
 
     final private RestTemplateUtil restTemplateUtil ;
 
-    final   private AuthenticationManager authenticationManager;
+    final private AuthenticationManager authenticationManager;
 
-    final  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    final private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     final private UtilisateurService utilisateurService ;
@@ -107,7 +110,7 @@ public class UtilisateurController {
     }
 
     /**
-     * {@code PUT  /utilisateurs/:id} : Updates an existing utilisateur.
+     * {@code PATCH  /utilisateurs/:id} : Updates an existing utilisateur.
      *
      * @param utilisateurDto the utilisateur to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated utilisateur,
@@ -123,11 +126,83 @@ public class UtilisateurController {
         log.debug("REST request to update Utilisateur : {}", utilisateurDto);
         if (utilisateurDto.getIdUtilisateur() == null)
             throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
+        Utilisateur utilisateur = utilisateurService.findById(utilisateurDto.getIdUtilisateur());
+
         Utilisateur result = utilisateurService.update(DtoConverter.convertToEntity(utilisateurDto));
             return ResponseEntity
                     .ok()
                     .body(DtoConverter.convertToDto(result));
     }
+    /**
+     * {@code PATCH  /utilisateurs/:id} : Updates an existing utilisateur.
+     *
+     * @param utilisateurDto the utilisateur to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated utilisateur,
+     * or with status {@code 400 (Bad Request)} if the utilisateur is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the utilisateur couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+
+    @PatchMapping("/update/codepin")
+    public ResponseEntity<UtilisateurDto> updateCodePin(
+            @Valid @RequestBody UtilisateurDto utilisateurDto
+    ) throws Exception {
+        log.debug("REST request to update Utilisateur : {}", utilisateurDto);
+        if (utilisateurDto.getIdUtilisateur() == null)
+            throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
+        Utilisateur result = utilisateurService.updateCodePin(DtoConverter.convertToEntity(utilisateurDto));
+            return ResponseEntity
+                    .ok()
+                    .body(DtoConverter.convertToDto(result));
+    }
+
+    /**
+     * {@code PATCH  /utilisateurs/:id} : Updates an existing utilisateur.
+     *
+     * @param utilisateurDto the utilisateur to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated utilisateur,
+     * or with status {@code 400 (Bad Request)} if the utilisateur is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the utilisateur couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+
+    @PatchMapping("/update/password")
+    public ResponseEntity<UtilisateurDto> updatePassword(
+            @Valid @RequestBody UtilisateurDto utilisateurDto
+    ) throws Exception {
+        log.debug("REST request to update Utilisateur : {}", utilisateurDto);
+        if (utilisateurDto.getIdUtilisateur() == null)
+            throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
+        Utilisateur result = utilisateurService.updatePassword(DtoConverter.convertToEntity(utilisateurDto));
+        return ResponseEntity
+                .ok()
+                .body(DtoConverter.convertToDto(result));
+    }
+
+
+    /**
+     * {@code PATCH  /utilisateurs/:id} : Updates an existing utilisateur.
+     *
+     * @param utilisateurDto the utilisateur to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated utilisateur,
+     * or with status {@code 400 (Bad Request)} if the utilisateur is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the utilisateur couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+
+    @PatchMapping("/update/roles")
+    public ResponseEntity<UtilisateurDto> updateRoles(
+            @Valid @RequestBody UtilisateurDto utilisateurDto
+    ) throws Exception {
+        log.debug("REST request to update Utilisateur : {}", utilisateurDto);
+        if (utilisateurDto.getIdUtilisateur() == null)
+            throw new Exception("Invalid id  " + ENTITY_NAME + "  idnull");
+        Utilisateur result = utilisateurService.updateRoles(DtoConverter.convertToEntity(utilisateurDto));
+        return ResponseEntity
+                .ok()
+                .body(DtoConverter.convertToDto(result));
+    }
+
     /**
      * {@code POST  /utilisateurs} : Create a new utilisateur.
      *
@@ -142,11 +217,12 @@ public class UtilisateurController {
         if (utilisateurDto.getIdUtilisateur() != null) {
             throw new Exception("A new utilisateur cannot already have an ID  exists");
         }
-        Set<Role> listeRole = utilisateurDto.getRoles( ) ;
-
+        Set<Role> listeRole = utilisateurDto.getRoles() ;
+        Set<Role> setRoles = new HashSet<>(); ;
         listeRole.forEach(role -> {
-            listeRole.add(roleRepository.save(role));
+            setRoles.add(roleRepository.findByLibelle(role.getLibelle()));
         });
+        utilisateurDto.setRoles(setRoles);
         utilisateurDto.setUpdatePassword(true);
         utilisateurDto.setUpdateCodePin(true);
         utilisateurDto.setPassword(passwordEncoder.encode(utilisateurDto.getPassword()));
@@ -205,11 +281,26 @@ public class UtilisateurController {
         UserDetails userDetails = utilisateurDetailService.loadUserByUsername(authentificationDto.getEmail());
         Utilisateur utilisateur = utilisateurService.findByEmail(authentificationDto.getEmail());
         if (utilisateur != null) {
-            final String token = jwtUtility.generateToken(utilisateur ,userDetails);
+            final String token = jwtUtility.generateToken(userDetails);
             return new AuthentificationResponseDto(utilisateur, token);
         } else {
             return null;
         }
+    }
+
+    @PostMapping("/refresh-token")
+    public RefreshToken refreshToken(@RequestBody RefreshToken refreshToken)  {
+        if(null == refreshToken.getToken())
+            throw new CustomException("the token can not be null ");
+        String user = jwtUtility.getUsernameFromToken(refreshToken.getToken());
+      if (user==null)
+          throw new CustomException("the token is not valid   ");
+      UserDetails userDetails = utilisateurDetailService.loadUserByUsername(user);
+        if (user==null)
+            throw new CustomException("the user can not be found   ");
+      final String token = jwtUtility.generateToken(userDetails);
+      refreshToken.setRefreshToken(token);
+    return refreshToken ;
     }
 
     /**

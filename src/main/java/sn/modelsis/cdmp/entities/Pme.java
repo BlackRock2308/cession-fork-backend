@@ -6,17 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -43,6 +33,11 @@ public class Pme implements Serializable {
     @Column(name = "id")
     private Long idPME;
 
+    @Column(name ="prenomrepresentant")
+    private String prenomRepresentant;
+    
+    @Column(name ="nomrepresentant")
+    private String nomRepresentant;
     @NotNull
     @Column(name = "rccm")
     private String rccm;
@@ -142,8 +137,14 @@ public class Pme implements Serializable {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "utilisateurid")
     private Utilisateur utilisateur ;
+    
     @Column(name = "cnirepresentant")
-    private int cniRepresentant ;
+    private String cniRepresentant ;
+    
     @Column(name = "registre")
     private String registre;
+
+    @Transient
+    private Long utilisateurid;
+
 }

@@ -7,6 +7,7 @@ import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Value;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypeMarche;
 
@@ -29,15 +30,22 @@ public class CreanceDto implements Serializable {
 
     private double montantCreance; //Bon engagement
 
-    private String decote; //Convention
+    private Double decote; //Convention
 
     private double soldePME; //Paiement
 
-    private Statut statut; //DemandeCession
+    private StatutDto statut; //DemandeCession
 
     private LocalDateTime dateDemandeCession; //DemandeCession
 
     private LocalDateTime dateMarche; //DemandeCession
+
+    private double montantDebourse;
+    
+    private double montantRembourse;
+
+    private double soldeSICA;
+
 
 
 

@@ -221,7 +221,7 @@ public class Util {
   public static  Double[] donneStatistiquePaiementPME(String json) {
     json = json.replaceAll("null", "0.0");
     String [] objs = json.split(",");
-    Double[] donne = new Double[3];
+    Double[] donne = new Double[4];
     for(int i=0; i<objs.length; i++ ){
       donne[i] = Double.parseDouble(objs[i]);
     }

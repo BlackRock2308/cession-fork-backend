@@ -39,7 +39,7 @@ public class SecurityConfig {
     http.csrf()
         .disable()
         .authorizeRequests()
-         .antMatchers(AUTH_WHITELIST).permitAll()
+        .antMatchers(AUTH_WHITELIST).permitAll()
         .antMatchers("/api/**" )
         .permitAll()
         .antMatchers("/swagger-ui/**" )

@@ -55,23 +55,11 @@ public class JWTUtility implements Serializable {
 
 
     //generate token for user
-    public String generateToken(Utilisateur user , UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-       // List<String> claimsList = userDetails.getAuthorities();
-       // List<String> claimsListe = userDetails.getUsername();
         claims.put("roles",userDetails.getAuthorities());
 
         return doGenerateToken(claims, userDetails.getUsername());
-    }
-
-
-    public String generateTokenEtudiant(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateTokenEtudiant(claims, userDetails.getUsername());
-    }
-    public String generateTokenAdmin(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateTokenAdmin(claims, userDetails.getUsername());
     }
 
     //while creating the token -
@@ -83,16 +71,6 @@ public class JWTUtility implements Serializable {
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
     }
 
-    private String doGenerateTokenEtudiant(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_ETUDIANT * 1000))
-                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
-    }
-    private String doGenerateTokenAdmin(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_ADMIN * 1000))
-                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
-    }
 
 
     //validate token

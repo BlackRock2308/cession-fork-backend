@@ -15,6 +15,7 @@ public class StatistiquePaiementPMEDto {
 
     List<ObjetMontantMois> cumulMontantCreance = new ArrayList<>();
 
-    List<ObjetMontantMois> cmulDebourses = new ArrayList<>();
+    List<ObjetMontantMois> cumulDebourses = new ArrayList<>();
+    List<ObjetMontantMois> cumulDecotes = new ArrayList<>();
 }
 

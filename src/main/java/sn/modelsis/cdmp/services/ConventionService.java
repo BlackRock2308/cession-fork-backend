@@ -60,7 +60,9 @@ public interface ConventionService {
 
     Convention updateValeurDecote(Long idConvention, double newValue);
 
-    Convention updateEntireConvention(Long id, Convention newConvention);
+    Convention transmettreConvention(Long id, Convention newConvention);
+
+    void corrigerConvention (Long id);
     
     
 }

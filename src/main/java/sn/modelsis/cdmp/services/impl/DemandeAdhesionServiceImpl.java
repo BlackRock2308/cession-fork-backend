@@ -1,6 +1,9 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeAdhesion;
 import sn.modelsis.cdmp.entities.DemandeDocuments;
 import sn.modelsis.cdmp.entities.Statut;
@@ -24,10 +29,6 @@ import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.Constants;
 import sn.modelsis.cdmp.util.RestTemplateUtil;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.Optional;
 
 
 
@@ -85,10 +86,12 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
         DemandeAdhesion demandeAdhesion = adhesionMapper.asEntity(demandeAdhesionDto);
         pmeRepository.findById(demandeAdhesionDto.getIdPME()).ifPresentOrElse(
                 (value)
-                        -> {
+                        -> { 
                     demandeAdhesion.setPme(value);
                     demandeAdhesion.setDateDemandeAdhesion(new Date());
                     Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
+                   // Statut statut = new Statut();
+                   // statut.setIdStatut(1L);
                     demandeAdhesion.setStatut(statut);
                     if(demandeAdhesion.getIdDemande()==null){
                         demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
@@ -152,9 +155,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             optional.get().setStatut(updatedStatut);
             if(optional.isEmpty())
                 throw new CustomException("Can not find this Demand");
-            String email = optional.get().getPme().getEmail();
-            EmailMessageWithTemplate emailMessageWithTemplate = sendEmailDemandeAdhesion(email);
-            restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
+          //  String email = optional.get().getPme().getEmail();
+          //  EmailMessageWithTemplate emailMessageWithTemplate = sendEmailDemandeAdhesion(email);
+          //  restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
         }catch (Exception ex){
             log.error("Exception occured while Accepting Demande Adhesion. Exception message : {}", ex.getMessage());

@@ -1,17 +1,19 @@
 package sn.modelsis.cdmp.dbPersist;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
-
-import java.time.LocalDateTime;
-import java.util.*;
 
 @Transactional
 public class PersitUsers {
@@ -30,29 +32,29 @@ public class PersitUsers {
                        UtilisateurRepository utilisateurRepository,
                        PmeRepository pmeRepository) {
         this.roleRepository = roleRepository;
-        this.utilisateurRepository = utilisateurRepository;
+        this.utilisateurRepository = utilisateurRepository; 
         this.pmeRepository = pmeRepository;
 
-        Role DG = new Role();
-        DG.setLibelle("DG");
+        Role DG = roleRepository.findByLibelle("DG");
+      //  DG.setLibelle("DG");
 
-        Role PME = new Role();
-        PME.setLibelle("PME");
+        Role PME = roleRepository.findByLibelle("PME");
+       // PME.setLibelle("PME");
 
-        Role DRC = new Role();
-        DRC.setLibelle("DRC");
+        Role DRC = roleRepository.findByLibelle("DRC");
+       // DRC.setLibelle("DRC");
 
-        Role ORDONNATEUR = new Role();
-        ORDONNATEUR.setLibelle("ORDONNATEUR");
+        Role ORDONNATEUR = roleRepository.findByLibelle("ORDONNATEUR");
+        //ORDONNATEUR.setLibelle("ORDONNATEUR");
 
-        Role DAF = new Role();
-        DAF.setLibelle("DAF");
+        Role DAF = roleRepository.findByLibelle("DAF");
+      //  DAF.setLibelle("DAF");
         
-        Role DSEAR = new Role();
-        DSEAR.setLibelle("DSEAR");
-        
-        Role JURISTE = new Role();
-        JURISTE.setLibelle("JURISTE");
+        Role DSEAR = roleRepository.findByLibelle("DSEAR");
+      //  DSEAR.setLibelle("DSEAR");
+
+        Role JURISTE =roleRepository.findByLibelle("JURISTE");
+       // JURISTE.setLibelle("JURISTE");
 
         Set<Role> pmeRoles = new HashSet<>();
         pmeRoles.add(PME);
@@ -79,17 +81,24 @@ public class PersitUsers {
         dg.setAdresse("Mermoz");
         dg.setCodePin("123456");
         dg.setPassword(passwordEncoder.encode("passer"));
-        dg.setPrenom("DG");
+        dg.setPrenom("Abdou");
+        dg.setNom("MBACKE");
         dg.setEmail("dg@gmail.com");
         dg.setRoles(dgRoles);
-
-        utilisateurRepository.save(dg);
+        
+        Utilisateur user = utilisateurRepository.findUtilisateurByEmail("dg@gmail.com");
+        
+        if(user == null) {
+            utilisateurRepository.save(dg);
+        }
+        
 
         Utilisateur pme = new Utilisateur();
         pme.setAdresse("Mermoz");
         pme.setCodePin("123456");
         pme.setPassword(passwordEncoder.encode("passer"));
-        pme.setPrenom("PME");
+        pme.setPrenom("Alassane");
+        pme.setNom("NDIAYE");
         pme.setEmail("andiaye@modelsis.sn");
         pme.setRoles(pmeRoles);
 
@@ -97,52 +106,75 @@ public class PersitUsers {
         drc.setAdresse("Mermoz");
         drc.setCodePin("123456");
         drc.setPassword(passwordEncoder.encode("passer"));
-        drc.setPrenom("DRC");
+        drc.setPrenom("Sokhna");
+        drc.setNom("DIOP");
         drc.setEmail("drc@gmail.com");
         drc.setRoles(cgrRoles);
 
-        utilisateurRepository.saveAndFlush(drc);
+        Utilisateur user1 = utilisateurRepository.findUtilisateurByEmail("drc@gmail.com");
+        
+        if(user1 == null) {
+            utilisateurRepository.saveAndFlush(drc);
+        }
+        
 
         Utilisateur juriste = new Utilisateur();
         juriste.setAdresse("Mermoz");
         juriste.setCodePin("123456");
         juriste.setPassword(passwordEncoder.encode("passer"));
-        juriste.setPrenom("JURISTE");
+        juriste.setPrenom("Oumar");
+        juriste.setNom("NDIAYE");
         juriste.setEmail("juriste@gmail.com");
         juriste.setRoles(juristeRoles);
-
-        utilisateurRepository.saveAndFlush(juriste);
+        Utilisateur user2 = utilisateurRepository.findUtilisateurByEmail("juriste@gmail.com");
         
+        if(user2 == null) { 
+        utilisateurRepository.saveAndFlush(juriste);
+        }
         Utilisateur dsear = new Utilisateur();
         dsear.setAdresse("Mermoz");
         dsear.setCodePin("123456");
         dsear.setPassword(passwordEncoder.encode("passer"));
-        dsear.setPrenom("DSEAR");
+        dsear.setPrenom("Mbaye");
+        dsear.setNom("SENE");
         dsear.setEmail("dsear@gmail.com");
         dsear.setRoles(dsearRoles);
 
+        Utilisateur user3 = utilisateurRepository.findUtilisateurByEmail("dsear@gmail.com");
+        
+        if(user3 == null) {
         utilisateurRepository.saveAndFlush(dsear);
-
+        }
         Utilisateur daf = new Utilisateur();
         daf.setAdresse("Mermoz");
         daf.setCodePin("123456");
         daf.setPassword(passwordEncoder.encode("passer"));
-        daf.setPrenom("DAF");
+        daf.setPrenom("Soda");
+        daf.setNom("NDIAYE");
         daf.setEmail("daf@gmail.com");
         daf.setRoles(dafRoles);
-
-        utilisateurRepository.saveAndFlush(daf);
+        Utilisateur user4 = utilisateurRepository.findUtilisateurByEmail("daf@gmail.com");
         
+        if(user4 == null) {
+        utilisateurRepository.saveAndFlush(daf);
+        }
         Utilisateur ordonnateur = new Utilisateur();
         ordonnateur.setAdresse("Mermoz");
         ordonnateur.setCodePin("123456");
         ordonnateur.setPassword(passwordEncoder.encode("passer"));
-        ordonnateur.setPrenom("ORDONNATEUR");
+        ordonnateur.setPrenom("Ndèye");
+        ordonnateur.setNom("NGOM");
         ordonnateur.setEmail("ordonnateur@gmail.com");
         ordonnateur.setRoles(ordonnateurRoles);
-
+        Utilisateur user5 = utilisateurRepository.findUtilisateurByEmail("ordonnateur@gmail.com");
+        
+        if(user5 == null) {
         utilisateurRepository.saveAndFlush(ordonnateur);
+        }
 
+        Utilisateur user6 = utilisateurRepository.findUtilisateurByEmail("andiaye@modelsis.sn");
+        
+        if(user6 == null) {
 
         LocalDateTime date = LocalDateTime.now();
         Pme pme1 = new Pme();
@@ -151,14 +183,13 @@ public class PersitUsers {
         pme1.setNinea("123456789088");
         pme1.setRccm("SN DK 2898 Y 9989");
         pme1.setTelephonePME("339809876");
+        pme1.setRaisonSocial("Fintech");
         pme1.setEmail("pme@gmail.com");
         pme1.setActivitePrincipale("Solution Cloud and Big Data");
         pme1.setDateAdhesion(date);
         pme1.setUtilisateur(pme);
         pmeRepository.save(pme1);
-
-
-
+        }
 
     }
 }

@@ -1,17 +1,35 @@
 package sn.modelsis.cdmp.mappers;
 
+import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.DemandeCession;
+import org.mapstruct.MappingTarget;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface CreanceMapper {
+public interface CreanceWithNoPaymentMapper {
 
+    @BeforeMapping
+    default void beforeMapping(@MappingTarget CreanceDto target, DemandeCessionDto source) {
+        if ( source.getConventions().isEmpty()){
+            target.setDecote(0.0);
+        }
+        source.getConventions().forEach((e)->{
+            if (e.isActiveConvention() == true){
+                target.setDecote(e.getValeurDecoteByDG());
+            }
+        });
+        if (source.getPaiement() == null){
+            target.setSoldePME(0.0);
+            target.setMontantRembourse(0.0);
+            target.setMontantDebourse(0.0);
+        } else {
+            target.setSoldePME(source.getPaiement().getSoldePME());
+            target.setMontantRembourse(source.getPaiement().getMontantRecuCDMP());
+            target.setMontantDebourse(source.getPaiement().getMontantCreance() - source.getPaiement().getSoldePME());
+        }
+    }
     @Mapping(target = "idCreance", expression = "java(demandeCessionDto.getIdDemande())")
     @Mapping(target = "ninea", expression = "java(demandeCessionDto.getPme().getNinea())")
     @Mapping(target = "rccm", expression = "java(demandeCessionDto.getPme().getRccm())")
@@ -20,13 +38,13 @@ public interface CreanceMapper {
     @Mapping(target = "nomMarche", expression = "java(demandeCessionDto.getBonEngagement().getNomMarche())")
     @Mapping(target = "montantCreance", expression = "java(demandeCessionDto.getBonEngagement().getMontantCreance())")
     @Mapping(target = "dateDemandeCession", expression = "java(demandeCessionDto.getDateDemandeCession())")
-    //@Mapping(target = "decote", expression = "java(demandeCessionDto.getConventions().stream().iterator().next().getValeurDecoteByDG())")
-    @Mapping(target = "soldePME", expression = "java(demandeCessionDto.getPaiement().getSoldePME())")
     @Mapping(target = "dateMarche", expression = "java(demandeCessionDto.getDateDemandeCession())")
     @Mapping(target = "statut", expression = "java(demandeCessionDto.getStatut())")
-    @Mapping(target = "montantRembourse", expression = "java(demandeCessionDto.getPaiement().getMontantRecuCDMP())")
+    
+    @Mapping(target = "decote", ignore = true)
+    @Mapping(target = "soldePME", ignore = true)
+    @Mapping(target = "montantRembourse", ignore = true)
     CreanceDto mapToDto(DemandeCessionDto demandeCessionDto);
 
 
-    List<CreanceDto> asDTOList(List<DemandeCession> eList);
 }

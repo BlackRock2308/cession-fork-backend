@@ -1,5 +1,5 @@
 ---Fontion qui récupère le cumul des decotes par mois: decode = convention.valeurDecote*bonengagement.montantCreance---
-CREATE OR REPLACE FUNCTION public.cumlDecoteByMonth(
+CREATE  FUNCTION public.cumlDecoteByMonth(
     monthConvention timestamp without time zone
 )
     RETURNS NUMERIC
@@ -11,13 +11,11 @@ AS $BODY$
     DECLARE
         cumulDecode NUMERIC;
     BEGIN
-
-        SELECT SUM(conv.valeurDecote * bE.montantCreance)  FROM public.convention AS conv
+        SELECT SUM(conv.valeur_decote_dg * bE.montantCreance)  FROM public.convention AS conv
             INNER JOIN  public.demandeCession AS dC ON  dC.id=conv.demandeid
-            INNER JOIN  public.bonengagement AS bE ON  bE.id=dC.bonengagementid WHERE conv.dateconvention
+            INNER JOIN  public.bonengagement AS bE ON  bE.id=dC.bonengagementid WHERE dC.paiementid IS NOT NULL AND conv.dateconvention
             BETWEEN monthConvention AND (monthConvention + interval '1 month')
             INTO STRICT cumulDecode;
-
         RETURN cumulDecode;
     END;
 $BODY$;
@@ -36,10 +34,9 @@ AS $BODY$
     DECLARE
         cumulmontantCreance  NUMERIC;
     BEGIN
-
-        SELECT SUM(bE.montantCreance)  FROM
-            public.bonengagement AS bE WHERE bE.datebonengagement
-            BETWEEN monthEngagement AND (monthEngagement + interval '1 month')
+        SELECT SUM(bE.montantCreance)  FROM public.demandeCession AS dC
+            INNER JOIN  public.bonengagement AS bE ON  bE.id=dC.bonengagementid WHERE dC.paiementid IS NOT NULL AND
+            bE.datebonengagement BETWEEN monthEngagement AND (monthEngagement + interval '1 month')
             INTO STRICT cumulmontantCreance;
 
         RETURN cumulmontantCreance;
@@ -117,7 +114,7 @@ $BODY$;
 
 ---Fontion qui récupère les statistiques des paiements CDMP-PME par mois---
 CREATE TYPE public.StatistiquePaiementPME AS(
-    solde numeric, montantCreance numeric, debource numeric);
+    solde numeric, montantCreance numeric, debource numeric, decote numeric);
 
 CREATE FUNCTION public.getStatistiquePaiementPME(
     monthData timestamp without time zone
@@ -133,7 +130,10 @@ AS $BODY$
     BEGIN
         SELECT public.cumlMontantCreanceByMonth(monthData) INTO STRICT resultat.montantCreance;
         SELECT public.cumlMontantDetailsPaiementByMonth('CDMP_PME', monthData) INTO STRICT resultat.debource;
-        SELECT public.cumlSoldePMEByMonth(monthData, resultat.montantCreance, resultat.debource) INTO STRICT resultat.solde;
+        --SELECT public.cumlSoldePMEByMonth(monthData, resultat.montantCreance, resultat.debource) INTO STRICT resultat.solde;
+        SELECT public.cumlDecoteByMonth(monthData) INTO STRICT resultat.decote;
+        resultat.montantCreance:= resultat.montantCreance - resultat.decote;
+        resultat.solde:= resultat.montantCreance - resultat.debource;
         RETURN resultat;
     END;
 $BODY$;
