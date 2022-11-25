@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.Convention;
-import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
@@ -470,109 +468,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(noPaymentMapper::mapToDto)
                 .collect(Collectors.toList());
     }
-
-
-
-    /***************  Find the right decote inside the list ****************** */
-
-    public double findRightDecoteForCreanceDTO(DemandeCession demandeCession) {
-
-        double creanceDecote = 0;
-        Set<Convention> conventions = demandeCession.getConventions();
-        for (Convention convention : conventions) {
-            if (convention.isActiveConvention()) {
-                creanceDecote = convention.getValeurDecoteByDG();
-
-                return creanceDecote;
-            }
-        }
-        return creanceDecote;
-    }
-
-
-    @Override
-    public Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable){
-        log.info("DemandeCessionService:findAll : fetching .....");
-//        String[] statutWithNoPayment = {"CONVENTION_GENEREE", "CONVENTION_CORRIGEE",
-//                "CONVENTION_SIGNEE_PAR_PME", "CONVENTION_SIGNEE_PAR_DG", "RISQUEE","NON_RISQUEE",
-//                "COMPLETEE", "COMPLEMENT_REQUIS", "CDMP_TOTALEMENT_PAYEE","CONVENTION_TRANSMISE",
-//                "CONVENTION_REJETEE_PAR_DG", "CONVENTION_REJETEE_PAR_PME","CONVENTION_REJETEE",
-//                "CDMP_EN_ATTENTE_DE_PAIEMENT", "PME_EN_ATTENTE_DE_PAIEMENT,CONVENTION_ACCEPTEE"};
-
-//        String[] statutWithPayment = {"CONVENTION_ACCEPTEE","CDMP_PARTIELLEMENT_PAYEE","PME_PARTIELLEMENT_PAYEE","PME_TOTALEMENT_PAYEE",};
-
-        String[] ignoredStatut = {"SOUMISE","RECEVABLE","COMPLEMENT_REQUIS"};
-
-        Set<String> statutList = new HashSet<>();
-        statutList.addAll(List.of(ignoredStatut));
-        Page<DemandeCession> cessionList;
-        List<DemandeCession> correctDemandeList = null;
-        cessionList = demandecessionRepository.findAll(pageable);
-        log.info("Starting List : {}",cessionList);
-
-        for(DemandeCession element : cessionList){
-            if (element.getStatut().getLibelle() == "COMPLEMENT_REQUIS"){
-                correctDemandeList.add(element);
-            }
-        }
-//        cessionList.forEach((e)->{
-//            if (e.getStatut().getLibelle().equals("COMPLEMENT_REQUIS")){
-//                correctDemandeList.add(e);
-//            }
-//        });
-        log.info("Correct List : {}",correctDemandeList);
-        return (Page<DemandeCessionDto>) correctDemandeList
-                .stream()
-                .map(cessionMapper::asDTO);
-    }
-
-
-
-
-
-//    @Override
-//    public List<DemandeCessionDto> findDemandeCessionByMultipleCritere(String numeroDemande){
-//        log.info("DemandeCessionService:findDemandeCessionByMultipleCritere searching ......");
-//
-//        return demandecessionRepository
-//                .findByNumeroDemandeContaining(numeroDemande)
-//                .stream()
-//                .map(cessionMapper::asDTO)
-//                .collect(Collectors.toList());
-//    }
-
-
-
-
-
-//    @Override
-//    public List<DemandeCessionDto> filterExactDemandeCession(String referenceBE,
-//                                                             String numeroDemande,
-//                                                             String nomMarche,
-//                                                             String statutLibelle,
-//                                                             LocalDateTime seachDate){
-//
-//        log.info("DemandeCessionService:filterExactDemandeCession searching ......");
-//
-//        List<DemandeCessionDto> cessionListByDate = findDemandeCessionByLocalDateTime(seachDate);
-//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByDate : {} ",cessionListByDate);
-//
-//        List<DemandeCessionDto> cessionListByOthersCriteria = findDemandeCessionByMultipleParams(referenceBE,
-//                    numeroDemande,
-//                    nomMarche,
-//                    statutLibelle);
-//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByOthersCriteria : {} ",cessionListByOthersCriteria);
-//
-//        List<DemandeCessionDto> similarDemande = cessionListByDate;
-//
-//
-//        similarDemande.retainAll( cessionListByOthersCriteria );
-//
-//        log.info("DemandeCessionService:filterExactDemandeCession similarDemande : {} ",similarDemande);
-//
-//
-//        return similarDemande;
-//    }
 
 
 }
