@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.exceptions.CustomException;
 
 @Slf4j
 @Service
@@ -117,21 +118,21 @@ public class Util {
     return objectMapper.writeValueAsString(object);
   }
 
-//  /**
-//   * Convert the string object into an object
-//   *
-//   * @param objectString The string representation of the object to convert
-//   * @param objectClass The class of the object to convert
-//   * @return The Object contained in the String representation
-//   */
-//  public static Object convertJsonStringToEntity(String objectString, Class<?> objectClass) {
-//    try {
-//      return objectMapper.readValue(objectString, objectClass);
-//    } catch (IOException e) {
-//      logException(e);
-//      throw new CustomException("ERROR_OF_JSON_PARSER");
-//    }
-//  }
+  /**
+   * Convert the string object into an object
+   *
+   * @param objectString The string representation of the object to convert
+   * @param objectClass The class of the object to convert
+   * @return The Object contained in the String representation
+   */
+  public static Object convertJsonStringToEntity(String objectString, Class<?> objectClass) {
+    try {
+      return objectMapper.readValue(objectString, objectClass);
+    } catch (IOException e) {
+      logException(e);
+      throw new CustomException("ERROR_OF_JSON_PARSER");
+    }
+  }
 
   /**
    * Convert id {@link String} to {@link UUID}
