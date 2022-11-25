@@ -45,6 +45,7 @@ public class Pme implements Serializable {
 
     @Column(name ="prenomrepresentant")
     private String prenomRepresentant;
+    
     @Column(name ="nomrepresentant")
     private String nomRepresentant;
     @NotNull

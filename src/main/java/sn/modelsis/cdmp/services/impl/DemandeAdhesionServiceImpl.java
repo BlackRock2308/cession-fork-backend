@@ -1,6 +1,9 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeAdhesion;
 import sn.modelsis.cdmp.entities.DemandeDocuments;
 import sn.modelsis.cdmp.entities.Statut;
@@ -24,10 +29,6 @@ import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.Constants;
 import sn.modelsis.cdmp.util.RestTemplateUtil;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.Optional;
 
 
 

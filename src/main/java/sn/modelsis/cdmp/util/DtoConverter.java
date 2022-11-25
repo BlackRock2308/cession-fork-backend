@@ -2,9 +2,34 @@ package sn.modelsis.cdmp.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.data.domain.Page;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.*;
+
+import sn.modelsis.cdmp.entities.BonEngagement;
+import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.Demande;
+import sn.modelsis.cdmp.entities.DemandeAdhesion;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.DetailPaiement;
+import sn.modelsis.cdmp.entities.Documents;
+import sn.modelsis.cdmp.entities.Observation;
+import sn.modelsis.cdmp.entities.Paiement;
+import sn.modelsis.cdmp.entities.Parametrage;
+import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
+import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
+import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.DocumentDto;
+import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.ParametrageDto;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.entitiesDtos.RecevabiliteDto;
+import sn.modelsis.cdmp.entitiesDtos.StatutDto;
+import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 
 public class DtoConverter {
 
