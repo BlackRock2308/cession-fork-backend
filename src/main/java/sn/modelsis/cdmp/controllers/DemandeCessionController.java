@@ -59,9 +59,9 @@ public class DemandeCessionController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<NewDemandeCessionDto>> getAllDemandeCession(Pageable pageable,
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCession(Pageable pageable,
                                                                                              HttpServletRequest request) {
-        Page<NewDemandeCessionDto> demandeList = demandeCessionService.findAllWithoutDemande(pageable);
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAll(pageable);
         log.info("DemandeCessionController:getAllDemandeCession request started");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);

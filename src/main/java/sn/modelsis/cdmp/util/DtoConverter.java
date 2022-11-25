@@ -140,6 +140,7 @@ public class DtoConverter {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
 			demandecessionDto = modelMapper.map(demandecession, DemandeCessionDto.class);
+			demandecessionDto.setPme(DtoConverter.convertToDto(demandecession.getPme()));
 		}
 		return demandecessionDto;
 	}
