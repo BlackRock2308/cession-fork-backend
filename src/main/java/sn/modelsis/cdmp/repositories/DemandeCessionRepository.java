@@ -28,6 +28,8 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
 
     Page<DemandeCession> findAllByPmeIdPME(org.springframework.data.domain.Pageable pageable, Long id);
 
+    @Query("select p from DemandeCession p where p.statut.libelle NOT IN ('SOUMISE','RECEVABLE','COMPLEMENT_REQUIS','REJETEE','COMPLETEE') ")
+    Page<DemandeCession> findDemandeCessionByRightLibele(Pageable pageable);
 
     @Query("select p from DemandeCession  p where p.idDemande=:idDemande")
     DemandeCession findByDemandeId(Long idDemande);

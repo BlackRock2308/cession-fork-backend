@@ -36,24 +36,24 @@ public class CreanceController {
 
     private final CreanceWithNoPaymentMapper noPaymentMapper;
 
-    @GetMapping("processing")
-    public ResponseEntity<Page<CreanceDto>> findAllCreance(Pageable pageable,
-                                                                 HttpServletRequest request) {
-
-        Page<DemandeCessionDto> demandeList;
-
-        log.info("CreanceController.findAllCreance request started ...");
-        try{
-            demandeList = demandeCessionService
-                    .findAll(pageable);
-        }catch (Exception e){
-            log.info("Creance a payment before getting the list of creances");
-            throw new CustomException("Can't get all creance curently. You need to create an instance of paiement first");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList.map(creanceMapper::mapToDto));
-    }
+//    @GetMapping("processing")
+//    public ResponseEntity<Page<CreanceDto>> findAllCreance(Pageable pageable,
+//                                                                 HttpServletRequest request) {
+//
+//        Page<DemandeCessionDto> demandeList;
+//
+//        log.info("CreanceController.findAllCreance request started ...");
+//        try{
+//            demandeList = demandeCessionService
+//                    .findAll(pageable);
+//        }catch (Exception e){
+//            log.info("Creance a payment before getting the list of creances");
+//            throw new CustomException("Can't get all creance curently. You need to create an instance of paiement first");
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(demandeList.map(creanceMapper::mapToDto));
+//    }
 
     @GetMapping()
     public ResponseEntity<Page<CreanceDto>> findNoPaidCreance(Pageable pageable,
@@ -65,7 +65,7 @@ public class CreanceController {
         log.info("CreanceController.findAllCreance request started ...");
         try{
             demandeList = demandeCessionService
-                    .findAllCreance(pageable);
+                    .findAllCreanceWithTheRightStatut(pageable);
             log.info("la liste : {}",demandeList);
 
         }catch (Exception e){
