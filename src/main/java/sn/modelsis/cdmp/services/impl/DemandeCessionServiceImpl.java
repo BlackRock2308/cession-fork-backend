@@ -2,10 +2,7 @@ package sn.modelsis.cdmp.services.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -94,6 +91,15 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         log.info("DemandeCessionService:findAll : fetching .....");
         return demandecessionRepository
                 .findAll(pageable)
+                .map(cessionMapper::asDTO);
+    }
+
+
+    @Override
+    public Page<DemandeCessionDto> findAllCreanceWithTheRightStatut(Pageable pageable){
+        log.info("DemandeCessionService:findAll : fetching .....");
+        return demandecessionRepository
+                .findDemandeCessionByRightLibele(pageable)
                 .map(cessionMapper::asDTO);
     }
 
@@ -405,7 +411,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         return demandeCessionDtoList
                 .stream()
-                .map(creanceMapper::mapToDto)
+                .map(noPaymentMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
@@ -424,7 +430,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         return demandeCessionDtoList
                 .stream()
-                .map(creanceMapper::mapToDto)
+                .map(noPaymentMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
@@ -443,7 +449,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         return demandeCessionDtoListMarche
                 .stream()
-                .map(creanceMapper::mapToDto)
+                .map(noPaymentMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
@@ -461,7 +467,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         return demandeCessionDtoListMontant
                 .stream()
-                .map(creanceMapper::mapToDto)
+                .map(noPaymentMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
@@ -484,38 +490,41 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     }
 
 
-//    @Override
-//    public Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable){
-//        log.info("DemandeCessionService:findAll : fetching .....");
+    @Override
+    public Page<DemandeCessionDto> findCreanceWithoutPayment(Pageable pageable){
+        log.info("DemandeCessionService:findAll : fetching .....");
 //        String[] statutWithNoPayment = {"CONVENTION_GENEREE", "CONVENTION_CORRIGEE",
 //                "CONVENTION_SIGNEE_PAR_PME", "CONVENTION_SIGNEE_PAR_DG", "RISQUEE","NON_RISQUEE",
 //                "COMPLETEE", "COMPLEMENT_REQUIS", "CDMP_TOTALEMENT_PAYEE","CONVENTION_TRANSMISE",
 //                "CONVENTION_REJETEE_PAR_DG", "CONVENTION_REJETEE_PAR_PME","CONVENTION_REJETEE",
 //                "CDMP_EN_ATTENTE_DE_PAIEMENT", "PME_EN_ATTENTE_DE_PAIEMENT,CONVENTION_ACCEPTEE"};
-//
+
 //        String[] statutWithPayment = {"CONVENTION_ACCEPTEE","CDMP_PARTIELLEMENT_PAYEE","PME_PARTIELLEMENT_PAYEE","PME_TOTALEMENT_PAYEE",};
-//        Set<String> statutList = new HashSet<>();
-//        statutList.addAll(List.of(statutWithPayment));
-//        Page<DemandeCession> cessionList;
-//        List<DemandeCession> correctDemandeList = null;
-//        cessionList = demandecessionRepository.findAll(pageable);
-//        log.info("Starting List : {}",cessionList);
-//
-//        for(DemandeCession element : cessionList){
-//            if (element.getStatut().getLibelle() == "COMPLEMENT_REQUIS"){
-//                correctDemandeList.add(element);
+
+        String[] ignoredStatut = {"SOUMISE","RECEVABLE","COMPLEMENT_REQUIS"};
+
+        Set<String> statutList = new HashSet<>();
+        statutList.addAll(List.of(ignoredStatut));
+        Page<DemandeCession> cessionList;
+        List<DemandeCession> correctDemandeList = null;
+        cessionList = demandecessionRepository.findAll(pageable);
+        log.info("Starting List : {}",cessionList);
+
+        for(DemandeCession element : cessionList){
+            if (element.getStatut().getLibelle() == "COMPLEMENT_REQUIS"){
+                correctDemandeList.add(element);
+            }
+        }
+//        cessionList.forEach((e)->{
+//            if (e.getStatut().getLibelle().equals("COMPLEMENT_REQUIS")){
+//                correctDemandeList.add(e);
 //            }
-//        }
-////        cessionList.forEach((e)->{
-////            if (e.getStatut().getLibelle().equals("COMPLEMENT_REQUIS")){
-////                correctDemandeList.add(e);
-////            }
-////        });
-//        log.info("Correct List : {}",correctDemandeList);
-//        return (Page<DemandeCessionDto>) correctDemandeList
-//                .stream()
-//                .map(cessionMapper::asDTO);
-//    }
+//        });
+        log.info("Correct List : {}",correctDemandeList);
+        return (Page<DemandeCessionDto>) correctDemandeList
+                .stream()
+                .map(cessionMapper::asDTO);
+    }
 
 
 
