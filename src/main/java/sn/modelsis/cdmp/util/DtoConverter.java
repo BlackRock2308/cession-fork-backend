@@ -2,9 +2,34 @@ package sn.modelsis.cdmp.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.data.domain.Page;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.*;
+
+import sn.modelsis.cdmp.entities.BonEngagement;
+import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.Demande;
+import sn.modelsis.cdmp.entities.DemandeAdhesion;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.DetailPaiement;
+import sn.modelsis.cdmp.entities.Documents;
+import sn.modelsis.cdmp.entities.Observation;
+import sn.modelsis.cdmp.entities.Paiement;
+import sn.modelsis.cdmp.entities.Parametrage;
+import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
+import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
+import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
+import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.DocumentDto;
+import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.ParametrageDto;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.entitiesDtos.RecevabiliteDto;
+import sn.modelsis.cdmp.entitiesDtos.StatutDto;
+import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 
 public class DtoConverter {
 
@@ -272,20 +297,28 @@ public class DtoConverter {
 		return demandeCession;
 	}
 
-//	public static  CreanceDto convertToCreanceDto(DemandeCession demandeCession) {
-//		CreanceDto creanceDto = null;
-//		if(null != demandeCession) {
-//			modelMapper.getConfiguration().setAmbiguityIgnored(true);
-//			creanceDto =modelMapper.map(demandeCession, CreanceDto.class);
-//			//renseigner les mapping ambigue
-//			creanceDto.setIdCreance(demandeCession.getIdDemande());
-//			creanceDto.setNomMarche(demandeCession.getBonEngagement().getNomMarche());
-//			creanceDto.setRaisonSocial(demandeCession.getPme().getRaisonSocial());
-//			creanceDto.setDateDemandeCession(demandeCession.getDateDemandeCession());
-//			creanceDto.setMontantCreance(demandeCession.getBonEngagement().getMontantCreance());
-//			creanceDto.setRccm(demandeCession.getPme().getRccm());
-//			creanceDto.setStatut(demandeCession.getStatut());
+//	public static CreanceDto convertToCreanceDto(DemandeCessionDto demandeCessionDto) {
+//		if ( demandeCessionDto == null ) {
+//			return null;
 //		}
+//
+//		CreanceDto creanceDto = new CreanceDto();
+//
+//		creanceDto.setIdCreance( demandeCessionDto.getIdDemande() );
+//		creanceDto.setNinea( demandeCessionDto.getPme().getNinea() );
+//		creanceDto.setRccm( demandeCessionDto.getPme().getRccm() );
+//		creanceDto.setRaisonSocial( demandeCessionDto.getPme().getRaisonSocial() );
+//		creanceDto.setTypeMarche( demandeCessionDto.getBonEngagement().getTypeMarche() );
+//		creanceDto.setNomMarche( demandeCessionDto.getBonEngagement().getNomMarche() );
+//		creanceDto.setMontantCreance( demandeCessionDto.getBonEngagement().getMontantCreance() );
+//		creanceDto.setDateDemandeCession( demandeCessionDto.getDateDemandeCession() );
+//		creanceDto.setDateMarche( demandeCessionDto.getDateDemandeCession() );
+//		creanceDto.setStatut( demandeCessionDto.getStatut() );
+//		if(demandeCessionDto.getPaiement() != null){
+//			creanceDto.setSoldePME( demandeCessionDto.getPaiement().getSoldePME() );
+//			creanceDto.setMontantDebourse( demandeCessionDto.getPaiement().getMontantRecuCDMP() );
+//		}
+//
 //		return creanceDto;
 //	}
 

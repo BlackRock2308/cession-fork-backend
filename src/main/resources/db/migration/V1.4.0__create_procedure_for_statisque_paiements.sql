@@ -114,7 +114,7 @@ $BODY$;
 
 ---Fontion qui récupère les statistiques des paiements CDMP-PME par mois---
 CREATE TYPE public.StatistiquePaiementPME AS(
-    solde numeric, montantCreance numeric, debource numeric);
+    solde numeric, montantCreance numeric, debource numeric, decote numeric);
 
 CREATE FUNCTION public.getStatistiquePaiementPME(
     monthData timestamp without time zone
@@ -130,7 +130,10 @@ AS $BODY$
     BEGIN
         SELECT public.cumlMontantCreanceByMonth(monthData) INTO STRICT resultat.montantCreance;
         SELECT public.cumlMontantDetailsPaiementByMonth('CDMP_PME', monthData) INTO STRICT resultat.debource;
-        SELECT public.cumlSoldePMEByMonth(monthData, resultat.montantCreance, resultat.debource) INTO STRICT resultat.solde;
+        --SELECT public.cumlSoldePMEByMonth(monthData, resultat.montantCreance, resultat.debource) INTO STRICT resultat.solde;
+        SELECT public.cumlDecoteByMonth(monthData) INTO STRICT resultat.decote;
+        resultat.montantCreance:= resultat.montantCreance - resultat.decote;
+        resultat.solde:= resultat.montantCreance - resultat.debource;
         RETURN resultat;
     END;
 $BODY$;

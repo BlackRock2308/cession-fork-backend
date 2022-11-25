@@ -152,9 +152,10 @@ public class PaiementServiceImpl implements PaiementService {
             Double[] donnes = new Double[3];
             for(int i=0 ; i<12;i++){
                 donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementPME(today));
-                statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(donnes[2],today));
+                statistiquePaiementPMEDto.getCumulDebourses().add(new ObjetMontantMois(donnes[2],today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(donnes[1],today));
                 statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(donnes[0],today));
+                statistiquePaiementPMEDto.getCumulDecotes().add(new ObjetMontantMois(donnes[3], today));
                 today= today.plusMonths(1);
         }
         return statistiquePaiementPMEDto;
@@ -165,12 +166,13 @@ public class PaiementServiceImpl implements PaiementService {
         LocalDateTime today = LocalDateTime.of(annee, 1, 1, 0, 0, 0);
         StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
             statistiquePaiementPMEDto.setYear(annee);
-            Double[] donnes = new Double[3];
+            Double[] donnes = new Double[4];
             for (int i = 0; i < 12; i++) {
                 donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementByPME(idPME,today));
-                statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(donnes[2], today));
+                statistiquePaiementPMEDto.getCumulDebourses().add(new ObjetMontantMois(donnes[2], today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(donnes[1], today));
                 statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(donnes[0], today));
+                statistiquePaiementPMEDto.getCumulDecotes().add(new ObjetMontantMois(donnes[3], today));
                 today = today.plusMonths(1);
         }
         return statistiquePaiementPMEDto;

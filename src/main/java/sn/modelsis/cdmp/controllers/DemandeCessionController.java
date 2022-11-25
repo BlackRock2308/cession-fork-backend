@@ -11,7 +11,6 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
@@ -296,6 +294,7 @@ public class DemandeCessionController {
     }
 
     /* ************************ Search by Statut Libellé ************************ */
+
     @GetMapping("searchByStatut/{statutLibelle}")
     public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByStatutLibelle(
             @PathVariable("statutLibelle") String statutLibelle){
@@ -326,40 +325,5 @@ public class DemandeCessionController {
                 .body(demandeList);
     }
 
-
-
-
-    //    @GetMapping("search-by-multi-params")
-//    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByMultipleParams(
-//            @RequestParam("referenceBE") String referenceBE,
-//            @RequestParam("numeroDemande") String numeroDemande,
-//            @RequestParam("nomMarche") String nomMarche,
-//            @RequestParam("statutLibelle") String statutLibelle
-//
-//            ){
-//        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams request started");
-//
-//        List<DemandeCessionDto> demandeList = demandeCessionService
-//                .findDemandeCessionByMultipleParams(referenceBE, numeroDemande,nomMarche,statutLibelle);
-//        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams: referenceBE : {}",referenceBE);
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(demandeList);
-//    }
-
-
-
-
-    //
-//    @GetMapping("search/{numeroDemande}")
-//    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByParameters(
-//            @PathVariable("numeroDemande") String numeroDemande){
-//        log.info("DemandeCessionController:searchDemandeCessionByParameters request started");
-//
-//        List<DemandeCessionDto> demandeList = demandeCessionService
-//                .findDemandeCessionByMultipleCritere(numeroDemande);
-//        log.info("DemandeCessionController:searchDemandeCessionByParameters request params : {}",numeroDemande);
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(demandeList);
-//    }
 
 }
