@@ -24,7 +24,7 @@ public interface CreanceMapper {
     @Mapping(target = "soldePME", expression = "java(demandeCessionDto.getPaiement().getSoldePME())")
     @Mapping(target = "dateMarche", expression = "java(demandeCessionDto.getDateDemandeCession())")
     @Mapping(target = "statut", expression = "java(demandeCessionDto.getStatut())")
-    @Mapping(target = "montantDebourse", expression = "java(demandeCessionDto.getPaiement().getMontantRecuCDMP())")
+    @Mapping(target = "montantRembourse", expression = "java(demandeCessionDto.getPaiement().getMontantRecuCDMP())")
     CreanceDto mapToDto(DemandeCessionDto demandeCessionDto);
 
 
