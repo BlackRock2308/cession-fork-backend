@@ -336,7 +336,7 @@ public class DtoConverter {
 //			creanceDto.setRccm(demandeCession.getPme().getRccm());
 //			creanceDto.setStatut(demandeCession.getStatut());
 //		}
-//		return (Page<CreanceDto>) creanceDto;
+//		return (Page<CreanceDto>) creanceDto ;
 //	}
 
 	public static  UtilisateurDto convertToDto(Utilisateur utilisateur) {
