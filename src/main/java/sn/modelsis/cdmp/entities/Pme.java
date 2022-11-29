@@ -146,4 +146,152 @@ public class Pme implements Serializable {
     @Transient
     private Long utilisateurid;
 
+    public void setPME(Long idPME,
+
+    String prenomRepresentant,
+
+   String nomRepresentant,
+     String rccm,
+
+   String adressePME,
+
+     String telephonePME,
+
+     LocalDateTime dateImmatriculation,
+
+     String centreFiscal,
+
+     String ninea,
+
+    String raisonSocial,
+
+     boolean atd,
+
+     boolean nantissement,
+
+    boolean interdictionBancaire,
+
+     boolean identificationBudgetaire,
+
+     String formeJuridique,
+
+     String email,
+
+     Integer codePin,
+
+     String urlImageProfile,
+
+     String urlImageSignature,
+
+     LocalDateTime dateAdhesion,
+
+     String enseigne,
+
+    String localite,
+
+     Integer controle,
+
+    String activitePrincipale,
+
+     String autorisationMinisterielle,
+
+    LocalDateTime dateCreation,
+
+     String capitalSocial,
+
+    Long chiffresDaffaires,
+
+     Integer effectifPermanent,
+
+    Integer nombreEtablissementSecondaires,
+
+     Boolean hasninea,
+
+    Boolean isactive,
+
+     Set<Demande> demandes ,
+
+    Set<PMEDocuments> documents ,
+
+    Utilisateur utilisateur ,
+
+    String cniRepresentant ,
+
+     String registre,
+
+     Long utilisateurid){
+        this.idPME=idPME;
+        this.prenomRepresentant=prenomRepresentant;
+                this.nomRepresentant=nomRepresentant;
+                this.rccm=rccm;
+
+                this.adressePME=adressePME;
+                this.telephonePME=telephonePME;
+
+                this.dateImmatriculation=dateImmatriculation;
+
+                this.centreFiscal=centreFiscal;
+
+                this.ninea=ninea;
+
+                this.raisonSocial=raisonSocial;
+
+        this.atd=atd;
+
+        this.nantissement=nantissement;
+
+        this.interdictionBancaire=interdictionBancaire;
+
+        this.identificationBudgetaire=identificationBudgetaire;
+
+        this.formeJuridique=formeJuridique;
+
+        this.email=email;
+
+        this.codePin=codePin;
+
+        this.urlImageProfile=urlImageProfile;
+
+        this.urlImageSignature=urlImageSignature;
+
+        this.dateAdhesion=dateAdhesion;
+
+        this.enseigne=enseigne;
+
+        this.localite=localite;
+
+        this.controle=controle;
+
+        this.activitePrincipale=activitePrincipale;
+
+        this.autorisationMinisterielle=autorisationMinisterielle;
+
+        this.dateCreation=dateCreation;
+
+        this.capitalSocial=capitalSocial;
+
+        this.chiffresDaffaires=chiffresDaffaires;
+
+        this.effectifPermanent=effectifPermanent;
+
+        this.nombreEtablissementSecondaires=nombreEtablissementSecondaires;
+
+        this.hasninea=hasninea;
+
+        this.isactive=isactive;
+
+        this.demandes=demandes;
+
+        this.documents=documents;
+
+        this.utilisateur=utilisateur;
+
+        this.cniRepresentant=cniRepresentant;
+
+        this.registre=registre;
+
+        this.utilisateurid=utilisateurid;
+
+    }
+
 }
