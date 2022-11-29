@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -236,6 +238,23 @@ public class Util {
       donne[i] = Double.parseDouble(objs[i]);
     }
     return donne;
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T> Map<String,Object> mergeObjects(T first, T second) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    Class<?> clazz = first.getClass();
+    Field[] fields = clazz.getDeclaredFields();
+    Map<String,Object> values=new HashMap<>();
+    for (Field field : fields) {
+      field.setAccessible(true);
+      Object value1 = field.get(first);
+      Object value2 = field.get(second);
+      Object value = (value1 != null) ? value1 : value2;
+      values.put(field.getName(),value);
+      //field.set(returnValue,value);
+      log.info("end:{}",field.getName());
+    }
+    return values;
   }
 
 }

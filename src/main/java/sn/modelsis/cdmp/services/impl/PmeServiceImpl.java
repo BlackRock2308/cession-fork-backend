@@ -19,9 +19,8 @@ import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,6 +38,7 @@ import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
+import sn.modelsis.cdmp.util.Util;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +48,8 @@ public class PmeServiceImpl implements PmeService {
   private final StatutRepository statutRepository;
   private final DemandeCessionRepository demandecessionRepository;
   private final DocumentService documentService;
+
+  private final Util util;
 
 
   @Override
@@ -117,10 +119,15 @@ public class PmeServiceImpl implements PmeService {
     try {
       log.info("PmeService:updatePme ........");
       log.info("PmeService:updatePme update Pme in the database with id = {}");
-      return pmeRepository.saveAndFlush(pme);
+      Pme returnPme=new Pme();
+      Map<String,Object> fields=this.util.mergeObjects(pme,pmeRepository.findById(id).orElse(null));
+      returnPme.setPME((Long)fields.get("idPME"),(String) fields.get("prenomRepresentant"),(String)fields.get("nomRepresentant"),(String)fields.get("rccm"),(String)fields.get("adressePME"),(String)fields.get("telephonePME"),(LocalDateTime) fields.get("dateImmatriculation"),(String)fields.get("centreFiscal"),(String)fields.get("ninea"),(String)fields.get("raisonSocial"),(boolean)fields.get("atd"),(boolean) fields.get("nantissement"),(boolean) fields.get("interdictionBancaire"),(boolean) fields.get("identificationBudgetaire"),(String)fields.get("formeJuridique"),(String)fields.get("email"),(Integer) fields.get("codePin"),(String)fields.get("urlImageProfile"),(String)fields.get("urlImageSignature"),(LocalDateTime) fields.get("dateAdhesion"),(String)fields.get("enseigne"),(String)fields.get("localite"),(Integer) fields.get("controle"),(String)fields.get("activitePrincipale"),(String)fields.get("autorisationMinisterielle"),(LocalDateTime) fields.get("dateCreation"),(String)fields.get("capitalSocial"),(Long) fields.get("chiffresDaffaires"),(Integer) fields.get("effectifPermanent"),(Integer) fields.get("nombreEtablissementSecondaires"),(Boolean) fields.get("hasninea"),(Boolean) fields.get("isactive"),(Set<Demande>)fields.get("demandes"),(Set<PMEDocuments>)fields.get("documents"),(Utilisateur) fields.get("utilisateur"), (String) fields.get("cniRepresentant"),(String) fields.get("registre"),(Long) fields.get("utilisateurid"));
+      log.info("merged");
+
+      return pmeRepository.saveAndFlush(returnPme);
     } catch(Exception ex){
-      log.error("Exception occured while updating PME with id : {}",id );
-      throw new CustomException("Error occured while updating this PME ");
+      log.error("Exception occured while updating PME with id : {}",ex.getMessage() );
+      throw new RuntimeException();
     }
   }
 
