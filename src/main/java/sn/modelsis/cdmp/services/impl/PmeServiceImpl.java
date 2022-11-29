@@ -6,17 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.exceptions.ItemExistsException;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.repositories.UtilisateurRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
-import sn.modelsis.cdmp.util.DtoConverter;
-import sn.modelsis.cdmp.util.ExceptionUtils;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -47,6 +44,7 @@ public class PmeServiceImpl implements PmeService {
   private final PmeRepository pmeRepository;
   private final StatutRepository statutRepository;
   private final DemandeCessionRepository demandecessionRepository;
+  private final UtilisateurRepository utilisateurRepository;
   private final DocumentService documentService;
 
   private final Util util;
@@ -60,7 +58,6 @@ public class PmeServiceImpl implements PmeService {
 
     try {
       log.info("PmeService:savePme , saving.....");
-
       newPme = pmeRepository.saveAndFlush(pme);
       log.debug("PmeService:savePme received from database : {}",newPme);
 
