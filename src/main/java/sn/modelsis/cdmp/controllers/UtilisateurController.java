@@ -16,9 +16,11 @@ import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
+import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 import sn.modelsis.cdmp.security.dto.AuthentificationResponseDto;
+import sn.modelsis.cdmp.security.dto.RefreshToken;
 import sn.modelsis.cdmp.security.service.UtilisateurDetailService;
 import sn.modelsis.cdmp.security.utils.JWTUtility;
 import sn.modelsis.cdmp.services.PmeService;
@@ -279,11 +281,26 @@ public class UtilisateurController {
         UserDetails userDetails = utilisateurDetailService.loadUserByUsername(authentificationDto.getEmail());
         Utilisateur utilisateur = utilisateurService.findByEmail(authentificationDto.getEmail());
         if (utilisateur != null) {
-            final String token = jwtUtility.generateToken(utilisateur ,userDetails);
+            final String token = jwtUtility.generateToken(userDetails);
             return new AuthentificationResponseDto(utilisateur, token);
         } else {
             return null;
         }
+    }
+
+    @PostMapping("/refresh-token")
+    public RefreshToken refreshToken(@RequestBody RefreshToken refreshToken)  {
+        if(null == refreshToken.getToken())
+            throw new CustomException("the token can not be null ");
+        String user = jwtUtility.getUsernameFromToken(refreshToken.getToken());
+      if (user==null)
+          throw new CustomException("the token is not valid   ");
+      UserDetails userDetails = utilisateurDetailService.loadUserByUsername(user);
+        if (user==null)
+            throw new CustomException("the user can not be found   ");
+      final String token = jwtUtility.generateToken(userDetails);
+      refreshToken.setRefreshToken(token);
+    return refreshToken ;
     }
 
     /**
