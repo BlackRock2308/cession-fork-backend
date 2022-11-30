@@ -240,8 +240,7 @@ public class Util {
     return donne;
   }
 
-  @SuppressWarnings("unchecked")
-  public static <T> Map<String,Object> mergeObjects(T first, T second) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+  public <T> Map<String,Object> mergeObjects(T first, T second) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
     Class<?> clazz = first.getClass();
     Field[] fields = clazz.getDeclaredFields();
     Map<String,Object> values=new HashMap<>();
@@ -251,8 +250,6 @@ public class Util {
       Object value2 = field.get(second);
       Object value = (value1 != null) ? value1 : value2;
       values.put(field.getName(),value);
-      //field.set(returnValue,value);
-      log.info("end:{}",field.getName());
     }
     return values;
   }

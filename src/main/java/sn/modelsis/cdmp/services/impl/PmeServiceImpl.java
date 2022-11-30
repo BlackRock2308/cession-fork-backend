@@ -112,7 +112,23 @@ public class PmeServiceImpl implements PmeService {
       log.info("PmeService:updatePme update Pme in the database with id = {}");
       Pme returnPme=new Pme();
       Map<String,Object> fields=this.util.mergeObjects(pme,pmeRepository.findById(id).orElse(null));
-      returnPme.setPME((Long)fields.get("idPME"),(String) fields.get("prenomRepresentant"),(String)fields.get("nomRepresentant"),(String)fields.get("rccm"),(String)fields.get("adressePME"),(String)fields.get("telephonePME"),(LocalDateTime) fields.get("dateImmatriculation"),(String)fields.get("centreFiscal"),(String)fields.get("ninea"),(String)fields.get("raisonSocial"),(boolean)fields.get("atd"),(boolean) fields.get("nantissement"),(boolean) fields.get("interdictionBancaire"),(boolean) fields.get("identificationBudgetaire"),(String)fields.get("formeJuridique"),(String)fields.get("email"),(Integer) fields.get("codePin"),(String)fields.get("urlImageProfile"),(String)fields.get("urlImageSignature"),(LocalDateTime) fields.get("dateAdhesion"),(String)fields.get("enseigne"),(String)fields.get("localite"),(Integer) fields.get("controle"),(String)fields.get("activitePrincipale"),(String)fields.get("autorisationMinisterielle"),(LocalDateTime) fields.get("dateCreation"),(String)fields.get("capitalSocial"),(Long) fields.get("chiffresDaffaires"),(Integer) fields.get("effectifPermanent"),(Integer) fields.get("nombreEtablissementSecondaires"),(Boolean) fields.get("hasninea"),(Boolean) fields.get("isactive"),(Set<Demande>)fields.get("demandes"),(Set<PMEDocuments>)fields.get("documents"),(Utilisateur) fields.get("utilisateur"), (String) fields.get("cniRepresentant"),(String) fields.get("registre"),(Long) fields.get("utilisateurid"));
+      returnPme.setPME((Long) fields.get("idPME"), (String) fields.get("prenomRepresentant"),
+              (String) fields.get("nomRepresentant"), (String) fields.get("rccm"), (String) fields.get("adressePME"),
+              (String) fields.get("telephonePME"), (LocalDateTime) fields.get("dateImmatriculation"),
+              (String) fields.get("centreFiscal"), (String) fields.get("ninea"), (String) fields.get("raisonSocial"),
+              (boolean) fields.get("atd"), (boolean) fields.get("nantissement"),
+              (boolean) fields.get("interdictionBancaire"), (boolean) fields.get("identificationBudgetaire"),
+              (String) fields.get("formeJuridique"), (String) fields.get("email"), (Integer) fields.get("codePin"),
+              (String) fields.get("enseigne"),
+              (String) fields.get("localite"), (Integer) fields.get("controle"),
+              (String) fields.get("activitePrincipale"), (String) fields.get("autorisationMinisterielle"),
+              (LocalDateTime) fields.get("dateCreation"), (Long) fields.get("capitalsocial"),
+              (Long) fields.get("chiffresDaffaires"), (Integer) fields.get("effectifPermanent"),
+              (Integer) fields.get("nombreEtablissementSecondaires"), (Boolean) fields.get("hasninea"),
+              (Boolean) fields.get("isactive"), (Set<Demande>) fields.get("demandes"),
+              (Set<PMEDocuments>) fields.get("documents"), (Utilisateur) fields.get("utilisateur"),
+              (String) fields.get("cniRepresentant"), (String) fields.get("registre"),
+              (Long) fields.get("utilisateurid"));
       log.info("merged");
 
       return pmeRepository.saveAndFlush(returnPme);

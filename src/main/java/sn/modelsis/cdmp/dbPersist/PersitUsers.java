@@ -205,7 +205,6 @@ public class PersitUsers {
         pme1.setRaisonSocial("Fintech");
         pme1.setEmail("pme@gmail.com");
         pme1.setActivitePrincipale("Solution Cloud and Big Data");
-        pme1.setDateAdhesion(date);
         pme1.setUtilisateur(pme);
         pmeRepository.save(pme1);
         }

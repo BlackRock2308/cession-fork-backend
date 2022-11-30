@@ -121,13 +121,10 @@ public class ConventionServiceImpl implements ConventionService{
       existingConvention = conventionRepository.findById(id);
 
       existingConvention.get().setValeurDecote(newConvention.getValeurDecote());
-      existingConvention.get().setModePaiement(newConvention.getModePaiement());
       existingConvention.get().setValeurDecoteByDG(newConvention.getValeurDecoteByDG());
       existingConvention.get().setActiveConvention(newConvention.isActiveConvention());
       existingConvention.get().setDateConvention(newConvention.getDateConvention());
-      //existingConvention.get().setDemandeCession(newConvention.getDemandeCession());
       existingConvention.get().setPme(newConvention.getPme());
-     // existingConvention.get().setUtilisateur(newConvention.getUtilisateur());
       log.info("DocumentService:supression de l'ancien document de la convention ........");
       for (Documents doc:existingConvention.get().getDocuments()
            ) {
