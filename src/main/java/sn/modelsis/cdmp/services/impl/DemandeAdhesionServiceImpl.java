@@ -134,6 +134,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             log.debug("DemandeAdhesionService:rejetAdhesion request params {}", id);
             Statut updatedStatut=statutRepository.findByLibelle("ADHESION_REJETEE");
             optional.get().setStatut(updatedStatut);
+            //send email to notify rejection
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
             String email = optional.get().getPme().getEmail();
             EmailMessageWithTemplate emailMessageWithTemplate = sendEmailRejetAdhesion(email);
