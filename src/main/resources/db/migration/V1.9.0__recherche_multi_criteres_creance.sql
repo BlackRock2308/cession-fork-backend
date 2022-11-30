@@ -82,7 +82,7 @@ ELSE
                                      INNER JOIN public.statut AS st ON st.id = dc.statutid WHERE
         (st.libelle NOT IN ('SOUMISE','RECEVABLE','COMPLEMENT_REQUIS','REJETEE','COMPLETEE')) AND
      (be.montantCreance=montant_creance OR montant_creance IS NULL OR montant_creance=0 ) AND
-    --(be.nomMarche=nom_marche OR nom_marche='') AND
+    (be.nomMarche=nom_marche OR nom_marche='') AND
      (cv.valeur_decote_dg=decote OR decote IS NULL OR decote=0) AND
        (p.raisonsocial=raison_social OR raison_social='') AND
    (st.libelle=statut_libelle OR statut_libelle='');
