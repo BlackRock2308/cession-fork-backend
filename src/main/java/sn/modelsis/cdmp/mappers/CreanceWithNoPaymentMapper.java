@@ -24,10 +24,12 @@ public interface CreanceWithNoPaymentMapper {
             target.setSoldePME(0.0);
             target.setMontantRembourse(0.0);
             target.setMontantDebourse(0.0);
+            target.setSoldeSICA(0.0);
         } else {
             target.setSoldePME(source.getPaiement().getSoldePME());
             target.setMontantRembourse(source.getPaiement().getMontantRecuCDMP());
             target.setMontantDebourse(source.getPaiement().getMontantCreance() - source.getPaiement().getSoldePME());
+            target.setSoldeSICA(source.getPaiement().getMontantCreanceInitial() - source.getPaiement().getMontantRecuCDMP());
         }
     }
     @Mapping(target = "idCreance", expression = "java(demandeCessionDto.getIdDemande())")

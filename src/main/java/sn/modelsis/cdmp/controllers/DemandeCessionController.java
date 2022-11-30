@@ -2,7 +2,6 @@ package sn.modelsis.cdmp.controllers;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.services.DemandeCessionService;

@@ -21,11 +21,11 @@ import java.util.Date;
 public interface DemandeCessionRepository extends JpaRepository<DemandeCession,Long> {
 
 
-    Page<DemandeCession> findAllByStatut_LibelleIn(org.springframework.data.domain.Pageable pageable, String[] statuts);
+    Page<DemandeCession> findAllByStatut_LibelleIn(Pageable pageable, String[] statuts);
 
      List<DemandeCession> findAllByPmeIdPME(Long id);
 
-    Page<DemandeCession> findAllByPmeIdPME(org.springframework.data.domain.Pageable pageable, Long id);
+    Page<DemandeCession> findAllByPmeIdPME(Pageable pageable, Long id);
 
     @Query("select p from DemandeCession p where p.statut.libelle NOT IN ('SOUMISE','RECEVABLE','COMPLEMENT_REQUIS','REJETEE','COMPLETEE') ")
     Page<DemandeCession> findDemandeCessionByRightLibele(Pageable pageable);
@@ -37,7 +37,7 @@ public interface DemandeCessionRepository extends JpaRepository<DemandeCession,L
             value = "select * from public.statistiqueDemandeByStatutAndMoth(:statutDemande, :dateDemande)")
     Integer getDemandeByStautAntMonth(@Param("statutDemande") String statutDemande, @Param("dateDemande") LocalDate dateDemande);
 
-    Page<DemandeCession> findAllByPmeIdPMEAndStatut_Libelle(org.springframework.data.domain.Pageable pageable,Long idPME, String statut);
+    Page<DemandeCession> findAllByPmeIdPMEAndStatut_Libelle(Pageable pageable,Long idPME, String statut);
 
 
     /************** Filtering creance by multiple parameters **************/
