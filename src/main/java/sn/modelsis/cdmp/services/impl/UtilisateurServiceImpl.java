@@ -142,6 +142,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setPassword(passwordEncoder.encode(password));
         utilisateur.setEmail(email);
         utilisateur.setCodePin(Integer.toString(codePin));
+        utilisateur = setRole(utilisateur);
         Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
         if (utilisateurSaved==null)
             throw new CustomException("Error while saving the user ");
@@ -212,5 +213,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     private int  generateCodePin(){
         int codePin = (int) (Math.random()*(9999-1003)+1002);
         return  codePin;
+    }
+
+    private Utilisateur  setRole(Utilisateur utilisateur){
+        Set<Role> roles = new HashSet<>();
+        Role role = roleRepository.findByLibelle("PME");
+        roles.add(role);
+        utilisateur.setRoles(roles);
+        return  utilisateur;
     }
 }
