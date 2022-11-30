@@ -385,18 +385,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
      * ***************************
      **/
 
-    @Override
-    public List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
-            String numeroDemande,
-            String nomMarche,
-            String statutLibelle) {
-        log.info("DemandeCessionService:findDemandeCessionByMultipleParams searching ......");
-        return demandecessionRepository
-                .findDemandeCessionByMultiParams(referenceBE, numeroDemande, nomMarche, statutLibelle)
-                .stream()
-                .map(cessionMapper::asDTO)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate, LocalDateTime endDate) {
@@ -422,24 +410,9 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .collect(Collectors.toList());
     }
 
-    /***************
-     * Filter Creance based on multiple parameters ******************
-     */
-
-    @Override
-    public List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
-            String raisonSocial,
-            double montantCreance,
-            String statutLibelle) {
-        log.info("DemandeCessionService:findCreanceByMultipleParams searching ......");
-
-        List<DemandeCession> demandeCessionList = demandecessionRepository
-                .searchCreanceByMultiParams(nomMarche, raisonSocial, montantCreance, statutLibelle);
-
-        List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
-                .stream()
-                .map(cessionMapper::asDTO)
-                .collect(Collectors.toList());
+  /***************
+   * Filter Creance based on multiple parameters ******************
+   */
 
 
     @Override
