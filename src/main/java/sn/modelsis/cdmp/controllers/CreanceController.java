@@ -75,15 +75,39 @@ public class CreanceController {
 
     @GetMapping("search-creance-by-params")
     public ResponseEntity<List<CreanceDto>> findCreanceByMultipleParams(
-            @RequestParam("nomMarche") String nomMarche,
-            @RequestParam("raisonSocial") String raisonSocial,
-            @RequestParam("montantCreance") double montantCreance,
-            @RequestParam("statutLibelle") String statutLibelle){
+            @RequestParam(value = "raisonSocial") String raisonSocial,
+            @RequestParam(value = "montantCreance") String montantCreance,
+            @RequestParam(value = "nomMarche") String nomMarche,
+            @RequestParam(value = "statutLibelle") String statutLibelle,
+            @RequestParam(value = "decote") String decote,
+            @RequestParam(value = "startDateD", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateD,
+            @RequestParam(value = "endDateD", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateD,
+            @RequestParam(value = "startDateM", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateM,
+            @RequestParam(value = "endDateM", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateM){
 
         log.info("CreanceController:findCreanceByMultipleParams request started");
+        double newMontantCreance = 0;
+        double newDecote = 0;
 
+        if(montantCreance==null || montantCreance.isEmpty()){
+            montantCreance = String.valueOf(0.0);
+            newMontantCreance = Double.parseDouble(montantCreance);
+        }else {
+            newMontantCreance = Double.parseDouble(montantCreance);
+        }
+
+        if(decote==null || decote.isEmpty()){
+            decote = String.valueOf(0.0);
+            newDecote = Double.parseDouble(decote);
+        }else {
+            newDecote = Double.parseDouble(decote);
+        }
         List<CreanceDto> creanceList = demandeCessionService
-                .findCreanceByMultipleParams(nomMarche,raisonSocial,montantCreance,statutLibelle);
+                .findCreanceByMultipleParams(nomMarche,raisonSocial,newMontantCreance,statutLibelle,newDecote,startDateD,endDateD,startDateM,endDateM);
         log.info("CreanceController:findCreanceByMultipleParams: creanceList : {}",creanceList);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(creanceList);

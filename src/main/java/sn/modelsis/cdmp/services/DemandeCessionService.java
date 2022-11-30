@@ -70,7 +70,9 @@ public interface DemandeCessionService {
     List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
                                                         String numeroDemande,
                                                         String nomMarche,
-                                                        String statutLibelle);
+                                                        String statutLibelle,
+                                                               LocalDateTime startDate,
+                                                               LocalDateTime endDate);
 
     List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle);
 
@@ -79,11 +81,16 @@ public interface DemandeCessionService {
     List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate,LocalDateTime endDate);
 
 /*Filter Creance using multpile parameters*/
-
-    List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
-                                                 String raisonSocial,
-                                                 double montantCreance,
-                                                 String statutLibelle);
+List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
+                                             String raisonSocial,
+                                             double montantCreance,
+                                             String statutLibelle,
+                                             double decote,
+                                             LocalDateTime startDateD,
+                                             LocalDateTime endDateD,
+                                             LocalDateTime startDateM,
+                                             LocalDateTime endDateM
+);
 
     List<CreanceDto> findCreanceByRaisonSocial(String raisonSocial);
 
