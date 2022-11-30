@@ -349,20 +349,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(cessionMapper::asDTO);
     }
 
-    /** ************** Search Demande de Cession based on mulpiples criterias *************************** **/
 
-    @Override
-    public List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
-                                                               String numeroDemande,
-                                                               String nomMarche,
-                                                               String statutLibelle){
-        log.info("DemandeCessionService:findDemandeCessionByMultipleParams searching ......");
-        return demandecessionRepository
-                .findDemandeCessionByMultiParams(referenceBE, numeroDemande,nomMarche,statutLibelle)
-                .stream()
-                .map(cessionMapper::asDTO)
-                .collect(Collectors.toList());
-    }
     @Override
     public List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate, LocalDateTime endDate){
         log.info("DemandeCessionService:findDemandeCessionByLocalDateTime searching ......");
@@ -392,26 +379,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
 
 
-    @Override
-    public List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
-                                                        String raisonSocial,
-                                                        double montantCreance,
-                                                        String statutLibelle){
-        log.info("DemandeCessionService:findCreanceByMultipleParams searching ......");
 
-        List<DemandeCession> demandeCessionList = demandecessionRepository
-                .searchCreanceByMultiParams(nomMarche,raisonSocial,montantCreance,statutLibelle);
-
-        List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
-                .stream()
-                .map(cessionMapper::asDTO)
-                .collect(Collectors.toList());
-
-        return demandeCessionDtoList
-                .stream()
-                .map(noPaymentMapper::mapToDto)
-                .collect(Collectors.toList());
-    }
 
 
     @Override
@@ -464,6 +432,54 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .collect(Collectors.toList());
 
         return demandeCessionDtoListMontant
+                .stream()
+                .map(noPaymentMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    /** ************** Search Demande de Cession based on mulpiples criterias *************************** **/
+
+    @Override
+    public List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
+                                                                      String numeroDemande,
+                                                                      String nomMarche,
+                                                                      String statutLibelle,
+                                                                      LocalDateTime startDate,
+                                                                      LocalDateTime endDate){
+        log.info("DemandeCessionService:findDemandeCessionByMultipleParams searching ......");
+
+        return demandecessionRepository
+                .findDemandeCessionByMultiParams(referenceBE, numeroDemande,nomMarche,statutLibelle,startDate,endDate)
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
+    @Override
+    public List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
+                                                        String raisonSocial,
+                                                        double montantCreance,
+                                                        String statutLibelle,
+                                                        double decote,
+                                                        LocalDateTime startDateD,
+                                                        LocalDateTime endDateD,
+                                                        LocalDateTime startDateM,
+                                                        LocalDateTime endDateM
+                                                        ){
+        log.info("DemandeCessionService:findCreanceByMultipleParams searching ......");
+
+        List<DemandeCession> demandeCessionList = demandecessionRepository
+                .searchCreanceByMultiParams(raisonSocial,montantCreance,nomMarche,statutLibelle,decote,startDateD,endDateD,startDateM,endDateM);
+
+        List<DemandeCessionDto> demandeCessionDtoList = demandeCessionList
+                .stream()
+                .map(cessionMapper::asDTO)
+                .collect(Collectors.toList());
+
+        return demandeCessionDtoList
                 .stream()
                 .map(noPaymentMapper::mapToDto)
                 .collect(Collectors.toList());

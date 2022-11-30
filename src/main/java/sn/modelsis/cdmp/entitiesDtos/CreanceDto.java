@@ -30,7 +30,7 @@ public class CreanceDto implements Serializable {
 
     private double montantCreance; //Bon engagement
 
-    private Double decote; //Convention
+    private double decote; //Convention
 
     private double soldePME; //Paiement
 
