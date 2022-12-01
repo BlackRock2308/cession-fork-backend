@@ -1,6 +1,9 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeAdhesion;
 import sn.modelsis.cdmp.entities.DemandeDocuments;
 import sn.modelsis.cdmp.entities.Statut;
@@ -24,10 +29,6 @@ import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.Constants;
 import sn.modelsis.cdmp.util.RestTemplateUtil;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.Optional;
 
 
 
@@ -133,7 +134,11 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             log.debug("DemandeAdhesionService:rejetAdhesion request params {}", id);
             Statut updatedStatut=statutRepository.findByLibelle("ADHESION_REJETEE");
             optional.get().setStatut(updatedStatut);
+            //send email to notify rejection
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
+            String email = optional.get().getPme().getEmail();
+            EmailMessageWithTemplate emailMessageWithTemplate = sendEmailRejetAdhesion(email);
+            restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
             log.info("DemandeAdhesionService:rejetAdhesion receive response from Database {}",optional.get());
         } catch (Exception ex){
             log.error("Exception occured while rejecting Demande Adhesion. Exception message : {}", ex.getMessage());
@@ -154,9 +159,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             optional.get().setStatut(updatedStatut);
             if(optional.isEmpty())
                 throw new CustomException("Can not find this Demand");
-          //  String email = optional.get().getPme().getEmail();
-          //  EmailMessageWithTemplate emailMessageWithTemplate = sendEmailDemandeAdhesion(email);
-          //  restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
+        //    String email = optional.get().getPme().getEmail();
+        //    EmailMessageWithTemplate emailMessageWithTemplate = sendEmailValiderAdhesion(email);
+        //    restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
         }catch (Exception ex){
             log.error("Exception occured while Accepting Demande Adhesion. Exception message : {}", ex.getMessage());
@@ -183,12 +188,21 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     }
 
 
-    public EmailMessageWithTemplate sendEmailDemandeAdhesion(String email){
+    public EmailMessageWithTemplate sendEmailValiderAdhesion(String email){
         EmailMessageWithTemplate emailMessageWithTemplate = new EmailMessageWithTemplate();
         emailMessageWithTemplate.setTemplateName("cdmp-accepte-adhesion");
         emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
         emailMessageWithTemplate.setDestinataire(email);
         emailMessageWithTemplate.setObjet("Acceptation Demande");
+        return emailMessageWithTemplate ;
+    }
+
+    public EmailMessageWithTemplate sendEmailRejetAdhesion(String email){
+        EmailMessageWithTemplate emailMessageWithTemplate = new EmailMessageWithTemplate();
+        emailMessageWithTemplate.setTemplateName("cdmp-rejet-demande-adhesion");
+        emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
+        emailMessageWithTemplate.setDestinataire(email);
+        emailMessageWithTemplate.setObjet("Rejet Demande Adhesion");
         return emailMessageWithTemplate ;
     }
 }

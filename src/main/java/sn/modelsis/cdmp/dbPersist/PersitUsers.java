@@ -56,6 +56,7 @@ public class PersitUsers {
         Role JURISTE =roleRepository.findByLibelle("JURISTE");
        // JURISTE.setLibelle("JURISTE");
 
+        Role PCA =roleRepository.findByLibelle("PCA");
         Set<Role> pmeRoles = new HashSet<>();
         pmeRoles.add(PME);
 
@@ -73,6 +74,9 @@ public class PersitUsers {
 
         Set<Role> cgrRoles = new HashSet<>();
         cgrRoles.add(DRC);
+        
+        Set<Role> pcaRoles = new HashSet<>();
+        pcaRoles.add(PCA);
 
         Set<Role> ordonnateurRoles = new HashSet<>();
         ordonnateurRoles.add(ORDONNATEUR);
@@ -90,6 +94,21 @@ public class PersitUsers {
         
         if(user == null) {
             utilisateurRepository.save(dg);
+        }
+        
+        Utilisateur pca = new Utilisateur();
+        pca.setAdresse("Mermoz");
+        pca.setCodePin("123456");
+        pca.setPassword(passwordEncoder.encode("passer"));
+        pca.setPrenom("Amadou");
+        pca.setNom("BA");
+        pca.setEmail("pca@gmail.com");
+        pca.setRoles(pcaRoles);
+        
+        Utilisateur user0 = utilisateurRepository.findUtilisateurByEmail("pca@gmail.com");
+        
+        if(user0 == null) {
+            utilisateurRepository.save(pca);
         }
         
 
@@ -183,9 +202,9 @@ public class PersitUsers {
         pme1.setNinea("123456789088");
         pme1.setRccm("SN DK 2898 Y 9989");
         pme1.setTelephonePME("339809876");
+        pme1.setRaisonSocial("Fintech");
         pme1.setEmail("pme@gmail.com");
         pme1.setActivitePrincipale("Solution Cloud and Big Data");
-        pme1.setDateAdhesion(date);
         pme1.setUtilisateur(pme);
         pmeRepository.save(pme1);
         }

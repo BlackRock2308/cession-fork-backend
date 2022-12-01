@@ -1,13 +1,15 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +29,8 @@ public class PmeDto implements Serializable {
     private String rccm;
     private String adressePME;
     private String telephonePME;
-    private Date dateImmatriculation;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime dateImmatriculation;
     private String centreFiscal;
     @NotEmpty
     private String ninea;
@@ -42,9 +45,6 @@ public class PmeDto implements Serializable {
     @NotEmpty
     @Email
     private String email;
-    private  int codePin;
-    private String urlImageProfile;
-    private String urlImageSignature;
     private Set<DocumentDto> documents ;
 
     private String  enseigne ;
@@ -54,10 +54,11 @@ public class PmeDto implements Serializable {
     private String activitePrincipale;
     private String autorisationMinisterielle;
     private String registre;
-    private Date dateCreation;
-    private int capitalSocial;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime dateCreation;
+    private Long capitalsocial;
     private int effectifPermanent;
-    private int chiffresDaffaires;
+    private Long chiffresDaffaires;
     private int nombreEtablissementSecondaires;
     private Long utilisateurid;
  

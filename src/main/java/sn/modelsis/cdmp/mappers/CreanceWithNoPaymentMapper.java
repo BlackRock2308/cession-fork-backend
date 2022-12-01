@@ -22,10 +22,14 @@ public interface CreanceWithNoPaymentMapper {
         });
         if (source.getPaiement() == null){
             target.setSoldePME(0.0);
+            target.setMontantRembourse(0.0);
             target.setMontantDebourse(0.0);
+            target.setSoldeSICA(0.0);
         } else {
             target.setSoldePME(source.getPaiement().getSoldePME());
-            target.setMontantDebourse(source.getPaiement().getMontantRecuCDMP());
+            target.setMontantRembourse(source.getPaiement().getMontantRecuCDMP());
+            target.setMontantDebourse(source.getPaiement().getMontantCreance() - source.getPaiement().getSoldePME());
+            target.setSoldeSICA(source.getPaiement().getMontantCreanceInitial() - source.getPaiement().getMontantRecuCDMP());
         }
     }
     @Mapping(target = "idCreance", expression = "java(demandeCessionDto.getIdDemande())")
@@ -38,9 +42,10 @@ public interface CreanceWithNoPaymentMapper {
     @Mapping(target = "dateDemandeCession", expression = "java(demandeCessionDto.getDateDemandeCession())")
     @Mapping(target = "dateMarche", expression = "java(demandeCessionDto.getDateDemandeCession())")
     @Mapping(target = "statut", expression = "java(demandeCessionDto.getStatut())")
+    
     @Mapping(target = "decote", ignore = true)
     @Mapping(target = "soldePME", ignore = true)
-    @Mapping(target = "montantDebourse", ignore = true)
+    @Mapping(target = "montantRembourse", ignore = true)
     CreanceDto mapToDto(DemandeCessionDto demandeCessionDto);
 
 

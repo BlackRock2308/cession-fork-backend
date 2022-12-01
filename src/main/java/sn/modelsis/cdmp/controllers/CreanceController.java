@@ -36,25 +36,6 @@ public class CreanceController {
 
     private final CreanceWithNoPaymentMapper noPaymentMapper;
 
-    @GetMapping("processing")
-    public ResponseEntity<Page<CreanceDto>> findAllCreance(Pageable pageable,
-                                                                 HttpServletRequest request) {
-
-        Page<DemandeCessionDto> demandeList;
-
-        log.info("CreanceController.findAllCreance request started ...");
-        try{
-            demandeList = demandeCessionService
-                    .findAll(pageable);
-        }catch (Exception e){
-            log.info("Creance a payment before getting the list of creances");
-            throw new CustomException("Can't get all creance curently. You need to create an instance of paiement first");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(demandeList.map(creanceMapper::mapToDto));
-    }
-
     @GetMapping()
     public ResponseEntity<Page<CreanceDto>> findNoPaidCreance(Pageable pageable,
                                                            HttpServletRequest request) {
@@ -65,7 +46,7 @@ public class CreanceController {
         log.info("CreanceController.findAllCreance request started ...");
         try{
             demandeList = demandeCessionService
-                    .findAllCreance(pageable);
+                    .findAllCreanceWithTheRightStatut(pageable);
             log.info("la liste : {}",demandeList);
 
         }catch (Exception e){
@@ -94,15 +75,39 @@ public class CreanceController {
 
     @GetMapping("search-creance-by-params")
     public ResponseEntity<List<CreanceDto>> findCreanceByMultipleParams(
-            @RequestParam("nomMarche") String nomMarche,
-            @RequestParam("raisonSocial") String raisonSocial,
-            @RequestParam("montantCreance") double montantCreance,
-            @RequestParam("statutLibelle") String statutLibelle){
+            @RequestParam(value = "raisonSocial") String raisonSocial,
+            @RequestParam(value = "montantCreance") String montantCreance,
+            @RequestParam(value = "nomMarche") String nomMarche,
+            @RequestParam(value = "statutLibelle") String statutLibelle,
+            @RequestParam(value = "decote") String decote,
+            @RequestParam(value = "startDateD", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateD,
+            @RequestParam(value = "endDateD", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateD,
+            @RequestParam(value = "startDateM", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateM,
+            @RequestParam(value = "endDateM", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateM){
 
         log.info("CreanceController:findCreanceByMultipleParams request started");
+        double newMontantCreance = 0;
+        double newDecote = 0;
 
+        if(montantCreance==null || montantCreance.isEmpty()){
+            montantCreance = String.valueOf(0.0);
+            newMontantCreance = Double.parseDouble(montantCreance);
+        }else {
+            newMontantCreance = Double.parseDouble(montantCreance);
+        }
+
+        if(decote==null || decote.isEmpty()){
+            decote = String.valueOf(0.0);
+            newDecote = Double.parseDouble(decote);
+        }else {
+            newDecote = Double.parseDouble(decote);
+        }
         List<CreanceDto> creanceList = demandeCessionService
-                .findCreanceByMultipleParams(nomMarche,raisonSocial,montantCreance,statutLibelle);
+                .findCreanceByMultipleParams(nomMarche,raisonSocial,newMontantCreance,statutLibelle,newDecote,startDateD,endDateD,startDateM,endDateM);
         log.info("CreanceController:findCreanceByMultipleParams: creanceList : {}",creanceList);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(creanceList);
@@ -149,50 +154,5 @@ public class CreanceController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(creanceList);
     }
-
-
-    /* ************* Search Creance by ReferenceBR, numeroDemande, nomMarche, statutLibelle ************* */
-//
-//    @GetMapping("search-by-multi-params")
-//    public ResponseEntity<List<CreanceDto>> filterCreanceByMultipleParams(
-//            @RequestParam("raisonSocial") String raisonSocial,
-//            @RequestParam("nomMarche") String nomMarche,
-//            @RequestParam("montantCreance") double montantCreance
-//
-//
-//    ){
-//        log.info("DemandeCessionController:filterCreanceByMultipleParams request started");
-//        List<CreanceDto> creanceListRaisonList = demandeCessionService
-//                .findCreanceByRaisonSocial(raisonSocial);
-//
-//        List<CreanceDto> creanceListNomMarche = demandeCessionService
-//                .findCreanceByNomMarche(nomMarche);
-//
-//        List<CreanceDto> creanceListMontantCreance = demandeCessionService
-//                .findCreanceByMontantCreance(montantCreance);
-//
-//
-//        List<CreanceDto> similarities = new ArrayList<>();
-//
-//        if(!creanceListRaisonList.isEmpty()){
-//            similarities = creanceListRaisonList
-//                    .stream()
-//                    .filter(element -> !creanceListNomMarche.contains(element))
-//                    .collect(Collectors.toList());
-//            log.info("Demande similaire based on criteres: {} ",similarities);
-//
-//        }else{
-//            similarities = creanceListMontantCreance;
-//            log.info("Demande similaire based Date: {} ",similarities);
-//
-//        }
-//        log.info("DemandeCessionService:filterExactDemandeCession similarities : {} ",similarities);
-//
-//        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams ----> reulst : {}",similarities);
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(similarities);
-//    }
-
-
 
 }

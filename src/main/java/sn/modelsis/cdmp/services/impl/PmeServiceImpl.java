@@ -1,44 +1,35 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import sn.modelsis.cdmp.entities.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.entities.Demande;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.PMEDocuments;
+import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.exceptions.ItemExistsException;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.repositories.UtilisateurRepository;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.services.PmeService;
-import sn.modelsis.cdmp.util.DtoConverter;
-import sn.modelsis.cdmp.util.ExceptionUtils;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.PMEDocuments;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.TypeDocument;
-import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.exceptions.ItemExistsException;
-import sn.modelsis.cdmp.repositories.PmeRepository;
-import sn.modelsis.cdmp.services.DocumentService;
-import sn.modelsis.cdmp.services.PmeService;
-import sn.modelsis.cdmp.util.ExceptionUtils;
+import sn.modelsis.cdmp.util.Util;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +38,10 @@ public class PmeServiceImpl implements PmeService {
   private final PmeRepository pmeRepository;
   private final StatutRepository statutRepository;
   private final DemandeCessionRepository demandecessionRepository;
+  private final UtilisateurRepository utilisateurRepository;
   private final DocumentService documentService;
+
+  private final Util util;
 
 
   @Override
@@ -55,12 +49,17 @@ public class PmeServiceImpl implements PmeService {
   public Pme savePme(Pme pme) {
 
     Pme newPme;
+    Pme oldpme;
 
     try {
-      log.info("PmeService:savePme , saving.....");
-
-      newPme = pmeRepository.saveAndFlush(pme);
-      log.debug("PmeService:savePme received from database : {}",newPme);
+        oldpme = pmeRepository.findByMail(pme.getEmail());
+        if(oldpme == null) {
+            newPme = pmeRepository.saveAndFlush(pme);
+            log.debug("PmeService:savePme received from database : {}",newPme);
+        }else {
+            newPme = pmeRepository.save(oldpme);
+        }
+      
 
     } catch (Exception ex){
       log.error("Exception occured while persisting new Pme to database : {}",ex.getMessage());
@@ -117,10 +116,31 @@ public class PmeServiceImpl implements PmeService {
     try {
       log.info("PmeService:updatePme ........");
       log.info("PmeService:updatePme update Pme in the database with id = {}");
-      return pmeRepository.saveAndFlush(pme);
+      Pme returnPme=new Pme();
+      Map<String,Object> fields=this.util.mergeObjects(pme,pmeRepository.findById(id).orElse(null));
+      returnPme.setPME((Long) fields.get("idPME"), (String) fields.get("prenomRepresentant"),
+              (String) fields.get("nomRepresentant"), (String) fields.get("rccm"), (String) fields.get("adressePME"),
+              (String) fields.get("telephonePME"), (LocalDateTime) fields.get("dateImmatriculation"),
+              (String) fields.get("centreFiscal"), (String) fields.get("ninea"), (String) fields.get("raisonSocial"),
+              (boolean) fields.get("atd"), (boolean) fields.get("nantissement"),
+              (boolean) fields.get("interdictionBancaire"), (boolean) fields.get("identificationBudgetaire"),
+              (String) fields.get("formeJuridique"), (String) fields.get("email"), 
+              (String) fields.get("enseigne"),
+              (String) fields.get("localite"), (Integer) fields.get("controle"),
+              (String) fields.get("activitePrincipale"), (String) fields.get("autorisationMinisterielle"),
+              (LocalDateTime) fields.get("dateCreation"), (Long) fields.get("capitalsocial"),
+              (Long) fields.get("chiffresDaffaires"), (Integer) fields.get("effectifPermanent"),
+              (Integer) fields.get("nombreEtablissementSecondaires"), (Boolean) fields.get("hasninea"),
+              (Boolean) fields.get("isactive"), (Set<Demande>) fields.get("demandes"),
+              (Set<PMEDocuments>) fields.get("documents"), (Utilisateur) fields.get("utilisateur"),
+              (String) fields.get("cniRepresentant"), (String) fields.get("registre"),
+              (Long) fields.get("utilisateurid"));
+      log.info("merged");
+
+      return pmeRepository.saveAndFlush(returnPme);
     } catch(Exception ex){
-      log.error("Exception occured while updating PME with id : {}",id );
-      throw new CustomException("Error occured while updating this PME ");
+      log.error("Exception occured while updating PME with id : {}",ex.getMessage() );
+      throw new RuntimeException();
     }
   }
 
