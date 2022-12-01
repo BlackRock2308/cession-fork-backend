@@ -285,7 +285,8 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         toDay = toDay.plusMonths(1);
         statistiqueDemandeCessions.add(statistiqueDemandeCession);
         }
-        return statistiqueDemandeCessions;}
+        return statistiqueDemandeCessions;
+    }
     public void signerConventionDG(Long idDemande) {
         log.info("DemandeCessionService:signerConventionDG request started");
         Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
