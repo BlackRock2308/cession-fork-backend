@@ -2,7 +2,6 @@ package sn.modelsis.cdmp.entitiesDtos;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 
 import javax.validation.constraints.Email;
@@ -46,9 +45,6 @@ public class PmeDto implements Serializable {
     @NotEmpty
     @Email
     private String email;
-    private  int codePin;
-    private String urlImageProfile;
-    private String urlImageSignature;
     private Set<DocumentDto> documents ;
 
     private String  enseigne ;
@@ -60,9 +56,9 @@ public class PmeDto implements Serializable {
     private String registre;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateCreation;
-    private int capitalSocial;
+    private Long capitalsocial;
     private int effectifPermanent;
-    private int chiffresDaffaires;
+    private Long chiffresDaffaires;
     private int nombreEtablissementSecondaires;
     private Long utilisateurid;
  

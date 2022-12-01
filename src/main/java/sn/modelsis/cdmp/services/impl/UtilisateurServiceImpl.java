@@ -144,12 +144,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setCodePin(Integer.toString(codePin));
         utilisateur = setRole(utilisateur);
         Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
-        if (utilisateurSaved==null)
+        if (utilisateurSaved == null)
             throw new CustomException("Error while saving the user ");
         pme.setUtilisateur(utilisateurSaved);
-        sendAccepetAdhesionEmail(email ,password,codePin);
+        sendAccepetAdhesionEmail(email, password, codePin);
         pmeService.savePme(pme);
-        return DtoConverter.convertToDto(pme) ;
+
+        return DtoConverter.convertToDto(pme);
     }
 
     @Override

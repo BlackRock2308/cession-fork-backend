@@ -49,11 +49,17 @@ public class PmeServiceImpl implements PmeService {
   public Pme savePme(Pme pme) {
 
     Pme newPme;
+    Pme oldpme;
 
     try {
-      log.info("PmeService:savePme , saving.....");
-      newPme = pmeRepository.saveAndFlush(pme);
-      log.debug("PmeService:savePme received from database : {}",newPme);
+        oldpme = pmeRepository.findByMail(pme.getEmail());
+        if(oldpme == null) {
+            newPme = pmeRepository.saveAndFlush(pme);
+            log.debug("PmeService:savePme received from database : {}",newPme);
+        }else {
+            newPme = pmeRepository.save(oldpme);
+        }
+      
 
     } catch (Exception ex){
       log.error("Exception occured while persisting new Pme to database : {}",ex.getMessage());
@@ -118,7 +124,7 @@ public class PmeServiceImpl implements PmeService {
               (String) fields.get("centreFiscal"), (String) fields.get("ninea"), (String) fields.get("raisonSocial"),
               (boolean) fields.get("atd"), (boolean) fields.get("nantissement"),
               (boolean) fields.get("interdictionBancaire"), (boolean) fields.get("identificationBudgetaire"),
-              (String) fields.get("formeJuridique"), (String) fields.get("email"), (Integer) fields.get("codePin"),
+              (String) fields.get("formeJuridique"), (String) fields.get("email"), 
               (String) fields.get("enseigne"),
               (String) fields.get("localite"), (Integer) fields.get("controle"),
               (String) fields.get("activitePrincipale"), (String) fields.get("autorisationMinisterielle"),
