@@ -143,12 +143,28 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setEmail(email);
         utilisateur.setCodePin(Integer.toString(codePin));
         utilisateur = setRole(utilisateur);
-        Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
-        if (utilisateurSaved == null)
-            throw new CustomException("Error while saving the user ");
-        pme.setUtilisateur(utilisateurSaved);
-        sendAccepetAdhesionEmail(email, password, codePin);
-        pmeService.savePme(pme);
+        Utilisateur user1 = utilisateurRepository.findUtilisateurByEmail(email);
+        if(user1 == null) {
+            Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
+            if (utilisateurSaved == null)
+                throw new CustomException("Error while saving the user ");
+            pme.setUtilisateur(utilisateurSaved);
+            sendAccepetAdhesionEmail(email, password, codePin);
+            pmeService.savePme(pme);
+        }else {
+            Utilisateur user2 = utilisateurRepository.findUtilisateurByEmail(email);
+            user2.setUpdateCodePin(true);
+            user2.setUpdatePassword(true);
+            user2.setPassword(passwordEncoder.encode(password));
+            user2.setCodePin(Integer.toString(codePin));
+            Utilisateur utilisateurSaved = utilisateurRepository.save(user2);
+            if (utilisateurSaved == null)
+                throw new CustomException("Error while saving the user ");
+            pme.setUtilisateur(utilisateurSaved);
+            sendAccepetAdhesionEmail(email, password, codePin);
+            pmeService.savePme(pme);
+        }
+        
 
         return DtoConverter.convertToDto(pme);
     }

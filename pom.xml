@@ -156,6 +156,17 @@
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>1.1.9</version>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
