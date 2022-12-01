@@ -2,7 +2,6 @@ package sn.modelsis.cdmp.controllers;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
@@ -253,44 +251,46 @@ public class DemandeCessionController {
             @RequestParam("numeroDemande") String numeroDemande,
             @RequestParam("nomMarche") String nomMarche,
             @RequestParam("statutLibelle") String statutLibelle,
-            @RequestParam("startDate")
+            @RequestParam(value = "startDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam("endDate")
+            @RequestParam(value = "endDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
 
     ){
         log.info("DemandeCessionController:searchDemandeCessionByMultipleParams request started");
 
-
-        List<DemandeCessionDto> cessionListByDate = demandeCessionService.findDemandeCessionByLocalDateTime(startDate, endDate);
-        log.info("DemandeCessionService:filterExactDemandeCession cessionListByDate : {} ",cessionListByDate);
+//
+//        List<DemandeCessionDto> cessionListByDate = demandeCessionService.findDemandeCessionByLocalDateTime(startDate, endDate);
+//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByDate : {} ",cessionListByDate);
 
 
         List<DemandeCessionDto> cessionListByOthersCriteria = demandeCessionService.findDemandeCessionByMultipleParams(referenceBE,
                 numeroDemande,
                 nomMarche,
-                statutLibelle);
+                statutLibelle,
+                startDate,
+                endDate);
         log.info("DemandeCessionService:filterExactDemandeCession cessionListByOthersCriteria : {} ",cessionListByOthersCriteria);
 
-        List<DemandeCessionDto> similarities = new ArrayList<>();
+//        List<DemandeCessionDto> similarities = new ArrayList<>();
+//
+//        if(!cessionListByOthersCriteria.isEmpty()){
+//            similarities = cessionListByOthersCriteria
+//                    .stream()
+//                    .filter(element -> !cessionListByDate.contains(element))
+//                    .collect(Collectors.toList());
+//            log.info("Demande similaire based on criteres: {} ",similarities);
+//
+//        }else{
+//            similarities = cessionListByDate;
+//            log.info("Demande similaire based Date: {} ",similarities);
+//
+//        }
+        //log.info("DemandeCessionService:filterExactDemandeCession similarities : {} ",similarities);
 
-        if(!cessionListByOthersCriteria.isEmpty()){
-            similarities = cessionListByOthersCriteria
-                    .stream()
-                    .filter(element -> !cessionListByDate.contains(element))
-                    .collect(Collectors.toList());
-            log.info("Demande similaire based on criteres: {} ",similarities);
-
-        }else{
-            similarities = cessionListByDate;
-            log.info("Demande similaire based Date: {} ",similarities);
-
-        }
-        log.info("DemandeCessionService:filterExactDemandeCession similarities : {} ",similarities);
-
-        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams ----> reulst : {}",similarities);
+        //log.info("DemandeCessionController:searchDemandeCessionByMultipleParams ----> reulst : {}",similarities);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(similarities);
+                .body(cessionListByOthersCriteria);
     }
 
     /* ************************ Search by Statut Libellé ************************ */

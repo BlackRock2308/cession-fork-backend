@@ -37,10 +37,6 @@ public class Convention implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long idConvention;
-  
-  @Column(name = "modepaiement")
-  @Enumerated(EnumType.STRING)
-  private ModePaiement modePaiement;
 
   private double valeurDecote;
 

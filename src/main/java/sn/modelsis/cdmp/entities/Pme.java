@@ -2,11 +2,21 @@ package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -22,10 +32,10 @@ import lombok.Setter;
 //@ToString
 @Table(name = "pme")
 public class Pme implements Serializable {
-  
+
     /**
-   * 
-   */
+    * 
+    */
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -33,64 +43,52 @@ public class Pme implements Serializable {
     @Column(name = "id")
     private Long idPME;
 
-    @Column(name ="prenomrepresentant")
+    @Column(name = "prenomrepresentant")
     private String prenomRepresentant;
-    
-    @Column(name ="nomrepresentant")
+
+    @Column(name = "nomrepresentant")
     private String nomRepresentant;
     @NotNull
     @Column(name = "rccm")
     private String rccm;
-    
+
     @Column(name = "adresse")
     private String adressePME;
-    
+
     @Column(name = "telephone", unique = true)
     private String telephonePME;
-    
+
     @Column(name = "dateimmatriculation")
     private LocalDateTime dateImmatriculation;
-    
+
     @Column(name = "centrefiscal")
     private String centreFiscal;
 
     @NotEmpty
     @Column(name = "ninea")
     private String ninea;
-    
+
     @Column(name = "raisonsocial")
     private String raisonSocial;
-    
+
     @Column(name = "atd")
     private boolean atd;
-    
+
     @Column(name = "nantissement")
     private boolean nantissement;
-    
+
     @Column(name = "interdictionbancaire")
     private boolean interdictionBancaire;
 
     @Column(name = "identificationBudgetaire")
     private boolean identificationBudgetaire;
-    
+
     @Column(name = "formejuridique")
     private String formeJuridique;
 
     @Email
     @Column(name = "email")
     private String email;
-    
-    @Column(name = "codepin")
-    private  Integer codePin;
-    
-    @Column(name = "urlimageprofil")
-    private String urlImageProfile;
-    
-    @Column(name = "urlimagesignature")
-    private String urlImageSignature;
-
-    @Column(name = "datedemandeadhesion")
-    private LocalDateTime dateAdhesion;
 
     @Column(name = "enseigne")
     private String enseigne;
@@ -111,7 +109,7 @@ public class Pme implements Serializable {
     private LocalDateTime dateCreation;
 
     @Column(name = "capitalsocial")
-    private String capitalSocial;
+    private Long capitalsocial;
 
     @Column(name = "chiffresdaffaires")
     private Long chiffresDaffaires;
@@ -124,173 +122,160 @@ public class Pme implements Serializable {
 
     @Column(name = "hasninea")
     private Boolean hasninea;
-    
+
     @Column(name = "isactive")
     private Boolean isactive;
 
-    @OneToMany(mappedBy = "pme",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pme", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Demande> demandes = new HashSet<>();
-    
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pme")
     private Set<PMEDocuments> documents = new HashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "utilisateurid")
-    private Utilisateur utilisateur ;
-    
+    private Utilisateur utilisateur;
+
     @Column(name = "cnirepresentant")
-    private String cniRepresentant ;
-    
+    private String cniRepresentant;
+
     @Column(name = "registre")
     private String registre;
+    
     @Transient
     private Long utilisateurid;
 
     public void setPME(Long idPME,
 
-    String prenomRepresentant,
+            String prenomRepresentant,
 
-   String nomRepresentant,
-     String rccm,
+            String nomRepresentant,
+            
+            String rccm,
 
-   String adressePME,
+            String adressePME,
 
-     String telephonePME,
+            String telephonePME,
 
-     LocalDateTime dateImmatriculation,
+            LocalDateTime dateImmatriculation,
 
-     String centreFiscal,
+            String centreFiscal,
 
-     String ninea,
+            String ninea,
 
-    String raisonSocial,
+            String raisonSocial,
 
-     boolean atd,
+            boolean atd,
 
-     boolean nantissement,
+            boolean nantissement,
 
-    boolean interdictionBancaire,
+            boolean interdictionBancaire,
 
-     boolean identificationBudgetaire,
+            boolean identificationBudgetaire,
 
-     String formeJuridique,
+            String formeJuridique,
 
-     String email,
+            String email,
 
-     Integer codePin,
 
-     String urlImageProfile,
+            String enseigne,
 
-     String urlImageSignature,
+            String localite,
 
-     LocalDateTime dateAdhesion,
+            Integer controle,
 
-     String enseigne,
+            String activitePrincipale,
 
-    String localite,
+            String autorisationMinisterielle,
 
-     Integer controle,
+            LocalDateTime dateCreation,
 
-    String activitePrincipale,
+            Long capitalsocial,
 
-     String autorisationMinisterielle,
+            Long chiffresDaffaires,
 
-    LocalDateTime dateCreation,
+            Integer effectifPermanent,
 
-     String capitalSocial,
+            Integer nombreEtablissementSecondaires,
 
-    Long chiffresDaffaires,
+            Boolean hasninea,
 
-     Integer effectifPermanent,
+            Boolean isactive,
 
-    Integer nombreEtablissementSecondaires,
+            Set<Demande> demandes,
 
-     Boolean hasninea,
+            Set<PMEDocuments> documents,
 
-    Boolean isactive,
+            Utilisateur utilisateur,
 
-     Set<Demande> demandes ,
+            String cniRepresentant,
 
-    Set<PMEDocuments> documents ,
+            String registre,
 
-    Utilisateur utilisateur ,
+            Long utilisateurid) {
+        this.idPME = idPME;
+        this.prenomRepresentant = prenomRepresentant;
+        this.nomRepresentant = nomRepresentant;
+        this.rccm = rccm;
 
-    String cniRepresentant ,
+        this.adressePME = adressePME;
+        this.telephonePME = telephonePME;
 
-     String registre,
+        this.dateImmatriculation = dateImmatriculation;
 
-     Long utilisateurid){
-        this.idPME=idPME;
-        this.prenomRepresentant=prenomRepresentant;
-                this.nomRepresentant=nomRepresentant;
-                this.rccm=rccm;
+        this.centreFiscal = centreFiscal;
 
-                this.adressePME=adressePME;
-                this.telephonePME=telephonePME;
+        this.ninea = ninea;
 
-                this.dateImmatriculation=dateImmatriculation;
+        this.raisonSocial = raisonSocial;
 
-                this.centreFiscal=centreFiscal;
+        this.atd = atd;
 
-                this.ninea=ninea;
+        this.nantissement = nantissement;
 
-                this.raisonSocial=raisonSocial;
+        this.interdictionBancaire = interdictionBancaire;
 
-        this.atd=atd;
+        this.identificationBudgetaire = identificationBudgetaire;
 
-        this.nantissement=nantissement;
+        this.formeJuridique = formeJuridique;
 
-        this.interdictionBancaire=interdictionBancaire;
+        this.email = email;
 
-        this.identificationBudgetaire=identificationBudgetaire;
+        this.enseigne = enseigne;
 
-        this.formeJuridique=formeJuridique;
+        this.localite = localite;
 
-        this.email=email;
+        this.controle = controle;
 
-        this.codePin=codePin;
+        this.activitePrincipale = activitePrincipale;
 
-        this.urlImageProfile=urlImageProfile;
+        this.autorisationMinisterielle = autorisationMinisterielle;
 
-        this.urlImageSignature=urlImageSignature;
+        this.dateCreation = dateCreation;
 
-        this.dateAdhesion=dateAdhesion;
+        this.capitalsocial = capitalsocial;
 
-        this.enseigne=enseigne;
+        this.chiffresDaffaires = chiffresDaffaires;
 
-        this.localite=localite;
+        this.effectifPermanent = effectifPermanent;
 
-        this.controle=controle;
+        this.nombreEtablissementSecondaires = nombreEtablissementSecondaires;
 
-        this.activitePrincipale=activitePrincipale;
+        this.hasninea = hasninea;
 
-        this.autorisationMinisterielle=autorisationMinisterielle;
+        this.isactive = isactive;
 
-        this.dateCreation=dateCreation;
+        this.demandes = demandes;
 
-        this.capitalSocial=capitalSocial;
+        this.documents = documents;
 
-        this.chiffresDaffaires=chiffresDaffaires;
+        this.utilisateur = utilisateur;
 
-        this.effectifPermanent=effectifPermanent;
+        this.cniRepresentant = cniRepresentant;
 
-        this.nombreEtablissementSecondaires=nombreEtablissementSecondaires;
+        this.registre = registre;
 
-        this.hasninea=hasninea;
-
-        this.isactive=isactive;
-
-        this.demandes=demandes;
-
-        this.documents=documents;
-
-        this.utilisateur=utilisateur;
-
-        this.cniRepresentant=cniRepresentant;
-
-        this.registre=registre;
-
-        this.utilisateurid=utilisateurid;
+        this.utilisateurid = utilisateurid;
 
     }
 
