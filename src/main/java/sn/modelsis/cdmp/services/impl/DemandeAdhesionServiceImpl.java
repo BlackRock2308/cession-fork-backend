@@ -134,7 +134,11 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             log.debug("DemandeAdhesionService:rejetAdhesion request params {}", id);
             Statut updatedStatut=statutRepository.findByLibelle("ADHESION_REJETEE");
             optional.get().setStatut(updatedStatut);
+            //send email to notify rejection
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
+            String email = optional.get().getPme().getEmail();
+            EmailMessageWithTemplate emailMessageWithTemplate = sendEmailRejetAdhesion(email);
+            restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
             log.info("DemandeAdhesionService:rejetAdhesion receive response from Database {}",optional.get());
         } catch (Exception ex){
             log.error("Exception occured while rejecting Demande Adhesion. Exception message : {}", ex.getMessage());
@@ -155,9 +159,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
             optional.get().setStatut(updatedStatut);
             if(optional.isEmpty())
                 throw new CustomException("Can not find this Demand");
-          //  String email = optional.get().getPme().getEmail();
-          //  EmailMessageWithTemplate emailMessageWithTemplate = sendEmailDemandeAdhesion(email);
-          //  restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
+        //    String email = optional.get().getPme().getEmail();
+        //    EmailMessageWithTemplate emailMessageWithTemplate = sendEmailValiderAdhesion(email);
+        //    restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail,emailMessageWithTemplate);
             demandeAdhesion = demandeAdhesionRepository.save(optional.get());
         }catch (Exception ex){
             log.error("Exception occured while Accepting Demande Adhesion. Exception message : {}", ex.getMessage());
@@ -184,12 +188,21 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     }
 
 
-    public EmailMessageWithTemplate sendEmailDemandeAdhesion(String email){
+    public EmailMessageWithTemplate sendEmailValiderAdhesion(String email){
         EmailMessageWithTemplate emailMessageWithTemplate = new EmailMessageWithTemplate();
         emailMessageWithTemplate.setTemplateName("cdmp-accepte-adhesion");
         emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
         emailMessageWithTemplate.setDestinataire(email);
         emailMessageWithTemplate.setObjet("Acceptation Demande");
+        return emailMessageWithTemplate ;
+    }
+
+    public EmailMessageWithTemplate sendEmailRejetAdhesion(String email){
+        EmailMessageWithTemplate emailMessageWithTemplate = new EmailMessageWithTemplate();
+        emailMessageWithTemplate.setTemplateName("cdmp-rejet-demande-adhesion");
+        emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
+        emailMessageWithTemplate.setDestinataire(email);
+        emailMessageWithTemplate.setObjet("Rejet Demande Adhesion");
         return emailMessageWithTemplate ;
     }
 }
