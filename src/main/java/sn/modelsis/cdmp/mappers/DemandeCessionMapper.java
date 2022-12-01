@@ -6,5 +6,5 @@ import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 
 @Mapper(componentModel = "spring")
 public interface DemandeCessionMapper extends GenericMapper<DemandeCession, DemandeCessionDto>  {
-
+    DemandeCessionDto asDTO(DemandeCession demandeCession);
 }

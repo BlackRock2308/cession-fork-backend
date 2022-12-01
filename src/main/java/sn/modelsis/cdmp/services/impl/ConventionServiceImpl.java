@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,11 +21,9 @@ import sn.modelsis.cdmp.entities.Documents;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
-import sn.modelsis.cdmp.mappers.ConventionMapper;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DocumentService;
-import sn.modelsis.cdmp.services.ParametrageDecoteService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
 /**
@@ -124,13 +121,10 @@ public class ConventionServiceImpl implements ConventionService{
       existingConvention = conventionRepository.findById(id);
 
       existingConvention.get().setValeurDecote(newConvention.getValeurDecote());
-      existingConvention.get().setModePaiement(newConvention.getModePaiement());
       existingConvention.get().setValeurDecoteByDG(newConvention.getValeurDecoteByDG());
       existingConvention.get().setActiveConvention(newConvention.isActiveConvention());
       existingConvention.get().setDateConvention(newConvention.getDateConvention());
-      //existingConvention.get().setDemandeCession(newConvention.getDemandeCession());
       existingConvention.get().setPme(newConvention.getPme());
-     // existingConvention.get().setUtilisateur(newConvention.getUtilisateur());
       log.info("DocumentService:supression de l'ancien document de la convention ........");
       for (Documents doc:existingConvention.get().getDocuments()
            ) {

@@ -41,7 +41,8 @@ public class CreanceDto implements Serializable {
     private LocalDateTime dateMarche; //DemandeCession
 
     private double montantDebourse;
-
+    
+    private double montantRembourse;
 
     private double soldeSICA;
 

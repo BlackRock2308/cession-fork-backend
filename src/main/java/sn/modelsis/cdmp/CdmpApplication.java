@@ -17,11 +17,19 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import sn.modelsis.cdmp.dbPersist.*;
-
-import sn.modelsis.cdmp.entities.ParametrageDecote;
-import sn.modelsis.cdmp.repositories.*;
-import sn.modelsis.cdmp.services.*;
+import sn.modelsis.cdmp.dbPersist.PersitUsers;
+import sn.modelsis.cdmp.repositories.BonEngagementRepository;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.RoleRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.repositories.UtilisateurRepository;
+import sn.modelsis.cdmp.services.BonEngagementService;
+import sn.modelsis.cdmp.services.ConventionService;
+import sn.modelsis.cdmp.services.DemandeAdhesionService;
+import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.DetailPaiementService;
+import sn.modelsis.cdmp.services.PaiementService;
 
 /**
  * @author SNDIAGNEF
@@ -174,35 +182,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         log.info("Initialisation des differents profils terminée");
 
 
-        PersistBonEngagement PersistBonEngagement = new PersistBonEngagement(bonEngagementService);
-        log.info("Initialisation des bon d'engagement");
-
-       // PersistDemande persistDemande= new PersistDemande(demandeCessionService, demandeAdhesionService, pmeRepository, bonEngagementRepository);
-        log.info("Initialisation des demandes d'adhésion et de cession");
-
-       // PersistConvention persistConvention = new PersistConvention(demandeCessionRepository, conventionService, pmeRepository);
-        log.info("Initialisation des conventions");
-
-       // PersistPaiement persistPaiement= new PersistPaiement(demandeCessionRepository, paiementService, detailPaiementService);
-        log.info("Initialisation des paiements et details paiements");
   }
 
-//  @Bean
-//  public CommandLineRunner start(ParametrageDecoteRepository decoteRepository){
-//      return args -> {
-//          decoteRepository.saveAndFlush(new ParametrageDecote(0L,1_000_000L,0.1));
-//          decoteRepository.saveAndFlush(new ParametrageDecote(1_000_000L,5_000_000L,0.15));
-//          decoteRepository.saveAndFlush(new ParametrageDecote(5_000_000L,10_000_000L,0.2));
-//          decoteRepository.saveAndFlush(new ParametrageDecote(10_000_000L,100_000_000L,0.3));
-//          decoteRepository.saveAndFlush(new ParametrageDecote(100_000_000L,200_000_000L,0.35));
-//
-//
-//
-//          decoteRepository.findAll().forEach(cp ->{
-//              System.out.println(cp.getDecoteValue());
-//          });
-//
-//      };
-//  }
 
 }
