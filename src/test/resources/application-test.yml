@@ -1,11 +1,5 @@
 server:
-  port: 8081
-  #document_folder: ${document_folder:/app/documents/cdmp}
-  document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
-  #notification: ${HOST:http://localhost:8087}
-  notification: ${HOST:http://app-dev.modelsis.net:8087}
-  #email_cdmp: notifications-wootoo-@modelsis.sn
-  email_cdmp: notifications-wootoo@modelsis.sn
+  port: 8082
 spring:
   sql:
     init:
@@ -16,11 +10,11 @@ spring:
   datasource:
     password: password
     #url: jdbc:postgresql://10.42.1.205:5432/cdmp
-    url: jdbc:postgresql://localhost:5432/cdmp
+    url: jdbc:postgresql://localhost:5432/cdmp-test-db
     username: cdmp
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -31,8 +25,4 @@ spring:
             non_contextual_creation: true
     show-sql: false
 
-  servlet:
-    multipart:
-      max-file-size: 2000000MB
-      max-request-size: 2000000MB
 
