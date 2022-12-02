@@ -136,7 +136,7 @@ public class DocumentControllers {
       @ApiResponse(responseCode = "404", description = "Not found")})
   public ResponseEntity<DocumentDto> deleteDocument(@PathVariable Long id,
       HttpServletRequest request) {
-    documentService.delete(id);
+    documentService.deleteDocument(id);
     log.warn("Document deleted. Id:{}", id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
