@@ -7,7 +7,8 @@ import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor(staticName = "of")
+
+//@AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
@@ -18,4 +19,10 @@ public class ErrorMessage {
     private String message;
     private String description;
 
+    public ErrorMessage(int status, Date timestamp, String message, String description) {
+        this.status = status;
+        this.timestamp = timestamp;
+        this.message = message;
+        this.description = description;
+    }
 }
