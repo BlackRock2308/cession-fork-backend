@@ -63,9 +63,15 @@ public class DocumentServiceImpl implements DocumentService {
   }
 
   @Override
+  @Transactional
   public void delete(Long id) {
     documentRepository.deleteById(id);
 
+  }
+
+  @Override
+  public void deleteDocument(Long id) {
+    documentRepository.deleteDocument(id);
   }
 
   @Override
