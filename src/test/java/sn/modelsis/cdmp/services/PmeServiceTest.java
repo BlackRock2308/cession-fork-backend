@@ -12,12 +12,10 @@ import sn.modelsis.cdmp.data.TestData;
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.exceptions.ItemExistsException;
-import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
-import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.util.DtoConverter;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -105,6 +103,16 @@ public class PmeServiceTest extends ServiceBaseTest{
                 CustomException.class,
                 () ->pmeService.deletePme(UUID.randomUUID().getMostSignificantBits())
         );
+    }
+
+    @Test
+    void findAll_shouldReturnResult(){
+        vm = PmeDTOTestData.defaultEntity();
+
+        pme = pmeService.savePme(vm);
+
+        List<Pme> pmes = pmeService.findAllPme();
+        assertThat((long) pmes.size()).isPositive();
     }
 
 
