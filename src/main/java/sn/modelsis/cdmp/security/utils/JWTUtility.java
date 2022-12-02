@@ -18,7 +18,7 @@ public class JWTUtility implements Serializable {
 
     private static final long serialVersionUID = 234234523523L;
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 15 * 60 * 60;
     public static final long JWT_TOKEN_VALIDITY_ADMIN = 5 * 60 * 60;
     public static final long JWT_TOKEN_VALIDITY_ETUDIANT = 365 * 24 * 60 * 60;
 
