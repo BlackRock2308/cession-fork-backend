@@ -143,8 +143,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setEmail(email);
         utilisateur.setCodePin(Integer.toString(codePin));
         utilisateur = setRole(utilisateur);
+        utilisateur.setNom(pme == null ? null : pme.getNomRepresentant());
+        utilisateur.setPrenom(pme == null ? null: pme.getPrenomRepresentant() );
         Utilisateur user1 = utilisateurRepository.findUtilisateurByEmail(email);
         if(user1 == null) {
+            
             Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
             if (utilisateurSaved == null)
                 throw new CustomException("Error while saving the user ");
