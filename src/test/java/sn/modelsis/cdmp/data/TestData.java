@@ -39,7 +39,6 @@ public class TestData {
         public static final String ninea = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final String activitePrincipale = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final int codepin = RandomUtils.nextInt();
-
         public static final String centreFiscal = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
 
 
@@ -47,11 +46,19 @@ public class TestData {
         public static final String enseigne = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final String location = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final String registre = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
-
         public static final String hash = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+
+        public static final double montantCreance = RandomUtils.nextDouble();
+        public static final String reference = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+        public static final String naturePrestation = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+        public static final String nomMarche = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+
+        public static final String typeDepense = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+        public static final LocalDateTime datebonengagement = LocalDateTime.now();
+
+
         public static final LocalDateTime dateImmatriculation = LocalDateTime.now();
         public static final LocalDateTime dateCreation = LocalDateTime.now();
-
         public static final double valeurDecote = RandomUtils.nextDouble();
         public static final float valeurDecoteDG = RandomUtils.nextFloat();
         public static final Pme pme = new Pme();
@@ -100,6 +107,15 @@ public class TestData {
 
         public static final String hash = RandomStringUtils.randomAlphanumeric((0 + 50) / 2);
         public static final LocalDateTime dateImmatriculation = LocalDateTime.now();
+
+
+        public static final double montantCreance = RandomUtils.nextDouble();
+        public static final String reference = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+        public static final String naturePrestation = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+        public static final String nomMarche = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+        public static final String typeDepense = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+        public static final LocalDateTime datebonengagement = LocalDateTime.now();
+
         public static final LocalDateTime dateCreation = LocalDateTime.now();
 
         public static final double valeurDecote = RandomUtils.nextDouble();

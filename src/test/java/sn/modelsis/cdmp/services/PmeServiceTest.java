@@ -90,9 +90,9 @@ public class PmeServiceTest extends ServiceBaseTest{
     @Test
     void delete_shouldDeletePme() {
         pme = pmeRepository.save(vm);
-        long oldCount = pmeService.findAllPme().stream().count();
+        long oldCount = pmeService.findAllPme().size();
         pmeService.deletePme(pme.getIdPME());
-        long newCount = pmeService.findAllPme().stream().count();
+        long newCount = pmeService.findAllPme().size();
         assertThat(oldCount).isEqualTo(newCount+1);
     }
 
@@ -114,6 +114,18 @@ public class PmeServiceTest extends ServiceBaseTest{
         List<Pme> pmes = pmeService.findAllPme();
         assertThat((long) pmes.size()).isPositive();
     }
+
+
+//    @Test
+//    void demandeComplement_shouldReturnResult(){
+//        vm = PmeDTOTestData.defaultEntity();
+//
+//        pme = pmeService.complementerDemandeCession(vm);
+//
+//        List<Pme> pmes = pmeService.findAllPme();
+//        assertThat((long) pmes.size()).isPositive();
+//    }
+
 
 
 }

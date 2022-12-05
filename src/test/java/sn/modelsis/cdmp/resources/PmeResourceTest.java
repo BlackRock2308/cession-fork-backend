@@ -62,11 +62,7 @@ public class PmeResourceTest extends BasicResourceTest{
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-//
-//            JsonMapper jsonMapper = new JsonMapper();
-//            jsonMapper.registerModule(new JavaTimeModule());
 
-//            final ObjectMapper mapper = new ObjectMapper();
             final String jsonContent = objectMapper.writeValueAsString(obj);
             return jsonContent;
         } catch (Exception e) {

@@ -13,12 +13,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-//@ToString
+@SuperBuilder
 @Table(name = "bonEngagement")
 public class BonEngagement implements Serializable {
 
