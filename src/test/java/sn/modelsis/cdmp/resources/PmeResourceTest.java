@@ -23,9 +23,9 @@ import sn.modelsis.cdmp.data.PmeDTOTestData;
 import sn.modelsis.cdmp.data.TestData;
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.services.PmeService;
-import sn.modelsis.cdmp.util.TestUtil;
 
 import java.util.UUID;
 
@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 @Slf4j
@@ -42,12 +41,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(SpringRunner.class)
 public class PmeResourceTest extends BasicResourceTest{
 
-    private static PmeDto vm;
-
-    private static PmeDto dto;
-
     private static Pme entity;
-
     private static Pme pme;
 
     @Autowired
@@ -187,6 +181,27 @@ public class PmeResourceTest extends BasicResourceTest{
                 .andExpect( jsonPath("$.telephonePME").value(entity.getTelephonePME()))
                 .andExpect(jsonPath("$.codePin").value(entity.getCodePin()));
     }
+
+    @Test
+    void delete_shouldDeletePme() throws Exception {
+        pme = pmeService.savePme(entity);
+        mockMvc.perform(
+                delete("/api/pme/{id}", pme.getIdPME())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNoContent());
+    }
+
+
+
+    @Test
+    public void delete_withBadId_shouldReturnNotFound() throws Exception {
+
+        mockMvc.perform(get("/api/pme/{id}", UUID.randomUUID().getMostSignificantBits())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+                //.andExpect(result -> assertFalse(result.getResolvedException() instanceof CustomException));
+    }
+
 
 
 

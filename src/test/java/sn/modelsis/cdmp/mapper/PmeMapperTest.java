@@ -20,8 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 class PmeMapperTest  extends MapperBaseTest{
 
-    private static DtoConverter dtoConverter;
-
     Pme entity;
     PmeDto dto;
 

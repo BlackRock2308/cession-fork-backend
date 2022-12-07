@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.data.PmeDTOTestData;
-import sn.modelsis.cdmp.data.TestData;
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
@@ -31,7 +30,6 @@ public class PmeServiceTest extends ServiceBaseTest{
 
     @Autowired
     PmeRepository pmeRepository;
-
     @Autowired
     PmeService pmeService;
 

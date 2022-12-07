@@ -6,13 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import sn.modelsis.cdmp.entities.Role;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
+@SuperBuilder
 public class UtilisateurDto {
 
     private Long idUtilisateur;

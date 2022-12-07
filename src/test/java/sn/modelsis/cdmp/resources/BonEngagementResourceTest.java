@@ -26,6 +26,7 @@ import sn.modelsis.cdmp.services.BonEngagementService;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -129,5 +130,33 @@ public class BonEngagementResourceTest extends BasicResourceTest{
 //                .andExpect(jsonPath("$.nomMarche", is(bonEngagement.getNomMarche())))
 //                .andExpect(jsonPath("$.reference").value(bonEngagement.getReference()));
 //    }
+
+    @Test
+    void delete_shouldDeleteSociete() throws Exception {
+        bonEngagement = bonEngagementService.save(entity);
+        mockMvc.perform(
+                delete("/api/bonEngagement/{id}", bonEngagement.getIdBonEngagement())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNoContent());
+    }
+
+
+    @Test
+    void delete_withBadId_shouldReturnNotFound() throws Exception {
+        bonEngagement = bonEngagementService.save(entity);
+        mockMvc.perform(
+                delete("/api/bonEngagement/{id}", UUID.randomUUID().getMostSignificantBits())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void delete_shouldDeleteBonEngagement() throws Exception {
+        bonEngagement = bonEngagementService.save(entity);
+        mockMvc.perform(
+                delete("/api/bonEngagement/{id}", bonEngagement.getIdBonEngagement())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNoContent());
+    }
 
 }
