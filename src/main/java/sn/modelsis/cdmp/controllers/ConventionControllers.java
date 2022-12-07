@@ -165,9 +165,6 @@ public class ConventionControllers {
   }
 
 
-
-
-   
     @GetMapping
     public ResponseEntity<List<ConventionDto>> getAllConventions(
         HttpServletRequest request) {
@@ -207,18 +204,18 @@ public class ConventionControllers {
     public ResponseEntity<ConventionDto> addDocument(@PathVariable Long id,
         @RequestParam(name = "file") MultipartFile file, @RequestParam(name = "type") String type) {
 
-      Optional<Convention> be = null;
+      Optional<Convention> convention = null;
       try {
-        be = conventionService.upload(id, file, TypeDocument.valueOf(type));
+          convention = conventionService.upload(id, file, TypeDocument.valueOf(type));
       } catch (IOException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
       }
-      if (be.isEmpty()) {
+      if (convention.isEmpty()) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
       }
-      log.info("Document added. Id:{} ", be.get().getIdConvention());
-      return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(be.get()));
+      log.info("Document added. Id:{} ", convention.get().getIdConvention());
+      return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(convention.get()));
     }
 
   @GetMapping(value = "/{valeurCreance}/decote")

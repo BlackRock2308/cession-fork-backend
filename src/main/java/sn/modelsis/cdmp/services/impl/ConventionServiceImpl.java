@@ -126,10 +126,10 @@ public class ConventionServiceImpl implements ConventionService{
       existingConvention.get().setDateConvention(newConvention.getDateConvention());
       existingConvention.get().setPme(newConvention.getPme());
       log.info("DocumentService:supression de l'ancien document de la convention ........");
-      for (Documents doc:existingConvention.get().getDocuments()
-           ) {
-        documentService.delete(doc.getId());
-      }
+//      for (Documents doc:existingConvention.get().getDocuments()
+//           ) {
+//        documentService.delete(doc.getId());
+//      }
       log.info("DocumentService:supression de l'ancien document de la convention terminée.");
 
       existingConvention.get().setDocuments(newConvention.getDocuments());
