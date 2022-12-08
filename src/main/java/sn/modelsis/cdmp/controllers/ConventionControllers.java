@@ -1,13 +1,17 @@
 package sn.modelsis.cdmp.controllers;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,6 +36,7 @@ import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
 import sn.modelsis.cdmp.services.*;
 import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.Qrcode;
 
 /**
  * @author SNDIAGNEF
@@ -186,6 +191,16 @@ public class ConventionControllers {
       log.info("ConventionControllers:getConvention request params : {}", id);
       return ResponseEntity.status(HttpStatus.OK).body(conventionMapper.asDTO(convention));
     }
+
+  @PostMapping(value = "/generer-convention/{id}")
+  public void genererConvention(
+          @PathVariable Long id,
+          HttpServletResponse response) throws IOException {
+    ByteArrayInputStream byteArrayInputStream = conventionService.genererConvention(id);
+    response.setContentType("application/octet-stream");
+    response.setHeader("Content-Disposition", "attachment; filename=convention.pdf");
+    IOUtils.copy(byteArrayInputStream, response.getOutputStream());
+  }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ConventionDto> deleteConvention(
