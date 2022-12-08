@@ -12,6 +12,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.thymeleaf.context.Context;
@@ -26,6 +28,7 @@ import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
+import sn.modelsis.cdmp.repositories.ObservationRepository;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
 import sn.modelsis.cdmp.services.ConventionService;
@@ -52,6 +55,9 @@ public class ConventionServiceImpl implements ConventionService{
 
   @Autowired
   private UtilisateurRepository utilisateurRepository;
+
+  @Autowired
+  private ObservationRepository observationRepository;
 
   @Value("${server.document_folder}")
   private String path;
@@ -188,30 +194,38 @@ public class ConventionServiceImpl implements ConventionService{
 
   }
 
+  public String convertDate(Date date){
+    if(date.getDay() <10) {
+      return "0" + date.getDay() + "-" + date.getMonth() + "-" + date.getYear();
+    }
+    return date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
+  }
+  public String convertDate(LocalDateTime date){
+    if(date.getDayOfMonth() <10){
+      return "0"+date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear()+" à "+date.getHour()+":"+date.getMinute();
+    }
+    return date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear()+" à "+date.getHour()+":"+date.getMinute();
+  }
   @Override
   public ByteArrayInputStream genererConvention(Long id) {
     Convention convention = conventionRepository.findById(id).orElse(null);
     Map<String, Object> contextModel = new HashMap<>();
     contextModel.put("convention", convention);
-    Date date = new Date();
-    String dateStr="";
-    if(date.getDay() <10){
-       dateStr = "0"+date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
-    }else {
-      dateStr = date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
-    }
+    String dateStr= convertDate(new Date());
     contextModel.put("date", dateStr);
-    String qrCodePME = "Prénom: "+convention.getDemandeCession().getPme().getPrenomRepresentant()+"\n"+"Nom: "+convention.getDemandeCession().getPme().getNomRepresentant()+"\n"+"Mail: "+convention.getDemandeCession().getPme().getEmail();
+    Observation obPME = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_PME");
+    Observation obORD = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_ACCEPTEE");
+    Observation obDG = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_DG");
+    String qrCodePME = "Prénom: "+convention.getDemandeCession().getPme().getPrenomRepresentant()+"\n"+"Nom: "+convention.getDemandeCession().getPme().getNomRepresentant()+
+            "\n"+"Mail: "+convention.getDemandeCession().getPme().getEmail()+"\n"+"Singé le "+convertDate(obPME.getDateObservation());
     qrCodePME = Qrcode.generateQRCode(qrCodePME,path+"/pme.png");
     contextModel.put("qrCodePME", qrCodePME);
-    Role roleORD = roleRepository.findByLibelle("ORDONNATEUR");
-    Utilisateur ord = utilisateurRepository.findByRoleLibelle(roleORD.getId());
-    String qrCodeORD = "Prénom: "+ord.getPrenom()+ "\n Nom: "+ ord.getNom()+"\n Email: "+ord.getEmail();
+    String qrCodeORD = "Prénom: "+obORD.getUtilisateur().getPrenom()+ "\n Nom: "+ obORD.getUtilisateur().getNom()+
+            "\n Email: "+obORD.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obORD.getDateObservation());
     qrCodeORD = Qrcode.generateQRCode(qrCodeORD,path+"/ordonnaneur.png");
     contextModel.put("qrCodeORD", qrCodeORD);
-    Role roleDG = roleRepository.findByLibelle("DG");
-    Utilisateur dg = utilisateurRepository.findByRoleLibelle(roleDG.getId());
-    String qrCodeCDMP = "Prénom: "+dg.getPrenom()+ "\n Nom: "+ dg.getNom()+"\n Email: "+dg.getEmail();
+    String qrCodeCDMP = "Prénom: "+obDG.getUtilisateur().getPrenom()+ "\n Nom: "+ obDG.getUtilisateur().getNom()+
+            "\n Email: "+obDG.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obDG.getDateObservation());
     qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP,path+"/cdmp.png");
     contextModel.put("qrCodeCDMP",  qrCodeCDMP);
     Context thymeleafContext = new Context();
