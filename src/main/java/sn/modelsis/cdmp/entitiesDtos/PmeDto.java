@@ -56,7 +56,7 @@ public class PmeDto implements Serializable {
     private String registre;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateCreation;
-    private Long capitalsocial;
+    private Long capitalSocial;
     private int effectifPermanent;
     private Long chiffresDaffaires;
     private int nombreEtablissementSecondaires;
