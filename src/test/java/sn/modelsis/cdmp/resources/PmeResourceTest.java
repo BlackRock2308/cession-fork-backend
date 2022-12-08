@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.data.PmeDTOTestData;
 import sn.modelsis.cdmp.data.TestData;
 import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.services.PmeService;

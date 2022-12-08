@@ -23,9 +23,18 @@ public class TestData {
 
         public static final Long id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
 
+
+
         public static final int version = 1;
         public static final boolean enabled = true;
         public static final boolean deleted = false;
+
+        public static final double decoteValue = RandomUtils.nextDouble();
+
+        public static final Long idDecote = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        public static final Long borneInf = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        public static final Long borneSup = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+
         public static final boolean atd = false;
         public static final boolean nantissement = false;
         public static final boolean hasninea = false;
@@ -91,6 +100,8 @@ public class TestData {
         public static final Demande demande = new Demande();
         private static final Set<Demande> demandes = new HashSet<>();
         private static final DemandeCession demandeCession = new DemandeCession();
+        private static final ParametrageDecote parametrageDecote = new ParametrageDecote();
+
     }
 
 
@@ -99,6 +110,12 @@ public class TestData {
         }
 
         public static final Long id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+
+        public static final double decoteValue = RandomUtils.nextDouble();
+
+        public static final Long idDecote = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        public static final Long borneInf = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        public static final Long borneSup = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
 
         public static final int version = 1;
         public static final boolean enabled = true;
@@ -171,5 +188,6 @@ public class TestData {
         private static final Set<Demande> demandes = new HashSet<>();
         private static final DemandeCession demandeCession = new DemandeCession();
         private static final Utilisateur utilisateur = new Utilisateur();
+        private static final ParametrageDecote parametrageDecote = new ParametrageDecote();
     }
 }

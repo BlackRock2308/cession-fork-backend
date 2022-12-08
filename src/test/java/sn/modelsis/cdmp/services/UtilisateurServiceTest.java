@@ -10,8 +10,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import sn.modelsis.cdmp.data.TestData;
 import sn.modelsis.cdmp.data.UtilisateurDTOTestData;
+import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
+import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
@@ -41,7 +44,12 @@ public class UtilisateurServiceTest extends ServiceBaseTest{
     @Autowired
     PmeRepository pmeRepository;
     Utilisateur utilisateur;
+
+    Utilisateur updatedUtilisateur;
+
     Utilisateur vm;
+
+    Pme pme;
 
     static UtilisateurDto dto;
 
@@ -124,6 +132,66 @@ public class UtilisateurServiceTest extends ServiceBaseTest{
         List<Utilisateur> users = utilisateurService.getAll();
         assertThat((long) users.size()).isPositive();
     }
+
+    @Test
+    @Rollback(value = false)
+    void signerConvention_shouldSignConvention() {
+        utilisateur = utilisateurService.save(vm);
+        utilisateurService.signerConvention(utilisateur.getIdUtilisateur(), utilisateur.getCodePin());
+        assertThat(utilisateur)
+                .isNotNull();
+        //.hasNoNullFieldsOrProperties();
+    }
+
+
+    @Test
+    @Rollback(value = false)
+    void updatePassword_Pme_shouldReturnResult() {
+        utilisateur = utilisateurService.save(vm);
+        updatedUtilisateur = utilisateurService.updatePassword(utilisateur);
+        Assertions.assertAll(
+                ()-> assertThat(utilisateur).isNotNull(),
+                ()-> assertThat(!utilisateur.isUpdatePassword())
+
+        );
+    }
+    @Test
+    @Rollback(value = false)
+    void updateCodePin_Pme_shouldReturnResult() {
+        utilisateur = utilisateurService.save(vm);
+        utilisateur.setCodePin(TestData.Update.codePin);
+        updatedUtilisateur = utilisateurService.updateCodePin(utilisateur);
+        Assertions.assertAll(
+                ()-> assertThat(utilisateur).isNotNull(),
+                ()-> assertThat(!utilisateur.isUpdateCodePin())
+
+        );
+    }
+
+    @Test
+    @Rollback(value = false)
+    void setRole_Pme_shouldReturnResult() {
+        utilisateur = utilisateurService.save(vm);
+        utilisateur.setCodePin(TestData.Update.codePin);
+       utilisateurService.forgetPassword(utilisateur.getEmail());
+        Assertions.assertAll(
+                ()-> assertThat(utilisateur).isNotNull()
+
+        );
+    }
+
+
+//    @Test
+//    @Rollback(value = false)
+//    void updatedRole_Pme_shouldReturnResult() {
+//        utilisateur = utilisateurService.save(vm);
+//        utilisateurService.updateRoles(utilisateur);
+//        Assertions.assertAll(
+//                ()-> assertThat(utilisateur).isNotNull(),
+//                ()-> assertThat(utilisateur.getRoles()).isNotEmpty()
+//
+//        );
+//    }
 
 
 }

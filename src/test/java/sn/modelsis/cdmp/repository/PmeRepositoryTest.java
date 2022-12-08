@@ -180,10 +180,11 @@ public class PmeRepositoryTest extends RepositoryBaseTest {
     @Test
     void givenRepository_whenFindDeleted_thenNotFound() {
         pmeRepository.delete(entity);
-        //entity = pmeRepository.saveAndFlush(entity);
         Optional<Pme> optional = pmeRepository.findByNinea(entity.getNinea());
-        assertThat(optional).isNotNull();
-        assertThat(optional).isNotPresent();
+        Assertions.assertAll(
+                () -> assertThat(optional).isNotNull(),
+                ()-> assertThat(optional).isNotPresent()
+        );
     }
 
 }

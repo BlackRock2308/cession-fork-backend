@@ -2,6 +2,7 @@ package sn.modelsis.cdmp.data;
 
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
+import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 
 public class UtilisateurDTOTestData extends TestData{
 
@@ -38,6 +39,25 @@ public class UtilisateurDTOTestData extends TestData{
                 .email(Default.email)
                 .password(Default.password)
                 .prenom(Default.prenomRepresentant)
+                .build();
+    }
+
+    public static Utilisateur registeredEntity(){
+        return Utilisateur
+                .builder()
+                .codePin(Default.codePin)
+                .adresse(Default.adresse)
+                .email(Default.email)
+                .password(Default.password)
+                .prenom(Default.prenomRepresentant)
+                .build();
+    }
+
+    public static AuthentificationDto authentificationDto(){
+        return AuthentificationDto
+                .builder()
+                .email(Default.email)
+                .password(Default.password)
                 .build();
     }
 }
