@@ -37,8 +37,6 @@ public class ConventionDto {
   
   private PmeDto pmeDto;
 
-  //private boolean activeConvention;
-
   private UtilisateurDto utilisatuerDto;
 
   private Long utilisatuerId;
