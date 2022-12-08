@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.ConventionDocuments;
-import sn.modelsis.cdmp.entities.Documents;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;

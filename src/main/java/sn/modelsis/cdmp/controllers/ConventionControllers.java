@@ -51,8 +51,6 @@ public class ConventionControllers {
 
     private final ConventionMapper conventionMapper;
 
-    private final UtilisateurService utilisateurService;
-
     private final BonEngagementService bonEngagementService;
 
 
@@ -62,7 +60,6 @@ public class ConventionControllers {
     log.info("ConventionControllers:addConvention request started .......");
     Convention convention= new Convention();
 
-   // Utilisateur utilisateur = utilisateurService.findById(conventionDto.getUtilisatuerId());
     DemandeCession demandeCession =
             demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 

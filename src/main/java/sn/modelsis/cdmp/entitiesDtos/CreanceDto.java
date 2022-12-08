@@ -2,13 +2,10 @@ package sn.modelsis.cdmp.entitiesDtos;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.Value;
-import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TypeMarche;
 
 @Data
