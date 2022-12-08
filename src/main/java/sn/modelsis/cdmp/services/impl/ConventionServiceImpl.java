@@ -3,28 +3,38 @@
  */
 package sn.modelsis.cdmp.services.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.xhtmlrenderer.pdf.ITextRenderer;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.Convention;
-import sn.modelsis.cdmp.entities.ConventionDocuments;
-import sn.modelsis.cdmp.entities.Documents;
-import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
+import sn.modelsis.cdmp.repositories.ObservationRepository;
+import sn.modelsis.cdmp.repositories.RoleRepository;
+import sn.modelsis.cdmp.repositories.UtilisateurRepository;
 import sn.modelsis.cdmp.services.ConventionService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.ExceptionUtils;
+import sn.modelsis.cdmp.util.Qrcode;
 
 /**
  * @author SNDIAGNEF
@@ -36,6 +46,21 @@ import sn.modelsis.cdmp.util.ExceptionUtils;
 public class ConventionServiceImpl implements ConventionService{
   private final ConventionRepository conventionRepository;
   private final DocumentService documentService;
+
+  @Autowired
+  private SpringTemplateEngine thymeleafTemplateEngine;
+
+  @Autowired
+  private RoleRepository roleRepository;
+
+  @Autowired
+  private UtilisateurRepository utilisateurRepository;
+
+  @Autowired
+  private ObservationRepository observationRepository;
+
+  @Value("${server.document_folder}")
+  private String path;
 
   @Override
   public Convention save(Convention convention) {
@@ -169,7 +194,58 @@ public class ConventionServiceImpl implements ConventionService{
 
   }
 
-
+  public String convertDate(Date date){
+    if(date.getDay() <10) {
+      return "0" + date.getDay() + "-" + date.getMonth() + "-" + date.getYear();
+    }
+    return date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
+  }
+  public String convertDate(LocalDateTime date){
+    if(date.getDayOfMonth() <10){
+      return "0"+date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear()+" à "+date.getHour()+":"+date.getMinute();
+    }
+    return date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear()+" à "+date.getHour()+":"+date.getMinute();
+  }
+  @Override
+  public ByteArrayInputStream genererConvention(Long id) {
+    Convention convention = conventionRepository.findById(id).orElse(null);
+    Map<String, Object> contextModel = new HashMap<>();
+    contextModel.put("convention", convention);
+    String dateStr= convertDate(new Date());
+    contextModel.put("date", dateStr);
+    Observation obPME = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_PME");
+    Observation obORD = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_ACCEPTEE");
+    Observation obDG = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_DG");
+    String qrCodePME = "Prénom: "+convention.getDemandeCession().getPme().getPrenomRepresentant()+"\n"+"Nom: "+convention.getDemandeCession().getPme().getNomRepresentant()+
+            "\n"+"Mail: "+convention.getDemandeCession().getPme().getEmail()+"\n"+"Singé le "+convertDate(obPME.getDateObservation());
+    qrCodePME = Qrcode.generateQRCode(qrCodePME,path+"/pme.png");
+    contextModel.put("qrCodePME", qrCodePME);
+    String qrCodeORD = "Prénom: "+obORD.getUtilisateur().getPrenom()+ "\n Nom: "+ obORD.getUtilisateur().getNom()+
+            "\n Email: "+obORD.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obORD.getDateObservation());
+    qrCodeORD = Qrcode.generateQRCode(qrCodeORD,path+"/ordonnaneur.png");
+    contextModel.put("qrCodeORD", qrCodeORD);
+    String qrCodeCDMP = "Prénom: "+obDG.getUtilisateur().getPrenom()+ "\n Nom: "+ obDG.getUtilisateur().getNom()+
+            "\n Email: "+obDG.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obDG.getDateObservation());
+    qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP,path+"/cdmp.png");
+    contextModel.put("qrCodeCDMP",  qrCodeCDMP);
+    Context thymeleafContext = new Context();
+    thymeleafContext.setVariables(contextModel);
+    String htmlBody = thymeleafTemplateEngine.process("convention_de_cession.html", thymeleafContext);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    ITextRenderer renderer = new ITextRenderer();
+    renderer.setDocumentFromString(htmlBody);
+    /*File file = new File(qrCodeCDMP);
+    file.delete();
+    file = new File(qrCodeORD);
+    file.delete();
+    file = new File(qrCodePME);
+    file.delete();*/
+    renderer.layout();
+    renderer.createPDF(outputStream, false);
+    renderer.finishPDF();
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+    return inputStream;
+  }
 
 
 }
