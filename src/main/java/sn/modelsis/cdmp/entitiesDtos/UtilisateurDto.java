@@ -24,6 +24,8 @@ public class UtilisateurDto {
     private String password;
 
     private String prenom;
+    
+    private String nom;
 
     private String urlImageSignature;
 
