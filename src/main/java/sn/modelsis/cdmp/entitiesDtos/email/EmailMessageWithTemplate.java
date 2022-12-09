@@ -20,6 +20,8 @@ public class EmailMessageWithTemplate {
 
     private String templateName;
 
+    private String frontLink;
+
     private String objet;
 
     private Map<String, Object> templateVariable = new HashMap<>();

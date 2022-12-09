@@ -15,6 +15,8 @@ public class EmailMessageDetailWithoutTemplate {
 
     private String typeMessage;
 
+    private String frontLink;
+
     private String destinataire;
 
     private String expediteur;
