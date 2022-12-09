@@ -1,6 +1,6 @@
 server:
   port: 8082
-  #document_folder: ${document_folder:/app/documents/cdmp}
+  qrcode_folder: ${qrcode_folder:./src/main/resources/static/img}
   document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
   #notification: ${HOST:http://localhost:8087}
   #notification: ${HOST:http://app-dev.modelsis.net:8087}

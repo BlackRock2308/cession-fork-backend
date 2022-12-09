@@ -20,8 +20,8 @@ public class Qrcode {
     }
 
     public static String generateQRCode(String qrContent, String filename) {
-         int width=100;
-         int height=100;
+         int width=150;
+         int height=150;
         try {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, width, height);

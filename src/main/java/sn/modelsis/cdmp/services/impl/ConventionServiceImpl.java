@@ -10,16 +10,15 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -29,10 +28,11 @@ import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
 import sn.modelsis.cdmp.repositories.ObservationRepository;
-import sn.modelsis.cdmp.repositories.RoleRepository;
-import sn.modelsis.cdmp.repositories.UtilisateurRepository;
 import sn.modelsis.cdmp.services.ConventionService;
+import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.services.StatutService;
+import sn.modelsis.cdmp.util.BASE64DecodedMultipartFile;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 import sn.modelsis.cdmp.util.Qrcode;
 
@@ -49,17 +49,16 @@ public class ConventionServiceImpl implements ConventionService{
 
   @Autowired
   private SpringTemplateEngine thymeleafTemplateEngine;
-
-  @Autowired
-  private RoleRepository roleRepository;
-
-  @Autowired
-  private UtilisateurRepository utilisateurRepository;
-
   @Autowired
   private ObservationRepository observationRepository;
 
-  @Value("${server.document_folder}")
+  @Autowired
+  private StatutService statutService;
+
+  @Autowired
+  private DemandeCessionService demandeCessionService;
+
+  @Value("${server.qrcode_folder}")
   private String path;
 
   @Override
@@ -67,8 +66,14 @@ public class ConventionServiceImpl implements ConventionService{
     Convention newConvention;
     try
       {
-        log.info("ConventionService:saving new convention ........");
         newConvention = conventionRepository.save(convention);
+        if(newConvention.getDemandeCession().getStatut().getCode().equals("NON_RISQUEE") ||
+                newConvention.getDemandeCession().getStatut().getCode().equals("CONVENTION_REJETEE_PAR_PME")){
+          saveDocumentConvention(newConvention);
+          Statut statut = statutService.findByCode("CONVENTION_GENEREE");
+          newConvention.getDemandeCession().setStatut(statut);
+          demandeCessionService.save(newConvention.getDemandeCession());
+        }
       } catch (Exception ex){
       log.error("Exception occured while adding convention. Error message : {}", ex.getMessage());
         throw new CustomException("Exception occured while adding new convention");
@@ -155,11 +160,7 @@ public class ConventionServiceImpl implements ConventionService{
 //           ) {
 //        documentService.delete(doc.getId());
 //      }
-      log.info("DocumentService:supression de l'ancien document de la convention terminée.");
-
       existingConvention.get().setDocuments(newConvention.getDocuments());
-
-      log.info("ConventionService:transmettreConvention with document : {}",existingConvention.get().getDocuments());
 
       conventionRepository.saveAndFlush(existingConvention.get());
       log.info("ConventionService:transmettreConvention update convention with id : {}",existingConvention.get().getIdConvention());
@@ -177,14 +178,10 @@ public class ConventionServiceImpl implements ConventionService{
   public void corrigerConvention (Long id) {
     Optional <Convention> existingConvention;
     try{
-      log.info("ConventionService:corrigerConvention  ........");
       existingConvention = conventionRepository.findById(id);
-      log.info("convention á corriger : {}", existingConvention.get());
       ExceptionUtils.absentOrThrow(existingConvention, ItemNotFoundException.CONVENTION_BY_ID, id.toString());
-      log.info("existingConvention : {} ,", existingConvention.get());
-      if(existingConvention.isPresent()){
+     if(existingConvention.isPresent()){
         conventionRepository.deleteById(id);
-        log.info("convention with id : {} deleted successfully",existingConvention.get().getIdConvention());
       }
     }catch (Exception ex){
       log.error("Exception occured while making correction on convention with id : {}",id );
@@ -206,46 +203,71 @@ public class ConventionServiceImpl implements ConventionService{
     }
     return date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear()+" à "+date.getHour()+":"+date.getMinute();
   }
-  @Override
-  public ByteArrayInputStream genererConvention(Long id) {
-    Convention convention = conventionRepository.findById(id).orElse(null);
+
+
+
+  public void saveDocumentConvention(Convention convention) throws IOException {
     Map<String, Object> contextModel = new HashMap<>();
     contextModel.put("convention", convention);
     String dateStr= convertDate(new Date());
     contextModel.put("date", dateStr);
-    Observation obPME = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_PME");
-    Observation obORD = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_ACCEPTEE");
-    Observation obDG = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_DG");
-    String qrCodePME = "Prénom: "+convention.getDemandeCession().getPme().getPrenomRepresentant()+"\n"+"Nom: "+convention.getDemandeCession().getPme().getNomRepresentant()+
-            "\n"+"Mail: "+convention.getDemandeCession().getPme().getEmail()+"\n"+"Singé le "+convertDate(obPME.getDateObservation());
-    qrCodePME = Qrcode.generateQRCode(qrCodePME,path+"/pme.png");
-    contextModel.put("qrCodePME", qrCodePME);
-    String qrCodeORD = "Prénom: "+obORD.getUtilisateur().getPrenom()+ "\n Nom: "+ obORD.getUtilisateur().getNom()+
-            "\n Email: "+obORD.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obORD.getDateObservation());
-    qrCodeORD = Qrcode.generateQRCode(qrCodeORD,path+"/ordonnaneur.png");
-    contextModel.put("qrCodeORD", qrCodeORD);
-    String qrCodeCDMP = "Prénom: "+obDG.getUtilisateur().getPrenom()+ "\n Nom: "+ obDG.getUtilisateur().getNom()+
-            "\n Email: "+obDG.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obDG.getDateObservation());
-    qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP,path+"/cdmp.png");
-    contextModel.put("qrCodeCDMP",  qrCodeCDMP);
+    String fileName = "convention_generer.pdf";
     Context thymeleafContext = new Context();
     thymeleafContext.setVariables(contextModel);
     String htmlBody = thymeleafTemplateEngine.process("convention_de_cession.html", thymeleafContext);
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     ITextRenderer renderer = new ITextRenderer();
     renderer.setDocumentFromString(htmlBody);
-    /*File file = new File(qrCodeCDMP);
-    file.delete();
-    file = new File(qrCodeORD);
-    file.delete();
-    file = new File(qrCodePME);
-    file.delete();*/
     renderer.layout();
     renderer.createPDF(outputStream, false);
     renderer.finishPDF();
     ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-    return inputStream;
+    MultipartFile file = new MockMultipartFile(fileName,fileName,"", inputStream);
+    upload(convention.getIdConvention(), file, TypeDocument.CONVENTION);
   }
 
-
+  @Override
+  public void saveDocumentConventionSigner(Convention convention) throws IOException {
+    Map<String, Object> contextModel = new HashMap<>();
+    contextModel.put("convention", convention);
+    String dateStr= convertDate(new Date());
+    contextModel.put("date", dateStr);
+    String fileName = "convention_generer.pdf";
+    Observation obPME = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_PME");
+    if(obPME!=null){
+      String qrCodePME = "Prénom: "+convention.getDemandeCession().getPme().getPrenomRepresentant()+"\n"+"Nom: "+convention.getDemandeCession().getPme().getNomRepresentant()+
+              "\n"+"Mail: "+convention.getDemandeCession().getPme().getEmail()+"\n"+"Singé le "+convertDate(obPME.getDateObservation());
+      qrCodePME = Qrcode.generateQRCode(qrCodePME,path+"/pme.png");
+      contextModel.put("qrCodePME", qrCodePME);
+      fileName = "convention_signer_par_PME.pdf";
+      Observation obDG = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_DG");
+      if(obDG!=null){
+        String qrCodeCDMP = "Prénom: "+obDG.getUtilisateur().getPrenom()+ "\n Nom: "+ obDG.getUtilisateur().getNom()+
+                "\n Email: "+obDG.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obDG.getDateObservation());
+        qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP,path+"/cdmp.png");
+        contextModel.put("qrCodeCDMP",  qrCodeCDMP);
+        fileName = "convention_signer_par_DG.pdf";
+        Observation obORD = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_ACCEPTEE");
+        if(obORD!=null){
+          String qrCodeORD = "Prénom: "+obORD.getUtilisateur().getPrenom()+ "\n Nom: "+ obORD.getUtilisateur().getNom()+
+                  "\n Email: "+obORD.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obORD.getDateObservation());
+          qrCodeORD = Qrcode.generateQRCode(qrCodeORD,path+"/ordonnaneur.png");
+          contextModel.put("qrCodeORD", qrCodeORD);
+          fileName = "convention_signer_par_ORDONNATEUR.pdf";
+        }
+      }
+    }
+    Context thymeleafContext = new Context();
+    thymeleafContext.setVariables(contextModel);
+    String htmlBody = thymeleafTemplateEngine.process("convention_de_cession.html", thymeleafContext);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    ITextRenderer renderer = new ITextRenderer();
+    renderer.setDocumentFromString(htmlBody);
+    renderer.layout();
+    renderer.createPDF(outputStream, false);
+    renderer.finishPDF();
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+    MultipartFile file = new MockMultipartFile(fileName,fileName,"", inputStream);
+    upload(convention.getIdConvention(), file, TypeDocument.CONVENTION);
+  }
 }
