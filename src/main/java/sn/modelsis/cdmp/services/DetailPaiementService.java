@@ -8,7 +8,6 @@ import java.util.Set;
 import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
 
@@ -20,7 +19,6 @@ public interface DetailPaiementService {
      * @return
      */
     DetailPaiement paiementPME(DetailPaiement detailPaiement);
-  //  DetailPaiement getPaiement(DetailPaiement detailPaiement);
 
     DetailPaiement paiementCDMP(DetailPaiement detailPaiement);
 

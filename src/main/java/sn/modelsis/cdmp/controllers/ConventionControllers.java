@@ -56,8 +56,6 @@ public class ConventionControllers {
 
     private final ConventionMapper conventionMapper;
 
-    private final UtilisateurService utilisateurService;
-
     private final BonEngagementService bonEngagementService;
 
 

@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.TypeDocument;
-import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 
 
 /**

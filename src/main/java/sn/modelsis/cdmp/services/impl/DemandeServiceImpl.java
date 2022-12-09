@@ -35,10 +35,10 @@ public class DemandeServiceImpl implements DemandeService {
         return demandeRepository.findAll();
     }
 
-    //La liste des demandes a l'étape analyse du risque
+    // La liste des demandes a l'étape analyse du risque
     @Override
     public List<Demande> findAllAnalyseRisque() {
-        List<Demande> demandes=new ArrayList<>();
+        List<Demande> demandes = new ArrayList<>();
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.COMPLEMENT_REQUIS));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RECEVABLE));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RISQUEE));
@@ -53,35 +53,33 @@ public class DemandeServiceImpl implements DemandeService {
         return null;
     }
 
-
-    //La liste des demandes a l'étape de paiement
+    // La liste des demandes a l'étape de paiement
 
     @Override
     public List<Demande> findAllPaiements() {
-        List<Demande> demandes=new ArrayList<>();
+        List<Demande> demandes = new ArrayList<>();
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.PME_EN_ATTENTE_DE_PAIEMENT));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.PME_PARTIELLEMENT_PAYEE));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.PME_TOTALEMENT_PAYEE));
         return demandes;
     }
 
-
-    //La liste des demandes a l'étape des conventions pour l'ordonnateur
+    // La liste des demandes a l'étape des conventions pour l'ordonnateur
 
     @Override
     public List<Demande> findAllConventionsOrdonnateur() {
-        List<Demande> demandes=new ArrayList<>();
+        List<Demande> demandes = new ArrayList<>();
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_ACCEPTEE));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_REJETEE));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_TRANSMISE));
         return demandes;
     }
 
-    //La liste des demandes a l'étape des conventions pour le DG
+    // La liste des demandes a l'étape des conventions pour le DG
 
     @Override
     public List<Demande> findAllConventionsDG() {
-        List<Demande> demandes=new ArrayList<>();
+        List<Demande> demandes = new ArrayList<>();
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_SIGNEE_PAR_DG));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_SIGNEE_PAR_PME));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.CONVENTION_REJETEE));
@@ -90,10 +88,10 @@ public class DemandeServiceImpl implements DemandeService {
         return demandes;
     }
 
-    //La liste des creances (cédées et rejetées)
+    // La liste des creances (cédées et rejetées)
     @Override
     public List<Demande> findAllCreances() {
-        List<Demande> demandes=new ArrayList<>();
+        List<Demande> demandes = new ArrayList<>();
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RISQUEE));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.RECEVABLE));
         demandes.addAll(demandeRepository.findAllByStatut_Libelle(Statuts.NON_RISQUEE));
@@ -104,7 +102,7 @@ public class DemandeServiceImpl implements DemandeService {
 
     @Override
     public Demande save(Demande demande) {
-      return   demandeRepository.save(demande);
+        return demandeRepository.save(demande);
     }
 
     @Override
@@ -140,22 +138,21 @@ public class DemandeServiceImpl implements DemandeService {
         Integer num = 0;
         Optional<Demande> opDemande = demandeRepository.findFirstByOrderByIdDemandeDesc();
         Demande demande = new Demande();
-        if(opDemande.isPresent() && opDemande!=null ){
+        if (opDemande.isPresent() && opDemande != null) {
             demande = opDemande.get();
-            String c =  demande.getNumeroDemande().substring(5);
-            num = Integer.parseInt(c)+1;
+            String c = demande.getNumeroDemande().substring(5);
+            num = Integer.parseInt(c) + 1;
         }
-        if(demande.getNumeroDemande()==null || demande.getNumeroDemande().substring(0, 4).equals(""+(annee-1))){
+        if (demande.getNumeroDemande() == null || demande.getNumeroDemande().substring(0, 4).equals("" + (annee - 1))) {
             num = 1;
         }
         numero.append(annee);
         numero.append("-");
-        if(num<10){
+        if (num < 10) {
             numero.append("000");
-        }
-        else if(num<100){
+        } else if (num < 100) {
             numero.append("00");
-        }else {
+        } else {
             numero.append("0");
         }
         numero.append(num);
