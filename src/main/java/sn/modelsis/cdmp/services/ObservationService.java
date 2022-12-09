@@ -8,8 +8,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import sn.modelsis.cdmp.entities.Observation;
-import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 
 

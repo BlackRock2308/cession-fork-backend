@@ -2,9 +2,11 @@ package sn.modelsis.cdmp.entitiesDtos;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -12,9 +14,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import sn.modelsis.cdmp.entities.TypeMarche;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Data
 @NoArgsConstructor

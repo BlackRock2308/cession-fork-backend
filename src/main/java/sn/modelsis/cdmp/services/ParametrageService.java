@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import sn.modelsis.cdmp.entities.Parametrage;
 
-
 /**
  * @author SNDIAGNEF
  *
@@ -22,9 +21,9 @@ public interface ParametrageService {
     Parametrage save(Parametrage parametrage);
 
     /**
-    * 
-    * @return
-    */
+     * 
+     * @return
+     */
     List<Parametrage> findAll();
 
     /**
@@ -39,6 +38,5 @@ public interface ParametrageService {
      * @param id
      */
     void delete(Long id);
-    
-    
+
 }

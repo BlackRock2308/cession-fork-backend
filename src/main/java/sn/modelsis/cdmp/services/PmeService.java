@@ -14,6 +14,7 @@ import sn.modelsis.cdmp.entities.TypeDocument;
 public interface PmeService {
 
     Pme savePme(Pme pme);
+
     List<Pme> findAllPme();
 
     Optional<Pme> getPme(Long id);
@@ -24,11 +25,10 @@ public interface PmeService {
 
     Pme findPmeByEmail(String email);
 
-
     /**
      * Cette methode permet de charger un document lié à une pme
      * 
-     * @param id de type Long c'est l'id du pme
+     * @param id   de type Long c'est l'id du pme
      * @param file de type {@link MultipartFile} c'est le fichier à charger
      * @param type de type {@link TypeDocument} qui est un ENUM
      * @return le type de retour est un optional de {@link Pme}
@@ -36,8 +36,7 @@ public interface PmeService {
      */
     Optional<Pme> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
 
-
     Optional<Pme> getPmeByUtilisateur(Long id);
 
-    DemandeCession complementerDemandeCession(Long idDemande );
+    DemandeCession complementerDemandeCession(Long idDemande);
 }
