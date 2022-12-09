@@ -67,12 +67,20 @@ public class ConventionServiceImpl implements ConventionService{
     try
       {
         newConvention = conventionRepository.save(convention);
-        if(newConvention.getDemandeCession().getStatut().getCode().equals("NON_RISQUEE") ||
-                newConvention.getDemandeCession().getStatut().getCode().equals("CONVENTION_REJETEE_PAR_PME")){
+        if(newConvention.getDemandeCession().getStatut().getCode().equals("NON_RISQUEE")){
           saveDocumentConvention(newConvention);
           Statut statut = statutService.findByCode("CONVENTION_GENEREE");
           newConvention.getDemandeCession().setStatut(statut);
           demandeCessionService.save(newConvention.getDemandeCession());
+        }else {
+          if(newConvention.getDemandeCession().getStatut().getCode().equals("CONVENTION_SIGNEE_PAR_DG") ||
+                  newConvention.getDemandeCession().getStatut().getCode().equals("CONVENTION_REJETEE_PAR_PME")||
+                  newConvention.getDemandeCession().getStatut().getCode().equals("CONVENTION_REJETEE")){
+            saveDocumentConvention(newConvention);
+            Statut statut = statutService.findByCode("CONVENTION_CORRIGEE");
+            newConvention.getDemandeCession().setStatut(statut);
+            demandeCessionService.save(newConvention.getDemandeCession());
+          }
         }
       } catch (Exception ex){
       log.error("Exception occured while adding convention. Error message : {}", ex.getMessage());
@@ -170,26 +178,7 @@ public class ConventionServiceImpl implements ConventionService{
     }
     return existingConvention.get();
   }
-
-
-  /*La correction d'une convention consiste en la création d'une toute nouvelle convention*/
-  @Override
-  @Transactional(propagation = Propagation.REQUIRED)
-  public void corrigerConvention (Long id) {
-    Optional <Convention> existingConvention;
-    try{
-      existingConvention = conventionRepository.findById(id);
-      ExceptionUtils.absentOrThrow(existingConvention, ItemNotFoundException.CONVENTION_BY_ID, id.toString());
-     if(existingConvention.isPresent()){
-        conventionRepository.deleteById(id);
-      }
-    }catch (Exception ex){
-      log.error("Exception occured while making correction on convention with id : {}",id );
-      throw new CustomException("Error occured while making correction");
-    }
-
-
-  }
+  
 
   public String convertDate(Date date){
     if(date.getDay() <10) {
@@ -204,6 +193,10 @@ public class ConventionServiceImpl implements ConventionService{
     return date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear()+" à "+date.getHour()+":"+date.getMinute();
   }
 
+  public String getInfoQRcode(Observation observation){
+    return  "Prénom: "+observation.getUtilisateur().getPrenom()+ "\n Nom: "+ observation.getUtilisateur().getNom()+
+            "\n Email: "+observation.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(observation.getDateObservation());
+  }
 
 
   public void saveDocumentConvention(Convention convention) throws IOException {
@@ -242,15 +235,13 @@ public class ConventionServiceImpl implements ConventionService{
       fileName = "convention_signer_par_PME.pdf";
       Observation obDG = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_SIGNEE_PAR_DG");
       if(obDG!=null){
-        String qrCodeCDMP = "Prénom: "+obDG.getUtilisateur().getPrenom()+ "\n Nom: "+ obDG.getUtilisateur().getNom()+
-                "\n Email: "+obDG.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obDG.getDateObservation());
+        String qrCodeCDMP = getInfoQRcode(obDG);
         qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP,path+"/cdmp.png");
         contextModel.put("qrCodeCDMP",  qrCodeCDMP);
         fileName = "convention_signer_par_DG.pdf";
         Observation obORD = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), "CONVENTION_ACCEPTEE");
         if(obORD!=null){
-          String qrCodeORD = "Prénom: "+obORD.getUtilisateur().getPrenom()+ "\n Nom: "+ obORD.getUtilisateur().getNom()+
-                  "\n Email: "+obORD.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(obORD.getDateObservation());
+          String qrCodeORD = getInfoQRcode(obORD);
           qrCodeORD = Qrcode.generateQRCode(qrCodeORD,path+"/ordonnaneur.png");
           contextModel.put("qrCodeORD", qrCodeORD);
           fileName = "convention_signer_par_ORDONNATEUR.pdf";
