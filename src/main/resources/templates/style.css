@@ -1,5 +1,5 @@
 .entete {
-    margin: 0em;
+    margin: 1em;
 }
 .underline{
     font-weight: bolder;
@@ -82,7 +82,7 @@ margin: 4em;
 
 .sn{
     display: inline-block;
-    font-size: 12px;
+    font-size: 13px;
     text-align: center;
 }
 
@@ -111,7 +111,22 @@ display: inline-block;
 
 }
 .footer{
+    margin: 1em;
     align-content: center;
+}
+
+.signPME{
+    float: left;
+    width: 35%;
+}
+
+.signORD{
+    float:left;
+    text-align: center;
+    width: 30%;
+}
+.signCDMP{
+    float: right;
 }
 .imgpart{
    align-content: center;

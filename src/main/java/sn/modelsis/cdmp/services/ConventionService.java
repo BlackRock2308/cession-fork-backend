@@ -3,6 +3,7 @@
  */
 package sn.modelsis.cdmp.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,10 @@ public interface ConventionService {
 
     Convention transmettreConvention(Long id, Convention newConvention);
 
-    void corrigerConvention (Long id);
-    
-    
+
+    void saveDocumentConventionSigner(Convention convention) throws IOException;
+
+
+
+
 }

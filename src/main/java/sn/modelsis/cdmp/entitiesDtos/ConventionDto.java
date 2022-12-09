@@ -35,6 +35,7 @@ public class ConventionDto {
 
   private boolean activeConvention;
 
+  private String remarqueJuriste;
   private ParametrageDecoteDTO decoteDTO;
   
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")

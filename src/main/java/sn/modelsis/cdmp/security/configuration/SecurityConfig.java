@@ -30,6 +30,7 @@ public class SecurityConfig {
             "/api/pme/**",
             "/api/demandeadhesion",
             "/api/utilisateur/auth",
+            "/api/utilisateur/forget-password",
             "/authenticate",
             "/swagger-resources/**",
             "/swagger-ui/**",
@@ -43,8 +44,9 @@ public class SecurityConfig {
         .disable()
         .authorizeRequests()
         .antMatchers(AUTH_WHITELIST).permitAll()
-       // .antMatchers("/api/utilisateur/update", "/api/utilisateur/getAll")
-       // .hasAnyAuthority("admin")
+        //.antMatchers("/api/**").hasAnyAuthority("PME","DG","DAF","DRC","PME","PCA","JURISTE","ORDONNATEUR","DSEAR")
+        //.antMatchers("/api/**").hasAnyAuthority("PME,DG,DRC,PME,PCA,JURISTE,ORDONNATEUR,DSEAR,")
+        //.anyRequest()
         .antMatchers("/api/**").permitAll()
         .and()
         .httpBasic()
