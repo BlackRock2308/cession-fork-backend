@@ -46,6 +46,9 @@ public class Convention implements Serializable {
   @Column(name = "active_convention",columnDefinition = "boolean default true")
   private boolean activeConvention = true;
 
+  @Column(name = "remarqueJuriste")
+  private String remarqueJuriste;
+
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime dateConvention;

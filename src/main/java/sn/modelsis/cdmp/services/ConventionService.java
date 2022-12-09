@@ -65,7 +65,9 @@ public interface ConventionService {
 
     void corrigerConvention (Long id);
 
-    ByteArrayInputStream genererConvention(Long id);
+    void saveDocumentConventionSigner(Convention convention) throws IOException;
+
+
 
 
 }

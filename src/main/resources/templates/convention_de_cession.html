@@ -86,7 +86,10 @@
 		Type de marché: <span th:text=${convention.demandeCession.bonEngagement.typeMarche}></span> <br/>
 		Montant: <span th:text=${convention.demandeCession.bonEngagement.montantCreance}> </span> FCFA<br/>
 		Décote: <span th:text=${convention.valeurDecoteByDG*convention.demandeCession.bonEngagement.montantCreance}> </span> FCFA<br/>
-
+	</p><br/>
+	<p>
+	Texte juridique	<br/>
+		<span th:text=${convention.remarqueJuriste}></span>
 	</p>
 </div>
 
@@ -100,7 +103,7 @@
 		<img th:src="${qrCodeORD}"/>
 	</div>
 	<div class="signCDMP">
-		Signature CDMP<br/>
+		Signature DG CDMP<br/>
 		<img th:src="${qrCodeCDMP}"/>
 	</div>
 </div>
