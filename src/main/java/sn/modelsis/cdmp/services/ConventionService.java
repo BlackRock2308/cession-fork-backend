@@ -63,7 +63,6 @@ public interface ConventionService {
 
     Convention transmettreConvention(Long id, Convention newConvention);
 
-    void corrigerConvention (Long id);
 
     void saveDocumentConventionSigner(Convention convention) throws IOException;
 
