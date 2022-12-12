@@ -3,7 +3,6 @@ package sn.modelsis.cdmp.controllers;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,11 +28,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
-import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
-import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.services.DetailPaiementService;
 import sn.modelsis.cdmp.services.PaiementService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -76,27 +72,6 @@ public class DetailPaiementController {
         log.info("DetailPaiement create. Id:{} ");
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
-/*
-    @PostMapping(value = "cdmp")
-    public ResponseEntity<DetailPaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiement detailPaiement,
-                                                               HttpServletRequest request) {
-        DetailPaiement result = detailPaiementService.paiementCDMP(detailPaiement);
-        log.info("DetailPaiement create. Id:{} ", result.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
-    }
-
-
- */
-    /*@PutMapping()
-    public ResponseEntity<DetailPaiementDto> updateDetailPaiement(@RequestBody DetailPaiementDto detailPaiementDto,
-                                                          HttpServletRequest request) {
-        DetailPaiement detailPaiement = DtoConverter.convertToEntity(detailPaiementDto);
-        DetailPaiement result = detailPaiementService.save(detailPaiement);
-        log.info("DetailPaiement updated. Id:{}", result.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
-    }
-
-     */
 
     @GetMapping
     public ResponseEntity<List<DetailPaiementDto>> getAllDetailPaiements(

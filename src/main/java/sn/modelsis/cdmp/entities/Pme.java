@@ -2,11 +2,21 @@ package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -81,9 +91,6 @@ public class Pme implements Serializable {
     @Email
     @Column(name = "email")
     private String email;
-
-    @Column(name = "codepin")
-    private Integer codePin;
 
     @Column(name = "enseigne")
     private String enseigne;
@@ -173,7 +180,6 @@ public class Pme implements Serializable {
 
             String email,
 
-            Integer codePin,
 
             String enseigne,
 
@@ -187,7 +193,7 @@ public class Pme implements Serializable {
 
             LocalDateTime dateCreation,
 
-            Long capitalSocial,
+            Long capitalsocial,
 
             Long chiffresDaffaires,
 
@@ -238,8 +244,6 @@ public class Pme implements Serializable {
 
         this.email = email;
 
-        this.codePin = codePin;
-
         this.enseigne = enseigne;
 
         this.localite = localite;
@@ -252,7 +256,7 @@ public class Pme implements Serializable {
 
         this.dateCreation = dateCreation;
 
-        this.capitalSocial = capitalSocial;
+        this.capitalSocial = capitalsocial;
 
         this.chiffresDaffaires = chiffresDaffaires;
 

@@ -1,23 +1,33 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
-import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMPDto;
-import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPMEDto;
-import sn.modelsis.cdmp.exceptions.CustomException;
-import sn.modelsis.cdmp.repositories.*;
-import sn.modelsis.cdmp.services.PaiementService;
-import sn.modelsis.cdmp.util.DtoConverter;
-import sn.modelsis.cdmp.util.ObjetMontantMois;
-import sn.modelsis.cdmp.util.Util;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.entities.BonEngagement;
+import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Paiement;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.TypePaiement;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMPDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPMEDto;
+import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.repositories.BonEngagementRepository;
+import sn.modelsis.cdmp.repositories.ConventionRepository;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.PaiementRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.services.PaiementService;
+import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.ObjetMontantMois;
+import sn.modelsis.cdmp.util.Util;
 
 @Service
 @RequiredArgsConstructor

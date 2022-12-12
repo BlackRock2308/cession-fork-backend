@@ -3,6 +3,7 @@
  */
 package sn.modelsis.cdmp.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.TypeDocument;
-import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 
 
 /**
@@ -62,7 +62,10 @@ public interface ConventionService {
 
     Convention transmettreConvention(Long id, Convention newConvention);
 
-    void corrigerConvention (Long id);
-    
-    
+
+    void saveDocumentConventionSigner(Convention convention) throws IOException;
+
+
+
+
 }

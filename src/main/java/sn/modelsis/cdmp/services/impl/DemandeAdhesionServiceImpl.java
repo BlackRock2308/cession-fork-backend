@@ -2,8 +2,10 @@ package sn.modelsis.cdmp.services.impl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,15 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.DemandeAdhesion;
-import sn.modelsis.cdmp.entities.DemandeDocuments;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.mappers.DemandeAdhesionMapper;
 import sn.modelsis.cdmp.repositories.DemandeAdhesionRepository;
+import sn.modelsis.cdmp.repositories.DocumentsRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
@@ -39,6 +39,9 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     private final PmeRepository pmeRepository;
     private final StatutRepository statutRepository;
     private  final DocumentService documentService;
+
+    @Autowired
+    private DocumentsRepository documentRepository;
     private final DemandeAdhesionMapper adhesionMapper;
 
     private  final DemandeService demandeService;
@@ -174,12 +177,29 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     @Transactional(propagation = Propagation.REQUIRED)
     public Optional<DemandeAdhesion> upload(Long demandeId, MultipartFile file, TypeDocument type)
             throws IOException {
+
+        DemandeDocuments doc;
+
         Optional<DemandeAdhesion> demandeAdhesion = demandeAdhesionRepository.findById(demandeId);
+
+        List<Documents> documents = documentService.findAll();
+
+        log.info("size of Docu : " + demandeAdhesion.get().getDocuments().size());
+
         if (demandeAdhesion.isPresent()) {
 
-            DemandeDocuments doc = (DemandeDocuments) documentService.upload(file, demandeId,
+            doc = (DemandeDocuments) documentService.upload(file, demandeId,
                     DemandeDocuments.PROVENANCE, type);
+
+            documents.forEach((e)->{
+                if((e.getIdprovenance().equals(demandeId)) & (demandeAdhesion.get().getDocuments().size() >= 2) ){
+                    log.info("Id Document : " + e.getId());
+                    documentRepository.deleteDocument(e.getId());
+                }
+            });
             demandeAdhesion.get().getDocuments().add(doc);
+
+            log.info("Final Size of Document : " + documentService.findAll().size());
 
             return Optional.of(demandeAdhesionRepository.save(demandeAdhesion.get()));
 

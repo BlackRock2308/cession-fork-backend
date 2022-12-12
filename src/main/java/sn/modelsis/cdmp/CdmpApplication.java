@@ -152,31 +152,10 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
           }
       };
   }
-//	@Bean
-//	public CorsFilter corsFilter() {"
-//		CorsConfiguration corsConfiguration = new CorsConfiguration();
-//		corsConfiguration.setAllowCredentials(true);
-//		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-//		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
-//				"Accept", "Authorization", "Origin, Accept", "X-Requested-With",
-//				"Access-Control-Request-Method", "Access-Control-Request-Headers"));
-//		corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
-//				"Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-//		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-//		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-//		return new CorsFilter(urlBasedCorsConfigurationSource);
-//	}
 
 
     @Override
     public void run(String... args) throws Exception {
-       // log.info("Initialisation des differents statuts...");
-
-       // PersistStatus persistStatus= new PersistStatus(statutRepository);
-        //log.info("Initialisation des differents statuts terminée");
-
-       // log.info("Initialisation des differents profils utilisateurs...");
 
        PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
         log.info("Initialisation des differents profils terminée");

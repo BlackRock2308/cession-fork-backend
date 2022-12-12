@@ -50,6 +50,8 @@ public interface DocumentService {
    */
   void delete(Long id);
 
+  void deleteDocument(Long id);
+
   /**
    * Cette methode permet de charger un document
    * 

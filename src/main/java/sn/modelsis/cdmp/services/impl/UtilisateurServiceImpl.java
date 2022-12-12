@@ -49,8 +49,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Value("${server.notification}")
     private String HOST_NOTIFICATION ;
+
     @Value("${server.email_cdmp}")
     private String EMAIL_CDMP ;
+
+    @Value("${server.link_front}")
+    private String frontLink ;
 
     public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, PmeService pmeService, RestTemplateUtil restTemplateUtil, Util util, RoleRepository roleRepository) {
         this.utilisateurRepository = utilisateurRepository;
@@ -143,13 +147,33 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setEmail(email);
         utilisateur.setCodePin(Integer.toString(codePin));
         utilisateur = setRole(utilisateur);
-        Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
-        if (utilisateurSaved==null)
-            throw new CustomException("Error while saving the user ");
-        pme.setUtilisateur(utilisateurSaved);
-        sendAccepetAdhesionEmail(email ,password,codePin);
-        pmeService.savePme(pme);
-        return DtoConverter.convertToDto(pme) ;
+        utilisateur.setNom(pme == null ? null : pme.getNomRepresentant());
+        utilisateur.setPrenom(pme == null ? null: pme.getPrenomRepresentant() );
+        Utilisateur user1 = utilisateurRepository.findUtilisateurByEmail(email);
+        if(user1 == null) {
+            
+            Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
+            if (utilisateurSaved == null)
+                throw new CustomException("Error while saving the user ");
+            pme.setUtilisateur(utilisateurSaved);
+            sendAccepetAdhesionEmail(email, password, codePin);
+            pmeService.savePme(pme);
+        }else {
+            Utilisateur user2 = utilisateurRepository.findUtilisateurByEmail(email);
+            user2.setUpdateCodePin(true);
+            user2.setUpdatePassword(true);
+            user2.setPassword(passwordEncoder.encode(password));
+            user2.setCodePin(Integer.toString(codePin));
+            Utilisateur utilisateurSaved = utilisateurRepository.save(user2);
+            if (utilisateurSaved == null)
+                throw new CustomException("Error while saving the user ");
+            pme.setUtilisateur(utilisateurSaved);
+            sendAccepetAdhesionEmail(email, password, codePin);
+            pmeService.savePme(pme);
+        }
+        
+
+        return DtoConverter.convertToDto(pme);
     }
 
     @Override
@@ -160,10 +184,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         emailMessageWithTemplate.setTemplateName("cdmp-forget-password");
         emailMessageWithTemplate.setObjet("Mot de pass Oublier");
         emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
+        emailMessageWithTemplate.setFrontLink(frontLink);
         emailMessageWithTemplate.setDestinataire(email);
         String password = util.generateRandomPassword(8);
         Utilisateur utilisateur = utilisateurRepository.findUtilisateurByEmail(email);
         emailMessageWithTemplate.getTemplateVariable().put("username",utilisateur.getEmail());
+        emailMessageWithTemplate.getTemplateVariable().put("front",frontLink);
         emailMessageWithTemplate.getTemplateVariable().put("nouveauPassword",password);
         utilisateur.setPassword(passwordEncoder.encode(password));
         utilisateur.setUpdatePassword(true);
@@ -198,8 +224,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         emailMessageWithTemplate.setTemplateName("cdmp-create-account");
         emailMessageWithTemplate.setObjet("Creation Compte CDMP ");
         emailMessageWithTemplate.setExpediteur(EMAIL_CDMP);
+        emailMessageWithTemplate.setFrontLink(frontLink);
         emailMessageWithTemplate.setDestinataire(email);
         emailMessageWithTemplate.getTemplateVariable().put("codePin",codePin);
+        emailMessageWithTemplate.getTemplateVariable().put("front",frontLink);
         emailMessageWithTemplate.getTemplateVariable().put("username",email);
        EmailMessageWithTemplate emailMessageWithTemplateSent =  restTemplateUtil.sendEmailWithTemplate(HOST_NOTIFICATION+sendMail , emailMessageWithTemplate);
 

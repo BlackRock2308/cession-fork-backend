@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<!--link href="style.css" rel="stylesheet" type="text/css" /-->
+	<style>
+		.entete {
+			margin: 0em;
+		}
+		.sn{
+			display: inline-block;
+			font-size: 13px;
+			text-align: center;
+		}
+		.date{
+			display: inline-block;
+			width: 8em;
+			height: 5em;
+			float: right;
+
+		}
+		.titre{
+			text-align: center;
+			font-size: 30px;
+			margin: 3em;
+		}
+
+		.text{
+			display: flex;
+			justify-content: center;
+			margin: 4em;
+			font-size: 17px;
+		}
+		.footer{
+			margin: 1em;
+			align-content: center;
+			position: fixed;
+			width: 100%;
+			bottom: 0;
+		}
+
+		.signPME{
+			float: left;
+			width: 32%;
+		}
+
+		.signORD{
+			float:left;
+			text-align: center;
+			width: 30%;
+		}
+		.signCDMP{
+			float: right;
+			margin-right: 20px;
+		}
+
+	</style>
+	<title>Senegal</title>
+</head>
+
+<body>
+<div class="entete">
+	<div class="sn" >
+		Ministère des Finances et du Budget <br/>
+		Caisse de Dépôt et Consignation <br/>
+		Caisse des marchés publics <br/>
+		Direction des risques et du contentieux
+	</div>
+
+	<div class="date">
+		Le <span th:text=${date}></span>
+	</div>
+</div>
+<div class="titre">
+	Convention de cession
+</div>
+
+<div class="text">
+	<p>
+		PME: <span th:text=${convention.demandeCession.pme.raisonSocial}></span> <br/>
+		NINEA: <span th:text=${convention.demandeCession.pme.ninea}></span> <br/>
+		RCCM: <span th:text=${convention.demandeCession.pme.rccm}></span> <br/>
+		Nom marché: <span th:text=${convention.demandeCession.bonEngagement.nomMarche}></span> <br/>
+		RefBE: <span th:text=${convention.demandeCession.bonEngagement.reference}></span> <br/>
+		Type de marché: <span th:text=${convention.demandeCession.bonEngagement.typeMarche}></span> <br/>
+		Montant: <span th:text=${convention.demandeCession.bonEngagement.montantCreance}> </span> FCFA<br/>
+		Décote: <span th:text=${convention.valeurDecoteByDG*convention.demandeCession.bonEngagement.montantCreance}> </span> FCFA<br/>
+	</p><br/>
+	<p>
+	Texte juridique	<br/>
+		<span th:text=${convention.remarqueJuriste}></span>
+	</p>
+</div>
+
+<div class="footer" >
+	<div class="signPME">
+		Signature PME<br/>
+		<img th:src="${qrCodePME}"/>
+	</div>
+	<div class="signORD">
+		Signature ORDONNATEUR<br/>
+		<img th:src="${qrCodeORD}"/>
+	</div>
+	<div class="signCDMP">
+		Signature DG CDMP<br/>
+		<img th:src="${qrCodeCDMP}"/>
+	</div>
+</div>
+
+</body>
+
+</html>
+
+
+

@@ -21,7 +21,7 @@ public interface ParametrageDecoteService {
 
     void deleteDecoteParameter(Long id);
 
-    Optional<ParametrageDecote> findByIdDecote (Long id);
+    Optional<ParametrageDecote> findByIdDecote(Long id);
 
     Optional<ParametrageDecote> findIntervalDecote(Double montant);
 

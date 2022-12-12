@@ -1,36 +1,120 @@
 package sn.modelsis.cdmp.util;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.NoArgsConstructor;
+import sn.modelsis.cdmp.entities.*;
 
-import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Random;
 
+@NoArgsConstructor
 public class TestUtil {
+    private static final Random generator = new Random();
 
-    private static final ObjectMapper mapper = createObjectMapper();
-
-    private TestUtil(){
-        super();
-    }
-    private static ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
+    /**
+     * Generate random double
+     *
+     * @return a double number
+     */
+    public static double getRandomDouble() {
+        return generator.nextDouble();
     }
 
-    public static byte[] convertObjectToJsonBytes(Object object) throws IOException {
-        return mapper.writeValueAsBytes(object);
-    }
+    /**
+     * Generate a random string
+     *
+     * @param count the number of character of the string
+     * @return a random string
+     */
+    public static String randomString(int count) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder builder = new StringBuilder();
 
-    public static byte[] createByteArray(int size, String data) {
-        byte[] byteArray = new byte[size];
-        for (int i = 0; i < size; i++) {
-            byteArray[i] = Byte.parseByte(data, 2);
+        while (count-- != 0) {
+            int character = generator.nextInt(36);
+            builder.append(characters.charAt(character));
         }
-        return byteArray;
+
+        return builder.toString();
     }
+
+    public static DemandeAdhesion createDemandeAdhesion(){
+        DemandeAdhesion dA = new DemandeAdhesion();
+        //dA.setStatut(s);
+        dA.setDateDemandeAdhesion(new Date());
+        return  dA;
+    }
+
+    public  static Utilisateur createUtilisateur(Role role){
+        Utilisateur user = new Utilisateur();
+        user.getRoles().add(role);
+        user.setEmail("sndiaye@modelsis.sn");
+        return user;
+    }
+
+    public static Pme createPme(Utilisateur user){
+        Pme pme = new Pme();
+        pme.setUtilisateur(user);
+        return pme;
+    }
+
+    public static BonEngagement createBonEngagement(){
+        BonEngagement bon = new BonEngagement();
+        bon.setObjetDepense(randomString(10));
+        bon.setModeReglement(randomString(10));
+        bon.setDesignationBeneficiaire(randomString(10));
+        bon.setExercice("2021");
+        bon.setMontantCreance(getRandomDouble());
+        bon.setDatebonengagement(LocalDateTime.now());
+        return bon;
+    }
+
+    public static DemandeCession createDemandeCession(BonEngagement bon){
+        DemandeCession dC = new DemandeCession();
+        dC.setDateDemandeCession(LocalDateTime.now());
+        dC.setBonEngagement(bon);
+       // dC.setStatut(s);
+        return dC;
+    }
+
+    public static Convention createConvention(ParametrageDecote pD,DemandeCession dC, Utilisateur user){
+        Convention c = new Convention();
+        c.setActiveConvention(true);
+        c.setDateConvention(LocalDateTime.now());
+        c.setDecote(pD);
+        c.setDemandeCession(dC);
+        c.setUtilisateur(user);
+        return c;
+    }
+
+    public static ParametrageDecote createParametrageDecote(){
+        ParametrageDecote pD = new ParametrageDecote();
+        return pD;
+    }
+
+    public static Paiement createPaiement(DemandeCession dC){
+        Paiement p = new Paiement();
+        p.setDemandeCession(dC);
+        return p;
+    }
+
+    public static DetailPaiement createDetailPaiement(Paiement p){
+        DetailPaiement dP =new DetailPaiement();
+        dP.setDatePaiement(LocalDateTime.now());
+        dP.setMontant(getRandomDouble());
+        dP.setReference(randomString(10));
+        dP.setPaiement(p);
+        return dP;
+    }
+
+    public static Observation createObservation(Utilisateur user, Statut s, Demande d, String libelle){
+        Observation ob = new Observation();
+        ob.setUtilisateur(user);
+        ob.setStatut(s);
+        ob.setDateObservation(LocalDateTime.now());
+        ob.setDemande(d);
+        ob.setLibelle(libelle);
+        return ob;
+    }
+
 }
