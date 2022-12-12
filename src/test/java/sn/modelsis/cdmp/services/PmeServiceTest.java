@@ -78,7 +78,7 @@ public class PmeServiceTest extends ServiceBaseTest{
 
 
     @Test
-    void findById_withBadId_ShouldReturnNoResult() {
+    void findById_withBadId_ShouldReturnNotFound() {
         final Optional<Pme> optional = pmeService.getPme(UUID.randomUUID().getMostSignificantBits());
         assertThat(optional)
                 .isNotNull()
@@ -112,18 +112,5 @@ public class PmeServiceTest extends ServiceBaseTest{
         List<Pme> pmes = pmeService.findAllPme();
         assertThat((long) pmes.size()).isPositive();
     }
-
-
-//    @Test
-//    void demandeComplement_shouldReturnResult(){
-//        vm = PmeDTOTestData.defaultEntity();
-//
-//        pme = pmeService.complementerDemandeCession(vm);
-//
-//        List<Pme> pmes = pmeService.findAllPme();
-//        assertThat((long) pmes.size()).isPositive();
-//    }
-
-
 
 }

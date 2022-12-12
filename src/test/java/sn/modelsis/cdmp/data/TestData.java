@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.data;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 
 import java.time.LocalDateTime;
@@ -39,6 +40,8 @@ public class TestData {
         public static final boolean nantissement = false;
         public static final boolean hasninea = false;
         public static final boolean isactive = false;
+
+        public static final String description = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final String cniRepresentant = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final String adressePME = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final String telephonePME = RandomStringUtils.randomNumeric((0 + 30) / 2);
@@ -92,6 +95,8 @@ public class TestData {
         public static final PmeDto pmeDTO = new PmeDto();
         public static final Paiement paiement = new Paiement();
         public static final BonEngagement bonEngagement = new BonEngagement();
+        public static final BonEngagementDto bonEngagementDto = new BonEngagementDto();
+
         public static final DetailPaiement detailPaiement = new DetailPaiement();
         public static final DemandeAdhesion demandeAdhesion = new DemandeAdhesion();
         public static final Observation observation = new Observation();
@@ -124,6 +129,9 @@ public class TestData {
         public static final boolean nantissement = true;
         public static final boolean hasninea = true;
         public static final boolean isactive = true;
+
+        public static final String description = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
+
         public static final String cniRepresentant = RandomStringUtils.randomAlphanumeric((0 + 50) / 2);
         public static final String adressePME = RandomStringUtils.randomAlphanumeric((0 + 50) / 2);
         public static final String telephonePME = RandomStringUtils.randomNumeric((0 + 50) / 2);
@@ -176,6 +184,7 @@ public class TestData {
         public static final float valeurDecoteDG = RandomUtils.nextFloat();
         public static final Pme pme = new Pme();
         public static final PmeDto pmeDTO = new PmeDto();
+        public static final BonEngagementDto bonEngagementDto = new BonEngagementDto();
 
         public static final Paiement paiement = new Paiement();
         public static final BonEngagement bonEngagement = new BonEngagement();
