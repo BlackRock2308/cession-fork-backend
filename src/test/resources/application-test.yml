@@ -1,0 +1,28 @@
+server:
+  port: 8082
+spring:
+  sql:
+    init:
+      mode: always
+      platform: postgres
+  application:
+    name: Cession creance
+  datasource:
+    password: password
+    #url: jdbc:postgresql://10.42.1.205:5432/cdmp
+    url: jdbc:postgresql://localhost:5432/cdmp-test-db
+    username: cdmp
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: false
+
+

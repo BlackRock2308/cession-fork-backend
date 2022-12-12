@@ -6,10 +6,11 @@ import java.util.Set;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
-@ToString
+@ToString @SuperBuilder
 public class DemandeDto {
     private Long idDemande;
     private PmeDto pme;

@@ -13,8 +13,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import sn.modelsis.cdmp.entities.TypeMarche;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+@SuperBuilder
 @Data
 @NoArgsConstructor
 @ToString

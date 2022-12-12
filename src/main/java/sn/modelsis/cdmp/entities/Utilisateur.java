@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@SuperBuilder
 public class Utilisateur implements Serializable {
 
    @Id

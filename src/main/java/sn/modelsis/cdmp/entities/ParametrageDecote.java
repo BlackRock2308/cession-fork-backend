@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Entity
 @Data
 @AllArgsConstructor @NoArgsConstructor
+@SuperBuilder
 @Table(name="parametrage_decote")
 public class ParametrageDecote implements Serializable {
 

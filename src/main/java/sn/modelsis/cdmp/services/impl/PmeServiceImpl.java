@@ -185,6 +185,7 @@ public class PmeServiceImpl implements PmeService {
     Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
     log.debug("DemandeCessionService:complementerDemandeCession request params {}", idDemande);
     Statut updatedStatut = statutRepository.findByLibelle("COMPLETEE");
+
     optional.get().setStatut(updatedStatut);
 
     DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
