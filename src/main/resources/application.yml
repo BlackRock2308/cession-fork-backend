@@ -10,6 +10,9 @@ server:
   link_front: ${LINK_FRONT:http://138.3.253.10:8081/#/login}
   email_cdmp: notifications-wootoo@modelsis.sn
 spring:
+  flyway:
+    enabled: true
+    out-of-order: false
   sql:
     init:
       mode: always
@@ -39,4 +42,3 @@ spring:
     multipart:
       max-file-size: 2000000MB
       max-request-size: 2000000MB
-
