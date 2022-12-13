@@ -88,7 +88,8 @@ public class DemandeAdhesionController {
     @ApiResponses({@ApiResponse(responseCode = "201", description = "Success"),
             @ApiResponse(responseCode = "400", description = "Bad request")})
     public ResponseEntity<DemandeAdhesionDto> addDocument(@PathVariable Long id,
-                                              @RequestParam(name = "file") MultipartFile file, @RequestParam(name = "type") String type) {
+                                              @RequestParam(name = "file") MultipartFile file,
+                                              @RequestParam(name = "type") String type) {
 
         Optional<DemandeAdhesion> doc = null;
         try {

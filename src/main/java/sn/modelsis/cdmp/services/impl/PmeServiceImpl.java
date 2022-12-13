@@ -15,13 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.PMEDocuments;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entities.TypeDocument;
-import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
@@ -145,23 +139,58 @@ public class PmeServiceImpl implements PmeService {
   }
 
   
+//  @Override
+//  @Transactional(propagation = Propagation.REQUIRED)
+//  public Optional<Pme> upload(Long id, MultipartFile file, TypeDocument type)
+//      throws IOException {
+//    log.info("PmeService:upload ");
+//    Optional<Pme> pme = pmeRepository.findById(id);
+//
+//    if (pme.isPresent()) {
+//      PMEDocuments doc = (PMEDocuments) documentService.upload(file, id,
+//              PMEDocuments.PROVENANCE, type);
+//      pme.get().getDocuments().add(doc);
+//
+//      return Optional.of(pmeRepository.save(pme.get()));
+//
+//    }
+//    return pme;
+//  }
+
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public Optional<Pme> upload(Long id, MultipartFile file, TypeDocument type)
-      throws IOException {
-    log.info("PmeService:upload ");
-    Optional<Pme> pme = pmeRepository.findById(id);
+  public Optional<Pme> upload(Long demandeId, MultipartFile file, TypeDocument type)
+          throws IOException {
+
+    PMEDocuments doc;
+
+    Optional<Pme> pme = pmeRepository.findById(demandeId);
+
+    List<Documents> documents = documentService.findAll();
+
+    log.info("size of Docu : " + pme.get().getDocuments().size());
+
     if (pme.isPresent()) {
 
-      PMEDocuments doc = (PMEDocuments) documentService.upload(file, id,
+      doc = (PMEDocuments) documentService.upload(file, demandeId,
               PMEDocuments.PROVENANCE, type);
+
+      documents.forEach((e)->{
+        if((e.getIdprovenance().equals(demandeId)) & (pme.get().getDocuments().size() >= 2) ){
+          log.info("Id Document : " + e.getId());
+          pmeRepository.deleteDocument(e.getId());
+        }
+      });
       pme.get().getDocuments().add(doc);
+
+      log.info("Final Size of Document : " + documentService.findAll().size());
 
       return Optional.of(pmeRepository.save(pme.get()));
 
     }
     return pme;
   }
+
 
   @Override
   public Optional<Pme> getPmeByUtilisateur(Long id) {
@@ -175,6 +204,7 @@ public class PmeServiceImpl implements PmeService {
     }
     return optional;
   }
+
 
   /* Methode permettant á la PME de changer le statut de sa demande de Cession en complété*/
 
