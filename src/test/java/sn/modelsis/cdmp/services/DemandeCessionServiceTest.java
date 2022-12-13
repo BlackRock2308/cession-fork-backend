@@ -79,8 +79,6 @@ public class DemandeCessionServiceTest extends ServiceBaseTest{
     void setUp() {
 
         statutRepository.save(new Statut(1L,"REJETEE","REJETEE"));
-        statutRepository.save(new Statut(2L,"RECEVABLE","RECEVABLE"));
-
 
         //Init for PME
         dtoPme = PmeDTOTestData.defaultDTO();
@@ -251,19 +249,21 @@ public class DemandeCessionServiceTest extends ServiceBaseTest{
 //    }
 
 
-//    @Test
-//    void findAllDemandeAcceptee_shouldReturnResult() {
-//        entity = DtoConverter.convertToEntity(dto);
-//        Statut statut = statutRepository.findByLibelle("RECEVABLE");
-//        entity.setStatut(statut);
-//        demandeCession = cessionService.saveCession(entity);
-//
-//        List<DemandeCession> demandeCessionList = cessionService.findAllDemandeAcceptee();
-//
-//        assertThat(demandeCessionList)
-//                .isNotNull()
-//                .size().isNotZero();
-//    }
+    @Test
+    void findAllDemandeAcceptee_shouldReturnResult() {
+        statutRepository.save(new Statut(2L,"RECEVABLE","RECEVABLE"));
+
+        entity = DtoConverter.convertToEntity(dto);
+        Statut statut = statutRepository.findByLibelle("RECEVABLE");
+        entity.setStatut(statut);
+        demandeCession = cessionService.saveCession(entity);
+
+        List<DemandeCession> demandeCessionList = cessionService.findAllDemandeAcceptee();
+
+        assertThat(demandeCessionList)
+                .isNotNull()
+                .size().isNotZero();
+    }
 
 
 
@@ -296,6 +296,17 @@ public class DemandeCessionServiceTest extends ServiceBaseTest{
 
         List<DemandeCession> demandeCessionList = cessionService.findAllPMEDemandes(demandeCession.getPme().getIdPME());
         assertThat((long) demandeCessionList.size()).isPositive();
+    }
+
+    @Test
+    void signerConventionPME_shouldReturnResult(){
+        statutRepository.save(new Statut(3L,"CONVENTION_SIGNEE_PAR_PME","CONVENTION_SIGNEE_PAR_PME"));
+
+        entity = DtoConverter.convertToEntity(dto);
+        demandeCession = cessionService.saveCession(entity);
+
+        cessionService.signerConventionPME(demandeCession.getIdDemande());
+        assertThat(demandeCession.getStatut()).isNotNull();
     }
 
 

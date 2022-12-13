@@ -55,8 +55,6 @@ public class DemandeAdhesionResourceTest extends BasicResourceTest{
     private static DemandeAdhesionDto dto;
 
     private static DemandeAdhesionDto updatedDto;
-
-
     private static DemandeAdhesion demandeAdhesion;
 
     @Autowired
@@ -95,10 +93,6 @@ public class DemandeAdhesionResourceTest extends BasicResourceTest{
         pmeRepository.deleteAll();
         adhesionRepository.deleteAll();
         entityPme = PmeDTOTestData.defaultEntity();
-//        dto = DemandeAdhesionDTOTestData.defaultDTO();
-//        dto.setIdPME(entityPme.getIdPME());
-//        entity = DtoConverter.convertToEntity(dto);
-//        entity.setPme(entityPme);
 
         pme = pmeService.savePme(entityPme);
         dto = DemandeAdhesionDTOTestData.defaultDTO();
