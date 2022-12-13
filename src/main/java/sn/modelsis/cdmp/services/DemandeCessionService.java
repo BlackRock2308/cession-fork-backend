@@ -45,7 +45,7 @@ public interface DemandeCessionService {
 
     List<DemandeCession> findAllPMEDemandes(Long id);
 
-    Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable,Long id);
+//    Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable,Long id);
 
     List<DemandeCession> findAllDemandeRejetee();
 

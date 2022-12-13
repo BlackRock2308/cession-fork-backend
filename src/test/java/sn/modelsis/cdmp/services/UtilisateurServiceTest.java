@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional()
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UtilisateurServiceTest extends ServiceBaseTest{
+public class UtilisateurServiceTest {
 
     @Autowired
     UtilisateurRepository utilisateurRepository;
@@ -168,17 +168,17 @@ public class UtilisateurServiceTest extends ServiceBaseTest{
         );
     }
 
-    @Test
-    @Rollback(value = false)
-    void setRole_Pme_shouldReturnResult() {
-        utilisateur = utilisateurService.save(vm);
-        utilisateur.setCodePin(TestData.Update.codePin);
-       utilisateurService.forgetPassword(utilisateur.getEmail());
-        Assertions.assertAll(
-                ()-> assertThat(utilisateur).isNotNull()
-
-        );
-    }
+//    @Test
+//    @Rollback(value = false)
+//    void setRole_Pme_shouldReturnResult() {
+//        utilisateur = utilisateurService.save(vm);
+//        utilisateur.setCodePin(TestData.Update.codePin);
+//       utilisateurService.forgetPassword(utilisateur.getEmail());
+//        Assertions.assertAll(
+//                ()-> assertThat(utilisateur).isNotNull()
+//
+//        );
+//    }
 
 
 //    @Test

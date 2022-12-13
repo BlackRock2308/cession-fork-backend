@@ -1,8 +1,10 @@
 package sn.modelsis.cdmp.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +14,7 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@ToString
+@ToString @SuperBuilder
 @Table(name = "statut")
 public class Statut implements Serializable {
     /**
@@ -33,4 +35,10 @@ public class Statut implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "statut")
     private Set<Demande> demandes = new HashSet<>() ;
+
+    public Statut(Long idStatut, String code, String libelle) {
+        this.idStatut = idStatut;
+        this.code = code;
+        this.libelle = libelle;
+    }
 }

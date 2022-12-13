@@ -49,8 +49,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeService demandeService;
     private final PmeRepository pmeRepository;
 
-    private final CreanceMapper creanceMapper;
-
     private final CreanceWithNoPaymentMapper noPaymentMapper;
 
     @Override
@@ -60,7 +58,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         try {
             log.info("DemandeCessionService:saveCession request started");
-            // demandeCession.setDateDemandeCession(new Date());
             Pme pme = pmeRepository.findById(demandeCession.getPme().getIdPME()).orElse(null);
             demandeCession.setPme(pme);
             LocalDateTime dateTime = LocalDateTime.now();
@@ -366,14 +363,14 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository.findAllByPmeIdPME(id);
     }
 
-    @Override
-    public Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable, Long id) {
-        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);
-
-        return demandecessionRepository
-                .findAllByPmeIdPME(pageable, id)
-                .map(cessionMapper::asDTO);
-    }
+//    @Override
+//    public Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable, Long id) {
+//        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);
+//
+//        return demandecessionRepository
+//                .findAllByPmeIdPME(pageable, id)
+//                .map(cessionMapper::asDTO);
+//    }
 
     /**
      * ************** Search Demande de Cession based on mulpiples criterias

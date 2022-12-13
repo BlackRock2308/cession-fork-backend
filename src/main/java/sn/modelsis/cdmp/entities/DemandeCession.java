@@ -18,12 +18,12 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-//@ToString
 @Table(name = "demandecession")
 public class DemandeCession extends Demande{
 

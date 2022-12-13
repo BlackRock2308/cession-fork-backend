@@ -1,6 +1,8 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -8,7 +10,7 @@ import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter @Setter @SuperBuilder
 public class DemandeCessionDto implements Serializable {
 
     private Long idDemande;

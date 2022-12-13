@@ -88,6 +88,8 @@ public class TestData {
         public static final String codePin = RandomStringUtils.randomAlphanumeric((0 + 50) / 2);
 
         public static final LocalDateTime dateImmatriculation = LocalDateTime.now();
+
+        public static final LocalDateTime dateDemandeCession = LocalDateTime.now();
         public static final LocalDateTime dateCreation = LocalDateTime.now();
         public static final double valeurDecote = RandomUtils.nextDouble();
         public static final float valeurDecoteDG = RandomUtils.nextFloat();
@@ -177,6 +179,8 @@ public class TestData {
         public static final String nomMarche = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final String typeDepense = RandomStringUtils.randomAlphanumeric((0 + 30) / 2);
         public static final LocalDateTime datebonengagement = LocalDateTime.now();
+
+        public static final LocalDateTime dateDemandeCession = LocalDateTime.now();
 
         public static final LocalDateTime dateCreation = LocalDateTime.now();
 

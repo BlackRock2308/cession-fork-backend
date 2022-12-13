@@ -61,17 +61,17 @@ public class DemandeAdhesionRepositoryTest extends RepositoryBaseTest{
 
     @BeforeEach
     void setUp() {
+        adhesionRepository.deleteAll();
+        pmeRepository.deleteAll();
+
         //Init for PME
         dtoPme = PmeDTOTestData.defaultDTO();
         entityPme = DtoConverter.convertToEntity(dtoPme);
-        pmeRepository.deleteAll();
         entityPme = pmeService.savePme(entityPme);
 
         //init for DemandeAdhesion which just required the idPME
         dto = DemandeAdhesionDTOTestData.defaultDTO();
         dto.setIdPME(entityPme.getIdPME());
-
-        adhesionRepository.deleteAll();
         entity = adhesionService.saveAdhesion(dto);
     }
 

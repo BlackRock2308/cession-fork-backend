@@ -1,7 +1,6 @@
 package sn.modelsis.cdmp.data;
 
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.DemandeAdhesion;
+
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 
 public class DemandeAdhesionDTOTestData extends TestData{

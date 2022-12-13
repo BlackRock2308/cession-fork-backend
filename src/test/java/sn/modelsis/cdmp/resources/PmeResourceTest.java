@@ -94,8 +94,7 @@ public class PmeResourceTest extends BasicResourceTest{
                 .andExpect(jsonPath("$.[0].email").value(pme.getEmail()))
                 .andExpect(jsonPath("$.[0].nomRepresentant").value(pme.getNomRepresentant()))
                 .andExpect(jsonPath("$.[0].rccm").value(pme.getRccm()))
-                .andExpect( jsonPath("$.[0].telephonePME").value(pme.getTelephonePME()))
-                .andExpect(jsonPath("$.[0].codePin").value(pme.getCodePin()));
+                .andExpect( jsonPath("$.[0].telephonePME").value(pme.getTelephonePME()));
     }
 
 
@@ -117,8 +116,7 @@ public class PmeResourceTest extends BasicResourceTest{
                 .andExpect(jsonPath("$.email").value(pme.getEmail()))
                 .andExpect(jsonPath("$.nomRepresentant").value(pme.getNomRepresentant()))
                 .andExpect(jsonPath("$.rccm").value(pme.getRccm()))
-                .andExpect( jsonPath("$.telephonePME").value(pme.getTelephonePME()))
-                .andExpect(jsonPath("$.codePin").value(pme.getCodePin()));
+                .andExpect( jsonPath("$.telephonePME").value(pme.getTelephonePME()));
     }
 
 
@@ -150,8 +148,7 @@ public class PmeResourceTest extends BasicResourceTest{
                 .andExpect(jsonPath("$.email").value(entity.getEmail()))
                 .andExpect(jsonPath("$.nomRepresentant").value(entity.getNomRepresentant()))
                 .andExpect(jsonPath("$.rccm").value(entity.getRccm()))
-                .andExpect( jsonPath("$.telephonePME").value(entity.getTelephonePME()))
-                .andExpect(jsonPath("$.codePin").value(entity.getCodePin()));
+                .andExpect( jsonPath("$.telephonePME").value(entity.getTelephonePME()));
     }
 
 
@@ -160,7 +157,6 @@ public class PmeResourceTest extends BasicResourceTest{
         entity.setAdressePME(TestData.Update.adressePME);
         entity.setTelephonePME(TestData.Update.telephonePME);
         entity.setEmail(TestData.Update.email);
-        entity.setCodePin(TestData.Update.codepin);
         pme = pmeService.savePme(entity);
         mockMvc.perform( MockMvcRequestBuilders
                 .put("/api/pme/{id}", pme.getIdPME())
@@ -177,8 +173,7 @@ public class PmeResourceTest extends BasicResourceTest{
                 .andExpect(jsonPath("$.email").value(entity.getEmail()))
                 .andExpect(jsonPath("$.nomRepresentant").value(entity.getNomRepresentant()))
                 .andExpect(jsonPath("$.rccm").value(entity.getRccm()))
-                .andExpect( jsonPath("$.telephonePME").value(entity.getTelephonePME()))
-                .andExpect(jsonPath("$.codePin").value(entity.getCodePin()));
+                .andExpect( jsonPath("$.telephonePME").value(entity.getTelephonePME()));
     }
 
     @Test

@@ -40,7 +40,6 @@ class PmeMapperTest  extends MapperBaseTest{
         assertThat(entity.getActivitePrincipale()).isEqualTo(dto.getActivitePrincipale());
         assertThat(entity.getCniRepresentant()).isEqualTo(dto.getCniRepresentant());
         assertThat(entity.getEmail()).isEqualTo(dto.getEmail());
-        assertThat(entity.getCodePin()).isEqualTo(dto.getCodePin());
         assertThat(entity.getNinea()).isEqualTo(dto.getNinea());
         assertThat(entity.getActivitePrincipale()).isEqualTo(dto.getActivitePrincipale());
         assertThat(entity.getRaisonSocial()).isEqualTo(dto.getRaisonSocial());
@@ -61,7 +60,6 @@ class PmeMapperTest  extends MapperBaseTest{
         assertThat(dto.getActivitePrincipale()).isEqualTo(entity.getActivitePrincipale());
         assertThat(dto.getCniRepresentant()).isEqualTo(entity.getCniRepresentant());
         assertThat(dto.getEmail()).isEqualTo(entity.getEmail());
-        assertThat(dto.getCodePin()).isEqualTo(entity.getCodePin());
         assertThat(dto.getNinea()).isEqualTo(entity.getNinea());
         assertThat(dto.getActivitePrincipale()).isEqualTo(entity.getActivitePrincipale());
         assertThat(dto.getRaisonSocial()).isEqualTo(entity.getRaisonSocial());

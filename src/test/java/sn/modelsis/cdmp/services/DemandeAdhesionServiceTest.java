@@ -32,9 +32,6 @@ public class DemandeAdhesionServiceTest extends ServiceBaseTest{
 
     DemandeAdhesionDto dto;
     DemandeAdhesion entity;
-
-    DemandeAdhesion newAntity;
-
     private static DemandeAdhesion demandeAdhesion;
 
 
