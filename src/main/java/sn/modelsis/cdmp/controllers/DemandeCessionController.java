@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
+import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.UtilisateurService;
@@ -66,7 +67,9 @@ public class DemandeCessionController {
     public ResponseEntity<DemandeCessionDto> getDemandeCession(@PathVariable Long id,
                                                                HttpServletRequest request) {
         log.info("DemandeCessionController:getDemandeCession request started");
-        DemandeCessionDto demande = demandeCessionService.getDemandeCession(id).orElse(null);
+        DemandeCessionDto demande = demandeCessionService.getDemandeCession(id).orElseThrow(
+                ()-> new CustomException("Impossible de trouver cette demande de cession.")
+        );
         log.info("DemandeCessionController:getDemandeCession request params  {}", demande.getIdDemande());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demande);
@@ -258,9 +261,6 @@ public class DemandeCessionController {
     ){
         log.info("DemandeCessionController:searchDemandeCessionByMultipleParams request started");
 
-//
-//        List<DemandeCessionDto> cessionListByDate = demandeCessionService.findDemandeCessionByLocalDateTime(startDate, endDate);
-//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByDate : {} ",cessionListByDate);
 
 
         List<DemandeCessionDto> cessionListByOthersCriteria = demandeCessionService.findDemandeCessionByMultipleParams(referenceBE,
@@ -271,23 +271,6 @@ public class DemandeCessionController {
                 endDate);
         log.info("DemandeCessionService:filterExactDemandeCession cessionListByOthersCriteria : {} ",cessionListByOthersCriteria);
 
-//        List<DemandeCessionDto> similarities = new ArrayList<>();
-//
-//        if(!cessionListByOthersCriteria.isEmpty()){
-//            similarities = cessionListByOthersCriteria
-//                    .stream()
-//                    .filter(element -> !cessionListByDate.contains(element))
-//                    .collect(Collectors.toList());
-//            log.info("Demande similaire based on criteres: {} ",similarities);
-//
-//        }else{
-//            similarities = cessionListByDate;
-//            log.info("Demande similaire based Date: {} ",similarities);
-//
-//        }
-        //log.info("DemandeCessionService:filterExactDemandeCession similarities : {} ",similarities);
-
-        //log.info("DemandeCessionController:searchDemandeCessionByMultipleParams ----> reulst : {}",similarities);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(cessionListByOthersCriteria);
     }
