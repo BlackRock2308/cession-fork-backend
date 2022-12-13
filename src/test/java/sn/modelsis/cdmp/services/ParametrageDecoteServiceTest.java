@@ -70,6 +70,19 @@ public class ParametrageDecoteServiceTest extends ServiceBaseTest{
                 .isNotNull();
     }
 
+
+//    @Test
+//    @Rollback(value = false)
+//    void update_shouldUpdateParametrageDecote() {
+//        ParametrageDecoteDTO updatedValue = ParametrageDecoteDTOTest.updateDTO();
+//        decote = decoteRepository.save(vm);
+//
+//        Optional<ParametrageDecote> optional = decoteRepository.findById(decote.getIdDecote());
+//
+//        assertThat(decote)
+//                .isNotNull();
+//    }
+
     @Test
     void findById_shouldReturnResult() {
         decote = decoteRepository.save(vm);

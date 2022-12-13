@@ -124,9 +124,7 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
-//        dto.setStatut(DtoConverter.convertToDto(statut));
-        //cessionRepository.deleteAll();
-//        entity = cessionService.saveCession(DtoConverter.convertToEntity(dto));
+
     }
 
 
@@ -203,7 +201,7 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
 
     @Test
     @Transactional
-    void patch_rejeterDemandeCession_shouldRejectDemandeCession() throws Exception {
+    void patchrejeterDemandeCession_shouldRejectDemandeCession() throws Exception {
 
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));

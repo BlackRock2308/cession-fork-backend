@@ -15,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
+import sn.modelsis.cdmp.data.BonEngagementDTOTestData;
 import sn.modelsis.cdmp.data.ParametrageDecoteDTOTest;
 import sn.modelsis.cdmp.data.PmeDTOTestData;
 import sn.modelsis.cdmp.entities.ParametrageDecote;
@@ -64,6 +66,24 @@ public class ParametrageDecoteResourceTest extends BasicResourceTest{
         log.info(" before each ");
         decoteRepository.deleteAll();
         entity = ParametrageDecoteDTOTest.defaultEntity();
+    }
+
+    @Test
+    @Transactional
+    void add_shouldCreateParametrageDecote() throws Exception
+    {
+        decote = ParametrageDecoteDTOTest.defaultEntity();
+
+        mockMvc.perform( MockMvcRequestBuilders
+                        .post("/api/decote/")
+                        .content(asJsonString(decote))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.idDecote").exists())
+                .andExpect(jsonPath("$.borneSup", is(decote.getBorneSup())))
+                .andExpect(jsonPath("$.borneInf", is(decote.getBorneInf())));
+//                .andExpect(jsonPath("$.val").value(decote.getReference()));
     }
 
     @Test
