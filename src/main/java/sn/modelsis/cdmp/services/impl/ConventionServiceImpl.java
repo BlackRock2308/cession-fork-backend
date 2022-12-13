@@ -164,10 +164,7 @@ public class ConventionServiceImpl implements ConventionService{
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
   public Convention updateValeurDecote(Long idConvention, double newValue){
-    log.info("ConventionService:updateValeurDecote request params {}", idConvention);
-
     Optional <Convention> optional = Optional.ofNullable(conventionRepository.findById(idConvention).orElse(null));
     optional.get().setValeurDecoteByDG(newValue);
 
@@ -253,7 +250,7 @@ public class ConventionServiceImpl implements ConventionService{
     }
       log.info("ConventionService:générer ", convention.getIdConvention());
     } catch (Exception ex) {
-      log.error("Exception occured while updating convention with id : {}", convention.getIdConvention());
+      log.error("Erreur lors de la génération du document : {}", convention.getIdConvention());
       throw new CustomException("Error occured while updating this convention");
     }
   }
@@ -300,7 +297,7 @@ public class ConventionServiceImpl implements ConventionService{
       output.close();
       log.info("ConventionService:saveDocumentConventionSigner ", convention.getIdConvention());
     } catch (Exception ex) {
-      log.error("Exception occured while updating convention with id : {}", convention.getIdConvention());
+      log.error("Erreur lors de la génération du document id : {}", convention.getIdConvention());
       throw new CustomException("Error occured while updating this convention");
     }
   }
