@@ -1,22 +1,32 @@
 package sn.modelsis.cdmp;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -68,6 +78,8 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
     private final PaiementService paiementService;
     private final DetailPaiementService detailPaiementService;
 
+    @Value("${server.link_front}")
+    private String uilocation; 
 
   public CdmpApplication(Environment env, StatutRepository statutRepository, UtilisateurRepository utilisateurRepository, RoleRepository roleRepository, PmeRepository pmeRepository, BonEngagementService bonEngagementService, DemandeCessionService demandeCessionService, DemandeAdhesionService demandeAdhesionService, BonEngagementRepository bonEngagementRepository, DemandeCessionRepository demandeCessionRepository, ConventionService conventionService, PaiementService paiementService, DetailPaiementService detailPaiementService) {
     this.env = env;
@@ -157,19 +169,40 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
 //  }
 
   @Bean
-  public CorsFilter corsFilter() {
-      CorsConfiguration corsConfiguration = new CorsConfiguration();
-      corsConfiguration.setAllowCredentials(true);
-      corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-      corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
-              "Accept", "Authorization", "Origin, Accept", "X-Requested-With",
-              "Access-Control-Request-Method", "Access-Control-Request-Headers"));
-      corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
-              "Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-      corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-      UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-      urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-      return new CorsFilter(urlBasedCorsConfigurationSource);
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", uilocation));
+    configuration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin",
+        "Content-Type", "Accept", "Authorization", "Origin,Accept", "X-Requested-With",
+        "Access-Control-Request-Method", "Access-Control-Request-Headers", "enctype"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    configuration.setAllowCredentials(true);
+    configuration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept",
+        "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
+  
+  @Component
+  public class CorsFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
+      String context = request.getRequestURI();
+      if (request.getRequestURI().contains("api/") || request.getRequestURI().contains("token")) {
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers",
+            "authorization, content-type, xsrf-token,enctype");
+        response.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+        response.setHeader("Access-Control-Allow-Origin", uilocation);
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        filterChain.doFilter(request, response);
+      } else {
+        filterChain.doFilter(request, response);
+      }
+    }
   }
 
     @Override
