@@ -1,6 +1,7 @@
 package sn.modelsis.cdmp.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import sn.modelsis.cdmp.entities.Pme;
@@ -21,6 +22,10 @@ public interface PmeRepository extends JpaRepository<Pme, Long> {
     Optional<Pme> findByPhone(@Param("telephonePME") String telephonePME);
 
     Optional<Pme> findPmeByUtilisateurIdUtilisateur(Long id);
+
+    @Modifying
+    @Query("DELETE FROM Documents c where c.id =:#{#id}")
+    void deleteDocument(Long id);
 
 
 }
