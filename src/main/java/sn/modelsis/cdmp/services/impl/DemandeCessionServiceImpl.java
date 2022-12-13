@@ -316,12 +316,12 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     public void signerConventionDG(Long idDemande) {
         log.info("DemandeCessionService:signerConventionDG request started");
-        Optional<DemandeCession> optional = Optional.ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+        DemandeCession demandeCession = demandecessionRepository.findByDemandeId(idDemande);
         log.debug("DemandeCessionService:signerConventionDG request params {}", idDemande);
-        Statut updatedStatut = statutRepository.findByLibelle("CONVENTION_SIGNEE_PAR_DG");
-        optional.get().setStatut(updatedStatut);
+        Statut updatedStatut = statutRepository.findByCode("CONVENTION_SIGNEE_PAR_DG");
+        demandeCession.setStatut(updatedStatut);
 
-        DemandeCession demandeCessionDto = demandecessionRepository.save(optional.get());
+        DemandeCession demandeCessionDto = demandecessionRepository.save(demandeCession);
         log.info("DemandeCessionService:signerConventionDG received from Database {}",
                 demandeCessionDto.getIdDemande());
     }
