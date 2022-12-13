@@ -191,10 +191,6 @@ public class DemandeCessionController {
     @PostMapping("/{idDemande}/signer-convention-dg/{idUtilisateur}")
     public  ResponseEntity<Boolean> signerConventionDG(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
 
-        log.info("codePin:{}",codePin);
-        if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
-            throw new NotFoundException("La demande de cession n'existe pas");
-
         DemandeCession demandeSignee;
         if (utilisateurService.signerConvention(idUtilisateur,codePin))
             demandeCessionService.signerConventionDG(idDemande);
@@ -212,7 +208,6 @@ public class DemandeCessionController {
 
     @PostMapping("/{idDemande}/signer-convention-pme/{idUtilisateur}")
     public  ResponseEntity<Boolean> signerConventionPME(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
-
         log.info("codePin:{}",codePin);
         if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
             throw new NotFoundException("La demande de cession n'existe pas");
