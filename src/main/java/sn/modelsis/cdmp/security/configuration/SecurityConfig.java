@@ -44,7 +44,7 @@ public class SecurityConfig {
         .disable()
         .authorizeRequests()
         .antMatchers(AUTH_WHITELIST).permitAll()
-        .antMatchers("/api/**").hasAnyAuthority("PME","DG","DAF","DRC","PME","PCA","JURISTE","ORDONNATEUR","DSEAR")
+        .antMatchers("/api/**").hasAnyAuthority("PME","DG","DAF","DRC","PCA","JURISTE","ORDONNATEUR","DSEAR")
         //.antMatchers("/api/**").hasAnyAuthority("PME,DG,DRC,PME,PCA,JURISTE,ORDONNATEUR,DSEAR,")
         //.anyRequest()
         //.antMatchers("/api/**").permitAll()

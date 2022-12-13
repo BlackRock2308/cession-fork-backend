@@ -1,17 +1,13 @@
 package sn.modelsis.cdmp.controllers;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,12 +27,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entities.BonEngagement;
+import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.ParametrageDecote;
+import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
-import sn.modelsis.cdmp.services.*;
+import sn.modelsis.cdmp.services.BonEngagementService;
+import sn.modelsis.cdmp.services.ConventionService;
+import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.ParametrageDecoteService;
+import sn.modelsis.cdmp.services.StatutService;
 import sn.modelsis.cdmp.util.DtoConverter;
-import sn.modelsis.cdmp.util.Qrcode;
 
 /**
  * @author SNDIAGNEF
