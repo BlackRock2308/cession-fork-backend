@@ -134,22 +134,23 @@ public class PmeController {
   @ApiResponses({@ApiResponse(responseCode = "201", description = "Success"),
       @ApiResponse(responseCode = "400", description = "Bad request")})
   public ResponseEntity<PmeDto> addDocument(@PathVariable Long id,
-      @RequestParam(name = "file") MultipartFile file, @RequestParam(name = "type") String type) {
+                                            @RequestParam(name = "file") MultipartFile file,
+                                            @RequestParam(name = "type") String type) {
 
-    Optional<Pme> be = null;
+    Optional<Pme> pme = null;
     try {
       log.info("PmeController:addDocument request started");
-      be = pmeService.upload(id, file, TypeDocument.valueOf(type));
+      pme = pmeService.upload(id, file, TypeDocument.valueOf(type));
       log.info("PmeController:addDocument uploading with request params id = {}", id);
     } catch (IOException e) {
       log.error(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
-    if (be.isEmpty()) {
+    if (pme.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
-    log.info("PmeController:addDocument saved in database with idPme = {}", be.get().getIdPME());
-    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(be.get()));
+    log.info("PmeController:addDocument saved in database with idPme = {}", pme.get().getIdPME());
+    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(pme.get()));
   }
 
   public ResponseEntity<PmeDto> getPmeByUser(Long idUser){
