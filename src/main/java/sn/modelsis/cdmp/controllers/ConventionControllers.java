@@ -163,9 +163,8 @@ public class ConventionControllers {
     return ResponseEntity.status(HttpStatus.OK).body(exactParametrageDecote);
   }
 
-  @PatchMapping(value ="/{idConvention}/{decote}")
-  public ResponseEntity<ConventionDto> updateValeurDecote(@PathVariable("idConvention") Long idConvention,
-                                                          @PathVariable("decote") double decote) {
+  @PutMapping(value ="/valeurCreance/{idConvention}")
+  public ResponseEntity<ConventionDto> updateValeurDecote(@RequestBody double decote, @PathVariable Long idConvention) {
     log.info("ConventionControllers:updateValeurDecote request started ");
    Convention updatedConvention = conventionService.updateValeurDecote(idConvention, decote);
     log.info("ConventionControllers:updateValeurDecote request params  {}", updatedConvention.getIdConvention());
