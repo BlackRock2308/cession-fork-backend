@@ -41,7 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = CdmpApplication.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-
 public class DemandeAdhesionApiApplicationTests {
 
     private MockMvc mockMvc;

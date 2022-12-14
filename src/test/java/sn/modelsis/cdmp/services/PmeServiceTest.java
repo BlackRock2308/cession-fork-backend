@@ -7,13 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import sn.modelsis.cdmp.data.DemandeCessionDTOTestData;
 import sn.modelsis.cdmp.data.PmeDTOTestData;
+import sn.modelsis.cdmp.data.UtilisateurDTOTestData;
+import sn.modelsis.cdmp.entities.BonEngagement;
+import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Pme;
+import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.UtilisateurRepository;
 import sn.modelsis.cdmp.util.DtoConverter;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,10 +46,32 @@ public class PmeServiceTest extends ServiceBaseTest{
     Pme vm;
     static PmeDto dto;
 
+    @Autowired
+    @Valid
+    DemandeCessionService cessionService;
+
+    static DemandeCession demandeCession;
+    DemandeCessionDto dtoDemande;
+
+    DemandeCession entityDemande;
+    BonEngagement entityBE;
+
+    @Autowired
+    UtilisateurRepository utilisateurRepository;
+    @Autowired
+    UtilisateurService utilisateurService;
+
+    Utilisateur utilisateur;
+    static UtilisateurDto dtoUser;
+    Utilisateur vmUser;
+
     @BeforeEach
     void beforeAll(){
         log.info(" before all");
         vm = PmeDTOTestData.defaultEntity();
+
+        utilisateurRepository.deleteAll();
+        vmUser = UtilisateurDTOTestData.defaultEntity();
     }
 
     @BeforeEach
@@ -60,9 +91,7 @@ public class PmeServiceTest extends ServiceBaseTest{
         pme = pmeService.savePme(vm);
         assertThat(pme)
                 .isNotNull();
-        //.hasNoNullFieldsOrProperties();
     }
-
 
 
     @Test
@@ -73,7 +102,6 @@ public class PmeServiceTest extends ServiceBaseTest{
         assertThat(optional)
                 .isNotNull()
                 .isPresent();
-        //.hasNoNullFieldsOrProperties();
     }
 
 
@@ -112,5 +140,23 @@ public class PmeServiceTest extends ServiceBaseTest{
         List<Pme> pmes = pmeService.findAllPme();
         assertThat((long) pmes.size()).isPositive();
     }
+
+    @Test
+    void findByUtilisateurId_shouldReturnResult() {
+
+        utilisateur = utilisateurRepository.save(vmUser);
+        dtoUser = DtoConverter.convertToDto(utilisateur);
+
+        vm = PmeDTOTestData.defaultEntity();
+        vm.setUtilisateurid(dtoUser.getIdUtilisateur());
+        pme = pmeRepository.save(vm);
+        dto = DtoConverter.convertToDto(pme);
+
+        final Optional<Pme> optional = pmeService.getPmeByUtilisateur(pme.getUtilisateur().getIdUtilisateur());
+        assertThat(optional)
+                .isNotNull()
+                .isPresent();
+    }
+
 
 }

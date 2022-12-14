@@ -41,6 +41,9 @@ public class DemandeCessionServiceTest extends ServiceBaseTest{
 
     static DemandeCession demandeCession;
 
+    static DemandeCession completedDemande;
+
+
     @Autowired
     @Valid
     DemandeCessionRepository cessionRepository;
@@ -307,6 +310,18 @@ public class DemandeCessionServiceTest extends ServiceBaseTest{
 
         cessionService.signerConventionPME(demandeCession.getIdDemande());
         assertThat(demandeCession.getStatut()).isNotNull();
+    }
+
+
+    @Test
+    void completerDemande_shouldReturnResult(){
+        statutRepository.save(new Statut(4L,"COMPLETEE","COMPLETEE"));
+
+        entity = DtoConverter.convertToEntity(dto);
+        demandeCession = cessionService.saveCession(entity);
+
+        completedDemande = pmeService.complementerDemandeCession(demandeCession.getIdDemande());
+        assertThat(completedDemande.getIdDemande()).isNotNull();
     }
 
 

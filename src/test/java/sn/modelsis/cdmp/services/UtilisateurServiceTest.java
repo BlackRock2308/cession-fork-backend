@@ -8,6 +8,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import sn.modelsis.cdmp.data.PmeDTOTestData;
 import sn.modelsis.cdmp.data.TestData;
 import sn.modelsis.cdmp.data.UtilisateurDTOTestData;
 import sn.modelsis.cdmp.entities.Pme;
@@ -50,6 +51,9 @@ public class UtilisateurServiceTest {
     Utilisateur vm;
 
     Pme pme;
+
+    @Autowired
+    PmeService pmeService;
 
     static UtilisateurDto dto;
 
@@ -159,6 +163,7 @@ public class UtilisateurServiceTest {
     @Rollback(value = false)
     void updateCodePin_Pme_shouldReturnResult() {
         utilisateur = utilisateurService.save(vm);
+
         utilisateur.setCodePin(TestData.Update.codePin);
         updatedUtilisateur = utilisateurService.updateCodePin(utilisateur);
         Assertions.assertAll(
@@ -168,17 +173,22 @@ public class UtilisateurServiceTest {
         );
     }
 
-//    @Test
-//    @Rollback(value = false)
-//    void setRole_Pme_shouldReturnResult() {
-//        utilisateur = utilisateurService.save(vm);
-//        utilisateur.setCodePin(TestData.Update.codePin);
-//       utilisateurService.forgetPassword(utilisateur.getEmail());
-//        Assertions.assertAll(
-//                ()-> assertThat(utilisateur).isNotNull()
-//
-//        );
-//    }
+    @Test
+    @Rollback(value = false)
+    void findByUtilisateurId_shouldReturnResult() {
+
+        pme = PmeDTOTestData.defaultEntity();
+
+        utilisateur = utilisateurService.save(vm);
+        pme.setUtilisateurid(utilisateur.getIdUtilisateur());
+        pmeRepository.save(pme);
+        final Optional<Pme> optional = pmeService.getPmeByUtilisateur(pme.getUtilisateur().getIdUtilisateur());
+
+        Assertions.assertAll(
+                ()-> assertThat(optional).isNotNull()
+
+        );
+    }
 
 
 //    @Test
