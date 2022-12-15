@@ -76,7 +76,7 @@ public class ConventionServiceImpl implements ConventionService{
   @Override
   public Convention save(ConventionDto conventionDto) {
     Convention newConvention = new Convention();
-    newConvention.setRemarqueJuriste(conventionDto.getRemarqueJuriste());
+    newConvention.setTextConvention(DtoConverter.convertToEntity(conventionDto.getTextConventionDto()));
     newConvention.setDateConvention(LocalDateTime.now());
     DemandeCession demandeCession =
             demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
@@ -109,7 +109,7 @@ public class ConventionServiceImpl implements ConventionService{
     Convention convention = null;
     if(conventionDto.getIdConvention()!=null){
       convention = getConvention(conventionDto.getIdConvention()).orElse(null);
-      convention.setRemarqueJuriste(conventionDto.getRemarqueJuriste());
+      convention.setTextConvention(DtoConverter.convertToEntity(conventionDto.getTextConventionDto()));
         saveDocumentConvention(convention);
         Statut statut = statutService.findByCode(Status.getConventionCorrigee());
         convention.getDemandeCession().setStatut(statut);
