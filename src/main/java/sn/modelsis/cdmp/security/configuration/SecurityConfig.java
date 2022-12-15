@@ -28,6 +28,7 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/api/pme/**",
+            "/api/documents/**",
             "/api/demandeadhesion",
             "/api/utilisateur/auth",
             "/api/utilisateur/forget-password",
@@ -47,7 +48,7 @@ public class SecurityConfig {
         .antMatchers("/api/**").hasAnyAuthority("PME","DG","DAF","DRC","PCA","JURISTE","ORDONNATEUR","DSEAR")
         //.antMatchers("/api/**").hasAnyAuthority("PME,DG,DRC,PME,PCA,JURISTE,ORDONNATEUR,DSEAR,")
         //.anyRequest()
-      //.antMatchers("/api/**").permitAll()
+        //.antMatchers("/api/**").permitAll()
         .and()
         .httpBasic()
         .and()
