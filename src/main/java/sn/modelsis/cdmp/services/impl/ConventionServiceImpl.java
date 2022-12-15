@@ -36,6 +36,7 @@ import sn.modelsis.cdmp.entitiesDtos.StatutDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
 import sn.modelsis.cdmp.repositories.ObservationRepository;
+import sn.modelsis.cdmp.repositories.TextConventionRepository;
 import sn.modelsis.cdmp.services.*;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.Qrcode;
@@ -68,6 +69,9 @@ public class ConventionServiceImpl implements ConventionService{
   @Autowired
   private  ObservationService observationService;
 
+  @Autowired
+  private TextConventionRepository textConventionRepository;
+
 
 
   @Value("${server.qrcode_folder}")
@@ -76,13 +80,14 @@ public class ConventionServiceImpl implements ConventionService{
   @Override
   public Convention save(ConventionDto conventionDto) {
     Convention newConvention = new Convention();
-    newConvention.setRemarqueJuriste(conventionDto.getRemarqueJuriste());
+    TextConvention textConvention = textConventionRepository.save(DtoConverter.convertToEntity(conventionDto.getTextConventionDto()));
+    newConvention.setTextConvention(textConvention);
     newConvention.setDateConvention(LocalDateTime.now());
     DemandeCession demandeCession =
             demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
     try
     {
-      if(demandeCession.getIdDemande()!=null) {
+      if(demandeCession.getIdDemande()!=null && demandeCession.getStatut().getCode().equals(Status.getNonRisquee())) {
         ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(demandeCession.getBonEngagement().getMontantCreance()).orElse(null);
         newConvention.setDemandeCession(demandeCession);
         newConvention.setDecote(exactParametrageDecote);
@@ -90,14 +95,12 @@ public class ConventionServiceImpl implements ConventionService{
         newConvention.setDemandeCession(demandeCession);
         newConvention.setValeurDecoteByDG(exactParametrageDecote.getDecoteValue()); //valeurDecoteDG take the value of the params decote
         newConvention = conventionRepository.save(newConvention);
-        if (demandeCession.getStatut().getCode().equals(Status.getNonRisquee())) {
           saveDocumentConvention(newConvention);
           Statut statut = statutService.findByCode(Status.getConventionGeneree());
           demandeCession.setStatut(statut);
           demandeCession.getConventions().add(newConvention);
           demandeCessionService.save(demandeCession);
-        }
-      }
+              }
     } catch (Exception ex){
       log.error("Exception occured while adding convention. Error message : {}", ex.getMessage());
       throw new CustomException("Exception occured while adding new convention");
@@ -110,7 +113,8 @@ public class ConventionServiceImpl implements ConventionService{
     Convention convention = null;
     if(conventionDto.getIdConvention()!=null){
       convention = getConvention(conventionDto.getIdConvention()).orElse(null);
-      convention.setRemarqueJuriste(conventionDto.getRemarqueJuriste());
+      TextConvention textConvention = textConventionRepository.save(DtoConverter.convertToEntity(conventionDto.getTextConventionDto()));
+      convention.setTextConvention(textConvention);
         saveDocumentConvention(convention);
         Statut statut = statutService.findByCode(Status.getConventionCorrigee());
         convention.getDemandeCession().setStatut(statut);
@@ -168,7 +172,7 @@ public class ConventionServiceImpl implements ConventionService{
 
     log.info("ValeurDecote by DG in convention before saving: {}", optional.get().getValeurDecoteByDG());
     Convention convention = conventionRepository.saveAndFlush(optional.get());
-    //saveDocumentConventionSigner(convention);
+    saveDocumentConventionSigner(convention);
     return convention;
   }
 
@@ -204,29 +208,30 @@ public class ConventionServiceImpl implements ConventionService{
   }
   
 
-  public String convertDate(Date date){
-    if(date.getDay() <10) {
-      return "0" + date.getDay() + "-" + date.getMonth() + "-" + date.getYear();
-    }
-    return date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
-  }
-  public String convertDate(LocalDateTime date){
+  public String convertDate(LocalDateTime date, boolean signe){
     if(date.getDayOfMonth() <10){
       return "0"+date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear()+" à "+date.getHour()+":"+date.getMinute();
     }
     return date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear()+" à "+date.getHour()+":"+date.getMinute();
   }
 
+  public String convertDate(LocalDateTime date){
+    if(date.getDayOfMonth() <10){
+      return "0"+date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear();
+    }
+    return date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear();
+  }
+
   public String getInfoQRcode(Observation observation){
     return  "Prénom: "+observation.getUtilisateur().getPrenom()+ "\n Nom: "+ observation.getUtilisateur().getNom()+
-            "\n Email: "+observation.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(observation.getDateObservation());
+            "\n Email: "+observation.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(observation.getDateObservation(),true);
   }
 
 
   public void saveDocumentConvention(Convention convention)  {
     Map<String, Object> contextModel = new HashMap<>();
     contextModel.put("convention", convention);
-    String dateStr= convertDate(new Date());
+    String dateStr= convertDate(LocalDateTime.now());
     contextModel.put("date", dateStr);
     String fileName = "convention_generer.pdf";
     Context thymeleafContext = new Context();
@@ -261,12 +266,12 @@ public class ConventionServiceImpl implements ConventionService{
   public void saveDocumentConventionSigner(Convention convention) {
     Map<String, Object> contextModel = new HashMap<>();
     contextModel.put("convention", convention);
-    String dateStr = convertDate(new Date());
+    String dateStr = convertDate(LocalDateTime.now());
     contextModel.put("date", dateStr);
     Observation obPME = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParPME());
     if (obPME != null) {
       String qrCodePME = "Prénom: " + convention.getDemandeCession().getPme().getPrenomRepresentant() + "\n" + "Nom: " + convention.getDemandeCession().getPme().getNomRepresentant() +
-              "\n" + "Mail: " + convention.getDemandeCession().getPme().getEmail() + "\n" + "Singé le " + convertDate(obPME.getDateObservation());
+              "\n" + "Mail: " + convention.getDemandeCession().getPme().getEmail() + "\n" + "Singé le " + convertDate(obPME.getDateObservation(),true);
       qrCodePME = Qrcode.generateQRCode(qrCodePME, path + "/pme.png");
       contextModel.put("qrCodePME", qrCodePME);
       Observation obDG = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParDG());
@@ -274,12 +279,12 @@ public class ConventionServiceImpl implements ConventionService{
         String qrCodeCDMP = getInfoQRcode(obDG);
         qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP, path + "/cdmp.png");
         contextModel.put("qrCodeCDMP", qrCodeCDMP);
-        Observation obORD = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), Status.getConventionAcceptee());
+        /*Observation obORD = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), Status.getConventionAcceptee());
         if (obORD != null) {
           String qrCodeORD = getInfoQRcode(obORD);
           qrCodeORD = Qrcode.generateQRCode(qrCodeORD, path + "/ordonnaneur.png");
           contextModel.put("qrCodeORD", qrCodeORD);
-        }
+        }*/
       }
     }
     Context thymeleafContext = new Context();
