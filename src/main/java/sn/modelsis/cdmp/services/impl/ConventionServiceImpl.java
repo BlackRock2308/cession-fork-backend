@@ -110,13 +110,10 @@ public class ConventionServiceImpl implements ConventionService{
     if(conventionDto.getIdConvention()!=null){
       convention = getConvention(conventionDto.getIdConvention()).orElse(null);
       convention.setRemarqueJuriste(conventionDto.getRemarqueJuriste());
-      if(convention.getDemandeCession().getStatut().getCode().equals(Status.getConventionRejeteeParPME())||
-              convention.getDemandeCession().getStatut().getCode().equals(Status.getConventionRejeteeParDG())){
         saveDocumentConvention(convention);
         Statut statut = statutService.findByCode(Status.getConventionCorrigee());
         convention.getDemandeCession().setStatut(statut);
         demandeCessionService.save(convention.getDemandeCession());
-      }
     }
     return convention;
   }
