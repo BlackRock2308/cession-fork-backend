@@ -91,6 +91,8 @@ public class ConventionServiceImpl implements ConventionService{
         ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(demandeCession.getBonEngagement().getMontantCreance()).orElse(null);
         newConvention.setDemandeCession(demandeCession);
         newConvention.setDecote(exactParametrageDecote);
+        newConvention.setValeurDecote(exactParametrageDecote.getDecoteValue());
+        newConvention.setDemandeCession(demandeCession);
         newConvention.setValeurDecoteByDG(exactParametrageDecote.getDecoteValue()); //valeurDecoteDG take the value of the params decote
         newConvention = conventionRepository.save(newConvention);
           saveDocumentConvention(newConvention);
@@ -191,6 +193,10 @@ public class ConventionServiceImpl implements ConventionService{
       existingConvention.get().setPme(newConvention.getPme());
       log.info("DocumentService:supression de l'ancien document de la convention ........");
       existingConvention.get().setDocuments(newConvention.getDocuments());
+      Documents oldDoc = documentService.getDocument(id).orElse(null);
+      if(oldDoc != null) {
+          documentService.delete(oldDoc.getId());
+      }
 
       conventionRepository.saveAndFlush(existingConvention.get());
       log.info("ConventionService:transmettreConvention update convention with id : {}",existingConvention.get().getIdConvention());
