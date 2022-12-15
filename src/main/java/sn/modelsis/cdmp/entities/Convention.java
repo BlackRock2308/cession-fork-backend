@@ -68,7 +68,7 @@ public class Convention implements Serializable {
   @JoinColumn(name="decoteid")
   private ParametrageDecote decote;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="textConventionid")
   private TextConvention textConvention;
 

@@ -18,4 +18,10 @@ public class TextConventionDto {
 
         private String var3;
 
+        private String var4;
+
+        private String var5;
+
+        private String var6;
+
 }

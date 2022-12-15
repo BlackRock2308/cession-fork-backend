@@ -27,4 +27,13 @@ import java.io.Serializable;
 
         @Column(name = "var3")
         private String var3;
+
+        @Column(name = "var4")
+        private String var4;
+
+        @Column(name = "var5")
+        private String var5;
+
+        @Column(name = "var6")
+        private String var6;
 }

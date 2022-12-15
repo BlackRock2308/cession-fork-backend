@@ -2,7 +2,10 @@ CREATE TABLE public.text_convention (
             id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
             var1 character varying(255),
             var2 character varying(255),
-            var3 character varying(255)
+            var3 character varying(255),
+            var4 character varying(255),
+            var5 character varying(255),
+            var6 character varying(255)
 );
 
 ALTER TABLE ONLY public.text_Convention
@@ -13,3 +16,6 @@ ALTER TABLE ONLY public.convention
 
 ALTER TABLE public.convention
 DROP COLUMN IF EXISTS remarqueJuriste;
+
+ALTER TABLE public.convention
+    ADD COLUMN IF NOT EXISTS textConventionid bigint;
