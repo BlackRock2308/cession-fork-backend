@@ -33,6 +33,7 @@ import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.ParametrageDecote;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
+import sn.modelsis.cdmp.entitiesDtos.TextConventionDto;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
 import sn.modelsis.cdmp.services.*;
@@ -108,6 +109,17 @@ public class ConventionControllers {
       log.info("ConventionControllers:getConvention request params : {}", id);
       return ResponseEntity.status(HttpStatus.OK).body(conventionMapper.asDTO(convention));
     }
+
+  @GetMapping(value = "/textConvention/{id}")
+  public ResponseEntity<TextConventionDto> getTextConvention(
+          @PathVariable Long id,
+          HttpServletRequest request) {
+    log.info("ConventionControllers:getConvention request started ");
+
+    Convention convention = conventionService.getConvention(id).orElse(null);
+    log.info("ConventionControllers:getConvention request params : {}", id);
+    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(convention.getTextConvention()));
+  }
 
   @PostMapping("/{idConvention}/signer-convention-dg/{idUtilisateur}")
   public  ResponseEntity<Boolean> signerConventionDG(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idConvention)  {
