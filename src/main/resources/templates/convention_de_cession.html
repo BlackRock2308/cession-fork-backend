@@ -32,14 +32,12 @@
 			margin: 4em;
 			font-size: 17px;
 		}
-		h4{
+		h6{
 			text-decoration: underline;
 		}
 		.footer{
-			margin: 1em;
 			align-content: center;
 			width: 100%;
-			bottom: 0px;
 			position : absolute;
 		}
 
@@ -56,6 +54,9 @@
 		.signCDMP{
 			float: right;
 			margin-right: 20px;
+		}
+		img{
+			position: relative;
 		}
 
 	</style>
@@ -91,7 +92,7 @@
 		Décote: <span th:text=${convention.valeurDecoteByDG*convention.demandeCession.bonEngagement.montantCreance}> </span> FCFA<br/>
 	</p><br/>
 	<div>
-		<h4 >Article 1 – Objet de la convention</h4>
+		<h6 >Article 1 – Objet de la convention</h6>
 		La présente convention (ci-après la « Convention ») a pour objet de définir :<br/>
 		- les modalités du soutien apporté par le Mécène au Bénéficiaire pour parvenir à mettre en œuvre le
 		Projet décrit ci-dessus;<br/>
@@ -100,12 +101,12 @@
 		Bénéficiaire.<br/>
 		<br/>
 
-		<h4 >Article 2 – Apports du Mécène</h4>
+		<h6 >Article 2 – Apports du Mécène</h6>
 		Le Mécène s’engage à <span th:text=${convention.textConvention.var2} style="font-weight: bold;" ></span> décrit ci-dessus
 		en versant la somme de [ X en chiffres et en lettres HT au Bénéficiaire.
 		<br/>
 
-		<h4 >Article 3 – Apports du Bénéficiaire</h4>
+		<h6 >Article 3 – Apports du Bénéficiaire</h6>
 		3-1 Soutien financier <br/>
 		Le Bénéficiaire s’engage à utiliser <span th:text=${convention.textConvention.var3} style="font-weight: bold;" ></span> apportée par le Mécène pour
 		financer le Projet.
