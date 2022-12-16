@@ -13,6 +13,6 @@ public interface ConventionMapper extends GenericMapper<Convention, ConventionDt
     @Mapping(target = "valeurDecoteByDG", expression = "java(convention.getValeurDecoteByDG())")
     @Mapping(target = "idDemande", expression = "java(convention.getDemandeCession().getIdDemande())")
    // @Mapping(target = "utilisatuerId", expression = "java(convention.getUtilisateur().getIdUtilisateur())")
-    ConventionDto asDTO(Convention convention);
+     ConventionDto asDTO(Convention convention);
 
 }

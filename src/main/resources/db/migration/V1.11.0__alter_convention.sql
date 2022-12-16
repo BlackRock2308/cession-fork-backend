@@ -1,1 +1,0 @@
---ALTER TABLE public.convention ALTER COLUMN remarqueJuriste TYPE text;

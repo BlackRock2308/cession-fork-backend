@@ -57,8 +57,6 @@ public class Convention implements Serializable {
   @Column(name = "active_convention",columnDefinition = "boolean default true")
   private boolean activeConvention = true;
 
-  @Column(name = "remarqueJuriste")
-  private String remarqueJuriste;
 
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -80,6 +78,10 @@ public class Convention implements Serializable {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="decoteid")
   private ParametrageDecote decote;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name="textConventionid")
+  private TextConvention textConvention;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
   private Set<ConventionDocuments> documents = new HashSet<>();
