@@ -188,11 +188,14 @@ public class ConventionServiceImpl implements ConventionService{
       existingConvention.get().setDateConvention(newConvention.getDateConvention());
       existingConvention.get().setPme(newConvention.getPme());
       log.info("DocumentService:supression de l'ancien document de la convention ........");
-      existingConvention.get().setDocuments(newConvention.getDocuments());
-      Documents oldDoc = documentService.getDocument(id).orElse(null);
-      if(oldDoc != null) {
-          documentService.delete(oldDoc.getId());
+      for (Documents doc:existingConvention.get().getDocuments()
+           ) {
+        documentService.delete(doc.getId());
       }
+      existingConvention.get().setDocuments(null);
+      log.info("DocumentService:supression de l'ancien document de la convention terminée.");
+     
+      log.info("ConventionService:transmettreConvention with document : {}",existingConvention.get().getDocuments());
 
       conventionRepository.saveAndFlush(existingConvention.get());
       log.info("ConventionService:transmettreConvention update convention with id : {}",existingConvention.get().getIdConvention());
@@ -202,6 +205,7 @@ public class ConventionServiceImpl implements ConventionService{
     }
     return existingConvention.get();
   }
+
   
 
   public String convertDate(Date date){
