@@ -1,24 +1,24 @@
 package sn.modelsis.cdmp.security.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import sn.modelsis.cdmp.entities.Utilisateur;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 @Component
 public class JWTUtility implements Serializable {
 
     private static final long serialVersionUID = 234234523523L;
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 15 * 60 * 60;
     public static final long JWT_TOKEN_VALIDITY_ADMIN = 5 * 60 * 60;
     public static final long JWT_TOKEN_VALIDITY_ETUDIANT = 365 * 24 * 60 * 60;
 
@@ -55,23 +55,11 @@ public class JWTUtility implements Serializable {
 
 
     //generate token for user
-    public String generateToken(Utilisateur user , UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-       // List<String> claimsList = userDetails.getAuthorities();
-       // List<String> claimsListe = userDetails.getUsername();
         claims.put("roles",userDetails.getAuthorities());
 
         return doGenerateToken(claims, userDetails.getUsername());
-    }
-
-
-    public String generateTokenEtudiant(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateTokenEtudiant(claims, userDetails.getUsername());
-    }
-    public String generateTokenAdmin(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateTokenAdmin(claims, userDetails.getUsername());
     }
 
     //while creating the token -
@@ -83,16 +71,6 @@ public class JWTUtility implements Serializable {
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
     }
 
-    private String doGenerateTokenEtudiant(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_ETUDIANT * 1000))
-                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
-    }
-    private String doGenerateTokenAdmin(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_ADMIN * 1000))
-                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
-    }
 
 
     //validate token

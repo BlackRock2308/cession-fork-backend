@@ -1,6 +1,6 @@
 package sn.modelsis.cdmp.controllers;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,9 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
@@ -55,9 +54,9 @@ public class DemandeCessionController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<NewDemandeCessionDto>> getAllDemandeCession(Pageable pageable,
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCession(Pageable pageable,
                                                                                              HttpServletRequest request) {
-        Page<NewDemandeCessionDto> demandeList = demandeCessionService.findAllWithoutDemande(pageable);
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAll(pageable);
         log.info("DemandeCessionController:getAllDemandeCession request started");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
@@ -165,9 +164,9 @@ public class DemandeCessionController {
 
 
     @GetMapping(value="bystatut")
-    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatut(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String statut,
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatut(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String[] statuts,
                                                                                 HttpServletRequest request) {
-        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatut(pageable,statut);
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatut(pageable,statuts);
         log.info("Fetching All Deamndes Cession ....");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
@@ -192,10 +191,6 @@ public class DemandeCessionController {
     @PostMapping("/{idDemande}/signer-convention-dg/{idUtilisateur}")
     public  ResponseEntity<Boolean> signerConventionDG(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
 
-        log.info("codePin:{}",codePin);
-        if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
-            throw new NotFoundException("La demande de cession n'existe pas");
-
         DemandeCession demandeSignee;
         if (utilisateurService.signerConvention(idUtilisateur,codePin))
             demandeCessionService.signerConventionDG(idDemande);
@@ -213,7 +208,6 @@ public class DemandeCessionController {
 
     @PostMapping("/{idDemande}/signer-convention-pme/{idUtilisateur}")
     public  ResponseEntity<Boolean> signerConventionPME(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
-
         log.info("codePin:{}",codePin);
         if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
             throw new NotFoundException("La demande de cession n'existe pas");
@@ -243,31 +237,87 @@ public class DemandeCessionController {
     }
 
 
-    @GetMapping("search/{numeroDemande}")
-    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByParameters(
-            @PathVariable("numeroDemande") String numeroDemande){
-        log.info("DemandeCessionController:searchDemandeCessionByParameters request started");
+    /* ************* Search Demande Cession by ReferenceBR, numeroDemande, nomMarche, statutLibelle ************* */
+
+    @GetMapping("search-by-multi-params")
+    public ResponseEntity<List<DemandeCessionDto>> filterDemandeCessionByMultipleParams(
+            @RequestParam("referenceBE") String referenceBE,
+            @RequestParam("numeroDemande") String numeroDemande,
+            @RequestParam("nomMarche") String nomMarche,
+            @RequestParam("statutLibelle") String statutLibelle,
+            @RequestParam(value = "startDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(value = "endDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
+
+    ){
+        log.info("DemandeCessionController:searchDemandeCessionByMultipleParams request started");
+
+//
+//        List<DemandeCessionDto> cessionListByDate = demandeCessionService.findDemandeCessionByLocalDateTime(startDate, endDate);
+//        log.info("DemandeCessionService:filterExactDemandeCession cessionListByDate : {} ",cessionListByDate);
+
+
+        List<DemandeCessionDto> cessionListByOthersCriteria = demandeCessionService.findDemandeCessionByMultipleParams(referenceBE,
+                numeroDemande,
+                nomMarche,
+                statutLibelle,
+                startDate,
+                endDate);
+        log.info("DemandeCessionService:filterExactDemandeCession cessionListByOthersCriteria : {} ",cessionListByOthersCriteria);
+
+//        List<DemandeCessionDto> similarities = new ArrayList<>();
+//
+//        if(!cessionListByOthersCriteria.isEmpty()){
+//            similarities = cessionListByOthersCriteria
+//                    .stream()
+//                    .filter(element -> !cessionListByDate.contains(element))
+//                    .collect(Collectors.toList());
+//            log.info("Demande similaire based on criteres: {} ",similarities);
+//
+//        }else{
+//            similarities = cessionListByDate;
+//            log.info("Demande similaire based Date: {} ",similarities);
+//
+//        }
+        //log.info("DemandeCessionService:filterExactDemandeCession similarities : {} ",similarities);
+
+        //log.info("DemandeCessionController:searchDemandeCessionByMultipleParams ----> reulst : {}",similarities);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(cessionListByOthersCriteria);
+    }
+
+    /* ************************ Search by Statut Libellé ************************ */
+
+    @GetMapping("searchByStatut/{statutLibelle}")
+    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByStatutLibelle(
+            @PathVariable("statutLibelle") String statutLibelle){
+        log.info("DemandeCessionController:searchDemandeCessionByStatutLibelle request started");
 
         List<DemandeCessionDto> demandeList = demandeCessionService
-                .findDemandeCessionByMultipleCritere(numeroDemande);
-        log.info("DemandeCessionController:searchDemandeCessionByParameters request params : {}",numeroDemande);
+                .findDemandeCessionByStatutLibelle(statutLibelle);
+        log.info("DemandeCessionController:searchDemandeCessionByStatutLibelle: statutLibelle : {}",statutLibelle);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
     }
 
+    /* ************************ Search by Date de Deamnde de Cession ************************ */
+    @GetMapping("/searchByLocalDate/dateSearch")
+    public ResponseEntity<List<DemandeCessionDto>> findDemandeCessionByDate(
+            @RequestParam("startDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
 
-    @GetMapping("searchByRef/{referenceBE}/{numeroDemande}/{nomMarche}")
-    public ResponseEntity<List<DemandeCessionDto>> searchDemandeCessionByMultipleParams(
-            @PathVariable("referenceBE") String referenceBE,
-            @PathVariable("numeroDemande") String numeroDemande,
-            @PathVariable("nomMarche") String nomMarche){
-        log.info("DemandeCessionController:searchDemandeCessionBy2Params request started");
+            @RequestParam("endDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate){
 
+        log.info("DemandeCessionController:findDemandeCessionByDate request started");
+
+        log.info("DemandeCessionController:findDemandeCessionByDate: startDate : {} and endDate : {}",startDate, endDate);
         List<DemandeCessionDto> demandeList = demandeCessionService
-                .findDemandeCessionByDemande(referenceBE, numeroDemande,nomMarche);
-        log.info("DemandeCessionController:searchDemandeCessionBy2Params: referenceBE : {}",referenceBE);
+                .findDemandeCessionByLocalDateTime(startDate, endDate);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
     }
+
 
 }

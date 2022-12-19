@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +27,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.exceptions.CustomException;
 
 @Slf4j
 @Service
@@ -117,21 +120,21 @@ public class Util {
     return objectMapper.writeValueAsString(object);
   }
 
-//  /**
-//   * Convert the string object into an object
-//   *
-//   * @param objectString The string representation of the object to convert
-//   * @param objectClass The class of the object to convert
-//   * @return The Object contained in the String representation
-//   */
-//  public static Object convertJsonStringToEntity(String objectString, Class<?> objectClass) {
-//    try {
-//      return objectMapper.readValue(objectString, objectClass);
-//    } catch (IOException e) {
-//      logException(e);
-//      throw new CustomException("ERROR_OF_JSON_PARSER");
-//    }
-//  }
+  /**
+   * Convert the string object into an object
+   *
+   * @param objectString The string representation of the object to convert
+   * @param objectClass The class of the object to convert
+   * @return The Object contained in the String representation
+   */
+  public static Object convertJsonStringToEntity(String objectString, Class<?> objectClass) {
+    try {
+      return objectMapper.readValue(objectString, objectClass);
+    } catch (IOException e) {
+      logException(e);
+      throw new CustomException("ERROR_OF_JSON_PARSER");
+    }
+  }
 
   /**
    * Convert id {@link String} to {@link UUID}
@@ -221,7 +224,7 @@ public class Util {
   public static  Double[] donneStatistiquePaiementPME(String json) {
     json = json.replaceAll("null", "0.0");
     String [] objs = json.split(",");
-    Double[] donne = new Double[3];
+    Double[] donne = new Double[4];
     for(int i=0; i<objs.length; i++ ){
       donne[i] = Double.parseDouble(objs[i]);
     }
@@ -236,6 +239,20 @@ public class Util {
       donne[i] = Double.parseDouble(objs[i]);
     }
     return donne;
+  }
+
+  public <T> Map<String,Object> mergeObjects(T first, T second) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    Class<?> clazz = first.getClass();
+    Field[] fields = clazz.getDeclaredFields();
+    Map<String,Object> values=new HashMap<>();
+    for (Field field : fields) {
+      field.setAccessible(true);
+      Object value1 = field.get(first);
+      Object value2 = field.get(second);
+      Object value = (value1 != null) ? value1 : value2;
+      values.put(field.getName(),value);
+    }
+    return values;
   }
 
 }

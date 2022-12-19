@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,16 +26,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.TypeDocument;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import sn.modelsis.cdmp.entities.*;
-import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.services.PmeService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -51,8 +46,9 @@ public class PmeController {
                                               HttpServletRequest request) {
     log.info("PmeController:savePme request started");
 
-    log.info("PmeController:savePme request body : {}", pmeDto);
     Pme pme = DtoConverter.convertToEntity(pmeDto);
+
+    log.info("PmeController:savePme request body : {}", pme);
 
     Pme result = pmeService.savePme(pme);
     return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
@@ -81,7 +77,9 @@ public class PmeController {
                                           HttpServletRequest request) {
     log.info("PmeController:updatePme request started");
     Pme pme = DtoConverter.convertToEntity(pmeDto);
+    pme.setIdPME(id);
     log.info("PmeController:updatePme Started with request params id={}", id);
+
     Pme result = pmeService.updatePme(id,pme);
     log.info("PmeController:updatePme updated with id = {} ", result.getIdPME());
     return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
@@ -136,22 +134,23 @@ public class PmeController {
   @ApiResponses({@ApiResponse(responseCode = "201", description = "Success"),
       @ApiResponse(responseCode = "400", description = "Bad request")})
   public ResponseEntity<PmeDto> addDocument(@PathVariable Long id,
-      @RequestParam(name = "file") MultipartFile file, @RequestParam(name = "type") String type) {
+                                            @RequestParam(name = "file") MultipartFile file,
+                                            @RequestParam(name = "type") String type) {
 
-    Optional<Pme> be = null;
+    Optional<Pme> pme = null;
     try {
       log.info("PmeController:addDocument request started");
-      be = pmeService.upload(id, file, TypeDocument.valueOf(type));
+      pme = pmeService.upload(id, file, TypeDocument.valueOf(type));
       log.info("PmeController:addDocument uploading with request params id = {}", id);
     } catch (IOException e) {
       log.error(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
-    if (be.isEmpty()) {
+    if (pme.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
-    log.info("PmeController:addDocument saved in database with idPme = {}", be.get().getIdPME());
-    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(be.get()));
+    log.info("PmeController:addDocument saved in database with idPme = {}", pme.get().getIdPME());
+    return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(pme.get()));
   }
 
   public ResponseEntity<PmeDto> getPmeByUser(Long idUser){

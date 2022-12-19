@@ -24,6 +24,8 @@ public class UtilisateurDto {
     private String password;
 
     private String prenom;
+    
+    private String nom;
 
     private String urlImageSignature;
 
@@ -36,6 +38,8 @@ public class UtilisateurDto {
     private Set<Role> roles ;
 
     private boolean updatePassword;
+
+    private boolean updateCodePin;
 
     // private Set<RoleUtilisateur> rolesUtilisateurs ;
 

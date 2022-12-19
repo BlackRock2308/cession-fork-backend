@@ -1,9 +1,20 @@
 server:
   port: 8081
-  document_folder: ${DOCUMENT_FOLDER:C:\Users\snndiayeos\Desktop\Wootoo\DocumentLibrary}
-  notification: ${HOST:http://localhost:8087}
-  email_cdmp: financeislamique@modelsis.sn
+  qrcode_folder: ${qrcode_folder:./src/main/resources/static/img}
+ # document_folder: ${document_folder:/app/documents/cdmp}
+  document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
+  #document_folder: ${DOCUMENT_FOLDER:/Users/macbookpro/Desktop/Wootoo/DocumentLibrary}
+
+  #notification: ${HOST:http://localhost:8087}
+  notification: ${HOST:http://10.42.1.131:8087}
+  #notification: ${HOST:http://10.0.0.222:8087}
+  ##email_cdmp: notifications-wootoo-@modelsis.sn
+  link_front: ${LINK_FRONT:http://138.3.253.10:8081/#/login}
+  email_cdmp: notifications-wootoo@modelsis.sn
 spring:
+  flyway:
+    enabled: true
+    out-of-order: false
   sql:
     init:
       mode: always
@@ -12,6 +23,8 @@ spring:
     name: Cession creance
   datasource:
     password: password
+    #url: jdbc:postgresql://${HOST_DB:10.0.0.15:5432}/cdmp
+    #url: jdbc:postgresql://${HOST_DB:10.42.1.205:5432}/cdmp
     url: jdbc:postgresql://localhost:5432/cdmp
     username: cdmp
   jpa:
@@ -31,4 +44,3 @@ spring:
     multipart:
       max-file-size: 2000000MB
       max-request-size: 2000000MB
-

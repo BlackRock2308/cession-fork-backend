@@ -3,8 +3,6 @@ package sn.modelsis.cdmp.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypePaiement;
 import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
@@ -13,48 +11,53 @@ import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPMEDto;
 
 public interface PaiementService {
 
-        /**
-         *
-         * @param paiementDto,montant,typePaiement
-         * @return
-         */
-    //    Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement);
+    /**
+     *
+     * @param paiementDto,montant,typePaiement
+     * @return
+     */
 
-        Paiement savePaiement(PaiementDto paiementDto);
-        /**
-         *
-         * @param paiementDto,montant,typePaiement
-         * @return
-         */
-    //    Paiement save(PaiementDto paiementDto, double montant, TypePaiement typePaiement);
+    Paiement savePaiement(PaiementDto paiementDto);
 
-        Paiement addPaiementToDemandeCession(PaiementDto paiementDto);
+    /**
+     *
+     * @param paiementDto,montant,typePaiement
+     * @return
+     */
 
-        /**
-         *
-         * @param idPaiement,montant,typePaiement
-         * @return
-         */
-        void update(Long idPaiement, double montant, TypePaiement typePaiement);
+    Paiement addPaiementToDemandeCession(PaiementDto paiementDto);
 
-        /**
-         *
-         * @return
-         */
-        List<Paiement> findAll();
+    /**
+     *
+     * @param idPaiement,montant,typePaiement
+     * @return
+     */
+    void update(Long idPaiement, double montant, TypePaiement typePaiement);
 
-        /**
-         *
-         * @param id
-         * @return
-         */
-        Optional<Paiement> getPaiement(Long id);
+    /**
+     * @param idMPE
+     * @return
+     */
+    List<Paiement> findAllByPME(Long idMPE);
 
-        /**
-         *
-         * @param id
-         */
-        void delete(Long id);
+    /**
+     *
+     * @return
+     */
+    List<Paiement> findAll();
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Optional<Paiement> getPaiement(Long id);
+
+    /**
+     *
+     * @param id
+     */
+    void delete(Long id);
 
     Paiement savePaiement(Paiement paiement);
 
@@ -75,8 +78,8 @@ public interface PaiementService {
     /**
      *
      * @param annee
-     * @param  idPME
+     * @param idPME
      * @return
      */
-    StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME );
+    StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME);
 }

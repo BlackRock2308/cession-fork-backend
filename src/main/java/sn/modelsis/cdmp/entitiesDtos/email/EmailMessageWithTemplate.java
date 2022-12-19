@@ -1,4 +1,4 @@
-package sn.modelsis.cdmp.security.dto;
+package sn.modelsis.cdmp.entitiesDtos.email;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -19,6 +19,8 @@ public class EmailMessageWithTemplate {
     private String destinataire;
 
     private String templateName;
+
+    private String frontLink;
 
     private String objet;
 

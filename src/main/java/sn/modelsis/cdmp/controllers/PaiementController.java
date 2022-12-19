@@ -1,25 +1,33 @@
 package sn.modelsis.cdmp.controllers;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.entitiesDtos.*;
+import sn.modelsis.cdmp.entities.Paiement;
+import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementCDMPDto;
+import sn.modelsis.cdmp.entitiesDtos.StatistiquePaiementPMEDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.util.DtoConverter;
-import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.services.PaiementService;
-
-import java.util.*;
+import sn.modelsis.cdmp.util.DtoConverter;
 
 @RestController
 @RequestMapping("/api/paiements")
@@ -44,6 +52,20 @@ public class PaiementController {
             HttpServletRequest request) {
         List<Paiement> paiements =
                 paiementService.findAll();
+        List<PaiementDto> paiementDtos = new ArrayList<>();
+        for (Paiement paiement :paiements ) {
+            paiementDtos.add(DtoConverter.convertToDto(paiement));
+        }
+        log.info("All paiements .");
+        return ResponseEntity.status(HttpStatus.OK).body(paiementDtos);
+
+    }
+
+    @GetMapping("/bypme/{id}")
+    public ResponseEntity<List<PaiementDto>> getPaiementsByPME(@PathVariable("id") Long id,
+            HttpServletRequest request) {
+        List<Paiement> paiements =
+                paiementService.findAllByPME(id);
         List<PaiementDto> paiementDtos = new ArrayList<>();
         for (Paiement paiement :paiements ) {
             paiementDtos.add(DtoConverter.convertToDto(paiement));

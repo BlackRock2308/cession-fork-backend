@@ -1,27 +1,48 @@
 package sn.modelsis.cdmp;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import sn.modelsis.cdmp.dbPersist.*;
-
-import sn.modelsis.cdmp.entities.ParametrageDecote;
-import sn.modelsis.cdmp.repositories.*;
-import sn.modelsis.cdmp.services.*;
+import sn.modelsis.cdmp.dbPersist.PersitUsers;
+import sn.modelsis.cdmp.repositories.BonEngagementRepository;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.PmeRepository;
+import sn.modelsis.cdmp.repositories.RoleRepository;
+import sn.modelsis.cdmp.repositories.StatutRepository;
+import sn.modelsis.cdmp.repositories.UtilisateurRepository;
+import sn.modelsis.cdmp.services.BonEngagementService;
+import sn.modelsis.cdmp.services.ConventionService;
+import sn.modelsis.cdmp.services.DemandeAdhesionService;
+import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.DetailPaiementService;
+import sn.modelsis.cdmp.services.PaiementService;
 
 /**
  * @author SNDIAGNEF
@@ -57,6 +78,8 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
     private final PaiementService paiementService;
     private final DetailPaiementService detailPaiementService;
 
+    @Value("${server.link_front}")
+    private String uilocation; 
 
   public CdmpApplication(Environment env, StatutRepository statutRepository, UtilisateurRepository utilisateurRepository, RoleRepository roleRepository, PmeRepository pmeRepository, BonEngagementService bonEngagementService, DemandeCessionService demandeCessionService, DemandeAdhesionService demandeAdhesionService, BonEngagementRepository bonEngagementRepository, DemandeCessionRepository demandeCessionRepository, ConventionService conventionService, PaiementService paiementService, DetailPaiementService detailPaiementService) {
     this.env = env;
@@ -135,72 +158,61 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
               "Config Server: \t{}\n----------------------------------------------------------", configServerStatus);
   }
 
-  @Bean
-  public WebMvcConfigurer corsConfigurer() {
-      return new WebMvcConfigurer() {
-          @Override
-          public void addCorsMappings(CorsRegistry registry) {
-              registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*");
-          }
-      };
-  }
-//	@Bean
-//	public CorsFilter corsFilter() {"
-//		CorsConfiguration corsConfiguration = new CorsConfiguration();
-//		corsConfiguration.setAllowCredentials(true);
-//		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-//		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
-//				"Accept", "Authorization", "Origin, Accept", "X-Requested-With",
-//				"Access-Control-Request-Method", "Access-Control-Request-Headers"));
-//		corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
-//				"Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-//		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-//		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-//		return new CorsFilter(urlBasedCorsConfigurationSource);
-//	}
+//  @Bean
+//  public WebMvcConfigurer corsConfigurer() {
+//      return new WebMvcConfigurer() {
+//          @Override
+//          public void addCorsMappings(CorsRegistry registry) {
+//              registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*");
+//          }
+//      };
+//  }
 
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", uilocation));
+    configuration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin",
+        "Content-Type", "Accept", "Authorization", "Origin,Accept", "X-Requested-With",
+        "Access-Control-Request-Method", "Access-Control-Request-Headers", "enctype"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    configuration.setAllowCredentials(true);
+    configuration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept",
+        "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
+  
+  @Component
+  public class CorsFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
+      String context = request.getRequestURI();
+      if (request.getRequestURI().contains("api/") || request.getRequestURI().contains("token")) {
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers",
+            "authorization, content-type, xsrf-token,enctype");
+        response.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+        response.setHeader("Access-Control-Allow-Origin", uilocation);
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        filterChain.doFilter(request, response);
+      } else {
+        filterChain.doFilter(request, response);
+      }
+    }
+  }
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("Initialisation des differents statuts...");
 
-        PersistStatus persistStatus= new PersistStatus(statutRepository);
-        log.info("Initialisation des differents statuts terminée");
-
-        log.info("Initialisation des differents profils utilisateurs...");
-
-        PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
+       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
         log.info("Initialisation des differents profils terminée");
 
-        PersistBonEngagement PersistBonEngagement = new PersistBonEngagement(bonEngagementService);
-        log.info("Initialisation des bon d'engagement");
 
-       // PersistDemande persistDemande= new PersistDemande(demandeCessionService, demandeAdhesionService, pmeRepository, bonEngagementRepository);
-        log.info("Initialisation des demandes d'adhésion et de cession");
-
-       // PersistConvention persistConvention = new PersistConvention(demandeCessionRepository, conventionService, pmeRepository);
-        log.info("Initialisation des conventions");
-
-       // PersistPaiement persistPaiement= new PersistPaiement(demandeCessionRepository, paiementService, detailPaiementService);
-        log.info("Initialisation des paiements et details paiements");
   }
 
-  @Bean
-  public CommandLineRunner start(ParametrageDecoteRepository decoteRepository){
-      return args -> {
-          decoteRepository.saveAndFlush(new ParametrageDecote(1000000L,5000000L,0.01));
-          decoteRepository.saveAndFlush(new ParametrageDecote(5000000L,10000000L,0.02));
-          decoteRepository.saveAndFlush(new ParametrageDecote(10000000L,100000000L,0.001));
-          decoteRepository.saveAndFlush(new ParametrageDecote(100000000L,200000000L,0.002));
-
-
-
-          decoteRepository.findAll().forEach(cp ->{
-              System.out.println(cp.getDecoteValue());
-          });
-
-      };
-  }
 
 }

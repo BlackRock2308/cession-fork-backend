@@ -1,12 +1,11 @@
 package sn.modelsis.cdmp.services;
 
-import org.springframework.stereotype.Service;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.ParametrageDecote;
-import sn.modelsis.cdmp.entitiesDtos.ParametrageDecoteDTO;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import sn.modelsis.cdmp.entities.ParametrageDecote;
 
 @Service
 public interface ParametrageDecoteService {
@@ -21,8 +20,8 @@ public interface ParametrageDecoteService {
 
     void deleteDecoteParameter(Long id);
 
-    Optional<ParametrageDecote> findByIdDecote (Long id);
+    Optional<ParametrageDecote> findByIdDecote(Long id);
 
-    Optional<ParametrageDecote> findIntervalDecote(double montant);
+    Optional<ParametrageDecote> findIntervalDecote(Double montant);
 
 }

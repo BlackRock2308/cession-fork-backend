@@ -5,13 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.BonEngagement;
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.DemandeCession;
@@ -28,9 +25,9 @@ import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.PaiementRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.PaiementService;
-import sn.modelsis.cdmp.util.*;
-
-import javax.xml.crypto.Data;
+import sn.modelsis.cdmp.util.DtoConverter;
+import sn.modelsis.cdmp.util.ObjetMontantMois;
+import sn.modelsis.cdmp.util.Util;
 
 @Service
 @RequiredArgsConstructor
@@ -52,41 +49,19 @@ public class PaiementServiceImpl implements PaiementService {
 
     @Override
     public Paiement addPaiementToDemandeCession(PaiementDto paiementDto) {
-        DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
 
-        String statusLibelle = demandeCession.getStatut().getLibelle() ;
-        Statut statutCDMP = statutRepository.findByCode("CDMP_EN_ATTENTE_DE_PAIEMENT");
         Statut newDemandeStatus = statutRepository.findByCode("CONVENTION_ACCEPTEE");
-        Statut statutPme = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
-        Paiement paiement = DtoConverter.convertToEntity(paiementDto);
-        BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
-        double montantCreance=bonEngagement.getMontantCreance();
-        double decote = 0 ;
-        Set<Convention> conventions=  demandeCession.getConventions();
-        for (Convention convention :conventions ) {
-            if (convention.isActiveConvention()){
-                if (convention.getValeurDecoteByDG() != 0){
-                    decote=convention.getValeurDecoteByDG();
-                    log.info("Decote Convention DG : {}", decote);
-                }else {
-                    decote=convention.getValeurDecote();
-                    log.info("Decote Convention default : {}", decote);
-                }
-            }
-        }
+        Paiement paiement =new Paiement();
+        DemandeCession demandeCession = initPaiement(paiementDto);
+        demandeCession.setStatut(newDemandeStatus);
+        String statusLibelle = demandeCession.getStatut().getLibelle() ;
+        if(! statusLibelle.equals("CONVENTION_ACCEPTEE"))
+            throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION ACCEPTEE ");
 
-        if(! statusLibelle.equals("CONVENTION_GENEREE"))
-            throw new CustomException("Vous devez d'abord ajouter la convention le status du paiement doit etre CONVENTION_GENEREE ");
-            //paiement.setDemandeCession(demandeCession);
-            paiement.setSoldePME(montantCreance- (montantCreance*decote) );
-            paiement.setMontantRecuCDMP(0);
-            paiement.setStatutCDMP(statutCDMP);
-            paiement.setStatutPme(statutPme);
-            demandeCession.setStatut(newDemandeStatus);
-            demandeCession.setPaiement(paiement);
-            demandeCessionRepository.save(demandeCession);
-
-      return demandeCession.getPaiement();
+         DemandeCession demandeCessionSaved = demandeCessionRepository.save(demandeCession);
+          if (demandeCessionSaved!=null)
+              return demandeCessionSaved.getPaiement();
+      return paiement;
 
     }
 
@@ -137,6 +112,11 @@ public class PaiementServiceImpl implements PaiementService {
     }
 
     @Override
+    public List<Paiement> findAllByPME(Long idMPE) {
+        return paiementRepository.findAllByDemandeCessionPmeIdPME(idMPE);
+    }
+
+    @Override
     public List<Paiement> findAll(){
         return paiementRepository.findAll();
     }
@@ -159,12 +139,10 @@ public class PaiementServiceImpl implements PaiementService {
 
     @Override
     public StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee)  {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime today = LocalDateTime.of(annee, 1, 1,0,0,0);
         StatistiquePaiementCDMPDto statistiquePaiementCDMPDto = new StatistiquePaiementCDMPDto();
-        if(annee <= today.getYear()){
             statistiquePaiementCDMPDto.setYear(annee);
             Double[] donnes = new Double[4];
-            today= LocalDateTime.of(annee, 1, 1,0,0,0);
             for(int i=0 ; i<12;i++){
                 donnes = Util.donneStatistiquePaiementCDMP(paiementRepository.getStatistiquePaiementCDMP(today));
                 statistiquePaiementCDMPDto.getCmulRembourses().add(new ObjetMontantMois(donnes[2],today));
@@ -172,47 +150,87 @@ public class PaiementServiceImpl implements PaiementService {
                 statistiquePaiementCDMPDto.getCumulMontantCreance().add(new ObjetMontantMois(donnes[1],today));
                 statistiquePaiementCDMPDto.getCumulSoldes().add(new ObjetMontantMois(donnes[3],today));
                 today= today.plusMonths(1);
-            }
         }
         return statistiquePaiementCDMPDto;
     }
 
     @Override
     public StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee) {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime today =LocalDateTime.of(annee, 1, 1,0,0,0);
         StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
-        if(annee <= today.getYear()){
             statistiquePaiementPMEDto.setYear(annee);
             Double[] donnes = new Double[3];
-            today= LocalDateTime.of(annee, 1, 1,0,0,0);
             for(int i=0 ; i<12;i++){
                 donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementPME(today));
-                statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(donnes[2],today));
+                statistiquePaiementPMEDto.getCumulDebourses().add(new ObjetMontantMois(donnes[2],today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(donnes[1],today));
                 statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(donnes[0],today));
+                statistiquePaiementPMEDto.getCumulDecotes().add(new ObjetMontantMois(donnes[3], today));
                 today= today.plusMonths(1);
-            }
         }
         return statistiquePaiementPMEDto;
     }
 
     @Override
     public StatistiquePaiementPMEDto getStatistiquePaiementByPME(int annee, Long idPME ) {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime today = LocalDateTime.of(annee, 1, 1, 0, 0, 0);
         StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
-        if (annee <= today.getYear()) {
             statistiquePaiementPMEDto.setYear(annee);
-            Double[] donnes = new Double[3];
-            today = LocalDateTime.of(annee, 1, 1, 0, 0, 0);
+            Double[] donnes = new Double[4];
             for (int i = 0; i < 12; i++) {
-                donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementPME(today));
-                statistiquePaiementPMEDto.getCmulDebourses().add(new ObjetMontantMois(donnes[2], today));
+                donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementByPME(idPME,today));
+                statistiquePaiementPMEDto.getCumulDebourses().add(new ObjetMontantMois(donnes[2], today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(donnes[1], today));
                 statistiquePaiementPMEDto.getCumulSoldes().add(new ObjetMontantMois(donnes[0], today));
+                statistiquePaiementPMEDto.getCumulDecotes().add(new ObjetMontantMois(donnes[3], today));
                 today = today.plusMonths(1);
-            }
         }
         return statistiquePaiementPMEDto;
+    }
+
+    private double setDecote(DemandeCession demandeCession){
+        double decote = 0 ;
+        Set<Convention> conventions=  demandeCession.getConventions();
+        for (Convention convention :conventions ) {
+            if (convention.isActiveConvention()){
+                if (convention.getValeurDecoteByDG() != 0){
+                    decote=convention.getValeurDecoteByDG();
+                    log.info("Decote Convention DG : {}", decote);
+                }else {
+                    decote=convention.getValeurDecote();
+                    log.info("Decote Convention default : {}", decote);
+                }
+            }
+        }
+        return decote ;
+
+    }
+    private DemandeCession  initPaiement(PaiementDto paiementDto ){
+        DemandeCession demandeCession = demandeCessionRepository.findById(paiementDto.getDemandeId()).orElse(null);
+        BonEngagement bonEngagement = demandeCession.getBonEngagement() ;
+        double montantCreanceInitial = bonEngagement.getMontantCreance();
+        double montantCreance=bonEngagement.getMontantCreance();
+        double decote = 0 ;
+        decote = setDecote(demandeCession);
+        Paiement paiement = DtoConverter.convertToEntity(paiementDto);
+        paiement.setDemandeCession(demandeCession);
+        paiement.setNomMarche(bonEngagement.getNomMarche());
+        paiement.setRaisonSocial(demandeCession.getPme().getRaisonSocial() );
+        paiement.setSoldePME(montantCreance- (montantCreance*decote) );
+        paiement.setMontantRecuCDMP(0);
+        paiement.setMontantCreance(paiement.getSoldePME());
+        paiement.setMontantCreanceInitial(montantCreanceInitial);
+        paiement = setStatusPaiement(paiement);
+        demandeCession.setPaiement(paiement);
+        return demandeCession;
+    }
+
+    private Paiement setStatusPaiement(Paiement paiement){
+        Statut statutCDMP = statutRepository.findByCode("CDMP_EN_ATTENTE_DE_PAIEMENT");
+        Statut statutPme = statutRepository.findByCode("PME_EN_ATTENTE_DE_PAIEMENT");
+        paiement.setStatutCDMP(statutCDMP);
+        paiement.setStatutPme(statutPme);
+        return paiement;
     }
 }
 

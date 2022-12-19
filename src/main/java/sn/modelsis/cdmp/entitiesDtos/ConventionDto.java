@@ -1,12 +1,17 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author SNDIAGNEF
@@ -37,10 +42,12 @@ public class ConventionDto {
   
   private PmeDto pmeDto;
 
-  //private boolean activeConvention;
-
   private UtilisateurDto utilisatuerDto;
-  
+
+  private TextConventionDto textConventionDto;
+
+  private Long utilisatuerId;
+
   private Set<DocumentDto> documents = new HashSet<>();
 
 }

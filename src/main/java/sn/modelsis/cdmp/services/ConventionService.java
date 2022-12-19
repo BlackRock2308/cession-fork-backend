@@ -3,6 +3,7 @@
  */
 package sn.modelsis.cdmp.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +23,17 @@ public interface ConventionService {
 
     /**
      * 
-     * @param convention
+     * @param conventionDto
      * @return
      */
-    Convention save(Convention convention);
+    Convention save(ConventionDto conventionDto);
+
+    /**
+     *
+     * @param conventionDto
+     * @return
+     */
+    Convention corriger(ConventionDto conventionDto) ;
 
     /**
     * 
@@ -60,7 +68,14 @@ public interface ConventionService {
 
     Convention updateValeurDecote(Long idConvention, double newValue);
 
-    Convention updateEntireConvention(Long id, Convention newConvention);
-    
-    
+    Convention transmettreConvention(Long id, Convention newConvention);
+
+
+    void saveDocumentConventionSigner(Convention convention) throws IOException;
+
+    void conventionSignerParPME(Long idConvention, Long idPME) ;
+    void conventionSignerParDG(Long idConvention, Long idDG) ;
+
+
+
 }

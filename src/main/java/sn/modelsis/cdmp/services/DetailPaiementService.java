@@ -3,12 +3,13 @@ package sn.modelsis.cdmp.services;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.entities.Paiement;
 import sn.modelsis.cdmp.entities.TypeDocument;
+import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
 
 public interface DetailPaiementService {
 
@@ -18,7 +19,6 @@ public interface DetailPaiementService {
      * @return
      */
     DetailPaiement paiementPME(DetailPaiement detailPaiement);
-    DetailPaiement getPaiement(DetailPaiement detailPaiement);
 
     DetailPaiement paiementCDMP(DetailPaiement detailPaiement);
 
@@ -54,5 +54,7 @@ public interface DetailPaiementService {
     Optional<DetailPaiement> upload(Long dpId, MultipartFile file, TypeDocument type) throws IOException;
 
 
+    Set<DetailPaiementDto> getDetailPaiementByTypePaiement(Long id, String typePaiement);
 
+    double getSommePaiementByTypePaiement(Long id, String typePaiement);
 }

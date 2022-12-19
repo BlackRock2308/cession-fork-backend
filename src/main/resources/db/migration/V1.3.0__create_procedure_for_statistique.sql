@@ -32,7 +32,7 @@ DECLARE
     idSR NUMERIC;
     idSA NUMERIC;
 BEGIN
-    SELECT id FROM public.statut  WHERE code ='REJETEE' INTO STRICT idSR;
+    SELECT id FROM public.statut  WHERE code ='RISQUEE' INTO STRICT idSR;
    SELECT id FROM public.statut  WHERE code ='NON_RISQUEE' INTO STRICT idSA;
     IF(New.statutid = idSR) THEN
         INSERT INTO public.statistiqueDemande(id, statut)
@@ -51,7 +51,7 @@ $BODY$;
     --OWNER TO cdmp;
 
 CREATE TRIGGER trigger_statistiqueDemande
-    AFTER INSERT or UPDATE on public.demandeCession
+    AFTER UPDATE on public.demandeCession
         FOR EACH ROW EXECUTE FUNCTION public.trigger_statistiqueDemande();
 
 

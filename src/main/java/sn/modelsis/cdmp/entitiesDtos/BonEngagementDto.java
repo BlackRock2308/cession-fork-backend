@@ -2,9 +2,11 @@ package sn.modelsis.cdmp.entitiesDtos;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -12,9 +14,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import sn.modelsis.cdmp.entities.TypeMarche;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Data
 @NoArgsConstructor
@@ -31,7 +30,7 @@ public class BonEngagementDto implements Serializable {
     private String imputation;
     private String nomMarche;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    private Date dateBonEngagement;
+    private LocalDateTime dateBonEngagement;
     private String identificationComptable;
     private String typeDepense;
     private String modeReglement;
@@ -42,4 +41,6 @@ public class BonEngagementDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateSoumissionServiceDepensier;
     private Set<DocumentDto> documents = new HashSet<>();
+
+
 }
