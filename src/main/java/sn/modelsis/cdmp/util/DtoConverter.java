@@ -98,6 +98,16 @@ public class DtoConverter {
 		}
 		return pmeDto;
 	}
+	
+	public static  MinistereDepensierDto convertToDto(MinistereDepensier md) {
+       MinistereDepensierDto mdDto = null;
+        if(null != md) {
+            modelMapper.getConfiguration().setAmbiguityIgnored(true);
+            mdDto = modelMapper.map(md, MinistereDepensierDto.class);
+          
+        }
+        return mdDto;
+    }
 
 	public static Pme convertToEntity(PmeDto pmeDto) {
 		Pme pme = null;

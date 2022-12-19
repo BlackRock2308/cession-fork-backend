@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.MinistereDepensier;
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.CreanceDto;
@@ -34,6 +35,7 @@ import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.DemandeService;
+import sn.modelsis.cdmp.services.MinistereDepensierService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.ExceptionUtils;
 
@@ -48,8 +50,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     private final DemandeCessionReturnMapper cessionReturnMapper;
     private final DemandeService demandeService;
     private final PmeRepository pmeRepository;
-
-    private final CreanceMapper creanceMapper;
+    private final MinistereDepensierService mdRepository;
 
     private final CreanceWithNoPaymentMapper noPaymentMapper;
 
@@ -182,17 +183,20 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public DemandeCession validerRecevabilite(Long idDemande) {
+    public DemandeCession validerRecevabilite(Long idDemande, String code) {
         DemandeCession demandeCessionDto;
+        
         try {
+            MinistereDepensier md = mdRepository.findByCode(code);
             log.info("DemandeCessionService:acceptDemandeCession request params {}", idDemande);
             Optional<DemandeCession> optional = Optional
                     .ofNullable(demandecessionRepository.findByDemandeId(idDemande));
+            
             log.debug("DemandeCessionService:acceptDemandeCession request params {}", idDemande);
             Statut updatedStatut = statutRepository.findByLibelle("RECEVABLE");
 
             optional.ifPresent(demandeCession -> optional.get().setStatut(updatedStatut));
-
+            optional.get().setMinister(md);
             demandeCessionDto = demandecessionRepository.save(optional.get());
             log.debug("DemandeCessionService:acceptDemandeCession received from Database {}",
                     demandeCessionDto.getIdDemande());
@@ -510,5 +514,15 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
                 .map(noPaymentMapper::mapToDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Page<DemandeCessionDto> findAllByStatutAndMinister(Pageable pageable, String[] statuts, String code) {
+        log.info("DemandeCessionService:findAllByStatutAndMinister .....");
+
+        return demandecessionRepository
+                .findAllByMinisterIdAndStatut_LibelleIn(pageable, code, statuts)
+                .map(cessionMapper::asDTO);
+    }
+  
 
 }
