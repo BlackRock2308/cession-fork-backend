@@ -140,10 +140,18 @@ public class PaiementServiceImpl implements PaiementService {
     @Override
     public StatistiquePaiementCDMPDto getStatistiquePaiementCDMP(int annee)  {
         LocalDateTime today = LocalDateTime.of(annee, 1, 1,0,0,0);
+        LocalDateTime today2 = LocalDateTime.now();
         StatistiquePaiementCDMPDto statistiquePaiementCDMPDto = new StatistiquePaiementCDMPDto();
             statistiquePaiementCDMPDto.setYear(annee);
             Double[] donnes = new Double[4];
-            for(int i=0 ; i<12;i++){
+            int nbre = 12;
+            if(today2.getYear() == annee){
+                nbre = today2.getMonthValue();
+            }
+            if(today2.getYear() < annee){
+                nbre = 0;
+            }
+            for(int i=0 ; i<nbre;i++){
                 donnes = Util.donneStatistiquePaiementCDMP(paiementRepository.getStatistiquePaiementCDMP(today));
                 statistiquePaiementCDMPDto.getCmulRembourses().add(new ObjetMontantMois(donnes[2],today));
                 statistiquePaiementCDMPDto.getCumulDecotes().add(new ObjetMontantMois(donnes[0],today));
@@ -157,10 +165,18 @@ public class PaiementServiceImpl implements PaiementService {
     @Override
     public StatistiquePaiementPMEDto getStatistiqueAllPaiementPME(int annee) {
         LocalDateTime today =LocalDateTime.of(annee, 1, 1,0,0,0);
+        LocalDateTime today2 = LocalDateTime.now();
         StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
             statistiquePaiementPMEDto.setYear(annee);
             Double[] donnes = new Double[3];
-            for(int i=0 ; i<12;i++){
+        int nbre = 12;
+        if(today2.getYear() == annee){
+            nbre = today2.getMonthValue();
+        }
+        if(today2.getYear() < annee){
+            nbre = 0;
+        }
+        for(int i=0 ; i<nbre;i++){
                 donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementPME(today));
                 statistiquePaiementPMEDto.getCumulDebourses().add(new ObjetMontantMois(donnes[2],today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(donnes[1],today));
@@ -177,7 +193,15 @@ public class PaiementServiceImpl implements PaiementService {
         StatistiquePaiementPMEDto statistiquePaiementPMEDto = new StatistiquePaiementPMEDto();
             statistiquePaiementPMEDto.setYear(annee);
             Double[] donnes = new Double[4];
-            for (int i = 0; i < 12; i++) {
+            LocalDateTime today2 = LocalDateTime.now();
+        int nbre = 12;
+        if(today2.getYear() == annee){
+            nbre = today2.getMonthValue();
+        }
+        if(today2.getYear() < annee){
+            nbre = 0;
+        }
+        for(int i=0 ; i<nbre;i++){
                 donnes = Util.donneStatistiquePaiementPME(paiementRepository.getStatistiquePaiementByPME(idPME,today));
                 statistiquePaiementPMEDto.getCumulDebourses().add(new ObjetMontantMois(donnes[2], today));
                 statistiquePaiementPMEDto.getCumulMontantCreance().add(new ObjetMontantMois(donnes[1], today));
