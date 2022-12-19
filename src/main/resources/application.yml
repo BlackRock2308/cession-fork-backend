@@ -22,7 +22,7 @@ spring:
   application:
     name: Cession creance
   datasource:
-    password: password
+    password: passer
     #url: jdbc:postgresql://${HOST_DB:10.0.0.15:5432}/cdmp
     #url: jdbc:postgresql://${HOST_DB:10.42.1.205:5432}/cdmp
     url: jdbc:postgresql://localhost:5432/cdmp
