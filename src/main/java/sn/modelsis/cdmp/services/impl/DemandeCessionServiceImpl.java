@@ -26,7 +26,6 @@ import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
-import sn.modelsis.cdmp.mappers.CreanceMapper;
 import sn.modelsis.cdmp.mappers.CreanceWithNoPaymentMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionMapper;
 import sn.modelsis.cdmp.mappers.DemandeCessionReturnMapper;
