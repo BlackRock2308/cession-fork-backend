@@ -1,11 +1,10 @@
 package sn.modelsis.cdmp.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import sn.modelsis.cdmp.entities.Observation;
-import sn.modelsis.cdmp.entities.Utilisateur;
-
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import sn.modelsis.cdmp.entities.Observation;
 
 /**
  * @author SNDIAGNEF

@@ -1,7 +1,6 @@
 package sn.modelsis.cdmp.entities;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +22,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-//@ToString
 @Table(name = "demandecession")
 public class DemandeCession extends Demande{
 
@@ -33,6 +31,10 @@ public class DemandeCession extends Demande{
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name="bonengagementid")
     private BonEngagement bonEngagement;
+    
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name="ministeredepid")
+    private MinistereDepensier minister;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "demandeCession")
     private Set<Convention> conventions = new HashSet<>();

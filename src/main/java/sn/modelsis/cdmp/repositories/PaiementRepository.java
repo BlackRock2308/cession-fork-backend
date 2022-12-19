@@ -1,14 +1,13 @@
 package sn.modelsis.cdmp.repositories;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import sn.modelsis.cdmp.entities.Paiement;
-import sn.modelsis.cdmp.entities.Pme;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import sn.modelsis.cdmp.entities.Paiement;
 
 public interface PaiementRepository extends JpaRepository<Paiement, Long> {
 
