@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<!--link href="style.css" rel="stylesheet" type="text/css" /-->
+	<style>
+		.entete {
+			margin: 0em;
+		}
+		.sn{
+			display: inline-block;
+			font-size: 13px;
+			text-align: center;
+		}
+		.date{
+			display: inline-block;
+			width: 8em;
+			height: 5em;
+			float: right;
+
+		}
+		.titre{
+			text-align: center;
+			font-size: 30px;
+			margin: 3em;
+		}
+
+		.text{
+			display: flex;
+			justify-content: center;
+			margin: 4em;
+			font-size: 17px;
+		}
+		h6{
+			text-decoration: underline;
+		}
+		.footer{
+			align-content: center;
+			width: 100%;
+			position : absolute;
+		}
+
+		.signPME{
+			float: left;
+			width: 32%;
+		}
+
+		.signORD{
+			float:left;
+			text-align: center;
+			width: 30%;
+		}
+		.signCDMP{
+			float: right;
+			margin-right: 20px;
+		}
+		img{
+			position: relative;
+		}
+
+	</style>
+	<title>Senegal</title>
+</head>
+
+<body>
+<div class="entete">
+	<div class="sn" >
+		Ministère des Finances et du Budget <br/>
+		Caisse des dépôts et consignations <br/>
+		Caisse des marchés publics <br/>
+		Direction des risques et du contentieux
+	</div>
+
+	<div class="date">
+		Le <span th:text=${date}></span>
+	</div>
+</div>
+<div class="titre">
+	Convention de cession
+</div>
+
+<div class="text">
+	<p>
+		PME: <span th:text=${convention.demandeCession.pme.raisonSocial}></span> <br/>
+		NINEA: <span th:text=${convention.demandeCession.pme.ninea}></span> <br/>
+		RCCM: <span th:text=${convention.demandeCession.pme.rccm}></span> <br/>
+		Nom marché: <span th:text=${convention.demandeCession.bonEngagement.nomMarche}></span> <br/>
+		RefBE: <span th:text=${convention.demandeCession.bonEngagement.reference}></span> <br/>
+		Type de marché: <span th:text=${convention.demandeCession.bonEngagement.typeMarche}></span> <br/>
+		Montant: <span th:text=${convention.demandeCession.bonEngagement.montantCreance}> </span> FCFA<br/>
+		Décote: <span th:text=${convention.valeurDecoteByDG*convention.demandeCession.bonEngagement.montantCreance}> </span> FCFA<br/>
+	</p><br/>
+	<div>
+		<h6 >Article 1 – Objet de la convention</h6>
+		La présente convention (ci-après la « Convention ») a pour objet de définir :<br/>
+		- les modalités du soutien apporté par le Mécène au Bénéficiaire pour parvenir à mettre en œuvre le
+		Projet décrit ci-dessus;<br/>
+		- les modalités de <span th:text=${convention.textConvention.var1} style="font-weight: bold;"></span> au soutien apporté
+		par le Mécène consenties par le
+		Bénéficiaire.<br/>
+		<br/>
+
+		<h6 >Article 2 – Apports du Mécène</h6>
+		Le Mécène s’engage à <span th:text=${convention.textConvention.var2} style="font-weight: bold;" ></span> décrit ci-dessus
+		en versant la somme de [ X en chiffres et en lettres HT au Bénéficiaire.
+		<br/>
+
+		<h6 >Article 3 – Apports du Bénéficiaire</h6>
+		3-1 Soutien financier <br/>
+		Le Bénéficiaire s’engage à utiliser <span th:text=${convention.textConvention.var3} style="font-weight: bold;" ></span> apportée par le Mécène pour
+		financer le Projet.
+		<br/>
+		3-2 Communication<br/>
+		Pendant toute la durée de la présente Convention, le Bénéficiaire s’engage à faire mention du
+		partenariat avec le Mécène sur tous les supports de communication liés à l’opération et, notamment à
+		reproduire le logo du Mécène sur tous <span th:text=${convention.textConvention.var4} style="font-weight: bold;" ></span> (sous réserve de la
+		bonne réception par le Bénéficiaire des éléments – logos, mention, dans les délais et formats
+		requis) : invitations, affiches, tracts, bannières, dossiers de presse, site Internet et réseaux
+		sociaux du Bénéficiaire .<br/>
+		Le Bénéficiaire s’engage à soumettre au Mécène lesdits documents avant impression, afin qu’il puisse
+		notamment vérifier l’utilisation de son logotype au regard de sa charte graphique.<br/>
+		Le Bénéficiaire autorise le Mécène à évoquer son action de soutien dans sa propre communication
+		institutionnelle et communication interne, sur tous supports, sous réserve que les différentes
+		mentions relatives à ce soutien lui soient soumises pour accord.<br/>
+		<br/>
+		3-3 Droits d’utilisation<br/>
+		Le Mécène peut utiliser, sans s’acquitter de droits supplémentaires, les photographies communiquées
+		par le Bénéficiaire et liées au projet pour tout usage non commercial, dans le monde entier et pour
+		la durée des droits de propriété intellectuelle attachés à ces photographies dans le cadre de la
+		communication du projet.
+		<br/>A cet égard, le Bénéficiaire déclare au Mécène qu’il est en droit de concéder de telles
+		autorisations et garantit le Mécène contre toute <span th:text=${convention.textConvention.var5} style="font-weight: bold;"></span> des photographes et/ou
+		des auteurs du projet, dans le cadre des droits accordés à l’occasion du projet.
+		<br/>Pour ces utilisations, le Mécène s’engage à :
+		<br/>- préciser les crédits d’image suivant : [préciser],
+		<br/>- opposer à proximité de chaque visuel utilisé une mention explicitant le lien entre le dit
+		visuel et le soutien du Mécène avec le projet.
+		<br/>
+		3-4 Contreparties<br/>
+		3-4-1 Octroi de contreparties <br/>
+		En contrepartie de son soutien, le Bénéficiaire accorde au Mécène les avantages suivants : [les
+		décrire], repris en annexe de la présente Convention.
+		<br/>Exemples : <br/>
+		- Accès au projet<br/>
+		Le Bénéficiaire propose au Mécène la possibilité d’inviter xxx (en chiffres et en toutes lettres)
+		personnes pendant la durée d’ouverture au public du projet. A cet effet, xxx (en chiffres et en
+		toutes lettres) laissez-passer valables pour X personnes sont fournis au Mécène un mois avant
+		l’ouverture au public du projet.
+		 
+		<br/>- Invitations au vernissage du projet
+		<br/>Le Bénéficiaire propose au Mécène xxx (en chiffres et en toutes lettres) invitations au
+		vernissage le cas échéant du projet qui aura lieu le (préciser la date)
+		<br/>- Exemplaires offerts d’un ouvrage
+		<br/>Le Bénéficiaire remet à titre gracieux au mécène xxx (en chiffres et en toutes lettres)
+		exemplaires de l’ouvrage présentant le projet.
+		- ….
+		<br/>Chaque contrepartie octroyée fait l’objet d’une valorisation par le Bénéficiaire, dont le
+		détail figure en annexe. En matière de communication mentionnée au 3-2 et conformément à la doctrine
+		fiscale, la contrepartie est valorisée [dans la limite de 10 % du montant du don compte tenu de la
+		dimension nationale du projet ou dans la limite de <span th:text=${convention.textConvention.var6} style="font-weight: bold;"></span> du don compte tenu de la dimension
+		régionale du projet].
+		<br/>L’ensemble de ces contreparties y compris en matière de communication sont accordées dans la
+		limite d’un plafond de 25 % de l’apport du Mécène, soit dans la limite de (montant en chiffres)
+		(montant en lettres) euros nets de taxe.
+		<br/>3-4-2 Utilisation des contreparties <br/>
+		<br/>Lorsque le Mécène lui en fait la demande, le Bénéficiaire lui fait parvenir un état des
+		contreparties consommées et de celles qui restent à consommer.
+		<br/>La durée de consommation par le Mécène des contreparties octroyées par le Bénéficiaire ne peut
+		excéder [XX en chiffres et en lettres] mois suivant la fin de la présente Convention.
+
+	</div>
+</div>
+<br/><br/>
+<div class="footer" >
+	<div class="signPME">
+		Signature PME<br/>
+		<img th:src="${qrCodePME}"/>
+	</div>
+	<div class="signORD">
+		Signature ORDONNATEUR<br/>
+		<img th:src="${qrCodeORD}"/>
+	</div>
+	<div class="signCDMP">
+		Signature DG CDMP<br/>
+		<img th:src="${qrCodeCDMP}"/>
+	</div>
+</div>
+
+</body>
+
+</html>
+
+
+

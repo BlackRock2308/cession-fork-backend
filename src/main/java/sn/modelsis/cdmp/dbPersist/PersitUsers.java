@@ -96,6 +96,21 @@ public class PersitUsers {
             utilisateurRepository.save(dg);
         }
         
+//        Utilisateur dg1 = new Utilisateur();
+//        dg1.setAdresse("Mermoz");
+//        dg1.setCodePin("123456");
+//        dg1.setPassword(passwordEncoder.encode("passer"));
+//        dg1.setPrenom("Abdou");
+//        dg1.setNom("MBACKE");
+//        dg1.setEmail("dg1@gmail.com");
+//        dg1.setRoles(dgRoles);
+//        
+//        Utilisateur userDG1 = utilisateurRepository.findUtilisateurByEmail("dg1@gmail.com");
+//        
+//        if(userDG1 == null) {
+//            utilisateurRepository.save(dg1);
+//        }
+        
         Utilisateur pca = new Utilisateur();
         pca.setAdresse("Mermoz");
         pca.setCodePin("123456");
