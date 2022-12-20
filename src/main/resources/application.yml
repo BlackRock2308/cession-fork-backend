@@ -9,7 +9,7 @@ server:
   notification: ${HOST:http://10.42.1.131:8087}
   #notification: ${HOST:http://10.0.0.222:8087}
   ##email_cdmp: notifications-wootoo-@modelsis.sn
-  link_front: ${LINK_FRONT:http://10.42.1.134:8080/#/login}
+  link_front: ${LINK_FRONT:http://10.42.1.134:8081}
   email_cdmp: notifications-wootoo@modelsis.sn
 spring:
   flyway:
