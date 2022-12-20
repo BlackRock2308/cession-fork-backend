@@ -44,6 +44,8 @@ public class ConventionDto {
 
   private UtilisateurDto utilisatuerDto;
 
+  private TextConventionDto textConventionDto;
+
   private Long utilisatuerId;
 
   private Set<DocumentDto> documents = new HashSet<>();

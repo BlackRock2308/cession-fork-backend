@@ -19,6 +19,10 @@ public interface ConventionRepository extends JpaRepository<Convention, Long> {
     @Modifying
     @Query("DELETE FROM Convention c where c.idConvention =:#{#id}")
     void deleteConvention(Long id);
+    
+    @Modifying
+    @Query("DELETE FROM Documents c where c.id =:#{#id}")
+    void deleteDocument(Long id);
 
 
 }

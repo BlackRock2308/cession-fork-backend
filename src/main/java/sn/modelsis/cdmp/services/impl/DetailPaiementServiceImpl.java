@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,9 +15,7 @@ import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.DetailPaiementRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
-import sn.modelsis.cdmp.services.DetailPaiementService;
-import sn.modelsis.cdmp.services.DocumentService;
-import sn.modelsis.cdmp.services.PaiementService;
+import sn.modelsis.cdmp.services.*;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 @Service
@@ -29,6 +28,9 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
   private final StatutRepository statutRepository;
 
   private final PaiementService paiementService;
+
+  @Autowired
+  private DemandeCessionService demandeService;
 
   public DetailPaiementServiceImpl(
       DetailPaiementRepository detailPaiementRepository,
@@ -69,8 +71,17 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
     if(soldePme==montant)
       paiement.setStatutPme(statutEnd);
     Paiement paiementSaved = paiementService.savePaiement(paiement);
-    if (paiementSaved == null)
+    if (paiementSaved != null){
+      if(paiementSaved.getStatutPme().getCode().equalsIgnoreCase("PME_TOTALEMENT_PAYEE")
+      && paiementSaved.getStatutCDMP().getCode().equalsIgnoreCase("CDMP_TOTALEMENT_PAYEE")){
+        DemandeCession demandeCession = paiementSaved.getDemandeCession();
+        Statut statutD = statutRepository.findByCode("DEMANDE_BOUCLEE");
+        demandeCession.setStatut(statutD);
+        demandeService.save(demandeCession);
+      }
+    }else {
       throw new CustomException("erreur lors de l'ajout du detail de paiement");
+    }
     // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
     return detailPaiementSaved;
   }
@@ -98,9 +109,17 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
     DetailPaiement detailPaiementSaved = detailPaiementRepository.save(detailPaiement);
     paiement.getDetailPaiements().add(detailPaiementSaved);
     Paiement paiementSaved = paiementService.savePaiement(paiement);
-    if (paiementSaved == null)
+    if (paiementSaved != null){
+      if(paiementSaved.getStatutPme().getCode().equalsIgnoreCase("PME_TOTALEMENT_PAYEE")
+              && paiementSaved.getStatutCDMP().getCode().equalsIgnoreCase("CDMP_TOTALEMENT_PAYEE")){
+        DemandeCession demandeCession = paiementSaved.getDemandeCession();
+        Statut statutD = statutRepository.findByCode("DEMANDE_BOUCLEE");
+        demandeCession.setStatut(statutD);
+        demandeService.save(demandeCession);
+      }
+    }else {
       throw new CustomException("erreur lors de l'ajout du detail de paiement");
-    // paiementService.update(detailPaiement.getPaiement().getIdPaiement(),detailPaiement.getMontant(),detailPaiement.getTypepaiement());
+    }
     return detailPaiementSaved;
   }
 

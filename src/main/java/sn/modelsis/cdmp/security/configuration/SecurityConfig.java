@@ -28,8 +28,10 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/api/pme/**",
+            "/api/documents/**",
             "/api/demandeadhesion",
             "/api/utilisateur/auth",
+            "/api/utilisateur/forget-password",
             "/authenticate",
             "/swagger-resources/**",
             "/swagger-ui/**",
@@ -43,9 +45,10 @@ public class SecurityConfig {
         .disable()
         .authorizeRequests()
         .antMatchers(AUTH_WHITELIST).permitAll()
-       // .antMatchers("/api/utilisateur/update", "/api/utilisateur/getAll")
-       // .hasAnyAuthority("admin")
-        .antMatchers("/api/**").permitAll()
+        .antMatchers("/api/**").hasAnyAuthority("PME","DG","DAF","DRC","PCA","JURISTE","ORDONNATEUR","DSEAR")
+        //.antMatchers("/api/**").hasAnyAuthority("PME,DG,DRC,PME,PCA,JURISTE,ORDONNATEUR,DSEAR,")
+        //.anyRequest()
+        //.antMatchers("/api/**").permitAll()
         .and()
         .httpBasic()
         .and()

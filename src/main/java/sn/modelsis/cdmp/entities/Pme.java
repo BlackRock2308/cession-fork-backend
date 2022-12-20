@@ -109,7 +109,7 @@ public class Pme implements Serializable {
     private LocalDateTime dateCreation;
 
     @Column(name = "capitalsocial")
-    private Long capitalsocial;
+    private Long capitalSocial;
 
     @Column(name = "chiffresdaffaires")
     private Long chiffresDaffaires;
@@ -253,7 +253,7 @@ public class Pme implements Serializable {
 
         this.dateCreation = dateCreation;
 
-        this.capitalsocial = capitalsocial;
+        this.capitalSocial = capitalsocial;
 
         this.chiffresDaffaires = chiffresDaffaires;
 

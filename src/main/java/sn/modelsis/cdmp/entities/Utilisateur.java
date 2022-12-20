@@ -54,6 +54,10 @@ public class Utilisateur implements Serializable {
    @Column(name="update_codepin")
    private boolean updateCodePin;
 
+   @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+   @JoinColumn(name="ministeredepid")
+   private MinistereDepensier ministere;
+   
    @ManyToMany(fetch = FetchType.EAGER,cascade =CascadeType.DETACH)
    private Set<Role> roles ;
 

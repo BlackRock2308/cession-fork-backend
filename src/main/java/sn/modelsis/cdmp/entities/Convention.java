@@ -5,17 +5,28 @@ package sn.modelsis.cdmp.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author SNDIAGNEF
@@ -46,6 +57,7 @@ public class Convention implements Serializable {
   @Column(name = "active_convention",columnDefinition = "boolean default true")
   private boolean activeConvention = true;
 
+
   @Column(name = "dateconvention")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime dateConvention;
@@ -66,6 +78,10 @@ public class Convention implements Serializable {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="decoteid")
   private ParametrageDecote decote;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name="textConventionid")
+  private TextConvention textConvention;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "convention")
   private Set<ConventionDocuments> documents = new HashSet<>();

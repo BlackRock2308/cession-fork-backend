@@ -87,10 +87,10 @@ public class DemandeCessionController {
        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(rejectedDemande));
     }
 
-    @PatchMapping(value ="/{idDemande}/validerRecevabilite")
-    public ResponseEntity<DemandeCessionDto> acceptCession(@PathVariable("idDemande") Long idDemande) {
+    @PatchMapping(value ="/{idDemande}/{code}/validerRecevabilite")
+    public ResponseEntity<DemandeCessionDto> acceptCession(@PathVariable("idDemande") Long idDemande, @PathVariable("code") String code) {
         log.info("DemandeCessionController:acceptCession request started... ");
-        DemandeCession acceptedDemande = demandeCessionService.validerRecevabilite(idDemande);
+        DemandeCession acceptedDemande = demandeCessionService.validerRecevabilite(idDemande, code);
         log.info("DemandeCessionController:acceptCession request params  {}", acceptedDemande.getIdDemande());
 
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(acceptedDemande));
@@ -171,6 +171,16 @@ public class DemandeCessionController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(demandeList);
     }
+    
+    @GetMapping(value = "byministereandstatut")
+    public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatutAndMinistre(Pageable pageable,
+            @RequestParam(value = "statut", required = true, defaultValue = "") String[] statuts,
+            @RequestParam(value = "code", required = true, defaultValue = "") String code,
+            HttpServletRequest request) {
+        Page<DemandeCessionDto> demandeList = demandeCessionService.findAllByStatutAndMinister(pageable,statuts, code);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(demandeList);
+    }
 
     @GetMapping(value="byStatutAndPme")
     public ResponseEntity<Page<DemandeCessionDto>> getAllDemandeCessionByStatutAndPME(Pageable pageable, @RequestParam(value = "statut", required = true, defaultValue = "") String statut,@RequestParam(value = "pme", required = true, defaultValue = "") Long idPME,
@@ -191,10 +201,6 @@ public class DemandeCessionController {
     @PostMapping("/{idDemande}/signer-convention-dg/{idUtilisateur}")
     public  ResponseEntity<Boolean> signerConventionDG(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
 
-        log.info("codePin:{}",codePin);
-        if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
-            throw new NotFoundException("La demande de cession n'existe pas");
-
         DemandeCession demandeSignee;
         if (utilisateurService.signerConvention(idUtilisateur,codePin))
             demandeCessionService.signerConventionDG(idDemande);
@@ -212,7 +218,6 @@ public class DemandeCessionController {
 
     @PostMapping("/{idDemande}/signer-convention-pme/{idUtilisateur}")
     public  ResponseEntity<Boolean> signerConventionPME(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idDemande)  {
-
         log.info("codePin:{}",codePin);
         if (!(demandeCessionService.getDemandeCession(idDemande).isPresent()))
             throw new NotFoundException("La demande de cession n'existe pas");

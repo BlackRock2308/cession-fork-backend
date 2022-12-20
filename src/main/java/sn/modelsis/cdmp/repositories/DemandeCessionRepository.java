@@ -8,20 +8,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 
-import java.util.Date;
+import sn.modelsis.cdmp.entities.DemandeCession;
 
 
 public interface DemandeCessionRepository extends JpaRepository<DemandeCession,Long> {
 
 
     Page<DemandeCession> findAllByStatut_LibelleIn(Pageable pageable, String[] statuts);
+    
+    Page<DemandeCession> findAllByMinisterIdAndStatut_LibelleIn(Pageable pageable, String minstere, String[] statuts);
 
      List<DemandeCession> findAllByPmeIdPME(Long id);
 
