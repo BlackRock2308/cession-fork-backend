@@ -1,8 +1,6 @@
 package sn.modelsis.cdmp.controllers;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,9 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,16 +23,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.BonEngagement;
 import sn.modelsis.cdmp.entities.Convention;
-import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.ParametrageDecote;
 import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.entitiesDtos.TextConventionDto;
-import sn.modelsis.cdmp.exceptions.NotFoundException;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
-import sn.modelsis.cdmp.services.*;
+import sn.modelsis.cdmp.services.ConventionService;
+import sn.modelsis.cdmp.services.ParametrageDecoteService;
+import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 /**

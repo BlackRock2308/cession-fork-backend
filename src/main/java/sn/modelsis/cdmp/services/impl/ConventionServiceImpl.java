@@ -7,10 +7,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +27,15 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.ConventionDocuments;
+import sn.modelsis.cdmp.entities.DemandeCession;
+import sn.modelsis.cdmp.entities.Documents;
+import sn.modelsis.cdmp.entities.Observation;
+import sn.modelsis.cdmp.entities.ParametrageDecote;
+import sn.modelsis.cdmp.entities.Statut;
+import sn.modelsis.cdmp.entities.TextConvention;
+import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.entitiesDtos.StatutDto;
@@ -37,7 +43,12 @@ import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.ConventionRepository;
 import sn.modelsis.cdmp.repositories.ObservationRepository;
 import sn.modelsis.cdmp.repositories.TextConventionRepository;
-import sn.modelsis.cdmp.services.*;
+import sn.modelsis.cdmp.services.ConventionService;
+import sn.modelsis.cdmp.services.DemandeCessionService;
+import sn.modelsis.cdmp.services.DocumentService;
+import sn.modelsis.cdmp.services.ObservationService;
+import sn.modelsis.cdmp.services.ParametrageDecoteService;
+import sn.modelsis.cdmp.services.StatutService;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.Qrcode;
 import sn.modelsis.cdmp.util.Status;
@@ -192,15 +203,15 @@ public class ConventionServiceImpl implements ConventionService{
       existingConvention.get().setDateConvention(newConvention.getDateConvention());
       existingConvention.get().setPme(newConvention.getPme());
       log.info("DocumentService:supression de l'ancien document de la convention ........");
-      for (Documents doc:existingConvention.get().getDocuments()
-           ) {
-        documentService.delete(doc.getId());
+      if(existingConvention.get().getDocuments().size() > 0) {
+          for (Documents doc:existingConvention.get().getDocuments()
+                  ) {
+               documentService.delete(doc.getId());
+             }
       }
       existingConvention.get().setDocuments(null);
       log.info("DocumentService:supression de l'ancien document de la convention terminée.");
      
-      log.info("ConventionService:transmettreConvention with document : {}",existingConvention.get().getDocuments());
-
       conventionRepository.saveAndFlush(existingConvention.get());
       log.info("ConventionService:transmettreConvention update convention with id : {}",existingConvention.get().getIdConvention());
     }catch (Exception ex){

@@ -25,24 +25,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import sn.modelsis.cdmp.dbPersist.PersitUsers;
-import sn.modelsis.cdmp.repositories.BonEngagementRepository;
-import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
+import sn.modelsis.cdmp.repositories.MinistereDepensierRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.RoleRepository;
-import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
-import sn.modelsis.cdmp.services.BonEngagementService;
-import sn.modelsis.cdmp.services.ConventionService;
-import sn.modelsis.cdmp.services.DemandeAdhesionService;
-import sn.modelsis.cdmp.services.DemandeCessionService;
-import sn.modelsis.cdmp.services.DetailPaiementService;
-import sn.modelsis.cdmp.services.PaiementService;
 
 /**
  * @author SNDIAGNEF
@@ -56,45 +45,26 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
   
   private final Environment env;
 
-  private final StatutRepository statutRepository;
 
   private final UtilisateurRepository utilisateurRepository;
 
   private final RoleRepository roleRepository;
 
   private final PmeRepository pmeRepository;
-
-  private final BonEngagementService bonEngagementService;
-
-  private  final DemandeCessionService demandeCessionService;
-
-  private final DemandeAdhesionService demandeAdhesionService;
-
-  private final BonEngagementRepository bonEngagementRepository;
-
-    private final DemandeCessionRepository demandeCessionRepository;
-    private final ConventionService conventionService;
-
-    private final PaiementService paiementService;
-    private final DetailPaiementService detailPaiementService;
+  
+  private final MinistereDepensierRepository mdRepository;
 
     @Value("${server.link_front}")
     private String uilocation; 
 
-  public CdmpApplication(Environment env, StatutRepository statutRepository, UtilisateurRepository utilisateurRepository, RoleRepository roleRepository, PmeRepository pmeRepository, BonEngagementService bonEngagementService, DemandeCessionService demandeCessionService, DemandeAdhesionService demandeAdhesionService, BonEngagementRepository bonEngagementRepository, DemandeCessionRepository demandeCessionRepository, ConventionService conventionService, PaiementService paiementService, DetailPaiementService detailPaiementService) {
-    this.env = env;
-      this.statutRepository = statutRepository;
+    public CdmpApplication(Environment env, 
+            UtilisateurRepository utilisateurRepository, RoleRepository roleRepository,
+            PmeRepository pmeRepository, MinistereDepensierRepository mdRepository) {
+        this.env = env;
       this.utilisateurRepository = utilisateurRepository;
       this.roleRepository = roleRepository;
       this.pmeRepository = pmeRepository;
-      this.bonEngagementService = bonEngagementService;
-      this.demandeCessionService = demandeCessionService;
-      this.demandeAdhesionService = demandeAdhesionService;
-      this.bonEngagementRepository = bonEngagementRepository;
-      this.demandeCessionRepository = demandeCessionRepository;
-      this.conventionService = conventionService;
-      this.paiementService = paiementService;
-      this.detailPaiementService = detailPaiementService;
+      this.mdRepository = mdRepository;
   }
 
   @Override
@@ -208,7 +178,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository);
+       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository, mdRepository);
         log.info("Initialisation des differents profils terminée");
 
 

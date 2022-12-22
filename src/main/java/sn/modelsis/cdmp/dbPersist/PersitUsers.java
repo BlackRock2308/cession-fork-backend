@@ -8,9 +8,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import sn.modelsis.cdmp.entities.MinistereDepensier;
 import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
+import sn.modelsis.cdmp.repositories.MinistereDepensierRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
@@ -24,39 +26,42 @@ public class PersitUsers {
     private final UtilisateurRepository utilisateurRepository;
 
     private final PmeRepository pmeRepository;
+    
+    private final MinistereDepensierRepository mdRepository;
 
     final  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     public PersitUsers(RoleRepository roleRepository,
-                       UtilisateurRepository utilisateurRepository,
-                       PmeRepository pmeRepository) {
+            UtilisateurRepository utilisateurRepository,
+            PmeRepository pmeRepository, MinistereDepensierRepository mdRepository) {
         this.roleRepository = roleRepository;
-        this.utilisateurRepository = utilisateurRepository; 
+        this.utilisateurRepository = utilisateurRepository;
         this.pmeRepository = pmeRepository;
+        this.mdRepository = mdRepository;
 
         Role DG = roleRepository.findByLibelle("DG");
-      //  DG.setLibelle("DG");
+        // DG.setLibelle("DG");
 
         Role PME = roleRepository.findByLibelle("PME");
-       // PME.setLibelle("PME");
+        // PME.setLibelle("PME");
 
         Role DRC = roleRepository.findByLibelle("DRC");
-       // DRC.setLibelle("DRC");
+        // DRC.setLibelle("DRC");
 
         Role ORDONNATEUR = roleRepository.findByLibelle("ORDONNATEUR");
-        //ORDONNATEUR.setLibelle("ORDONNATEUR");
+        // ORDONNATEUR.setLibelle("ORDONNATEUR");
 
         Role DAF = roleRepository.findByLibelle("DAF");
-      //  DAF.setLibelle("DAF");
-        
+        // DAF.setLibelle("DAF");
+
         Role DSEAR = roleRepository.findByLibelle("DSEAR");
-      //  DSEAR.setLibelle("DSEAR");
+        // DSEAR.setLibelle("DSEAR");
 
-        Role JURISTE =roleRepository.findByLibelle("JURISTE");
-       // JURISTE.setLibelle("JURISTE");
+        Role JURISTE = roleRepository.findByLibelle("JURISTE");
+        // JURISTE.setLibelle("JURISTE");
 
-        Role PCA =roleRepository.findByLibelle("PCA");
+        Role PCA = roleRepository.findByLibelle("PCA");
         Set<Role> pmeRoles = new HashSet<>();
         pmeRoles.add(PME);
 
@@ -65,21 +70,23 @@ public class PersitUsers {
 
         Set<Role> juristeRoles = new HashSet<>();
         juristeRoles.add(JURISTE);
-       
+
         Set<Role> dsearRoles = new HashSet<>();
         dsearRoles.add(DSEAR);
-        
+
         Set<Role> dafRoles = new HashSet<>();
         dafRoles.add(DAF);
 
         Set<Role> cgrRoles = new HashSet<>();
         cgrRoles.add(DRC);
-        
+
         Set<Role> pcaRoles = new HashSet<>();
         pcaRoles.add(PCA);
 
         Set<Role> ordonnateurRoles = new HashSet<>();
         ordonnateurRoles.add(ORDONNATEUR);
+
+        MinistereDepensier md = mdRepository.findByCode("MAER");
 
         Utilisateur dg = new Utilisateur();
         dg.setAdresse("Mermoz");
@@ -89,13 +96,13 @@ public class PersitUsers {
         dg.setNom("MBACKE");
         dg.setEmail("dg@gmail.com");
         dg.setRoles(dgRoles);
-        
+
         Utilisateur user = utilisateurRepository.findUtilisateurByEmail("dg@gmail.com");
-        
-        if(user == null) {
+
+        if (user == null) {
             utilisateurRepository.save(dg);
         }
-        
+
 //        Utilisateur dg1 = new Utilisateur();
 //        dg1.setAdresse("Mermoz");
 //        dg1.setCodePin("123456");
@@ -110,7 +117,7 @@ public class PersitUsers {
 //        if(userDG1 == null) {
 //            utilisateurRepository.save(dg1);
 //        }
-        
+
         Utilisateur pca = new Utilisateur();
         pca.setAdresse("Mermoz");
         pca.setCodePin("123456");
@@ -119,13 +126,12 @@ public class PersitUsers {
         pca.setNom("BA");
         pca.setEmail("pca@gmail.com");
         pca.setRoles(pcaRoles);
-        
+
         Utilisateur user0 = utilisateurRepository.findUtilisateurByEmail("pca@gmail.com");
-        
-        if(user0 == null) {
+
+        if (user0 == null) {
             utilisateurRepository.save(pca);
         }
-        
 
         Utilisateur pme = new Utilisateur();
         pme.setAdresse("Mermoz");
@@ -146,11 +152,10 @@ public class PersitUsers {
         drc.setRoles(cgrRoles);
 
         Utilisateur user1 = utilisateurRepository.findUtilisateurByEmail("drc@gmail.com");
-        
-        if(user1 == null) {
+
+        if (user1 == null) {
             utilisateurRepository.saveAndFlush(drc);
         }
-        
 
         Utilisateur juriste = new Utilisateur();
         juriste.setAdresse("Mermoz");
@@ -161,9 +166,9 @@ public class PersitUsers {
         juriste.setEmail("juriste@gmail.com");
         juriste.setRoles(juristeRoles);
         Utilisateur user2 = utilisateurRepository.findUtilisateurByEmail("juriste@gmail.com");
-        
-        if(user2 == null) { 
-        utilisateurRepository.saveAndFlush(juriste);
+
+        if (user2 == null) {
+            utilisateurRepository.saveAndFlush(juriste);
         }
         Utilisateur dsear = new Utilisateur();
         dsear.setAdresse("Mermoz");
@@ -175,9 +180,9 @@ public class PersitUsers {
         dsear.setRoles(dsearRoles);
 
         Utilisateur user3 = utilisateurRepository.findUtilisateurByEmail("dsear@gmail.com");
-        
-        if(user3 == null) {
-        utilisateurRepository.saveAndFlush(dsear);
+
+        if (user3 == null) {
+            utilisateurRepository.saveAndFlush(dsear);
         }
         Utilisateur daf = new Utilisateur();
         daf.setAdresse("Mermoz");
@@ -188,9 +193,9 @@ public class PersitUsers {
         daf.setEmail("daf@gmail.com");
         daf.setRoles(dafRoles);
         Utilisateur user4 = utilisateurRepository.findUtilisateurByEmail("daf@gmail.com");
-        
-        if(user4 == null) {
-        utilisateurRepository.saveAndFlush(daf);
+
+        if (user4 == null) {
+            utilisateurRepository.saveAndFlush(daf);
         }
         Utilisateur ordonnateur = new Utilisateur();
         ordonnateur.setAdresse("Mermoz");
@@ -199,29 +204,30 @@ public class PersitUsers {
         ordonnateur.setPrenom("Ndèye");
         ordonnateur.setNom("NGOM");
         ordonnateur.setEmail("ordonnateur@gmail.com");
+        ordonnateur.setMinistere(md);
         ordonnateur.setRoles(ordonnateurRoles);
         Utilisateur user5 = utilisateurRepository.findUtilisateurByEmail("ordonnateur@gmail.com");
-        
-        if(user5 == null) {
-        utilisateurRepository.saveAndFlush(ordonnateur);
+
+        if (user5 == null) {
+            utilisateurRepository.saveAndFlush(ordonnateur);
         }
 
         Utilisateur user6 = utilisateurRepository.findUtilisateurByEmail("andiaye@modelsis.sn");
-        
-        if(user6 == null) {
 
-        LocalDateTime date = LocalDateTime.now();
-        Pme pme1 = new Pme();
-        pme1.setFormeJuridique("Société á responsabilité limitée");
-        pme1.setAdressePME("Dakar Point E");
-        pme1.setNinea("123456789088");
-        pme1.setRccm("SN DK 2898 Y 9989");
-        pme1.setTelephonePME("339809876");
-        pme1.setRaisonSocial("Fintech");
-        pme1.setEmail("pme@gmail.com");
-        pme1.setActivitePrincipale("Solution Cloud and Big Data");
-        pme1.setUtilisateur(pme);
-        pmeRepository.save(pme1);
+        if (user6 == null) {
+
+            LocalDateTime date = LocalDateTime.now();
+            Pme pme1 = new Pme();
+            pme1.setFormeJuridique("Société á responsabilité limitée");
+            pme1.setAdressePME("Dakar Point E");
+            pme1.setNinea("123456789088");
+            pme1.setRccm("SN DK 2898 Y 9989");
+            pme1.setTelephonePME("339809876");
+            pme1.setRaisonSocial("Fintech");
+            pme1.setEmail("pme@gmail.com");
+            pme1.setActivitePrincipale("Solution Cloud and Big Data");
+            pme1.setUtilisateur(pme);
+            pmeRepository.save(pme1);
         }
 
     }
