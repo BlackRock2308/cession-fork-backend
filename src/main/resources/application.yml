@@ -1,8 +1,8 @@
 server:
   port: 8081
   qrcode_folder: ${qrcode_folder:./src/main/resources/static/img}
-  document_folder: ${document_folder:/app/documents/cdmp}
-  #document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
+  #document_folder: ${document_folder:/app/documents/cdmp}
+  document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
   #document_folder: ${DOCUMENT_FOLDER:/Users/macbookpro/Desktop/Wootoo/DocumentLibrary}
 
   #notification: ${HOST:http://localhost:8087}
@@ -22,10 +22,10 @@ spring:
   application:
     name: Cession creance
   datasource:
-    password: passer123
+    password: password
     #url: jdbc:postgresql://${HOST_DB:10.0.0.15:5432}/cdmp
-    url: jdbc:postgresql://${HOST_DB:10.42.1.205:5432}/cdmp
-    #url: jdbc:postgresql://localhost:5432/cdmp
+    #url: jdbc:postgresql://${HOST_DB:10.42.1.205:5432}/cdmp
+    url: jdbc:postgresql://localhost:5432/cdmp
     username: cdmp
   jpa:
     hibernate:

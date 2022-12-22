@@ -191,7 +191,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         FilterChain filterChain) throws ServletException, IOException {
       String context = request.getRequestURI();
       if (request.getRequestURI().contains("api/") || request.getRequestURI().contains("token")) {
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS", "PATCH");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers",
             "authorization, content-type, xsrf-token,enctype");

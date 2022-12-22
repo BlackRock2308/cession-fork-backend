@@ -226,9 +226,9 @@ public class ConventionServiceImpl implements ConventionService{
     return date.getDayOfMonth()+"-"+date.getMonthValue()+"-"+date.getYear();
   }
 
-  public String getInfoQRcode(Observation observation){
+  public String getInfoQRcode(Observation observation,String profil){
     return  "Prénom: "+observation.getUtilisateur().getPrenom()+ "\n Nom: "+ observation.getUtilisateur().getNom()+
-            "\n Email: "+observation.getUtilisateur().getEmail()+"\n"+"Singé le "+convertDate(observation.getDateObservation(),true);
+            "\n Email: "+observation.getUtilisateur().getEmail()+"\n Profil: "+profil+"\n Singé le "+convertDate(observation.getDateObservation(),true);
   }
 
 
@@ -266,26 +266,30 @@ public class ConventionServiceImpl implements ConventionService{
     }
   }
 
+  private Observation getLastSignature(Long idDemande, String statut){
+    List<Observation> observations = observationRepository.findDistinctByDemandeIdDemandeAndStatut_Code(idDemande,statut);
+   return observations.get(observations.size()-1);
+  }
   @Override
   public void saveDocumentConventionSigner(Convention convention) {
     Map<String, Object> contextModel = new HashMap<>();
     contextModel.put("convention", convention);
     String dateStr = convertDate(LocalDateTime.now());
     contextModel.put("date", dateStr);
-    Observation obPME = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParPME());
+    Observation obPME = getLastSignature(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParPME());
     if (obPME != null) {
       String qrCodePME = "Prénom: " + convention.getDemandeCession().getPme().getPrenomRepresentant() + "\n" + "Nom: " + convention.getDemandeCession().getPme().getNomRepresentant() +
-              "\n" + "Mail: " + convention.getDemandeCession().getPme().getEmail() + "\n" + "Singé le " + convertDate(obPME.getDateObservation(),true);
+              "\n" + "Mail: " + convention.getDemandeCession().getPme().getEmail() + "\n Profil: "+"PME" +"\n Singé le " + convertDate(obPME.getDateObservation(),true);
       qrCodePME = Qrcode.generateQRCode(qrCodePME, path + "/pme.png");
       contextModel.put("qrCodePME", qrCodePME);
-      Observation obDG = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParDG());
+      Observation obDG = getLastSignature(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParDG());
       if (obDG != null) {
-        String qrCodeCDMP = getInfoQRcode(obDG);
+        String qrCodeCDMP = getInfoQRcode(obDG," DG CDMP");
         qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP, path + "/cdmp.png");
         contextModel.put("qrCodeCDMP", qrCodeCDMP);
-        /*Observation obORD = observationRepository.findDistinctFirstByDemandeIdDemandeAndStatut_Code(convention.getDemandeCession().getIdDemande(), Status.getConventionAcceptee());
+        /*Observation obORD = getLastSignature(convention.getDemandeCession().getIdDemande(), Status.getConventionAcceptee());
         if (obORD != null) {
-          String qrCodeORD = getInfoQRcode(obORD);
+          String qrCodeORD = getInfoQRcode(obORD, "ORDONNATEUR");
           qrCodeORD = Qrcode.generateQRCode(qrCodeORD, path + "/ordonnaneur.png");
           contextModel.put("qrCodeORD", qrCodeORD);
         }*/
