@@ -22,5 +22,5 @@ public interface ObservationRepository extends JpaRepository<Observation, Long> 
                     + "    WHERE usRole.roles_id = :idRole LIMIT 1",
             nativeQuery = true)
     Utilisateur findByRoleLibelle(Long idRole);*/
-    Observation findDistinctFirstByDemandeIdDemandeAndStatut_Code(Long idDemande, String code);
+    List<Observation> findDistinctByDemandeIdDemandeAndStatut_Code(Long idDemande, String code);
 }
