@@ -175,7 +175,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
     configuration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin",
         "Content-Type", "Accept", "Authorization", "Origin,Accept", "X-Requested-With",
         "Access-Control-Request-Method", "Access-Control-Request-Headers", "enctype"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
     configuration.setAllowCredentials(true);
     configuration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept",
         "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
@@ -191,7 +191,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
         FilterChain filterChain) throws ServletException, IOException {
       String context = request.getRequestURI();
       if (request.getRequestURI().contains("api/") || request.getRequestURI().contains("token")) {
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS", "PATCH");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers",
             "authorization, content-type, xsrf-token,enctype");
