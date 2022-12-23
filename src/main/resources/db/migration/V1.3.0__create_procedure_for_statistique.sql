@@ -5,7 +5,8 @@ CREATE TABLE public.statistiqueDemande
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     statut character varying,
-    datedemandecession Date DEFAULT current_date
+    datedemandecession Date DEFAULT current_date,
+    idDemandeCession bigint
 );
 
 CREATE SEQUENCE public.statistiqueDemande_sequence
@@ -35,12 +36,12 @@ BEGIN
     SELECT id FROM public.statut  WHERE code ='RISQUEE' INTO STRICT idSR;
    SELECT id FROM public.statut  WHERE code ='NON_RISQUEE' INTO STRICT idSA;
     IF(New.statutid = idSR) THEN
-        INSERT INTO public.statistiqueDemande(id, statut)
-        VALUES (nextval('public.statistiqueDemande_sequence'), 'REJETE');
+        INSERT INTO public.statistiqueDemande(id, statut, idDemandeCession)
+        VALUES (nextval('public.statistiqueDemande_sequence'), 'REJETE', New.id);
     END IF;
     IF(New.statutid = idSA)THEN
-        INSERT INTO public.statistiqueDemande(id, statut)
-        VALUES (nextval('public.statistiqueDemande_sequence'), 'ACCEPTE');
+        INSERT INTO public.statistiqueDemande(id, statut,idDemandeCession)
+        VALUES (nextval('public.statistiqueDemande_sequence'), 'ACCEPTE', New.id);
     END IF;
 
 RETURN NEW;
