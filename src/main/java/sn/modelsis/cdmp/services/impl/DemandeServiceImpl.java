@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeDocuments;
 import sn.modelsis.cdmp.entities.Statuts;
@@ -22,7 +21,6 @@ import sn.modelsis.cdmp.services.DocumentService;
 
 @RequiredArgsConstructor
 @Service
-@Slf4j
 public class DemandeServiceImpl implements DemandeService {
 
     private final DemandeRepository demandeRepository;
