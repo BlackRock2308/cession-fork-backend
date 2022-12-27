@@ -292,8 +292,6 @@ public class ConventionServiceImpl implements ConventionService{
   static String formatMontant(double montant){
     NumberFormat formatter = NumberFormat.getCurrencyInstance();
     String moneyString = formatter.format(montant);
-    moneyString = moneyString.replace(",", " ");
-    moneyString = moneyString.replace(".", ",");
     return moneyString;
   }
   @Override
@@ -301,7 +299,7 @@ public class ConventionServiceImpl implements ConventionService{
     Map<String, Object> contextModel = new HashMap<>();
     contextModel.put("convention", convention);
     contextModel.put("montant", formatMontant(convention.getDemandeCession().getBonEngagement().getMontantCreance()));
-    contextModel.put("decote", formatMontant(convention.getValeurDecoteByDG()));
+    contextModel.put("decote", formatMontant(convention.getValeurDecoteByDG()*convention.getDemandeCession().getBonEngagement().getMontantCreance()));
     String dateStr = convertDate(LocalDateTime.now());
     contextModel.put("date", dateStr);
     Observation obPME = getLastSignature(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParPME());
