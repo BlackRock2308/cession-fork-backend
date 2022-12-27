@@ -282,7 +282,11 @@ public class ConventionServiceImpl implements ConventionService{
 
   private Observation getLastSignature(Long idDemande, String statut){
     List<Observation> observations = observationRepository.findDistinctByDemandeIdDemandeAndStatut_Code(idDemande,statut);
-   return observations.get(observations.size()-1);
+    if (observations.size() > 0) {
+        return observations.get(observations.size()-1);
+    }
+    return null;
+    
   }
 
   static String formatMontant(double montant){
