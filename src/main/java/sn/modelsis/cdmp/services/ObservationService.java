@@ -50,6 +50,6 @@ public interface ObservationService {
     @Query("select p from Observation p where p.idDemande=:idDemande")
     List<Observation> findObservationsByDemandeCession(@Param("idDemande") Long idDemande);
 
+    ObservationDto saveObservationRejetConvention(ObservationDto observation);
 
-    
 }
