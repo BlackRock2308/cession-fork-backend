@@ -49,6 +49,14 @@ public class ObservationControllers {
       return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @PostMapping("/rejet-convention")
+    public ResponseEntity<ObservationDto> addObservationConventionRejetee(
+            @RequestBody ObservationDto observationDto,
+            HttpServletRequest request) {
+        ObservationDto result = observationService.saveObservationRejetConvention(observationDto);
+        log.info("Observation create. Id:{} ", result.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
 
     @GetMapping("/observation-by-demandeid-and-status/{id}")
     public ResponseEntity<ObservationDto> getObservationByDemandeAndStatus(

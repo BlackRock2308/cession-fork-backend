@@ -86,8 +86,8 @@ public class ConventionServiceImpl implements ConventionService{
 
 
 
-  @Value("${server.qrcode_folder}")
-  private String path;
+  @Value("${server.document_folder}")
+  private String documentFolder;
 
   @Override
   public Convention save(ConventionDto conventionDto) {
@@ -119,6 +119,10 @@ public class ConventionServiceImpl implements ConventionService{
     }
     return newConvention;
 	}
+
+    private String getPath(Long idConvention){
+     return  documentFolder + "/" +String.format(ConventionDocuments.FOLDER_PATH, idConvention)+ "/" ;
+    }
 
   @Override
   public Convention corriger(ConventionDto conventionDto){
@@ -306,17 +310,17 @@ public class ConventionServiceImpl implements ConventionService{
     if (obPME != null) {
       String qrCodePME = "Prénom: " + convention.getDemandeCession().getPme().getPrenomRepresentant() + "\n" + "Nom: " + convention.getDemandeCession().getPme().getNomRepresentant() +
               "\n" + "Mail: " + convention.getDemandeCession().getPme().getEmail() + "\n Profil: "+"PME" +"\n Singé le " + convertDate(obPME.getDateObservation(),true);
-      qrCodePME = Qrcode.generateQRCode(qrCodePME, path + "/pme.png");
+      qrCodePME = Qrcode.generateQRCode(qrCodePME, getPath(convention.getIdConvention()) + "pme.png");
       contextModel.put("qrCodePME", qrCodePME);
       Observation obDG = getLastSignature(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParDG());
       if (obDG != null) {
         String qrCodeCDMP = getInfoQRcode(obDG," DG CDMP");
-        qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP, path + "/cdmp.png");
+        qrCodeCDMP = Qrcode.generateQRCode(qrCodeCDMP, getPath(convention.getIdConvention()) + "cdmp.png");
         contextModel.put("qrCodeCDMP", qrCodeCDMP);
         /*Observation obORD = getLastSignature(convention.getDemandeCession().getIdDemande(), Status.getConventionAcceptee());
         if (obORD != null) {
           String qrCodeORD = getInfoQRcode(obORD, "ORDONNATEUR");
-          qrCodeORD = Qrcode.generateQRCode(qrCodeORD, path + "/ordonnaneur.png");
+          qrCodeORD = Qrcode.generateQRCode(qrCodeORD, getPath(convention.getIdConvention()) + "ordonnaneur.png");
           contextModel.put("qrCodeORD", qrCodeORD);
         }*/
       }
