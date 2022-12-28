@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -246,6 +247,8 @@ public class ConventionServiceImpl implements ConventionService{
   public void saveDocumentConvention(Convention convention)  {
     Map<String, Object> contextModel = new HashMap<>();
     contextModel.put("convention", convention);
+    contextModel.put("montant", formatMontant(convention.getDemandeCession().getBonEngagement().getMontantCreance()));
+    contextModel.put("decote", formatMontant(convention.getValeurDecoteByDG()));
     String dateStr= convertDate(LocalDateTime.now());
     contextModel.put("date", dateStr);
     String fileName = "convention_generer.pdf";
@@ -285,10 +288,18 @@ public class ConventionServiceImpl implements ConventionService{
     return null;
     
   }
+
+  static String formatMontant(double montant){
+    NumberFormat formatter = NumberFormat.getCurrencyInstance();
+    String moneyString = formatter.format(montant);
+    return moneyString;
+  }
   @Override
   public void saveDocumentConventionSigner(Convention convention) {
     Map<String, Object> contextModel = new HashMap<>();
     contextModel.put("convention", convention);
+    contextModel.put("montant", formatMontant(convention.getDemandeCession().getBonEngagement().getMontantCreance()));
+    contextModel.put("decote", formatMontant(convention.getValeurDecoteByDG()*convention.getDemandeCession().getBonEngagement().getMontantCreance()));
     String dateStr = convertDate(LocalDateTime.now());
     contextModel.put("date", dateStr);
     Observation obPME = getLastSignature(convention.getDemandeCession().getIdDemande(), Status.getConventionSigneeParPME());
