@@ -121,7 +121,7 @@ public class ConventionServiceImpl implements ConventionService{
 	}
 
     private String getPath(Long idConvention){
-     return  documentFolder + "/" + ConventionDocuments.FOLDER_PATH + "/" + idConvention+ "/";
+     return  documentFolder + "/" +String.format(ConventionDocuments.FOLDER_PATH, idConvention)+ "/" ;
     }
 
   @Override
