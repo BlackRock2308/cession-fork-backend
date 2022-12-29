@@ -4,29 +4,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import sn.modelsis.cdmp.data.BonEngagementDTOTestData;
 import sn.modelsis.cdmp.data.DemandeAdhesionDTOTestData;
 import sn.modelsis.cdmp.data.DemandeCessionDTOTestData;
 import sn.modelsis.cdmp.data.PmeDTOTestData;
-import sn.modelsis.cdmp.entities.BonEngagement;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.*;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
@@ -39,25 +42,33 @@ import sn.modelsis.cdmp.util.DtoConverter;
 
 import javax.validation.Valid;
 
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@SpringBootTest
 @AutoConfigureMockMvc
+@ExtendWith({SpringExtension.class})
 @RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DemandeCessionResourceTest extends BasicResourceTest{
 
+    @LocalServerPort
+    private int port;
+
+    private String baseUrl = "http://localhost";
+
+    private static RestTemplate restTemplate;
     DemandeCessionDto dto;
-
     DemandeCession entity;
-
     static DemandeCession demandeCession;
 
     @Autowired
@@ -76,7 +87,6 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
 
     PmeDto dtoPme;
     Pme entityPme;
-    static Pme pme;
     @Autowired
     @Valid
     BonEngagementRepository bonEngagementRepository;
@@ -87,7 +97,10 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
     BonEngagementDto dtoBE;
     BonEngagement entityBE;
 
-    static BonEngagement bonEngagement;
+    private Statut statut;
+
+    private StatutDto statutDto;
+
 
     @Autowired
     @Valid
@@ -105,8 +118,16 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
         }
     }
 
+    @BeforeAll
+    public static void init() {
+        restTemplate = new RestTemplate();
+        log.info(" before all ");
+    }
+
     @BeforeEach
     void setUp() {
+
+        baseUrl = baseUrl + ":" + port + "/api/demandecession";
 
         //Init for PME
         dtoPme = PmeDTOTestData.defaultDTO();
@@ -125,207 +146,271 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
 
-    }
-
-
-    @Test
-    void findAll_shouldReturnDemandeCession() throws Exception {
-
-//        pme = pmeService.savePme(entityPme);
-//        dto = DemandeCessionDTOTestData.defaultDTO();
-//        dto.setPme(pme);
+        statut = new Statut(1L,"REJETEE", "REJETEE");
+        statutRepository.save(statut);
 
         entity = DtoConverter.convertToEntity(dto);
 
         demandeCession = cessionService.saveCession(entity);
+    }
+
+
+    @AfterEach
+    void afterEach(){
+//        pmeRepository.deleteAll();
+//        statutRepository.deleteAll();
+        //cessionRepository.deleteAll();
+    }
+
+    @Test
+    @Rollback(value = false)
+    void add_shouldCreateDemandeCessionTest() throws Exception {
+        dto = DemandeCessionDTOTestData.defaultDTO();
+        dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
+        dto.setPme(DtoConverter.convertToDto(entityPme));
+
+        DemandeCession newCession = restTemplate
+                .postForObject(baseUrl, dto ,DemandeCession.class);
+
+        assertThat(newCession)
+                .isNotNull();
+    }
+
+
+    @Test
+    void findAll_shouldReturnDemandeCessionTest() throws Exception {
+//        entity = DtoConverter.convertToEntity(dto);
+//
+//        demandeCession = cessionService.saveCession(entity);
 
         mockMvc.perform(
-                        get("/api/demandecession").accept(MediaType.APPLICATION_JSON))
+                        get("/api/demandeadhesion").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].idDemande").isNotEmpty());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content").exists());
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].idDemande").isNotEmpty());
 
     }
 
     @Test
-    void findById_shouldReturnOneDemandeCession() throws Exception {
-        entity = DtoConverter.convertToEntity(dto);
+    void findById_shouldReturnOneDemandeCessionTest() throws Exception {
+//        entity = DtoConverter.convertToEntity(dto);
+//
+//        demandeCession = cessionService.saveCession(entity);
 
-        demandeCession = cessionService.saveCession(entity);
+        DemandeCession existingCession = restTemplate
+                .getForObject(baseUrl+"/"+demandeCession.getIdDemande(), DemandeCession.class);
 
-        mockMvc.perform(
-                        get("/api/demandecession/{id}", demandeCession.getIdDemande())
-                                .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").value(demandeCession.getIdDemande()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").isNotEmpty());
+        assertNotNull(existingCession);
+        assertEquals(existingCession.getNumeroDemande(), existingCession.getNumeroDemande());
     }
+
 
     @Test
     void findById_withBadId_shouldReturnNotFound() throws Exception {
 
-        entity = DtoConverter.convertToEntity(dto);
-
-        demandeCession = cessionService.saveCession(entity);
+//        entity = DtoConverter.convertToEntity(dto);
+//
+//        demandeCession = cessionService.saveCession(entity);
 
         mockMvc.perform(get("/api/demandecession/{id}", UUID.randomUUID().getMostSignificantBits())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(result -> Assert.assertTrue(result.getResolvedException() instanceof CustomException) );
     }
 
+
+
     @Test
-    @Transactional
-    void add_shouldCreateDemandeCession() throws Exception {
+    void rejectedDemandeCession_shouldRejectDemandeCession() throws Exception{
+        // given - precondition or setup
 
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
 
-        mockMvc.perform( MockMvcRequestBuilders
-                        .post("/api/demandecession")
-                        .content(asJsonString(dto))
+//        entity = DtoConverter.convertToEntity(dto);
+//        demandeCession = cessionService.saveCession(entity);
+
+
+        DemandeAdhesionDto rejectedAdhesionDto = DemandeAdhesionDTOTestData.updatedDTO();
+
+        DemandeAdhesion rejectedAdhesion = DtoConverter.convertToEntity(rejectedAdhesionDto);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(
+                patch(baseUrl+"/"+"{id}"+"/rejeterRecevabilite", demandeCession.getIdDemande())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").exists())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").isNotEmpty());
+                        .content(asJsonString(rejectedAdhesion)));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.pme.telephonePME", is(demandeCession.getPme().getTelephonePME())))
+                .andExpect(jsonPath("$.pme.ninea", is(demandeCession.getPme().getNinea())))
+                .andExpect(jsonPath("$.pme.adressePME", is(demandeCession.getPme().getAdressePME())));
     }
 
+
     @Test
-    @Transactional
-    void patchrejeterDemandeCession_shouldRejectDemandeCession() throws Exception {
+    void validateDemandeCession_shouldValidateDemandeCession() throws Exception{
+        // given - precondition or setup
 
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
 
-        entity = DtoConverter.convertToEntity(dto);
-        demandeCession = cessionService.saveCession(entity);
+//        entity = DtoConverter.convertToEntity(dto);
+//        demandeCession = cessionService.saveCession(entity);
 
-        mockMvc.perform( MockMvcRequestBuilders
-                        .patch("/api/demandecession/{idDemande}/rejeterRecevabilite", demandeCession.getIdDemande())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").exists())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").isNotEmpty());
+
+        DemandeAdhesionDto rejectedAdhesionDto = DemandeAdhesionDTOTestData.updatedDTO();
+
+        DemandeAdhesion rejectedAdhesion = DtoConverter.convertToEntity(rejectedAdhesionDto);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(
+                patch(baseUrl+"/"+"{id}"+"/validerRecevabilite", demandeCession.getIdDemande())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(rejectedAdhesion)));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.pme.telephonePME", is(demandeCession.getPme().getTelephonePME())))
+                .andExpect(jsonPath("$.pme.ninea", is(demandeCession.getPme().getNinea())))
+                .andExpect(jsonPath("$.pme.adressePME", is(demandeCession.getPme().getAdressePME())));
     }
 
+
     @Test
-    @Transactional
-    void patch_validerDemandeCession_shouldValidateDemandeCession() throws Exception {
+    void validateAnalyseDemandeCession_shouldValidateAnalyseDemandeCession() throws Exception{
+        // given - precondition or setup
 
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
 
-        entity = DtoConverter.convertToEntity(dto);
-        demandeCession = cessionService.saveCession(entity);
+//        entity = DtoConverter.convertToEntity(dto);
+//        demandeCession = cessionService.saveCession(entity);
 
-        mockMvc.perform( MockMvcRequestBuilders
-                        .patch("/api/demandecession/{idDemande}/validerRecevabilite", demandeCession.getIdDemande())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").exists())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").isNotEmpty());
+
+        DemandeAdhesionDto rejectedAdhesionDto = DemandeAdhesionDTOTestData.updatedDTO();
+
+        DemandeAdhesion rejectedAdhesion = DtoConverter.convertToEntity(rejectedAdhesionDto);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(
+                patch(baseUrl+"/"+"{id}"+"/validateAnalyse", demandeCession.getIdDemande())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(rejectedAdhesion)));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.pme.telephonePME", is(demandeCession.getPme().getTelephonePME())))
+                .andExpect(jsonPath("$.pme.ninea", is(demandeCession.getPme().getNinea())))
+                .andExpect(jsonPath("$.pme.adressePME", is(demandeCession.getPme().getAdressePME())));
     }
 
+
     @Test
-    @Transactional
-    void patch_validateAnalyse_shouldValidateAnalyse() throws Exception {
+    void rejectedAnalyseDemandeCession_shouldRejectedAnalyseDemandeCession() throws Exception{
+        // given - precondition or setup
 
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
 
-        entity = DtoConverter.convertToEntity(dto);
-        demandeCession = cessionService.saveCession(entity);
+//        entity = DtoConverter.convertToEntity(dto);
+//        demandeCession = cessionService.saveCession(entity);
 
-        mockMvc.perform( MockMvcRequestBuilders
-                        .patch("/api/demandecession/{idDemande}/validateAnalyse", demandeCession.getIdDemande())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").exists())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").isNotEmpty());
+
+        DemandeAdhesionDto rejectedAdhesionDto = DemandeAdhesionDTOTestData.updatedDTO();
+
+        DemandeAdhesion rejectedAdhesion = DtoConverter.convertToEntity(rejectedAdhesionDto);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(
+                patch(baseUrl+"/"+"{id}"+"/rejectedAnalyse", demandeCession.getIdDemande())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(rejectedAdhesion)));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.pme.telephonePME", is(demandeCession.getPme().getTelephonePME())))
+                .andExpect(jsonPath("$.pme.ninea", is(demandeCession.getPme().getNinea())))
+                .andExpect(jsonPath("$.pme.adressePME", is(demandeCession.getPme().getAdressePME())));
+    }
+
+
+    @Test
+    void completeAnalyseDemandeCession_shouldCompleteAnalyseDemandeCession() throws Exception{
+        // given - precondition or setup
+
+        dto = DemandeCessionDTOTestData.defaultDTO();
+        dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
+        dto.setPme(DtoConverter.convertToDto(entityPme));
+//
+//        entity = DtoConverter.convertToEntity(dto);
+//        demandeCession = cessionService.saveCession(entity);
+
+
+        DemandeAdhesionDto rejectedAdhesionDto = DemandeAdhesionDTOTestData.updatedDTO();
+
+        DemandeAdhesion rejectedAdhesion = DtoConverter.convertToEntity(rejectedAdhesionDto);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(
+                patch(baseUrl+"/"+"{id}"+"/complementAnalyse", demandeCession.getIdDemande())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(rejectedAdhesion)));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.pme.telephonePME", is(demandeCession.getPme().getTelephonePME())))
+                .andExpect(jsonPath("$.pme.ninea", is(demandeCession.getPme().getNinea())))
+                .andExpect(jsonPath("$.pme.adressePME", is(demandeCession.getPme().getAdressePME())));
     }
 
     @Test
-    @Transactional
-    void patch_rejectedAnalyse_shouldRejectedAnalyse() throws Exception {
+    void getAllPMEDemandeCession_shouldReturnResultTest() {
 
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
 
-        entity = DtoConverter.convertToEntity(dto);
-        demandeCession = cessionService.saveCession(entity);
+//        entity = DtoConverter.convertToEntity(dto);
+//        demandeCession = cessionService.saveCession(entity);
 
-        mockMvc.perform( MockMvcRequestBuilders
-                        .patch("/api/demandecession/{idDemande}/rejectedAnalyse", demandeCession.getIdDemande())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").exists())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").isNotEmpty());
+        List pmelist = restTemplate.getForObject(baseUrl+"/"+"pme/"+demandeCession.getPme().getIdPME(), List.class);
+
+        assertThat(pmelist.size()).isEqualTo(1);
     }
 
     @Test
-    @Transactional
-    void patch_complementAnalyse_shouldComplementAnalyse() throws Exception {
+    void getAllRejectedDemandeCession_shouldReturnResultTest() {
+        Statut selectedStatut= statutRepository.findByLibelle("REJETEE");
+//        statut = new Statut(1L,"REJETEE", "REJETEE");
+//        statutRepository.save(statut);
+//        Set<Statut> statuts = new HashSet<>();
+//        statuts.add(statut);
 
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
+        if (!selectedStatut.getLibelle().isEmpty()){
+            dto.setStatut(DtoConverter.convertToDto(selectedStatut));
+        }
+       log.info("statut : {}", selectedStatut.getLibelle());
 
         entity = DtoConverter.convertToEntity(dto);
         demandeCession = cessionService.saveCession(entity);
 
-        mockMvc.perform( MockMvcRequestBuilders
-                        .patch("/api/demandecession/{idDemande}/complementAnalyse", demandeCession.getIdDemande())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").exists())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").isNotEmpty());
+        List pmelist = restTemplate.getForObject(baseUrl+"/"+"rejected", List.class);
+
+        assertThat(pmelist.size()).isEqualTo(1);
     }
-
-    @Test
-    @Transactional
-    void getAllPMEDemandeCession_shouldReturnResult() throws Exception {
-
-        dto = DemandeCessionDTOTestData.defaultDTO();
-        dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
-        dto.setPme(DtoConverter.convertToDto(entityPme));
-
-        entity = DtoConverter.convertToEntity(dto);
-        demandeCession = cessionService.saveCession(entity);
-
-        mockMvc.perform( MockMvcRequestBuilders
-                        .get("/api/demandecession/pme/{id}", demandeCession.getPme().getIdPME())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[*]").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[*].idDemande").isNotEmpty());
-
-
-    }
-
-
 }

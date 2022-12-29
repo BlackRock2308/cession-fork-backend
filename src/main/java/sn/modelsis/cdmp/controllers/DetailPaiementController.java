@@ -126,16 +126,18 @@ public class DetailPaiementController {
     public ResponseEntity<Set<DetailPaiementDto>> getDetailPaiementSICA_CDMP(
             @PathVariable Long id,
             HttpServletRequest request) {
+        log.info("DetailPaiementController:getDetailPaiementSICA_CDMP request started ...");
         Set<DetailPaiementDto> sortedDetailPaiements =  detailPaiementService.getDetailPaiementByTypePaiement(id,"SICA_CDMP");
-        log.info("Paiement . demandeId:{}");
+        log.info("DetailPaiementController:getDetailPaiementSICA_CDMP params : id = {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(sortedDetailPaiements);
     }
 
     @GetMapping(value = "/cdmp-pme/{id}")
     public ResponseEntity<Set<DetailPaiementDto>> getDetailPaiementCDMP_PME(
             @PathVariable Long id) {
+        log.info("DetailPaiementController:getDetailPaiementCDMP_PME request started ...");
         Set<DetailPaiementDto> sortedDetailPaiements =  detailPaiementService.getDetailPaiementByTypePaiement(id,"CDMP_PME");
-        log.info("Paiement . demandeId:{}");
+        log.info("DetailPaiementController:getDetailPaiementCDMP_PME params : id = {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(sortedDetailPaiements);
     }
 }

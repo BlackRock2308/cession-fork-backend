@@ -6,28 +6,45 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.v3.core.util.Json;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.*;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+import sn.modelsis.cdmp.data.BonEngagementDTOTestData;
 import sn.modelsis.cdmp.data.PmeDTOTestData;
 import sn.modelsis.cdmp.data.TestData;
+import sn.modelsis.cdmp.entities.BonEngagement;
 import sn.modelsis.cdmp.entities.Pme;
 
+import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
+import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.services.PmeService;
+import sn.modelsis.cdmp.util.DtoConverter;
 
+import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,10 +52,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.hamcrest.Matchers.is;
 
 @Slf4j
-@SpringBootTest
 @AutoConfigureMockMvc
+@ExtendWith({SpringExtension.class})
 @RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PmeResourceTest extends BasicResourceTest{
+
+    @LocalServerPort
+    private int port;
+
+    private String baseUrl = "http://localhost";
+
+    private static RestTemplate restTemplate;
 
     private static Pme entity;
     private static Pme pme;
@@ -48,8 +73,6 @@ public class PmeResourceTest extends BasicResourceTest{
     @Autowired
     private PmeRepository pmeRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
     public static String asJsonString(final Object obj) {
         try {
@@ -62,133 +85,104 @@ public class PmeResourceTest extends BasicResourceTest{
             throw new RuntimeException(e);
         }
     }
-
     @BeforeAll
-    static void beforeAll() {
+    public static void init() {
+        restTemplate = new RestTemplate();
         log.info(" before all ");
     }
+
 
     @BeforeEach
     void beforeEach() {
         log.info(" before each ");
+        baseUrl = baseUrl + ":" + port + "/api/pme";
         pmeRepository.deleteAll();
         entity = PmeDTOTestData.defaultEntity();
     }
 
+    @AfterEach
+    void afterEach(){
+        pmeRepository.deleteAll();
+    }
+
 
     @Test
-    void findAll_shouldReturnPmes() throws Exception {
+    @Rollback(value = false)
+    void save_shouldSavePme() {
+        Pme newPme = restTemplate.postForObject(baseUrl, entity, Pme.class);
+        Assertions.assertAll(
+                ()-> assertThat(newPme.getIdPME()).isNotNull(),
+                ()->  assertThat(status().isOk())
+        );
+
+    }
+
+
+    @Test
+    void shouldFetchAllPmesTest() {
+
         pme = pmeService.savePme(entity);
-        mockMvc.perform(
-                get("/api/pme").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                //.andExpect(jsonPath("$.Body", hasSize(1)))
-                .andExpect(jsonPath("$.[0].idPME").exists())
-                .andExpect(jsonPath("$.[0].isactive", is(false)))
-                .andExpect(jsonPath("$.[0].hasninea", is(false)))
-                .andExpect(jsonPath("$.[0].nantissement").value(false))
-                .andExpect(jsonPath("$.[0].ninea", is(pme.getNinea())))
-                .andExpect(jsonPath("$.[0].prenomRepresentant").value(pme.getPrenomRepresentant()))
-                .andExpect(jsonPath("$.[0].email").value(pme.getEmail()))
-                .andExpect(jsonPath("$.[0].nomRepresentant").value(pme.getNomRepresentant()))
-                .andExpect(jsonPath("$.[0].rccm").value(pme.getRccm()))
-                .andExpect( jsonPath("$.[0].telephonePME").value(pme.getTelephonePME()));
+
+        List pmelist = restTemplate.getForObject(baseUrl, List.class);
+
+        assertThat(pmelist.size()).isEqualTo(1);
+    }
+
+
+    @Test
+    void findById_shouldReturnExistingPmeTest() {
+        pme = pmeService.savePme(entity);
+
+        Pme existingPme = restTemplate
+                .getForObject(baseUrl+"/"+pme.getIdPME(), Pme.class);
+
+        assertNotNull(existingPme);
+        assertEquals(pme.getEmail(), existingPme.getEmail());
     }
 
 
 
     @Test
-    void findById_shouldReturnPme() throws Exception {
+    void givenUpdatedPmeupdate_shouldUpdatePme() throws Exception{
+        // given - precondition or setup
         pme = pmeService.savePme(entity);
-        mockMvc.perform(get("/api/pme/{id}", pme.getIdPME())
-                 .accept(MediaType.APPLICATION_JSON))
+
+
+        PmeDto updatedPmeDto = PmeDTOTestData.updatedDTO();
+
+        Pme updatedpme = DtoConverter.convertToEntity(updatedPmeDto);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(
+                put(baseUrl+"/"+"{id}", pme.getIdPME())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(updatedpme)));
+
+        // then - verify the output
+        response.andExpect(status().isAccepted())
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.idPME").exists())
-                .andExpect(jsonPath("$.idPME").value(pme.getIdPME()))
-                .andExpect(jsonPath("$.isactive", is(false)))
-                .andExpect(jsonPath("$.hasninea", is(false)))
-                .andExpect(jsonPath("$.nantissement").value(false))
-                .andExpect(jsonPath("$.ninea", is(pme.getNinea())))
-                .andExpect(jsonPath("$.prenomRepresentant").value(pme.getPrenomRepresentant()))
-                .andExpect(jsonPath("$.email").value(pme.getEmail()))
-                .andExpect(jsonPath("$.nomRepresentant").value(pme.getNomRepresentant()))
-                .andExpect(jsonPath("$.rccm").value(pme.getRccm()))
-                .andExpect( jsonPath("$.telephonePME").value(pme.getTelephonePME()));
-    }
-
-
-    @Test
-    void findById_withBadId_shouldReturnNotFound() throws Exception {
-        mockMvc.perform(get("/api/pme/{id}", UUID.randomUUID().getMostSignificantBits())
-                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("$.rccm", is(updatedpme.getRccm())))
+                .andExpect(jsonPath("$.ninea", is(updatedpme.getNinea())));
     }
 
 
 
     @Test
-    @Transactional
-    void add_shouldCreatePme() throws Exception
-    {
-        mockMvc.perform( MockMvcRequestBuilders
-                        .post("/api/pme")
-                        .content(asJsonString(entity))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idPME").exists())
-                .andExpect(jsonPath("$.isactive", is(false)))
-                .andExpect(jsonPath("$.hasninea", is(false)))
-                .andExpect(jsonPath("$.nantissement").value(false))
-                .andExpect(jsonPath("$.ninea", is(entity.getNinea())))
-                .andExpect(jsonPath("$.prenomRepresentant").value(entity.getPrenomRepresentant()))
-                .andExpect(jsonPath("$.email").value(entity.getEmail()))
-                .andExpect(jsonPath("$.nomRepresentant").value(entity.getNomRepresentant()))
-                .andExpect(jsonPath("$.rccm").value(entity.getRccm()))
-                .andExpect( jsonPath("$.telephonePME").value(entity.getTelephonePME()));
-    }
+    void delete_shouldDeletePme() {
 
-
-    @Test
-    void update_shouldUpdatePme() throws Exception {
-        entity.setAdressePME(TestData.Update.adressePME);
-        entity.setTelephonePME(TestData.Update.telephonePME);
-        entity.setEmail(TestData.Update.email);
         pme = pmeService.savePme(entity);
-        mockMvc.perform( MockMvcRequestBuilders
-                .put("/api/pme/{id}", pme.getIdPME())
-                .content(asJsonString(entity))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isAccepted())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idPME").exists())
-                .andExpect(jsonPath("$.isactive", is(false)))
-                .andExpect(jsonPath("$.hasninea", is(false)))
-                .andExpect(jsonPath("$.nantissement").value(false))
-                .andExpect(jsonPath("$.ninea", is(entity.getNinea())))
-                .andExpect(jsonPath("$.prenomRepresentant").value(entity.getPrenomRepresentant()))
-                .andExpect(jsonPath("$.email").value(entity.getEmail()))
-                .andExpect(jsonPath("$.nomRepresentant").value(entity.getNomRepresentant()))
-                .andExpect(jsonPath("$.rccm").value(entity.getRccm()))
-                .andExpect( jsonPath("$.telephonePME").value(entity.getTelephonePME()));
-    }
 
-    @Test
-    void delete_shouldDeletePme() throws Exception {
-        pme = pmeService.savePme(entity);
-        mockMvc.perform(
-                delete("/api/pme/{id}", pme.getIdPME())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNoContent());
+        restTemplate.delete(baseUrl+"/"+pme.getIdPME());
+
+        int count = pmeRepository.findAll().size();
+
+        assertEquals(0, count);
     }
 
 
 
     @Test
-    public void delete_withBadId_shouldReturnNotFound() throws Exception {
+    public void find_withBadId_shouldReturnNotFound() throws Exception {
 
         mockMvc.perform(get("/api/pme/{id}", UUID.randomUUID().getMostSignificantBits())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -198,5 +192,22 @@ public class PmeResourceTest extends BasicResourceTest{
 
 
 
+
+
+
+
+//    @Test
+//    public void getAllPmeTest() {
+//
+//        UriComponents builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
+//                .build();
+//        HttpEntity<String> requestEntity = new HttpEntity<>(null, null);
+//        ResponseEntity<String> response = testRestTemplate.exchange(builder.toString(), HttpMethod.GET, requestEntity,
+//                String.class);
+//        System.out.println(response.getBody());
+//
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//
+//    }
 
 }

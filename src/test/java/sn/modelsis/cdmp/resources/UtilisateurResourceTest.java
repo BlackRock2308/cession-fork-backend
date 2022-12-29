@@ -4,23 +4,27 @@ package sn.modelsis.cdmp.resources;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import sn.modelsis.cdmp.data.PmeDTOTestData;
 import sn.modelsis.cdmp.data.UtilisateurDTOTestData;
+import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
@@ -32,20 +36,32 @@ import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@SpringBootTest
 @AutoConfigureMockMvc
+@ExtendWith({SpringExtension.class})
 @RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UtilisateurResourceTest extends BasicResourceTest{
+
+    @LocalServerPort
+    private int port;
+
+    private String baseUrl = "http://localhost";
+
+    private static RestTemplate restTemplate;
 
     private static AuthentificationDto auth;
 
@@ -83,61 +99,52 @@ public class UtilisateurResourceTest extends BasicResourceTest{
     }
 
     @BeforeAll
-    static void beforeAll() {
+    public static void init() {
+        restTemplate = new RestTemplate();
         log.info(" before all ");
     }
 
     @BeforeEach
     void beforeEach() {
         log.info(" before each ");
+        baseUrl = baseUrl + ":" + port + "/api/utilisateur";
         pmeRepository.deleteAll();
         utilisateurRepository.deleteAll();
 
-//        role = new Role(1L,"PDG", "President directeur General");
-//        Set<Role> roles = null;
-//        roles.add(role);
-
         entity = UtilisateurDTOTestData.defaultEntity();
         entityRegistered = UtilisateurDTOTestData.registeredEntity();
-//        entityRegistered.setRoles(roles);
+    }
+
+
+
+    @AfterEach
+    void afterEach(){
+        pmeRepository.deleteAll();
+    }
+
+    @Test
+    void findAll_shouldReturnUsers() throws Exception  {
+
+        utilisateur = utilisateurService.save(entity);
+
+        List userList = restTemplate.getForObject(baseUrl+"/getAll", List.class);
+
+        assertThat(userList.size()).isEqualTo(1);
     }
 
 
     @Test
-    void findAll_shouldReturnUsers() throws Exception {
+    void findByEmail_shouldReturnUtilisateurTest() throws Exception  {
+
         utilisateur = utilisateurService.save(entity);
-        mockMvc.perform(
-                        get("/api/utilisateur/getAll").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(jsonPath("$.[0].idUtilisateur").exists())
-                .andExpect(jsonPath("$.[0].email").value(utilisateur.getEmail()))
-                .andExpect(jsonPath("$.[0].adresse").value(utilisateur.getAdresse()))
-                .andExpect(jsonPath("$.[0].prenom").value(utilisateur.getPrenom()))
-                .andExpect(jsonPath("$.[0].password").value(utilisateur.getPassword()))
-                .andExpect(jsonPath("$.[0].codePin").value(utilisateur.getCodePin()));
 
+        Utilisateur existingUser = restTemplate
+                .getForObject(baseUrl+"/"+utilisateur.getEmail(), Utilisateur.class);
 
+        assertNotNull(existingUser);
+        assertEquals(utilisateur.getEmail(), existingUser.getEmail());
     }
 
-    @Test
-    void findByEmail_shouldReturnUtilisateur() throws Exception {
-        utilisateur = utilisateurService.save(entity);
-        mockMvc.perform(
-                        get("/api/utilisateur/{email}", utilisateur.getEmail())
-                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(jsonPath("$.idUtilisateur").exists())
-                .andExpect(jsonPath("$.email").value(utilisateur.getEmail()))
-                .andExpect(jsonPath("$.adresse").value(utilisateur.getAdresse()))
-                .andExpect(jsonPath("$.prenom").value(utilisateur.getPrenom()))
-                .andExpect(jsonPath("$.password").value(utilisateur.getPassword()))
-                .andExpect(jsonPath("$.codePin").value(utilisateur.getCodePin()));
-    }
 
     @Test
     void findById_withBadEmail_shouldReturnNotFound() throws Exception {
@@ -146,27 +153,26 @@ public class UtilisateurResourceTest extends BasicResourceTest{
                 .andExpect(status().isOk());
     }
 
+
     @Test
-    @Transactional
-    void add_shouldCreateUtilisateur() throws Exception {
+    @Rollback(value = false)
+    void save_shouldSaveUtilisateur() {
         role = new Role(1L,"PDG", "President directeur General");
         Set<Role> roles = new HashSet<>();
         roles.add(role);
+
         entityRegistered = UtilisateurDTOTestData.registeredEntity();
         entityRegistered.setRoles(roles);
         entityDtoRegistered = DtoConverter.convertToDto(entityRegistered);
-        mockMvc.perform( MockMvcRequestBuilders
-                        .post("/api/utilisateur/create")
-                        .content(asJsonString(entityDtoRegistered))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.idUtilisateur").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(entityDtoRegistered.getEmail()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.adresse").value(entityDtoRegistered.getAdresse()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.prenom").value(entityDtoRegistered.getPrenom()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.codePin").value(entityDtoRegistered.getCodePin()));
+
+        Utilisateur newUser = restTemplate.postForObject(baseUrl+"/create", entityDtoRegistered, Utilisateur.class);
+        Assertions.assertAll(
+                ()->  assertThat(status().isOk()),
+                ()->  assertThat(newUser.getIdUtilisateur()).isNotNull(),
+                ()-> assertThat(newUser).isNotNull()
+        );
     }
+
 
 
     @Test
@@ -176,22 +182,26 @@ public class UtilisateurResourceTest extends BasicResourceTest{
         utilisateur = utilisateurService.save(entityRegistered);
         mockMvc.perform(
                         post("/api/utilisateur/{idUtilisateur}/signer-convention", utilisateur.getIdUtilisateur())
-                                .content(asJsonString(utilisateur.getEmail()))
+                                .content(asJsonString(utilisateur.getCodePin()))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
 
-
     @Test
-    void delete_shouldDeleteUtilisateur() throws Exception {
+    void delete_shouldDeleteUtilisateurTest() {
+
         utilisateur = utilisateurService.save(entity);
-        mockMvc.perform(
-                delete("/api/utilisateur/{id}", utilisateur.getIdUtilisateur())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNoContent());
+
+        restTemplate.delete(baseUrl+"/"+utilisateur.getIdUtilisateur());
+
+        int count = utilisateurRepository.findAll().size();
+
+        assertEquals(0, count);
     }
+
+
 
     @Test
     void auth_shouldLogUtilisateur() throws Exception {

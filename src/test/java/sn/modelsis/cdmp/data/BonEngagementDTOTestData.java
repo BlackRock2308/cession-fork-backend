@@ -10,7 +10,7 @@ public class BonEngagementDTOTestData extends TestData{
         return BonEngagementDto
                 .builder()
                 .idBonEngagement(Default.id)
-                .montantCreance(Default.montantCreance)
+                .montantCreance(4_000_000)
                 .nomMarche(Default.nomMarche)
                 .reference(Default.reference)
                 .naturePrestation(Default.naturePrestation)

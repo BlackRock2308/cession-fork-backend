@@ -27,7 +27,6 @@ import sn.modelsis.cdmp.CdmpApplicationTests;
 import sn.modelsis.cdmp.data.BonEngagementDTOTestData;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
-import sn.modelsis.cdmp.repository.TestBonEngagementRepositoryH2;
 import sn.modelsis.cdmp.services.*;
 import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.TestUtil;
@@ -68,20 +67,20 @@ public class BonEngagementApiApplicationTests {
                 .andDo(print()).andExpect(status().isOk()).andReturn();
 
         JSONArray jsonResults = new JSONArray(result.getResponse().getContentAsString());
-        /*List<BonEngagement> results = new ArrayList<>();
-        for (int i = 0; i < jsonResults.length(); i++) {
-            results.add((BonEngagement) Util.convertJsonStringToEntity(jsonResults.getString(i), BonEngagementDto.class));
-        }
-        Set<BonEngagement> asfs =
-                results.stream().map(DtoConverter::convertToEntity).collect(Collectors.toSet());
-
-        assertThat(asfs).isNotEmpty();
-
-        assertThat(asfs.size()).isNotZero();
-        final Long pId1 = asf1.getId();
-        assertThat(asfs.stream().anyMatch(r -> r.getId().equals(pId1))).isTrue();
-        final Long pId2 = asf2.getId();
-        assertThat(asfs.stream().anyMatch(r -> r.getId().equals(pId2))).isTrue();*/
+//        List<BonEngagement> results = new ArrayList<>();
+//        for (int i = 0; i < jsonResults.length(); i++) {
+//            results.add((BonEngagement) Util.convertJsonStringToEntity(jsonResults.getString(i), BonEngagementDto.class));
+//        }
+//        Set<BonEngagement> asfs =
+//                results.stream().map(DtoConverter::convertToEntity).collect(Collectors.toSet());
+//
+//        assertThat(asfs).isNotEmpty();
+//
+//        assertThat(asfs.size()).isNotZero();
+//        final Long pId1 = asf1.getId();
+//        assertThat(asfs.stream().anyMatch(r -> r.getId().equals(pId1))).isTrue();
+//        final Long pId2 = asf2.getId();
+//        assertThat(asfs.stream().anyMatch(r -> r.getId().equals(pId2))).isTrue();
 
     }
 

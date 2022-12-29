@@ -5,6 +5,7 @@ import org.apache.commons.lang3.RandomUtils;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.entitiesDtos.StatutDto;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -95,6 +96,9 @@ public class TestData {
         public static final float valeurDecoteDG = RandomUtils.nextFloat();
         public static final Pme pme = new Pme();
         public static final PmeDto pmeDTO = new PmeDto();
+
+        public static final StatutDto statutDto = new StatutDto();
+
         public static final Paiement paiement = new Paiement();
         public static final BonEngagement bonEngagement = new BonEngagement();
         public static final BonEngagementDto bonEngagementDto = new BonEngagementDto();

@@ -23,6 +23,7 @@ public interface ParametrageDecoteService {
 
     Optional<ParametrageDecote> findByIdDecote(Long id);
 
-    Optional<ParametrageDecote> findIntervalDecote(Double montant);
+    Optional<ParametrageDecote>
+    findIntervalDecote(Double montant);
 
 }

@@ -107,8 +107,7 @@ public class ConventionServiceImpl implements ConventionService{
     log.info("ConventionService:getConvention fetching single convention with id : {}", id);
 
     return conventionRepository
-            .findById(id)
-            ;
+            .findById(id);
   }
 
   @Override

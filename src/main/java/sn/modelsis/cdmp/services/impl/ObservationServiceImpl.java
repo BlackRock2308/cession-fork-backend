@@ -54,7 +54,7 @@ public class ObservationServiceImpl implements ObservationService{
     Statut statut = statutRepository.findByLibelle(observation.getStatut().getLibelle());
 
     try{
-      log.info("ObservationService.saveNewObservation request started...");
+      log.info("ObservationService.saveNewObservation request  params : {}", observation);
       newObservation = observationMapper.mapToDto(observation);
       newObservation.setStatut(statut);
       Utilisateur utilisateur =utilisateurRepository.findById(observation.getUtilisateurid()).orElse(null);
