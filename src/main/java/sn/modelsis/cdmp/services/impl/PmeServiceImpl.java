@@ -115,7 +115,7 @@ public class PmeServiceImpl implements PmeService {
       returnPme.setPME((Long) fields.get("idPME"), (String) fields.get("prenomRepresentant"),
               (String) fields.get("nomRepresentant"), (String) fields.get("rccm"), (String) fields.get("adressePME"),
               (String) fields.get("telephonePME"), (LocalDateTime) fields.get("dateImmatriculation"),
-              (String) fields.get("centreFiscal"), (String) fields.get("ninea"), (String) fields.get("raisonSocial"),
+              (CentreDesServicesFiscaux) fields.get("centreFiscal"), (String) fields.get("ninea"), (String) fields.get("raisonSocial"),
               (boolean) fields.get("atd"), (boolean) fields.get("nantissement"),
               (boolean) fields.get("interdictionBancaire"), (boolean) fields.get("identificationBudgetaire"),
               (FormeJuridique) fields.get("formeJuridique"), (String) fields.get("email"),

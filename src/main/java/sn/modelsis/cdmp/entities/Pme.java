@@ -50,9 +50,6 @@ public class Pme implements Serializable {
     @Column(name = "dateimmatriculation")
     private LocalDateTime dateImmatriculation;
 
-    @Column(name = "centrefiscal")
-    private String centreFiscal;
-
     @NotEmpty
     @Column(name = "ninea")
     private String ninea;
@@ -126,6 +123,10 @@ public class Pme implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="formejuridiqueid")
     private FormeJuridique formeJuridique;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="centreFiscalid")
+    private CentreDesServicesFiscaux centreFiscal;
     @Column(name = "cnirepresentant")
     private String cniRepresentant;
 
@@ -149,7 +150,7 @@ public class Pme implements Serializable {
 
             LocalDateTime dateImmatriculation,
 
-            String centreFiscal,
+            CentreDesServicesFiscaux centreFiscal,
 
             String ninea,
 
