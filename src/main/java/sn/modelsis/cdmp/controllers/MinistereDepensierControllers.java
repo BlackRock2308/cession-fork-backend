@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sn.modelsis.cdmp.entities.MinistereDepensier;
-import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.MinistereDepensierDto;
-import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.services.MinistereDepensierService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
