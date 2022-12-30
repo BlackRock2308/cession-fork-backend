@@ -57,7 +57,7 @@ public class ObservationServiceImpl implements ObservationService{
       log.info("ObservationService.saveNewObservation request  params : {}", observation);
       newObservation = observationMapper.mapToDto(observation);
       newObservation.setStatut(statut);
-      Utilisateur utilisateur =utilisateurRepository.findById(observation.getUtilisateurid()).orElse(null);
+      Utilisateur utilisateur = utilisateurRepository.findById(observation.getUtilisateurid()).orElse(null);
       DemandeCession demandeCession = demandeCessionRepository.findById(observation.getDemandeid()).orElse(null);
       log.debug("ObservationService.saveNewObservation request params : {}", newObservation);
       newObservation.setDemande(demandeCession);

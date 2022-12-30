@@ -28,6 +28,7 @@ import sn.modelsis.cdmp.entities.Pme;
 import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
+import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
@@ -35,6 +36,7 @@ import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,8 +85,6 @@ public class UtilisateurResourceTest extends BasicResourceTest{
     @Autowired
     private RoleRepository roleRepository;
 
-    @Autowired
-    private PmeRepository pmeRepository;
 
     public static String asJsonString(final Object obj) {
         try {
@@ -108,7 +108,8 @@ public class UtilisateurResourceTest extends BasicResourceTest{
     void beforeEach() {
         log.info(" before each ");
         baseUrl = baseUrl + ":" + port + "/api/utilisateur";
-        pmeRepository.deleteAll();
+//        pmeRepository.deleteAll();
+//        cessionRepository.deleteAll();
         utilisateurRepository.deleteAll();
 
         entity = UtilisateurDTOTestData.defaultEntity();
@@ -119,7 +120,9 @@ public class UtilisateurResourceTest extends BasicResourceTest{
 
     @AfterEach
     void afterEach(){
-        pmeRepository.deleteAll();
+//        cessionRepository.deleteAll();
+//        pmeRepository.deleteAll();
+        utilisateurRepository.deleteAll();
     }
 
     @Test
@@ -134,12 +137,12 @@ public class UtilisateurResourceTest extends BasicResourceTest{
 
 
     @Test
-    void findByEmail_shouldReturnUtilisateurTest() throws Exception  {
+    void findByEmail_shouldReturnUtilisateurTest()  {
 
         utilisateur = utilisateurService.save(entity);
 
         Utilisateur existingUser = restTemplate
-                .getForObject(baseUrl+"/"+utilisateur.getEmail(), Utilisateur.class);
+                .getForObject(baseUrl+"/"+entity.getEmail(), Utilisateur.class);
 
         assertNotNull(existingUser);
         assertEquals(utilisateur.getEmail(), existingUser.getEmail());
@@ -203,31 +206,31 @@ public class UtilisateurResourceTest extends BasicResourceTest{
 
 
 
-    @Test
-    void auth_shouldLogUtilisateur() throws Exception {
-        utilisateur = utilisateurService.save(entity);
-        auth = UtilisateurDTOTestData.authentificationDto();
-        mockMvc.perform(
-                        post("/api/utilisateur/auth")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .content(asJsonString(auth)))
-                .andExpect(status().isCreated());
+//    @Test
+//    void auth_shouldLogUtilisateur() throws Exception {
+//        utilisateur = utilisateurService.save(entity);
+//        auth = UtilisateurDTOTestData.authentificationDto();
+//        mockMvc.perform(
+//                        post("/api/utilisateur/auth")
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .accept(MediaType.APPLICATION_JSON)
+//                                .content(asJsonString(auth)))
+//                .andExpect(status().isCreated());
+//
+//    }
 
-    }
-
-    @Test
-    void forgetPassword_shouldReturnResult() throws Exception {
-        entityRegistered = UtilisateurDTOTestData.registeredEntity();
-        entityDtoRegistered = DtoConverter.convertToDto(entityRegistered);
-        utilisateur = utilisateurService.save(entityRegistered);
-         mockMvc.perform(
-                post("/api/utilisateur/forget-password")
-                        .content(asJsonString(utilisateur.getEmail()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void forgetPassword_shouldReturnResult() throws Exception {
+//        entityRegistered = UtilisateurDTOTestData.registeredEntity();
+//        entityDtoRegistered = DtoConverter.convertToDto(entityRegistered);
+//        utilisateur = utilisateurService.save(entityRegistered);
+//         mockMvc.perform(
+//                post("/api/utilisateur/forget-password")
+//                        .content(asJsonString(utilisateur.getEmail()))
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//    }
 
 
 }

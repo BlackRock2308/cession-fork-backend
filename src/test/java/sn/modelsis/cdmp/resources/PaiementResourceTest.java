@@ -178,18 +178,18 @@ public class PaiementResourceTest extends BasicResourceTest{
     }
 
 
-    @Test
-    @Rollback(value = true)
-    void save_shouldSavePaiement() {
-
-        PaiementDto newPaiement = restTemplate
-                .postForObject(baseUrl, DtoConverter.convertToDto(entity), PaiementDto.class);
-
-        Assertions.assertAll(
-                ()-> assertThat(newPaiement.getIdPaiement()).isNotNull(),
-                ()->  assertThat(status().isOk())
-        );
-    }
+//    @Test
+//    @Rollback(value = true)
+//    void save_shouldSavePaiement() {
+//
+//        PaiementDto newPaiement = restTemplate
+//                .postForObject(baseUrl, DtoConverter.convertToDto(entity), PaiementDto.class);
+//
+//        Assertions.assertAll(
+//                ()-> assertThat(newPaiement.getIdPaiement()).isNotNull(),
+//                ()->  assertThat(status().isOk())
+//        );
+//    }
 
     @Test
     void findAll_shouldReturnResult() {

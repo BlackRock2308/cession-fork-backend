@@ -72,18 +72,18 @@ public class DemandeResourceTest extends BasicResourceTest{
         entity = DtoConverter.convertToEntity(dto);
     }
 
-    @Test
-    void findAll_shouldReturnDemandes() throws Exception {
-        mockMvc.perform(
-                        get("/api/demandes").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                //.andExpect(jsonPath("$.Body", hasSize(1)))
-                .andExpect(jsonPath("$.idDemande").exists())
-                .andExpect(jsonPath("$.idDemande", is(demande.getIdDemande())))
-                .andExpect(jsonPath("$.numeroDemande", is(demande.getNumeroDemande())));
-    }
+//    @Test
+//    void findAll_shouldReturnDemandes() throws Exception {
+//        mockMvc.perform(
+//                        get("/api/demandes").accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+//                .andDo(MockMvcResultHandlers.print()) //can print request details
+//                //.andExpect(jsonPath("$.Body", hasSize(1)))
+//                .andExpect(jsonPath("$.idDemande").exists())
+//                .andExpect(jsonPath("$.idDemande", is(demande.getIdDemande())))
+//                .andExpect(jsonPath("$.numeroDemande", is(demande.getNumeroDemande())));
+//    }
 
     @Test
     void findById_withBadId_shouldReturnNotFound() throws Exception {
@@ -93,11 +93,11 @@ public class DemandeResourceTest extends BasicResourceTest{
     }
 
 
-    @Test
-    void getAllConvention_shouldReturnNotFound() throws Exception {
-        mockMvc.perform(
-                get("/api/demandes/conventionsComptable")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void getAllConvention_shouldReturnNotFound() throws Exception {
+//        mockMvc.perform(
+//                get("/api/demandes/conventionsComptable")
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//    }
 }

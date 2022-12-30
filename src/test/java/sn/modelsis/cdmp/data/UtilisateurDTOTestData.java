@@ -34,9 +34,9 @@ public class UtilisateurDTOTestData extends TestData{
         return Utilisateur
                 .builder()
                 .codePin(Default.codePin)
+                .email(Default.email)
                 .idUtilisateur(Default.id)
                 .adresse(Default.adresse)
-                .email(Default.email)
                 .password(Default.password)
                 .prenom(Default.prenomRepresentant)
                 .build();

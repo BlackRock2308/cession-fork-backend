@@ -52,24 +52,27 @@ public class DetailPaiementController {
     @PostMapping(value = "cdmp-pme")
     public ResponseEntity<DetailPaiementDto> addDetailPaiementPME(@RequestBody DetailPaiementDto detailPaiementDto,
                                                             HttpServletRequest request) {
+        log.info("DetailPaiementController.addDetailPaiementPME request started....");
+
         log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
         DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
         log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
         DetailPaiement result = detailPaiementService.paiementPME(detailPaiement);
-        log.info("DetailPaiement create. Id:{} ");
+        log.info("DetailPaiement create. Id:{} ", result.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 
     @PostMapping(value = "sica-cdmp")
     public ResponseEntity<DetailPaiementDto> addDetailPaiementCDMP(@RequestBody DetailPaiementDto detailPaiementDto,
                                                             HttpServletRequest request) {
+        log.info("DetailPaiementController.addDetailPaiementCDMP request started....");
         log.info("paiement:{} ",detailPaiementDto.getPaiementDto().getDetailPaiements());
         LocalDateTime date = LocalDateTime.now();
         DetailPaiement detailPaiement=DtoConverter.convertToEntity(detailPaiementDto);
-        log.info("paiement0:{} ",detailPaiement.getPaiement().getIdPaiement());
+        log.info("paiement :{} ",detailPaiement.getPaiement().getIdPaiement());
         detailPaiement.setDatePaiement(date);
         DetailPaiement result = detailPaiementService.paiementCDMP(detailPaiement);
-        log.info("DetailPaiement create. Id:{} ");
+        log.info("DetailPaiement create. Id:{} ", result.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 

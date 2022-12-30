@@ -24,10 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import sn.modelsis.cdmp.data.BonEngagementDTOTestData;
-import sn.modelsis.cdmp.data.DemandeAdhesionDTOTestData;
-import sn.modelsis.cdmp.data.DemandeCessionDTOTestData;
-import sn.modelsis.cdmp.data.PmeDTOTestData;
+import sn.modelsis.cdmp.data.*;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.entitiesDtos.*;
 import sn.modelsis.cdmp.exceptions.CustomException;
@@ -67,8 +64,8 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
     private String baseUrl = "http://localhost";
 
     private static RestTemplate restTemplate;
-    DemandeCessionDto dto;
-    DemandeCession entity;
+    static DemandeCessionDto dto;
+    static DemandeCession entity;
     static DemandeCession demandeCession;
 
     @Autowired
@@ -85,8 +82,8 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
     @Valid
     PmeService pmeService;
 
-    PmeDto dtoPme;
-    Pme entityPme;
+    static PmeDto dtoPme;
+    static Pme entityPme;
     @Autowired
     @Valid
     BonEngagementRepository bonEngagementRepository;
@@ -94,12 +91,12 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
     @Valid
     BonEngagementService bonEngagementService;
 
-    BonEngagementDto dtoBE;
-    BonEngagement entityBE;
+    static BonEngagementDto dtoBE;
+    static BonEngagement entityBE;
 
-    private Statut statut;
+    static Statut statut;
 
-    private StatutDto statutDto;
+    static StatutDto statutDto;
 
 
     @Autowired
@@ -119,9 +116,30 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
     }
 
     @BeforeAll
-    public static void init() {
+    static void beforeAll(){
+        log.info(" before all");
+
         restTemplate = new RestTemplate();
-        log.info(" before all ");
+
+        //Init for PME
+        dtoPme = PmeDTOTestData.defaultDTO();
+        entityPme = DtoConverter.convertToEntity(dtoPme);
+
+        //Init for BonEngagement
+        dtoBE = BonEngagementDTOTestData.defaultDTO();
+        entityBE = DtoConverter.convertToEntity(dtoBE);
+
+        statut = new Statut(1L,"REJETEE", "REJETEE");
+
+
+        //init for Demande Cession which just required the idPME
+        dto = DemandeCessionDTOTestData.defaultDTO();
+        dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
+        dto.setPme(DtoConverter.convertToDto(entityPme));
+
+
+
+
     }
 
     @BeforeEach
@@ -129,29 +147,18 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
 
         baseUrl = baseUrl + ":" + port + "/api/demandecession";
 
-        //Init for PME
-        dtoPme = PmeDTOTestData.defaultDTO();
-        entityPme = DtoConverter.convertToEntity(dtoPme);
-        pmeRepository.deleteAll();
+        //pmeRepository.deleteAll();
         entityPme = pmeService.savePme(entityPme);
 
-        //Init for BonEngagement
-        dtoBE = BonEngagementDTOTestData.defaultDTO();
-        entityBE = DtoConverter.convertToEntity(dtoBE);
-        bonEngagementRepository.deleteAll();
+
+        //bonEngagementRepository.deleteAll();
         entityBE= bonEngagementService.save(entityBE);
 
-        //init for DemandeAdhesion which just required the idPME
-        dto = DemandeCessionDTOTestData.defaultDTO();
-        dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
-        dto.setPme(DtoConverter.convertToDto(entityPme));
-
-        statut = new Statut(1L,"REJETEE", "REJETEE");
+        //statut = new Statut(1L,"REJETEE", "REJETEE");
         statutRepository.save(statut);
 
         entity = DtoConverter.convertToEntity(dto);
 
-        demandeCession = cessionService.saveCession(entity);
     }
 
 
@@ -159,12 +166,13 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
     void afterEach(){
 //        pmeRepository.deleteAll();
 //        statutRepository.deleteAll();
-        //cessionRepository.deleteAll();
+        cessionRepository.deleteAll();
     }
 
     @Test
     @Rollback(value = false)
     void add_shouldCreateDemandeCessionTest() throws Exception {
+
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
@@ -179,9 +187,8 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
 
     @Test
     void findAll_shouldReturnDemandeCessionTest() throws Exception {
-//        entity = DtoConverter.convertToEntity(dto);
-//
-//        demandeCession = cessionService.saveCession(entity);
+
+        demandeCession = cessionService.saveCession(entity);
 
         mockMvc.perform(
                         get("/api/demandeadhesion").accept(MediaType.APPLICATION_JSON))
@@ -195,9 +202,7 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
 
     @Test
     void findById_shouldReturnOneDemandeCessionTest() throws Exception {
-//        entity = DtoConverter.convertToEntity(dto);
-//
-//        demandeCession = cessionService.saveCession(entity);
+
 
         DemandeCession existingCession = restTemplate
                 .getForObject(baseUrl+"/"+demandeCession.getIdDemande(), DemandeCession.class);
@@ -352,9 +357,7 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
         dto = DemandeCessionDTOTestData.defaultDTO();
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
-//
-//        entity = DtoConverter.convertToEntity(dto);
-//        demandeCession = cessionService.saveCession(entity);
+
 
 
         DemandeAdhesionDto rejectedAdhesionDto = DemandeAdhesionDTOTestData.updatedDTO();
@@ -382,35 +385,42 @@ public class DemandeCessionResourceTest extends BasicResourceTest{
         dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
         dto.setPme(DtoConverter.convertToDto(entityPme));
 
-//        entity = DtoConverter.convertToEntity(dto);
-//        demandeCession = cessionService.saveCession(entity);
+
+        demandeCession = cessionService.saveCession(DtoConverter.convertToEntity(dto));
+
 
         List pmelist = restTemplate.getForObject(baseUrl+"/"+"pme/"+demandeCession.getPme().getIdPME(), List.class);
 
         assertThat(pmelist.size()).isEqualTo(1);
     }
 
-    @Test
-    void getAllRejectedDemandeCession_shouldReturnResultTest() {
-        Statut selectedStatut= statutRepository.findByLibelle("REJETEE");
-//        statut = new Statut(1L,"REJETEE", "REJETEE");
-//        statutRepository.save(statut);
-//        Set<Statut> statuts = new HashSet<>();
-//        statuts.add(statut);
-
-        dto = DemandeCessionDTOTestData.defaultDTO();
-        dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
-        dto.setPme(DtoConverter.convertToDto(entityPme));
-        if (!selectedStatut.getLibelle().isEmpty()){
-            dto.setStatut(DtoConverter.convertToDto(selectedStatut));
-        }
-       log.info("statut : {}", selectedStatut.getLibelle());
-
-        entity = DtoConverter.convertToEntity(dto);
-        demandeCession = cessionService.saveCession(entity);
-
-        List pmelist = restTemplate.getForObject(baseUrl+"/"+"rejected", List.class);
-
-        assertThat(pmelist.size()).isEqualTo(1);
-    }
+//    @Test
+//    void getAllRejectedDemandeCession_shouldReturnResultTest() {
+//
+//        //Statut selectedStatut = statutRepository.findByCode("REJETEE");
+//
+//
+//        dto = DemandeCessionDTOTestData.defaultDTO();
+//        dto.setBonEngagement(DtoConverter.convertToDto(entityBE));
+//        dto.setPme(DtoConverter.convertToDto(entityPme));
+//        dto.setStatut(DtoConverter.convertToDto(statut));
+//
+////        entity = new DemandeCession();
+////        entity.setIdDemande(TestData.Default.id);
+////        entity.setBonEngagement(entityBE);
+////        entity.setPme(entityPme);
+////        entity.setStatut(statut);
+//
+////        if (!selectedStatut.getCode().isEmpty()){
+////            dto.setStatut(DtoConverter.convertToDto(selectedStatut));
+////        }
+//       //log.info("statut : {}", selectedStatut.getLibelle());
+//
+//        entity = DtoConverter.convertToEntity(dto);
+//        demandeCession = cessionService.saveCession(entity);
+//
+//        List pmelist = restTemplate.getForObject(baseUrl+"/"+"rejected", List.class);
+//
+//        assertThat(pmelist.size()).isEqualTo(1);
+//    }
 }

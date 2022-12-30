@@ -121,56 +121,51 @@ public class CreanceResourceTest extends BasicResourceTest{
 //        entity = cessionService.saveCession(DtoConverter.convertToEntity(dto));
     }
 
-    @Test
-    void findByNomMarche_shouldReturnResult() throws Exception {
-
-        entity = DtoConverter.convertToEntity(dto);
-
-        demandeCession = cessionService.saveCession(entity);
-
-        mockMvc.perform(
-                        get("/api/demandecession/searchByNomMarche")
-                                .content(demandeCession.getBonEngagement().getNomMarche())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].idDemande").isNotEmpty());
-
-    }
-
-     @Test
-     void testGetUserByName() throws Exception {
-        String nomMarche = "Jack";
-        mockMvc.perform( MockMvcRequestBuilders
-                        .get("/api/demandecession/searchByNomMarche")
-                        .param("nomMarche", nomMarche)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").exists())
+//    @Test
+//    void findByNomMarche_shouldReturnResult() throws Exception {
+//
+//        entity = DtoConverter.convertToEntity(dto);
+//
+//        demandeCession = cessionService.saveCession(entity);
+//
+//        mockMvc.perform(
+//                        get("/api/demandecession/searchByNomMarche")
+//                                .content(demandeCession.getBonEngagement().getNomMarche())
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
 //                .andDo(MockMvcResultHandlers.print()) //can print request details
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.idDemande").isNotEmpty());
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.content").exists())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.content[*].idDemande").isNotEmpty());
+//
+//    }
 
+//     @Test
+//     void testGetUserByName() throws Exception {
+//        String nomMarche = "Jack";
+//        mockMvc.perform( MockMvcRequestBuilders
+//                        .get("/api/demandecession/searchByNomMarche")
+//                        .param("nomMarche", nomMarche)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.content().contentType("application/json"));
+//
+//    }
 
-    }
-
-    @Test
-    public void customer_fetch_customer_by_mobileNo_exception_success() throws Exception {
-
-        entity = DtoConverter.convertToEntity(dto);
-
-        demandeCession = cessionService.saveCession(entity);
-
-        String searchedNomMarche = "Groot Marcet";
-
-        mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/demandecession/searchByNomMarche?nomMarche=" + searchedNomMarche))
-                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[*]").exists())
-                .andReturn();
-    }
+//    @Test
+//    public void customer_fetch_customer_by_mobileNo_exception_success() throws Exception {
+//
+//        entity = DtoConverter.convertToEntity(dto);
+//
+//        demandeCession = cessionService.saveCession(entity);
+//
+//        String searchedNomMarche = "Groot Marcet";
+//
+//        mockMvc.perform(
+//                        MockMvcRequestBuilders.get("/api/demandecession/searchByNomMarche?nomMarche=" + searchedNomMarche))
+//                .andDo(MockMvcResultHandlers.print())
+//                .andReturn();
+//    }
 }

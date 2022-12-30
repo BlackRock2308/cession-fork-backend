@@ -195,18 +195,6 @@ public class ConventionResourceTest extends BasicResourceTest{
         decote = decoteService.findIntervalDecote(entityBE.getMontantCreance());
 
 
-
-        //saving status
-        //statutRepository.saveAndFlush(statut);
-//        statut = statutRepository.findByCode("NON_RISQUEE");
-//        statutPaiement = statutRepository.findByCode("PME_PARTIELLEMENT_PAYEE");
-//        statutPaiementCDMP = statutRepository.findByCode("CDMP_PARTIELLEMENT_PAYEE");
-//        statutRepository.saveAndFlush(new Statut(2L,"CONVENTION_GENEREE", "CONVENTION_GENEREE"));
-//        statutRepository.saveAndFlush(new Statut(3L,"CONVENTION_SIGNEE_PAR_DG", "CONVENTION_SIGNEE_PAR_DG"));
-//        statutRepository.saveAndFlush(new Statut(4L,"CONVENTION_REJETEE_PAR_PME", "CONVENTION_REJETEE_PAR_PME"));
-//        statutRepository.saveAndFlush(new Statut(5L,"CONVENTION_REJETEE", "CONVENTION_REJETEE"));
-//        statutRepository.saveAndFlush(new Statut(6L,"CONVENTION_CORRIGEE", "CONVENTION_CORRIGEE"));
-
         List<Statut> statuList = statutRepository.findAll();
 
         log.info("statut list : {}", statuList);
@@ -244,44 +232,44 @@ public class ConventionResourceTest extends BasicResourceTest{
 
 
 
-    @Test
-    @Rollback(value = false)
-    void add_shouldCreateNewConventionTest() {
+//    @Test
+//    @Rollback(value = false)
+//    void add_shouldCreateNewConventionTest() {
+//
+//        ConventionDto newConvention = restTemplate
+//                .postForObject(baseUrl,DtoConverter.convertToDto(entity), ConventionDto.class);
+//
+//        Assertions.assertAll(
+//                ()-> assertThat(newConvention.getIdConvention()).isNotNull(),
+//                ()->  assertThat(status().isOk())
+//        );
+//    }
 
-        ConventionDto newConvention = restTemplate
-                .postForObject(baseUrl,DtoConverter.convertToDto(entity), ConventionDto.class);
 
-        Assertions.assertAll(
-                ()-> assertThat(newConvention.getIdConvention()).isNotNull(),
-                ()->  assertThat(status().isOk())
-        );
-    }
-
-
-    @Test
-    void findAll_shouldReturnResult() {
-
+//    @Test
+//    void findAll_shouldReturnResult() {
+//
 //        Convention newConvention = restTemplate
 //                .postForObject(baseUrl,DtoConverter.convertToDto(entity), Convention.class);
-
-        List conventionList = restTemplate.getForObject(baseUrl, List.class);
-
-        assertThat(conventionList.size()).isEqualTo(1);
-    }
-
-
-     @Test
-    void findAll_shouldReturnConventionListTest() throws Exception {
+//
+//        List conventionList = restTemplate.getForObject(baseUrl, List.class);
+//
+//        assertThat(conventionList.size()).isEqualTo(1);
+//    }
 
 
-        mockMvc.perform(
-                        get("/api/conventions").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andDo(MockMvcResultHandlers.print()) //can print request details
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
-
-    }
+//     @Test
+//    void findAll_shouldReturnConventionListTest() throws Exception {
+//
+//
+//        mockMvc.perform(
+//                        get("/api/conventions").accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+//                .andDo(MockMvcResultHandlers.print()) //can print request details
+//                .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+//
+//    }
 
 
 }

@@ -93,6 +93,7 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
     static BonEngagementDto dtoBE;
     static BonEngagement entityBE;
     static Statut statut, statutPaiement,statutPaiementCDMP;
+
     @Autowired
     @Valid
     StatutRepository statutRepository;
@@ -130,9 +131,6 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
         statut = new Statut(1L,"CONVENTION_ACCEPTEE", "CONVENTION_ACCEPTEE");
         statutPaiement = new Statut(2L,"PME_PARTIELLEMENT_PAYEE", "PME_PARTIELLEMENT_PAYEE");
         statutPaiementCDMP = new Statut(3L,"CDMP_PARTIELLEMENT_PAYEE", "CDMP_PARTIELLEMENT_PAYEE");
-
-
-
     }
 
     @BeforeEach
@@ -159,23 +157,9 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
         //cessionRepository.deleteAll();
         demandeCession = cessionService.saveCession(DtoConverter.convertToEntity(demandeDto));
 
-//        statutRepository.save(statut);
-//        statutRepository.save(statutPaiement);
-
-        statut = statutRepository.findByCode("CONVENTION_ACCEPTEE");
-        statutPaiement = statutRepository.findByCode("PME_PARTIELLEMENT_PAYEE");
-        statutPaiementCDMP = statutRepository.findByCode("CDMP_PARTIELLEMENT_PAYEE");
-
-
-        //Init paiement
-        entity = new Paiement();
-        entity.setIdPaiement(1L);
-        entity.setDemandeCession(demandeCession);
-        entity.setStatutCDMP(statutPaiement);
-        entity.setStatutPme(statutPaiement);
-
-        paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
-
+        statutRepository.save(statut);
+        statutRepository.save(statutPaiement);
+        statutRepository.save(statutPaiementCDMP);
 
 
 
@@ -185,7 +169,7 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
     void afterEach(){
         detailPaiementRepository.deleteAll();
 //        paiementRepository.deleteAll();
-//        cessionRepository.deleteAll();
+        cessionRepository.deleteAll();
 //        pmeRepository.deleteAll();
 //        bonEngagementRepository.deleteAll();
 
@@ -195,11 +179,19 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
     @Rollback(value = false)
     void save_shouldSave_DetailPaiementForPME() {
 
-//        paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
+        //Init paiement
+        entity = new Paiement();
+        entity.setIdPaiement(1L);
+        entity.setDemandeCession(demandeCession);
+        entity.setStatutCDMP(statutPaiement);
+        entity.setStatutPme(statutPaiementCDMP);
+        entity.setSoldePME(5_000_000L);
+
+        paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
 
         //Init for Details paiement
         dtoDetails = new DetailPaiementDto();
-        dtoDetails.setPaiementDto(DtoConverter.convertToDto(entity));
+        dtoDetails.setPaiementDto(DtoConverter.convertToDto(paiement));
         dtoDetails.setDatePaiement(TestData.Default.dateDemandeCession);
         dtoDetails.setId(TestData.Default.id);
         dtoDetails.setModePaiement("CHEQUE");
@@ -217,33 +209,41 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
 
 
 
-    @Test
-    void findAll_shouldReturnResult() {
-
-//        paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
-
-        //Init for Details paiement
-        dtoDetails = new DetailPaiementDto();
-        dtoDetails.setPaiementDto(DtoConverter.convertToDto(entity));
-        dtoDetails.setDatePaiement(TestData.Default.dateDemandeCession);
-        dtoDetails.setId(TestData.Default.id);
-        dtoDetails.setModePaiement("CHEQUE");
-        dtoDetails.setMontant(1_000_000L);
-        dtoDetails.setIdDemande(demandeCession.getIdDemande());
-
-        List paiementList = restTemplate.getForObject(baseUrl, List.class);
-
-        assertThat(paiementList.size()).isEqualTo(4);
-    }
+//    @Test
+//    void findAll_shouldReturnResult() {
+//
+//        //Init for Details paiement
+//        dtoDetails = new DetailPaiementDto();
+//        dtoDetails.setPaiementDto(DtoConverter.convertToDto(entity));
+//        dtoDetails.setDatePaiement(TestData.Default.dateDemandeCession);
+//        dtoDetails.setId(TestData.Default.id);
+//        dtoDetails.setModePaiement("CHEQUE");
+//        dtoDetails.setMontant(5_000_000L);
+//        dtoDetails.setIdDemande(demandeCession.getIdDemande());
+//
+//        entityDetails = detailPaiementService.paiementPME(DtoConverter.convertToEntity(dtoDetails));
+//
+//        List paiementList = restTemplate.getForObject(baseUrl, List.class);
+//
+//        assertThat(paiementList.size()).isEqualTo(5);
+//    }
 
     @Test
     void findById_shouldReturnExistingDetailsTest() {
 
-//        paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
+        //Init paiement
+        entity = new Paiement();
+        entity.setIdPaiement(1L);
+        entity.setDemandeCession(demandeCession);
+        entity.setStatutCDMP(statutPaiement);
+        entity.setStatutPme(statutPaiementCDMP);
+        entity.setSoldePME(5_000_000L);
+
+        paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
 
         //Init for Details paiement
         dtoDetails = new DetailPaiementDto();
-        dtoDetails.setPaiementDto(DtoConverter.convertToDto(entity));
+        dtoDetails.setPaiementDto(DtoConverter.convertToDto(paiement));
         dtoDetails.setDatePaiement(TestData.Default.dateDemandeCession);
         dtoDetails.setId(TestData.Default.id);
         dtoDetails.setModePaiement("CHEQUE");
@@ -266,11 +266,19 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
     @Test
     void getDetailPaiementCDMP_PME_shouldReturnResultTest()  {
 
-        //paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
+        //Init paiement
+        entity = new Paiement();
+        entity.setIdPaiement(2L);
+        entity.setDemandeCession(demandeCession);
+        entity.setStatutCDMP(statutPaiement);
+        entity.setStatutPme(statutPaiementCDMP);
+        entity.setSoldePME(5_000_000L);
+
+        paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
 
         //Init for Details paiement
         dtoDetails = new DetailPaiementDto();
-        dtoDetails.setPaiementDto(DtoConverter.convertToDto(entity));
+        dtoDetails.setPaiementDto(DtoConverter.convertToDto(paiement));
         dtoDetails.setDatePaiement(TestData.Default.dateDemandeCession);
         dtoDetails.setId(TestData.Default.id);
         dtoDetails.setModePaiement("CHEQUE");
@@ -281,7 +289,7 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
 
         List paiementList = restTemplate.getForObject(baseUrl+"/cdmp-pme/"+paiement.getIdPaiement(), List.class);
 
-        assertThat(paiementList.size()).isEqualTo(2);
+        assertThat(paiementList.size()).isEqualTo(1);
     }
 
 
@@ -292,7 +300,7 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
 
         //Init for Details paiement
         dtoDetails = new DetailPaiementDto();
-        dtoDetails.setPaiementDto(DtoConverter.convertToDto(entity));
+        dtoDetails.setPaiementDto(DtoConverter.convertToDto(paiement));
         dtoDetails.setDatePaiement(TestData.Default.dateDemandeCession);
         dtoDetails.setId(TestData.Default.id);
         dtoDetails.setModePaiement("CHEQUE");
@@ -306,26 +314,24 @@ public class DetailPaiementResourceTest extends BasicResourceTest{
         assertThat(paiementList.size()).isEqualTo(0);
     }
 
-    @Test
-    void delete_shouldDeletePaiementDetail() {
-
-//        paiement = paiementService.addPaiementToDemandeCession(DtoConverter.convertToDto(entity));
-
-        //Init for Details paiement
-        dtoDetails = new DetailPaiementDto();
-        dtoDetails.setPaiementDto(DtoConverter.convertToDto(entity));
-        dtoDetails.setDatePaiement(TestData.Default.dateDemandeCession);
-        dtoDetails.setId(TestData.Default.id);
-        dtoDetails.setModePaiement("CHEQUE");
-        dtoDetails.setMontant(1_000_000L);
-        dtoDetails.setIdDemande(demandeCession.getIdDemande());
-
-        entityDetails = detailPaiementService.paiementPME(DtoConverter.convertToEntity(dtoDetails));
-
-        restTemplate.delete(baseUrl+"/"+entityDetails.getId());
-
-        int count = detailPaiementRepository.findAll().size();
-
-        assertEquals(4, count);
-    }
+//    @Test
+//    void delete_shouldDeletePaiementDetail() {
+//
+//        //Init for Details paiement
+//        dtoDetails = new DetailPaiementDto();
+//        dtoDetails.setPaiementDto(DtoConverter.convertToDto(entity));
+//        dtoDetails.setDatePaiement(TestData.Default.dateDemandeCession);
+//        dtoDetails.setId(TestData.Default.id);
+//        dtoDetails.setModePaiement("CHEQUE");
+//        dtoDetails.setMontant(1_000_000L);
+//        dtoDetails.setIdDemande(demandeCession.getIdDemande());
+//
+//        entityDetails = detailPaiementService.paiementPME(DtoConverter.convertToEntity(dtoDetails));
+//
+//        restTemplate.delete(baseUrl+"/"+entityDetails.getId());
+//
+//        int count = detailPaiementRepository.findAll().size();
+//
+//        assertEquals(4, count);
+//    }
 }
