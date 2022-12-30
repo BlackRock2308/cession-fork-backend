@@ -10,17 +10,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.MinistereDepensier;
-import sn.modelsis.cdmp.entities.Utilisateur;
-import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.entitiesDtos.MinistereDepensierDto;
-import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.services.MinistereDepensierService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
