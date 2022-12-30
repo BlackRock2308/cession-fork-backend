@@ -82,7 +82,7 @@ public class PmeController {
 
     Pme result = pmeService.updatePme(id,pme);
     log.info("PmeController:updatePme updated with id = {} ", result.getIdPME());
-    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(result));
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(DtoConverter.convertToDto(result));
   }
 
 //  @PatchMapping(value = "/{id}")

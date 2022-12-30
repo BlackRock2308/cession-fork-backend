@@ -10,7 +10,7 @@ import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter @Setter @SuperBuilder
 public class DemandeCessionDto implements Serializable {
 
     private Long idDemande;

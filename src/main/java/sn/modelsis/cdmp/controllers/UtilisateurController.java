@@ -333,7 +333,8 @@ public class UtilisateurController {
      */
 
     @PostMapping("/{idUtilisateur}/signer-convention")
-    public  ResponseEntity<Boolean> signerConvention(@RequestBody String codePin,@PathVariable Long idUtilisateur)  {
+    public  ResponseEntity<Boolean> signerConvention(@RequestBody String codePin,
+                                                     @PathVariable Long idUtilisateur)  {
 
         log.info("codePin:{}",codePin);
         return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));

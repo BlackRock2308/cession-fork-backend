@@ -21,15 +21,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-//@ToString
+@SuperBuilder
 @Table(name = "pme")
 public class Pme implements Serializable {
 
@@ -144,6 +146,7 @@ public class Pme implements Serializable {
     
     @Transient
     private Long utilisateurid;
+
 
     public void setPME(Long idPME,
 
