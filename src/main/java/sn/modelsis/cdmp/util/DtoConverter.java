@@ -109,6 +109,56 @@ public class DtoConverter {
         return mdDto;
     }
 
+	public static  MinistereDepensier convertToEntity(MinistereDepensierDto mdDto) {
+		MinistereDepensier md = null;
+		if(null != mdDto) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			md = modelMapper.map(mdDto, MinistereDepensier.class);
+
+		}
+		return md;
+	}
+
+	public static  CentreDesServicesFiscauxDto convertToDto(CentreDesServicesFiscaux md) {
+		CentreDesServicesFiscauxDto mdDto = null;
+		if(null != md) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			mdDto = modelMapper.map(md, CentreDesServicesFiscauxDto.class);
+
+		}
+		return mdDto;
+	}
+
+	public static  CentreDesServicesFiscaux convertToEntity(CentreDesServicesFiscauxDto mdDto) {
+		CentreDesServicesFiscaux md = null;
+		if(null != mdDto) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			md = modelMapper.map(mdDto, CentreDesServicesFiscaux.class);
+
+		}
+		return md;
+	}
+
+	public static  FormeJuridiqueDto convertToDto(FormeJuridique fj) {
+		FormeJuridiqueDto fjDto = null;
+		if(null != fj) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			fjDto = modelMapper.map(fj, FormeJuridiqueDto.class);
+
+		}
+		return fjDto;
+	}
+
+	public static  FormeJuridique convertToEntity(FormeJuridiqueDto fjDto) {
+		FormeJuridique fj = null;
+		if(null != fjDto) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			fj = modelMapper.map(fjDto, FormeJuridique.class);
+
+		}
+		return fj;
+	}
+
 	public static Pme convertToEntity(PmeDto pmeDto) {
 		Pme pme = null;
 		if(null != pmeDto) {

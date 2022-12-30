@@ -8,14 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import sn.modelsis.cdmp.entities.MinistereDepensier;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.Role;
-import sn.modelsis.cdmp.entities.Utilisateur;
-import sn.modelsis.cdmp.repositories.MinistereDepensierRepository;
-import sn.modelsis.cdmp.repositories.PmeRepository;
-import sn.modelsis.cdmp.repositories.RoleRepository;
-import sn.modelsis.cdmp.repositories.UtilisateurRepository;
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.repositories.*;
 
 @Transactional
 public class PersitUsers {
@@ -29,16 +23,19 @@ public class PersitUsers {
     
     private final MinistereDepensierRepository mdRepository;
 
+    private  final FormeJuridiqueRepository formeJuridiqueRepository;
+
     final  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     public PersitUsers(RoleRepository roleRepository,
-            UtilisateurRepository utilisateurRepository,
-            PmeRepository pmeRepository, MinistereDepensierRepository mdRepository) {
+                       UtilisateurRepository utilisateurRepository,
+                       PmeRepository pmeRepository, MinistereDepensierRepository mdRepository, FormeJuridiqueRepository formeJuridiqueRepository) {
         this.roleRepository = roleRepository;
         this.utilisateurRepository = utilisateurRepository;
         this.pmeRepository = pmeRepository;
         this.mdRepository = mdRepository;
+        this.formeJuridiqueRepository = formeJuridiqueRepository;
 
         Role DG = roleRepository.findByLibelle("DG");
 
@@ -53,6 +50,8 @@ public class PersitUsers {
         Role DSEAR = roleRepository.findByLibelle("DSEAR");
 
         Role JURISTE = roleRepository.findByLibelle("JURISTE");
+
+        Role ADMIN = roleRepository.findByLibelle("ADMIN");
 
         Role PCA = roleRepository.findByLibelle("PCA");
         Set<Role> pmeRoles = new HashSet<>();
@@ -79,7 +78,11 @@ public class PersitUsers {
         Set<Role> ordonnateurRoles = new HashSet<>();
         ordonnateurRoles.add(ORDONNATEUR);
 
+        Set<Role> adminRoles = new HashSet<>();
+        adminRoles.add(ADMIN);
+
         MinistereDepensier md = mdRepository.findByCode("MAER");
+        FormeJuridique fj = formeJuridiqueRepository.findByCode("SRL");
 
         Utilisateur dg = new Utilisateur();
         dg.setAdresse("Mermoz");
@@ -196,7 +199,7 @@ public class PersitUsers {
 
             LocalDateTime date = LocalDateTime.now();
             Pme pme1 = new Pme();
-            pme1.setFormeJuridique("Société á responsabilité limitée");
+            pme1.setFormeJuridique(fj);
             pme1.setAdressePME("Dakar Point E");
             pme1.setNinea("123456789088");
             pme1.setRccm("SN DK 2898 Y 9989");
@@ -206,6 +209,21 @@ public class PersitUsers {
             pme1.setActivitePrincipale("Solution Cloud and Big Data");
             pme1.setUtilisateur(pme);
             pmeRepository.save(pme1);
+        }
+
+        Utilisateur admin = new Utilisateur();
+        admin.setAdresse("Mermoz");
+        admin.setCodePin("123456");
+        admin.setPassword(passwordEncoder.encode("passer"));
+        admin.setPrenom("Fatima");
+        admin.setNom("DIAGNE");
+        admin.setEmail("admin@gmail.com");
+        admin.setRoles(adminRoles);
+
+        Utilisateur userAdmin = utilisateurRepository.findUtilisateurByEmail("admin@gmail.com");
+
+        if (userAdmin == null) {
+            utilisateurRepository.save(admin);
         }
 
     }

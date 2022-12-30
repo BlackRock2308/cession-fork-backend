@@ -28,10 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import sn.modelsis.cdmp.dbPersist.PersitUsers;
-import sn.modelsis.cdmp.repositories.MinistereDepensierRepository;
-import sn.modelsis.cdmp.repositories.PmeRepository;
-import sn.modelsis.cdmp.repositories.RoleRepository;
-import sn.modelsis.cdmp.repositories.UtilisateurRepository;
+import sn.modelsis.cdmp.repositories.*;
 
 /**
  * @author SNDIAGNEF
@@ -54,18 +51,21 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
   
   private final MinistereDepensierRepository mdRepository;
 
+  private  final FormeJuridiqueRepository formeJuridiqueRepository;
+
     @Value("${server.link_front}")
     private String uilocation; 
 
-    public CdmpApplication(Environment env, 
-            UtilisateurRepository utilisateurRepository, RoleRepository roleRepository,
-            PmeRepository pmeRepository, MinistereDepensierRepository mdRepository) {
+    public CdmpApplication(Environment env,
+                           UtilisateurRepository utilisateurRepository, RoleRepository roleRepository,
+                           PmeRepository pmeRepository, MinistereDepensierRepository mdRepository, FormeJuridiqueRepository formeJuridiqueRepository) {
         this.env = env;
       this.utilisateurRepository = utilisateurRepository;
       this.roleRepository = roleRepository;
       this.pmeRepository = pmeRepository;
       this.mdRepository = mdRepository;
-  }
+        this.formeJuridiqueRepository = formeJuridiqueRepository;
+    }
 
   @Override
   public void afterPropertiesSet() throws Exception {
@@ -178,7 +178,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository, mdRepository);
+       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository, mdRepository, formeJuridiqueRepository);
         log.info("Initialisation des differents profils terminée");
 
 
