@@ -41,7 +41,7 @@ public class PmeDto implements Serializable {
     private boolean isactive;
     private boolean interdictionBancaire;
     private boolean identificationBudgetaire;
-    private String formeJuridique;
+    private FormeJuridiqueDto formeJuridique;
     @NotEmpty
     @Email
     private String email;

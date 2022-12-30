@@ -1,48 +1,50 @@
 package sn.modelsis.cdmp.services.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
+import sn.modelsis.cdmp.entities.FormeJuridique;
 import sn.modelsis.cdmp.entities.MinistereDepensier;
+import sn.modelsis.cdmp.repositories.FormeJuridiqueRepository;
 import sn.modelsis.cdmp.repositories.MinistereDepensierRepository;
+import sn.modelsis.cdmp.services.FormeJuridiqueService;
 import sn.modelsis.cdmp.services.MinistereDepensierService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MinistereDepensierServiceImpl implements MinistereDepensierService {
+public class FormeJuridiqueServiceImpl implements FormeJuridiqueService {
 
     @Autowired
-    private MinistereDepensierRepository repository;
+    private FormeJuridiqueRepository repository;
 
     @Override
-    public List<MinistereDepensier> findAll() {
+    public List<FormeJuridique> findAll() {
         return new ArrayList<>(repository
                 .findAll());
     }
     
     @Override
-    public MinistereDepensier findByCode(String code) {
+    public FormeJuridique findByCode(String code) {
       return repository.findByCode(code);
     }
 
     @Override
-    public MinistereDepensier save(MinistereDepensier ministereDepensier) {
+    public FormeJuridique save(FormeJuridique formeJuridique) {
         try {
-            return repository.save(ministereDepensier);
+            return repository.save(formeJuridique);
         }catch  ( Exception e){
-            log.debug("Ce code existe : {}",ministereDepensier.getCode());
+            log.debug("Ce code existe : {}",formeJuridique.getCode());
             return  null;
         }
     }
 
     @Override
     public void delete(Long id) {
-       repository.deleteById(id);
+        repository.deleteById(id);
     }
 }

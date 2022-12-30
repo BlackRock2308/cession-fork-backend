@@ -5,18 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -83,9 +72,6 @@ public class Pme implements Serializable {
     @Column(name = "identificationBudgetaire")
     private boolean identificationBudgetaire;
 
-    @Column(name = "formejuridique")
-    private String formeJuridique;
-
     @Email
     @Column(name = "email")
     private String email;
@@ -136,6 +122,10 @@ public class Pme implements Serializable {
     @JoinColumn(name = "utilisateurid")
     private Utilisateur utilisateur;
 
+    //@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="formejuridiqueid")
+    private FormeJuridique formeJuridique;
     @Column(name = "cnirepresentant")
     private String cniRepresentant;
 
@@ -173,7 +163,7 @@ public class Pme implements Serializable {
 
             boolean identificationBudgetaire,
 
-            String formeJuridique,
+            FormeJuridique formeJuridique,
 
             String email,
 

@@ -118,7 +118,7 @@ public class PmeServiceImpl implements PmeService {
               (String) fields.get("centreFiscal"), (String) fields.get("ninea"), (String) fields.get("raisonSocial"),
               (boolean) fields.get("atd"), (boolean) fields.get("nantissement"),
               (boolean) fields.get("interdictionBancaire"), (boolean) fields.get("identificationBudgetaire"),
-              (String) fields.get("formeJuridique"), (String) fields.get("email"), 
+              (FormeJuridique) fields.get("formeJuridique"), (String) fields.get("email"),
               (String) fields.get("enseigne"),
               (String) fields.get("localite"), (Integer) fields.get("controle"),
               (String) fields.get("activitePrincipale"), (String) fields.get("autorisationMinisterielle"),

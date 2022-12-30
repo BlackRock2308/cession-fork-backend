@@ -17,4 +17,8 @@ public interface MinistereDepensierService {
      
      MinistereDepensier findByCode(String code);
 
+     MinistereDepensier save(MinistereDepensier ministereDepensier);
+
+     void delete(Long id);
+
 }
