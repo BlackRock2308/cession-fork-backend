@@ -36,7 +36,6 @@ public class ConventionDto {
 
   private boolean activeConvention;
 
-  private String remarqueJuriste;
   private ParametrageDecoteDTO decoteDTO;
   
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -45,6 +44,8 @@ public class ConventionDto {
   private PmeDto pmeDto;
 
   private UtilisateurDto utilisatuerDto;
+
+  private TextConventionDto textConventionDto;
 
   private Long utilisatuerId;
 

@@ -1,7 +1,7 @@
 package sn.modelsis.cdmp.entitiesDtos;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import sn.modelsis.cdmp.entities.MinistereDepensier;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -25,5 +25,6 @@ public class DemandeCessionDto implements Serializable {
     private BonEngagementDto bonEngagement;
     @NotBlank
     private PmeDto pme;
+    private MinistereDepensierDto minister;
 
 }

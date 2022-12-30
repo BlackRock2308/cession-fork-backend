@@ -1,22 +1,14 @@
 package sn.modelsis.cdmp.controllers;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,12 +23,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entities.Convention;
+import sn.modelsis.cdmp.entities.ParametrageDecote;
+import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
+import sn.modelsis.cdmp.entitiesDtos.TextConventionDto;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
-import sn.modelsis.cdmp.services.*;
+import sn.modelsis.cdmp.services.ConventionService;
+import sn.modelsis.cdmp.services.ParametrageDecoteService;
+import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
-import sn.modelsis.cdmp.util.Qrcode;
 
 /**
  * @author SNDIAGNEF
@@ -49,44 +45,19 @@ import sn.modelsis.cdmp.util.Qrcode;
 public class ConventionControllers {
 
     final private ConventionService conventionService;
-    final private StatutService statutService;
-    final private DemandeCessionService demandeCessionService ;
 
     private final ParametrageDecoteService decoteService;
 
     private final ConventionMapper conventionMapper;
 
-    private final BonEngagementService bonEngagementService;
+    private final UtilisateurService utilisateurService;
 
 
   @PostMapping()
   public ResponseEntity<ConventionDto> addConvention(@RequestBody ConventionDto conventionDto,
       HttpServletRequest request) {
-    Convention convention= new Convention();
-    convention.setRemarqueJuriste(conventionDto.getRemarqueJuriste());
-   // Utilisateur utilisateur = utilisateurService.findById(conventionDto.getUtilisatuerId());
-    DemandeCession demandeCession =
-            demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
 
-    assert demandeCession != null;
-    Optional<BonEngagement> bonEngagement =
-            bonEngagementService.getBonEngagement(demandeCession.getBonEngagement().getIdBonEngagement());
-    double valeurCreance =
-            bonEngagement.get().getMontantCreance();
-    BigDecimal bigDecimal = new BigDecimal(valeurCreance);
-   ParametrageDecote exactParametrageDecote = decoteService.findIntervalDecote(valeurCreance).orElse(null);
-
-    convention.setDateConvention(LocalDateTime.now());
-    convention.setDemandeCession(demandeCession);
-    convention.setDecote(exactParametrageDecote);  //decote
-
-    assert exactParametrageDecote != null;
-    convention.setValeurDecote(exactParametrageDecote.getDecoteValue());  //decote
-
-    if(convention.getValeurDecoteByDG() == 0){
-      convention.setValeurDecoteByDG(exactParametrageDecote.getDecoteValue()); //valeurDecoteDG take the value of the params decote
-    }
-    Convention result = conventionService.save(convention);
+    Convention result = conventionService.save(conventionDto);
     log.info("ConventionControllers:addConvention saved in database with Id:{} ", result.getIdConvention());
     return ResponseEntity.status(HttpStatus.CREATED).body(conventionMapper.asDTO(result));
   }
@@ -103,44 +74,11 @@ public class ConventionControllers {
       return ResponseEntity.status(HttpStatus.OK).body(conventionMapper.asDTO(result));
     }
 
-  @PutMapping("correction/{id}")
+  @PutMapping("correction")
   public ResponseEntity<ConventionDto> corrigerConvention(@RequestBody ConventionDto conventionDto,
-                                                          @PathVariable("id") Long id ,
                                                      HttpServletRequest request) {
-    Convention convention= conventionMapper.asEntity(conventionDto);
-
-    conventionService.delete(id);
-
-    DemandeCession demandeCession =
-            demandeCessionService.findByIdDemande(conventionDto.getIdDemande()).orElse(null);
-
-    assert demandeCession != null;
-    Optional<BonEngagement> bonEngagement =
-            bonEngagementService.getBonEngagement(demandeCession.getBonEngagement().getIdBonEngagement());
-    if (bonEngagement.isPresent()){
-      double valeurCreance = bonEngagement
-              .get()
-              .getMontantCreance();
-      BigDecimal bigDecimal = new BigDecimal(valeurCreance);
-
-      log.info("Valeur du montant de la creance : {}",bigDecimal);
-
-      //this method allows to find the right decote interval depending on montantCreance
-      ParametrageDecote exactParametrageDecote = decoteService
-              .findIntervalDecote(valeurCreance)
-              .orElse(null);
-
-      log.info("Correct Decote param: {}",exactParametrageDecote);
-
-      convention.setDemandeCession(demandeCession);
-      convention.setDecote(exactParametrageDecote);  //decote
-
-      assert exactParametrageDecote != null;
-      convention.setValeurDecote(exactParametrageDecote.getDecoteValue());  //decote
-
-    }
-
-    Convention savedConvention = conventionService.save(convention);
+    Convention savedConvention = conventionService.corriger(conventionDto);
+    log.info("ConventionControllers:convention corrigée");
      return ResponseEntity.status(HttpStatus.CREATED).body(conventionMapper.asDTO(savedConvention));
   }
 
@@ -167,24 +105,41 @@ public class ConventionControllers {
       return ResponseEntity.status(HttpStatus.OK).body(conventionMapper.asDTO(convention));
     }
 
-  @PostMapping(value = "/generer-convention_signer")
-  public ResponseEntity<ConventionDto> genererConventionSigner(@RequestBody ConventionDto conventionDto,
-                                      HttpServletRequest request) throws IOException {
-     Convention convention = DtoConverter.convertToEntity(conventionDto);
-      conventionService.saveDocumentConventionSigner(convention);
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  @GetMapping(value = "/textConvention/{id}")
+  public ResponseEntity<TextConventionDto> getTextConvention(
+          @PathVariable Long id,
+          HttpServletRequest request) {
+    log.info("ConventionControllers:getConvention request started ");
+
+    Convention convention = conventionService.getConvention(id).orElse(null);
+    log.info("ConventionControllers:getConvention request params : {}", id);
+    return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(convention.getTextConvention()));
   }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<ConventionDto> deleteConvention(
-        @PathVariable Long id,
-        HttpServletRequest request) {
-      log.info("ConventionControllers:deleteConvention request started ");
-      conventionService.delete(id);
-      log.info("ConventionControllers:deleteConvention request params : {} ", id);
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-    
+  @PostMapping("/{idConvention}/signer-convention-dg/{idUtilisateur}")
+  public  ResponseEntity<Boolean> signerConventionDG(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idConvention)  {
+   if (utilisateurService.signerConvention(idUtilisateur,codePin))
+      conventionService.conventionSignerParDG(idConvention,idUtilisateur);
+    return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));
+
+  }
+
+  /**
+   * {@code POST  /signer-convention-pme} : signer convention par le pme
+   *
+   * @param  codePin of the user .
+   * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+   */
+
+  @PostMapping("/{idConvention}/signer-convention-pme/{idUtilisateur}")
+  public  ResponseEntity<Boolean> signerConventionPME(@RequestBody String codePin,@PathVariable Long idUtilisateur,@PathVariable Long idConvention)  {
+    if (utilisateurService.signerConvention(idUtilisateur,codePin))
+      conventionService.conventionSignerParPME(idConvention,idUtilisateur);
+
+    return ResponseEntity.ok().body(utilisateurService.signerConvention(idUtilisateur,codePin));
+
+  }
+
     @PostMapping("/{id}/upload")
     @Operation(summary = "Upload file", description = "Upload a new file for Convention")
     @ApiResponses({@ApiResponse(responseCode = "201", description = "Success"),
@@ -215,9 +170,8 @@ public class ConventionControllers {
     return ResponseEntity.status(HttpStatus.OK).body(exactParametrageDecote);
   }
 
-  @PatchMapping(value ="/{idConvention}/{decote}")
-  public ResponseEntity<ConventionDto> updateValeurDecote(@PathVariable("idConvention") Long idConvention,
-                                                          @PathVariable("decote") double decote) {
+  @PutMapping(value ="/valeurCreance/{idConvention}")
+  public ResponseEntity<ConventionDto> updateValeurDecote(@RequestBody double decote, @PathVariable Long idConvention) {
     log.info("ConventionControllers:updateValeurDecote request started ");
    Convention updatedConvention = conventionService.updateValeurDecote(idConvention, decote);
     log.info("ConventionControllers:updateValeurDecote request params  {}", updatedConvention.getIdConvention());

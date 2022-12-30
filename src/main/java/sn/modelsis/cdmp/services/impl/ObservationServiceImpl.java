@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import sn.modelsis.cdmp.repositories.DemandeRepository;
 import sn.modelsis.cdmp.repositories.ObservationRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
+import sn.modelsis.cdmp.services.DemandeCessionService;
 import sn.modelsis.cdmp.services.ObservationService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
@@ -45,6 +47,9 @@ public class ObservationServiceImpl implements ObservationService{
   private final DemandeCessionRepository demandeCessionRepository;
 
   private final ObservationMapper observationMapper;
+
+  @Autowired
+  private DemandeCessionService demandeCessionService;
 
 
   @Override
@@ -69,6 +74,13 @@ public class ObservationServiceImpl implements ObservationService{
     }
     return DtoConverter.convertToDto(newObservation);
 	}
+
+  @Override
+  public ObservationDto saveObservationRejetConvention(ObservationDto observation) {
+    ObservationDto observationDto = saveNewObservation(observation);
+    demandeCessionService.updateStatut(observationDto.getDemandeid(),observationDto.getStatut().getLibelle());
+    return  observationDto;
+  }
 
   @Override
   public List<Observation> findAll(){

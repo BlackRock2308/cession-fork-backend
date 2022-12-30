@@ -42,6 +42,7 @@ public class UtilisateurDto {
 
     private boolean updateCodePin;
 
+    private MinistereDepensierDto minister;
     // private Set<RoleUtilisateur> rolesUtilisateurs ;
 
 

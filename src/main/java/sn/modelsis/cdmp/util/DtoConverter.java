@@ -3,33 +3,8 @@ package sn.modelsis.cdmp.util;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
-import sn.modelsis.cdmp.entities.BonEngagement;
-import sn.modelsis.cdmp.entities.Convention;
-import sn.modelsis.cdmp.entities.Demande;
-import sn.modelsis.cdmp.entities.DemandeAdhesion;
-import sn.modelsis.cdmp.entities.DemandeCession;
-import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.entities.Documents;
-import sn.modelsis.cdmp.entities.Observation;
-import sn.modelsis.cdmp.entities.Paiement;
-import sn.modelsis.cdmp.entities.Parametrage;
-import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.Statut;
-import sn.modelsis.cdmp.entities.Utilisateur;
-import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
-import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
-import sn.modelsis.cdmp.entitiesDtos.DemandeDto;
-import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
-import sn.modelsis.cdmp.entitiesDtos.DocumentDto;
-import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
-import sn.modelsis.cdmp.entitiesDtos.PaiementDto;
-import sn.modelsis.cdmp.entitiesDtos.ParametrageDto;
-import sn.modelsis.cdmp.entitiesDtos.PmeDto;
-import sn.modelsis.cdmp.entitiesDtos.RecevabiliteDto;
-import sn.modelsis.cdmp.entitiesDtos.StatutDto;
-import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
+import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entitiesDtos.*;
 
 public class DtoConverter {
 
@@ -39,16 +14,30 @@ public class DtoConverter {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 	}
 
+	public static TextConventionDto convertToDto(TextConvention textConvention) {
+		TextConventionDto textConventionDto = null;
+		if (null != textConvention) {
+			modelMapper.getConfiguration().setAmbiguityIgnored(true);
+			textConventionDto = modelMapper.map(textConvention, TextConventionDto.class);
+		}
+		return textConventionDto;
+	}
 
+	public static TextConvention convertToEntity(TextConventionDto textConventionDto) {
+		TextConvention textConvention = null;
+		if (null != textConventionDto) {
+			textConvention = modelMapper.map(textConventionDto, TextConvention.class);
+		}
+		return textConvention;
+	}
 	
 	public static ConventionDto convertToDto(Convention convention) {
 	  ConventionDto conventionDto = null;
       if (null != convention) {
-//		  conventionDto.setC
           modelMapper.getConfiguration().setAmbiguityIgnored(true);
           conventionDto = modelMapper.map(convention, ConventionDto.class);
 		  conventionDto.setIdDemande(convention.getDemandeCession().getIdDemande());
-		//  conventionDto.setUtilisatuerId(convention.getUtilisateur().getIdUtilisateur());
+		  conventionDto.setTextConventionDto(convertToDto(convention.getTextConvention()));
 
       }
       return conventionDto;
@@ -109,6 +98,16 @@ public class DtoConverter {
 		}
 		return pmeDto;
 	}
+	
+	public static  MinistereDepensierDto convertToDto(MinistereDepensier md) {
+       MinistereDepensierDto mdDto = null;
+        if(null != md) {
+            modelMapper.getConfiguration().setAmbiguityIgnored(true);
+            mdDto = modelMapper.map(md, MinistereDepensierDto.class);
+          
+        }
+        return mdDto;
+    }
 
 	public static Pme convertToEntity(PmeDto pmeDto) {
 		Pme pme = null;

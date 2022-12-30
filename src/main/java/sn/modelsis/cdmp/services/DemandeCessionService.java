@@ -13,7 +13,6 @@ import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.NewDemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.StatistiqueDemandeCession;
 
-
 public interface DemandeCessionService {
     DemandeCession saveCession(DemandeCession demandeCession);
 
@@ -23,21 +22,21 @@ public interface DemandeCessionService {
 
     Page<NewDemandeCessionDto> findAllWithoutDemande(Pageable pageable);
 
-    Optional<DemandeCessionDto> findById (Long id);
+    Optional<DemandeCessionDto> findById(Long id);
 
-    Optional<DemandeCession> findByIdDemande (Long id);
-    
+    Optional<DemandeCession> findByIdDemande(Long id);
+
     // Recevabilite Demande de Cession
-    DemandeCession validerRecevabilite(Long idDemande );
+  //  DemandeCession validerRecevabilite(Long idDemande);
 
-    DemandeCession rejeterRecevabilite(Long idDemande );
+    DemandeCession rejeterRecevabilite(Long idDemande);
 
     // Analyse de risques Demande de Cession
-    DemandeCession analyseDemandeCessionRisque(Long idDemande );
+    DemandeCession analyseDemandeCessionRisque(Long idDemande);
 
-    DemandeCession analyseDemandeCessionNonRisque (Long idDemande );
+    DemandeCession analyseDemandeCessionNonRisque(Long idDemande);
 
-    DemandeCession analyseDemandeCessionComplement (Long idDemande);
+    DemandeCession analyseDemandeCessionComplement(Long idDemande);
 
     Optional<DemandeCessionDto> getDemandeCession(Long id);
 
@@ -45,7 +44,7 @@ public interface DemandeCessionService {
 
     List<DemandeCession> findAllPMEDemandes(Long id);
 
-//    Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable,Long id);
+    Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable, Long id);
 
     List<DemandeCession> findAllDemandeRejetee();
 
@@ -55,7 +54,9 @@ public interface DemandeCessionService {
 
     Page<DemandeCessionDto> findAllByStatut(Pageable pageable, String[] statuts);
 
-   List<StatistiqueDemandeCession>  getStatistiqueDemandeCession(int anne);
+    Page<DemandeCessionDto> findAllByStatutAndMinister(Pageable pageable, String[] statuts, String code);
+
+    List<StatistiqueDemandeCession> getStatistiqueDemandeCession(int anne);
 
     void signerConventionDG(Long idDemande);
 
@@ -63,32 +64,27 @@ public interface DemandeCessionService {
 
     DemandeCession updateStatut(Long idDemande, String statut);
 
-
-
     List<DemandeCessionDto> findDemandeCessionByMultipleParams(String referenceBE,
-                                                        String numeroDemande,
-                                                        String nomMarche,
-                                                        String statutLibelle,
-                                                               LocalDateTime startDate,
-                                                               LocalDateTime endDate);
+            String numeroDemande,
+            String nomMarche,
+            String statutLibelle,
+            LocalDateTime startDate,
+            LocalDateTime endDate);
 
     List<DemandeCessionDto> findDemandeCessionByStatutLibelle(String statutLibelle);
 
+    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate, LocalDateTime endDate);
 
-
-    List<DemandeCessionDto> findDemandeCessionByLocalDateTime(LocalDateTime startDate,LocalDateTime endDate);
-
-/*Filter Creance using multpile parameters*/
-List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
-                                             String raisonSocial,
-                                             double montantCreance,
-                                             String statutLibelle,
-                                             double decote,
-                                             LocalDateTime startDateD,
-                                             LocalDateTime endDateD,
-                                             LocalDateTime startDateM,
-                                             LocalDateTime endDateM
-);
+    /* Filter Creance using multpile parameters */
+    List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
+            String raisonSocial,
+            double montantCreance,
+            String statutLibelle,
+            double decote,
+            LocalDateTime startDateD,
+            LocalDateTime endDateD,
+            LocalDateTime startDateM,
+            LocalDateTime endDateM);
 
     List<CreanceDto> findCreanceByRaisonSocial(String raisonSocial);
 
@@ -98,11 +94,9 @@ List<CreanceDto> findCreanceByMultipleParams(String nomMarche,
 
     Page<DemandeCessionDto> findAllCreance(Pageable pageable);
 
-    //find all filtering with the right statut libele
+    // find all filtering with the right statut libele
     Page<DemandeCessionDto> findAllCreanceWithTheRightStatut(Pageable pageable);
 
-
-
-
+    DemandeCession validerRecevabilite(Long idDemande, String code);
 
 }
