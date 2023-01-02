@@ -23,12 +23,12 @@ import javax.persistence.TableGenerator;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-//@ToString
 @Table(name = "demande")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Demande implements Serializable {
