@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import sn.modelsis.cdmp.entities.CentreDesServicesFiscaux;
 
 @SuperBuilder
 @Data
@@ -31,7 +32,7 @@ public class PmeDto implements Serializable {
     private String telephonePME;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime dateImmatriculation;
-    private CentreDesServicesFiscauxDto centreFiscal;
+    private CentreDesServicesFiscaux centreFiscal;
     @NotEmpty
     private String ninea;
     private String raisonSocial;

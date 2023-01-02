@@ -4,6 +4,7 @@ package sn.modelsis.cdmp.entitiesDtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@ToString
+@ToString @SuperBuilder
 public class PaiementDto implements Serializable {
 
     private Long cdmp;

@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author SNDIAGNEF
@@ -20,7 +21,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString @Getter @Setter
+@ToString @Getter @Setter @SuperBuilder
 public class ConventionDto {
  
   private Long idConvention;

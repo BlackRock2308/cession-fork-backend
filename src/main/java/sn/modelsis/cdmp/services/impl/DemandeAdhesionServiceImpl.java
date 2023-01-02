@@ -67,21 +67,6 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     }
 
 
-    //    @Override
-//    @Transactional(propagation = Propagation.REQUIRED)
-//    public DemandeAdhesion saveAdhesion(DemandeAdhesion demandeAdhesion) {
-//                    demandeAdhesion.setDateDemandeAdhesion(new Date());
-//                    Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
-//                    demandeAdhesion.setStatut(statut);
-//        if(demandeAdhesion.getIdDemande()==null){
-//            demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
-//        }
-//        DemandeAdhesion demandeAdhesion1 = demandeAdhesionRepository.save(demandeAdhesion);
-//        log.info("DemandeAdhesionService:saveAdhesion execution finished successfully");
-//        return demandeAdhesion1;
-//
-//    }
-
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
