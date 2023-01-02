@@ -30,7 +30,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
     @Transactional(propagation = Propagation.REQUIRED)
     public ParametrageDecote createNewDecote(ParametrageDecote parametrageDecote) {
 
-        ParametrageDecote newDecote;
+        ParametrageDecote newDecote = null;
 
         try {
             log.info("ParametrageDecoteService:createNewDecote .....");
@@ -38,10 +38,9 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
             Optional<ParametrageDecote> optional = repository.findParametrageByBorneInf(parametrageDecote.getBorneInf());
             optional = repository.findParametrageByBorneSup(parametrageDecote.getBorneSup());
 
-            if(parametrageDecote.getBorneInf() < parametrageDecote.getBorneSup()){
-                log.info("Error : Vérifiez vos bornes, borneSup > borneInf : Error message : {}" );
+            if(parametrageDecote.getBorneInf() > parametrageDecote.getBorneSup()){
+                log.info("Error : Vérifiez vos bornes, borneSup < borneInf : Error message : {}" );
                 throw new CustomException("Exception occured : Borne inf and Borne Sup ");
-
             }
             newDecote = repository.saveAndFlush(parametrageDecote);
             log.debug("ParametrageDecoteService:createNewDecote received from database : {}",newDecote);
@@ -68,15 +67,14 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public ParametrageDecote updateDecoteParameter(Long id,
-                                                      ParametrageDecote newParametrageDecote) {
-        Optional <ParametrageDecote> existingDecote;
+    public ParametrageDecote updateDecoteParameter(ParametrageDecote newParametrageDecote) {
+        Optional <ParametrageDecote> existingDecote = null;
         try{
             log.info("ParametrageDecoteService:updateDecoteParameter updating ........");
-            existingDecote = repository.findById(id);
+            existingDecote = repository.findById(newParametrageDecote.getIdDecote());
 
-            if(newParametrageDecote.getBorneInf() < newParametrageDecote.getBorneSup()){
-                log.error("Error : Vérifiez vos bornes, borneSup > borneInf : Error message : {}" );
+            if(newParametrageDecote.getBorneInf() > newParametrageDecote.getBorneSup()){
+                log.error("Error : Vérifiez vos bornes, borneSup < borneInf : Error message : {}" );
                 throw new CustomException("Exception occured : Borne inf and Borne Sup ");
             }
             existingDecote.get().setBorneInf(newParametrageDecote.getBorneInf());
@@ -86,7 +84,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
             repository.saveAndFlush(existingDecote.get());
             log.info("ParametrageDecoteService:updateDecoteParameter update Pme with id : {}",existingDecote.get().getIdDecote());
         }catch (Exception ex){
-            log.error("Exception occured while updating Decote with id : {}",id );
+            log.error("Exception occured while updating Decote with id : {}",newParametrageDecote.getIdDecote() );
             throw new CustomException("Error occured while updating this Decote param ");
         }
         return existingDecote.get();
@@ -94,7 +92,7 @@ public class ParametrageDecoteServiceImpl implements ParametrageDecoteService {
 
     @Override
     public void deleteDecoteParameter(Long id) {
-
+        repository.deleteById(id);
     }
 
     @Override
