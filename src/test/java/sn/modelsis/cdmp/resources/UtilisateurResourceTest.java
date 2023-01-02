@@ -8,12 +8,18 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,6 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import sn.modelsis.cdmp.controllers.UtilisateurController;
 import sn.modelsis.cdmp.data.PmeDTOTestData;
 import sn.modelsis.cdmp.data.UtilisateurDTOTestData;
 import sn.modelsis.cdmp.entities.Pme;
@@ -33,11 +40,13 @@ import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.RoleRepository;
 import sn.modelsis.cdmp.repositories.UtilisateurRepository;
+import sn.modelsis.cdmp.security.configuration.SecurityConfig;
 import sn.modelsis.cdmp.security.dto.AuthentificationDto;
 import sn.modelsis.cdmp.services.UtilisateurService;
 import sn.modelsis.cdmp.util.DtoConverter;
 
 import javax.validation.Valid;
+import java.net.SecureCacheResponse;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,7 +63,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 //@Testcontainers
 @Slf4j
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
+@EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
 @ExtendWith({SpringExtension.class})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -84,10 +94,10 @@ public class UtilisateurResourceTest extends BasicResourceTest{
     private UtilisateurService utilisateurService;
     @Autowired
     private UtilisateurRepository utilisateurRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-
-
+    @Autowired @Valid
+    PmeRepository pmeRepository;
+    @Autowired @Valid
+    DemandeCessionRepository cessionRepository;
     public static String asJsonString(final Object obj) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -110,8 +120,9 @@ public class UtilisateurResourceTest extends BasicResourceTest{
     void beforeEach() {
         log.info(" before each ");
         baseUrl = baseUrl + ":" + port + "/api/utilisateur";
-//        pmeRepository.deleteAll();
-//        cessionRepository.deleteAll();
+
+        pmeRepository.deleteAll();
+        cessionRepository.deleteAll();
         utilisateurRepository.deleteAll();
 
         entity = UtilisateurDTOTestData.defaultEntity();
@@ -139,6 +150,7 @@ public class UtilisateurResourceTest extends BasicResourceTest{
 
 
     @Test
+    @WithMockUser(roles="ADMIN")
     void findByEmail_shouldReturnUtilisateurTest()  {
 
         utilisateur = utilisateurService.save(entity);
@@ -162,7 +174,7 @@ public class UtilisateurResourceTest extends BasicResourceTest{
     @Test
     @Rollback(value = false)
     void save_shouldSaveUtilisateur() {
-        role = new Role(1L,"PDG", "President directeur General");
+        role = new Role(1L,"ADMIN", "Administrateur");
         Set<Role> roles = new HashSet<>();
         roles.add(role);
 

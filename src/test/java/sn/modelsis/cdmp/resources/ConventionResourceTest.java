@@ -52,10 +52,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 @Slf4j
-//@Testcontainers
-@AutoConfigureMockMvc
 @ExtendWith({SpringExtension.class})
 @RunWith(SpringRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConventionResourceTest extends BasicResourceTest{
 

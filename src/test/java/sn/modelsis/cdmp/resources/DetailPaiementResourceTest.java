@@ -38,9 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@Testcontainers
 
 @Slf4j
-@AutoConfigureMockMvc
 @ExtendWith({SpringExtension.class})
 @RunWith(SpringRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DetailPaiementResourceTest extends BasicResourceTest{
     @LocalServerPort

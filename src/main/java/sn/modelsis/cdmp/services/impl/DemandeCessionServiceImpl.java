@@ -368,6 +368,11 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
         return demandecessionRepository.findAllByPmeIdPME(id);
     }
 
+    @Override
+    public Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable, Long id) {
+        return null;
+    }
+
 //    @Override
 //    public Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable, Long id) {
 //        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);

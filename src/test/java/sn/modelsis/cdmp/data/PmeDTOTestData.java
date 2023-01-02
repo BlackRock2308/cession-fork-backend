@@ -24,7 +24,6 @@ public class PmeDTOTestData extends TestData {
                 .nantissement(Default.nantissement)
                 .cniRepresentant(Default.cniRepresentant)
                 .dateImmatriculation(Default.dateImmatriculation)
-                .centreFiscal(Default.centreFiscal)
                 .build();
     }
 
