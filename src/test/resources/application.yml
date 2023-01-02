@@ -1,3 +1,48 @@
+##SPRING CONFIGURATION
+#
+#server:
+#  port: 8082
+#  qrcode_folder: ${qrcode_folder:./src/main/resources/static/img}
+#  # document_folder: ${document_folder:/app/documents/cdmp}
+#  document_folder: ${DOCUMENT_FOLDER:D:/Projets/CDMP/DocumentLibrary}
+#  #notification: ${HOST:http://localhost:8087}
+#  notification: ${HOST:http://10.42.1.131:8087}
+#  #notification: ${HOST:http://10.0.0.222:8087}
+#  ##email_cdmp: notifications-wootoo-@modelsis.sn
+#  link_front: ${LINK_FRONT:http://138.3.253.10:8081/#/login}
+#  email_cdmp: notifications-wootoo@modelsis.sn
+#
+#spring:
+#  flyway:
+#    enabled: true
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:demo;DB_CLOSE_ON_EXIT=FALSE
+#    username: sa
+#    password:
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#    defer-datasource-initialization: true
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: H2Dialect
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#        jdbc:
+#           lob:
+#              non_contextual_creation: true
+#
+#
+##LOGGING CONFIGURATION
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        sql: info
+
+
 server:
   port: 8082
   qrcode_folder: ${qrcode_folder:./src/main/resources/static/img}
