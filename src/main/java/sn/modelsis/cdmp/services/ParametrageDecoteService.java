@@ -16,7 +16,7 @@ public interface ParametrageDecoteService {
 
     Optional<ParametrageDecote> getDecode(Long id);
 
-    ParametrageDecote updateDecoteParameter(Long id, ParametrageDecote newParametrageDecote);
+    ParametrageDecote updateDecoteParameter(ParametrageDecote newParametrageDecote);
 
     void deleteDecoteParameter(Long id);
 
