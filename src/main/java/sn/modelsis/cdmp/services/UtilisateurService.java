@@ -1,5 +1,6 @@
 package sn.modelsis.cdmp.services;
 
+import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
@@ -58,6 +59,8 @@ public interface UtilisateurService {
     Utilisateur updatePassword(Utilisateur utilisateur);
 
     Utilisateur updateRoles(Utilisateur utilisateur);
+
+    List<Role> getAllRoles();
 
     /**
      ** cette methode permet d'enregistrer un utilisateur

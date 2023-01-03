@@ -126,6 +126,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
+
+    @Override
     public void delete(Long utilisateurId) {
      utilisateurRepository.deleteById(utilisateurId);
     }

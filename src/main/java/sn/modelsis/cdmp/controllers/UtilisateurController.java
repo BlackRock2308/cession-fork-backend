@@ -104,6 +104,14 @@ public class UtilisateurController {
         return ResponseEntity.ok().body(utilisateurDtos);
     }
 
+    @GetMapping("/getAllRoles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        log.debug("REST request to get  roles");
+        List<Role> roles =  utilisateurService.getAllRoles();
+        log.info("All roles");
+        return ResponseEntity.ok().body(roles);
+    }
+
     /**
      * {@code GET  /utilisateurs/:id} : get the "id" utilisateur.
      *
