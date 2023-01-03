@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,7 @@ import sn.modelsis.cdmp.services.DemandeAdhesionService;
 import sn.modelsis.cdmp.services.DemandeService;
 import sn.modelsis.cdmp.services.DocumentService;
 import sn.modelsis.cdmp.util.Constants;
+import sn.modelsis.cdmp.util.DtoConverter;
 import sn.modelsis.cdmp.util.RestTemplateUtil;
 
 
@@ -97,9 +100,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     @Override
     public Page<DemandeAdhesionDto> findAll(Pageable pageable){
         log.info("DemandeAdhesionService:findAll execution started ...");
-        return demandeAdhesionRepository
-                .findAll(pageable)
-                .map(adhesionMapper::asDTO);
+        return demandeAdhesionRepository.findAll(pageable).map(DtoConverter::convertToDto);
     }
 
     @Override
