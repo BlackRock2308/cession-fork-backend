@@ -41,6 +41,7 @@ public class PaiementController {
 
     @PostMapping
     public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto){
+        log.info("PaiementController:addPaiement request started ...");
         Paiement paiement = paiementService.addPaiementToDemandeCession(paiementDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(paiement));
 
@@ -50,6 +51,8 @@ public class PaiementController {
     @GetMapping
     public ResponseEntity<List<PaiementDto>> getAllPaiements(
             HttpServletRequest request) {
+        log.info("PaiementController:getAllPaiements request started ...");
+
         List<Paiement> paiements =
                 paiementService.findAll();
         List<PaiementDto> paiementDtos = new ArrayList<>();
@@ -61,49 +64,55 @@ public class PaiementController {
 
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<PaiementDto> getPaiement(
+            @PathVariable Long id,
+            HttpServletRequest request) {
+        log.info("PaiementController:getPaiement request started ...");
+        Paiement paiement = paiementService.getPaiement(id).orElse(null);
+        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
+        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
+    }
+
     @GetMapping("/bypme/{id}")
     public ResponseEntity<List<PaiementDto>> getPaiementsByPME(@PathVariable("id") Long id,
             HttpServletRequest request) {
+        log.info("PaiementController:getPaiementsByPME request started .....");
         List<Paiement> paiements =
                 paiementService.findAllByPME(id);
         List<PaiementDto> paiementDtos = new ArrayList<>();
         for (Paiement paiement :paiements ) {
             paiementDtos.add(DtoConverter.convertToDto(paiement));
         }
-        log.info("All paiements .");
+        log.info("PaiementController:getPaiementsByPME ...");
         return ResponseEntity.status(HttpStatus.OK).body(paiementDtos);
 
     }
 
     @GetMapping("/pme/{id}")
     public ResponseEntity<List<PaiementDto>> getAllPaiementsByPME(@PathVariable("id") Long id) {
+        log.info("PaiementController:getAllPaiementsByPME request started ...");
         if (id==null)
-            throw new CustomException("Is should nit be null") ;
+            throw new CustomException("Id should not be null") ;
         List<PaiementDto> paiementDtos = new ArrayList<>();
-        List<DemandeCession> demandeCessions = demandeCessionService.findAllPMEDemandes(1L);
+        List<DemandeCession> demandeCessions = demandeCessionService.findAllPMEDemandes(id);
         if(demandeCessions==null)
-            throw new CustomException("this pme don't have a payment ");
+            throw new CustomException("No payment for this PME");
         for (DemandeCession demandeCession :demandeCessions ) {
             paiementDtos.add(DtoConverter.convertToDto(demandeCession.getPaiement()));
         }
-        log.info("All paiements .");
+        log.info("PaiementController:getAllPaiementsByPME ...");
         return ResponseEntity.status(HttpStatus.OK).body(paiementDtos);
 
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<PaiementDto> getPaiement(
-            @PathVariable Long id,
-            HttpServletRequest request) {
-        Paiement paiement = paiementService.getPaiement(id).orElse(null);
-        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
-        return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
-    }
+
 
     @GetMapping(value = "/cdmp-pme/{id}")
     public ResponseEntity<PaiementDto> getPaiementAndDetailPaimentCDMP_PME(
             @PathVariable Long id,
             HttpServletRequest request) {
+        log.info("PaiementController:getPaiementAndDetailPaimentCDMP_PME request started ...");
         Paiement paiement = paiementService.getPaiement(id).orElse(null);
         if (paiement==null)
             throw new CustomException("Le paiement n'existe pas");
@@ -114,7 +123,7 @@ public class PaiementController {
                 sortDetailPaiements.add(detailPaiement);
         }
         paiement.setDetailPaiements(sortDetailPaiements);
-        log.info("Paiement . demandeId:{}", paiement.getIdPaiement());
+        log.info("PaiementController:getPaiementAndDetailPaimentCDMP_PME... paiement id : {}",paiement.getIdPaiement());
         return ResponseEntity.status(HttpStatus.OK).body(DtoConverter.convertToDto(paiement));
     }
 

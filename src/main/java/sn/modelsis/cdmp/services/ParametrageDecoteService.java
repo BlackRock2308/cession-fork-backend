@@ -3,6 +3,7 @@ package sn.modelsis.cdmp.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import sn.modelsis.cdmp.entities.ParametrageDecote;
@@ -22,6 +23,7 @@ public interface ParametrageDecoteService {
 
     Optional<ParametrageDecote> findByIdDecote(Long id);
 
-    Optional<ParametrageDecote> findIntervalDecote(Double montant);
+    Optional<ParametrageDecote>
+    findIntervalDecote(Double montant);
 
 }

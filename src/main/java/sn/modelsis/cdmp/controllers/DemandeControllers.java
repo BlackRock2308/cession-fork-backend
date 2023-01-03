@@ -106,9 +106,6 @@ public class DemandeControllers {
             .body(demandeList.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
   }
 
-
-
-
   @GetMapping(value = "/{id}")
   public ResponseEntity<DemandeDto> getDemande(@PathVariable Long id, HttpServletRequest request) {
     Demande demande = demandeService.getDemande(id).orElse(null);
