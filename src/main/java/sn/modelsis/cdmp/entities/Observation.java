@@ -7,13 +7,15 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.experimental.SuperBuilder;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
-@ToString
+@ToString @SuperBuilder
 @Table(name = "observation")
 public class Observation implements Serializable, Comparable<Observation> {
     /**

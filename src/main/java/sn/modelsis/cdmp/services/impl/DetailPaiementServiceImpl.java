@@ -57,7 +57,7 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
     detailPaiement.setTypepaiement(TypePaiement.CDMP_PME);
     Paiement paiement =
         paiementService.getPaiement(detailPaiement.getPaiement().getIdPaiement()).orElse(null);
-    if (paiement == null) throw new CustomException("payement not found");
+    if (paiement == null) throw new CustomException("payment not found");
     double soldePme = paiement.getSoldePME();
     if(soldePme<montant)
       throw new CustomException("Erreur Revoir le montant de paiment il doit etre inferieur au Solde du PME ");

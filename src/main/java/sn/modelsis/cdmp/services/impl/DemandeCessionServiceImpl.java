@@ -60,7 +60,6 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
         try {
             log.info("DemandeCessionService:saveCession request started");
-            // demandeCession.setDateDemandeCession(new Date());
             Pme pme = pmeRepository.findById(demandeCession.getPme().getIdPME()).orElse(null);
             demandeCession.setPme(pme);
             LocalDateTime dateTime = LocalDateTime.now();
@@ -371,12 +370,17 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
 
     @Override
     public Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable, Long id) {
-        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);
-
-        return demandecessionRepository
-                .findAllByPmeIdPME(pageable, id)
-                .map(cessionMapper::asDTO);
+        return null;
     }
+
+//    @Override
+//    public Page<DemandeCessionDto> findAllPMEDemandes(Pageable pageable, Long id) {
+//        log.info("DemandeCessionService:findAllPMEDemandes request params idPme : {}", id);
+//
+//        return demandecessionRepository
+//                .findAllByPmeIdPME(pageable, id)
+//                .map(cessionMapper::asDTO);
+//    }
 
     /**
      * ************** Search Demande de Cession based on mulpiples criterias
