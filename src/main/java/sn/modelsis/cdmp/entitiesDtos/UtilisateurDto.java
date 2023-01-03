@@ -30,7 +30,7 @@ public class UtilisateurDto {
 
     private String urlImageSignature;
 
-    private int telephone;
+    private String telephone;
 
     private String email;
 

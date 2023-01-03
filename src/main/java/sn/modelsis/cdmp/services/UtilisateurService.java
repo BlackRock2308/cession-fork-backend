@@ -4,6 +4,7 @@ import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 
 import java.util.List;
@@ -42,7 +43,9 @@ public interface UtilisateurService {
      * @Param utilisateur
      * @return Utilisateur
      */
+    Utilisateur addUser(Utilisateur utilisateur);
 
+    Utilisateur updateUser(UtilisateurDto utilisateurDto);
     Utilisateur save(Utilisateur utilisateur);
 
     /**
