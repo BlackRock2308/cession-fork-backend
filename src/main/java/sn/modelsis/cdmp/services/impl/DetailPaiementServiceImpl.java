@@ -139,7 +139,7 @@ public class DetailPaiementServiceImpl implements DetailPaiementService {
   }
 
   @Override
-  public Optional<DetailPaiement> upload(Long id, MultipartFile file, TypeDocument type)
+  public Optional<DetailPaiement> upload(Long id, MultipartFile file, String type)
       throws IOException {
     Optional<DetailPaiement> be = detailPaiementRepository.findById(id);
     if (be.isPresent()) {

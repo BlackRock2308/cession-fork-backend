@@ -50,7 +50,7 @@ public interface DemandeService {
    * @return le type de retour est un optional de {@link Demande}
    * @throws IOException gère l'exception
    */
-  Optional<Demande> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
+  Optional<Demande> upload(Long id, MultipartFile file, String type) throws IOException;
 
   /**
    *

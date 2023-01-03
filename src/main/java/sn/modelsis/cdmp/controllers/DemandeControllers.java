@@ -139,7 +139,7 @@ public class DemandeControllers {
 
     Optional<Demande> be = null;
     try {
-      be = demandeService.upload(id, file, TypeDocument.valueOf(type));
+      be = demandeService.upload(id, file, type);
     } catch (IOException e) {
       log.error(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

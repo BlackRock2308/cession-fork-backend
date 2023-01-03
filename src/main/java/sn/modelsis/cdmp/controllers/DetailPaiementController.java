@@ -28,7 +28,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import sn.modelsis.cdmp.entities.DetailPaiement;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DetailPaiementDto;
 import sn.modelsis.cdmp.services.DetailPaiementService;
 import sn.modelsis.cdmp.services.PaiementService;
@@ -110,7 +109,7 @@ public class DetailPaiementController {
 
       Optional<DetailPaiement> be = null;
       try {
-        be = detailPaiementService.upload(id, file, TypeDocument.valueOf(type));
+        be = detailPaiementService.upload(id, file, type);
       } catch (IOException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

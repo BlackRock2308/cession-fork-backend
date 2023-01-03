@@ -1,18 +1,16 @@
 package sn.modelsis.cdmp.services.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sn.modelsis.cdmp.entities.CentreDesServicesFiscaux;
-import sn.modelsis.cdmp.entities.FormeJuridique;
-import sn.modelsis.cdmp.repositories.CentreDesServicesFiscauxRepository;
-import sn.modelsis.cdmp.repositories.FormeJuridiqueRepository;
-import sn.modelsis.cdmp.services.CentreDesServicesFiscauxService;
-import sn.modelsis.cdmp.services.FormeJuridiqueService;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sn.modelsis.cdmp.entities.CentreDesServicesFiscaux;
+import sn.modelsis.cdmp.repositories.CentreDesServicesFiscauxRepository;
+import sn.modelsis.cdmp.services.CentreDesServicesFiscauxService;
 
 @Service
 @RequiredArgsConstructor

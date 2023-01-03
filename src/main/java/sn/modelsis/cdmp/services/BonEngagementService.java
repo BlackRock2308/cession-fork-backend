@@ -47,7 +47,7 @@ public interface BonEngagementService {
      * @return le type de retour est un optional de {@link BonEngagement}
      * @throws IOException gère l'exception
      */
-    Optional<BonEngagement> upload(Long beId, MultipartFile file, TypeDocument type) throws IOException;
+    Optional<BonEngagement> upload(Long beId, MultipartFile file, String type) throws IOException;
 
 
 }

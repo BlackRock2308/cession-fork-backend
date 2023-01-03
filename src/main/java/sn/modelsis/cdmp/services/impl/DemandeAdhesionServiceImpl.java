@@ -175,7 +175,7 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public Optional<DemandeAdhesion> upload(Long demandeId, MultipartFile file, TypeDocument type)
+    public Optional<DemandeAdhesion> upload(Long demandeId, MultipartFile file, String type)
             throws IOException {
 
         DemandeDocuments doc;

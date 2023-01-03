@@ -3,7 +3,6 @@
  */
 package sn.modelsis.cdmp.services;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +63,7 @@ public interface ConventionService {
      * @return le type de retour est un optional de {@link Convention}
      * @throws IOException gère l'exception
      */
-    Optional<Convention> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
+    Optional<Convention> upload(Long id, MultipartFile file, String type) throws IOException;
 
     Convention updateValeurDecote(Long idConvention, double newValue);
 

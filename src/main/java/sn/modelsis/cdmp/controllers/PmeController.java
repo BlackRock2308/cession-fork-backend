@@ -28,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeCession;
 import sn.modelsis.cdmp.entities.Pme;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeCessionDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
 import sn.modelsis.cdmp.services.PmeService;
@@ -140,7 +139,7 @@ public class PmeController {
     Optional<Pme> pme = null;
     try {
       log.info("PmeController:addDocument request started");
-      pme = pmeService.upload(id, file, TypeDocument.valueOf(type));
+      pme = pmeService.upload(id, file, type);
       log.info("PmeController:addDocument uploading with request params id = {}", id);
     } catch (IOException e) {
       log.error(e.getMessage());

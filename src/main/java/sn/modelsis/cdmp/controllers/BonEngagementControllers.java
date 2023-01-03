@@ -26,7 +26,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.BonEngagement;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.BonEngagementDto;
 import sn.modelsis.cdmp.services.BonEngagementService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -93,7 +92,7 @@ public class BonEngagementControllers {
 
       Optional<BonEngagement> be = null;
       try {
-        be = bonEngagementService.upload(id, file, TypeDocument.valueOf(type));
+        be = bonEngagementService.upload(id, file, type);
       } catch (IOException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

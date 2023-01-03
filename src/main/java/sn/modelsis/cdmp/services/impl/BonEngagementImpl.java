@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import sn.modelsis.cdmp.entities.BEDocuments;
 import sn.modelsis.cdmp.entities.BonEngagement;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.exceptions.ItemNotFoundException;
 import sn.modelsis.cdmp.repositories.BonEngagementRepository;
 import sn.modelsis.cdmp.services.BonEngagementService;
@@ -61,7 +60,7 @@ public class BonEngagementImpl implements BonEngagementService {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public Optional<BonEngagement> upload(Long id, MultipartFile file, TypeDocument type)
+    public Optional<BonEngagement> upload(Long id, MultipartFile file, String type)
         throws IOException {
       Optional<BonEngagement> be = bonEngagementRepository.findById(id);
       if (be.isPresent()) {

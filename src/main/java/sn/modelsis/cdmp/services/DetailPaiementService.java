@@ -51,7 +51,7 @@ public interface DetailPaiementService {
      * @return le type de retour est un optional de {@link DetailPaiement}
      * @throws IOException gère l'exception
      */
-    Optional<DetailPaiement> upload(Long dpId, MultipartFile file, TypeDocument type) throws IOException;
+    Optional<DetailPaiement> upload(Long dpId, MultipartFile file, String type) throws IOException;
 
 
     Set<DetailPaiementDto> getDetailPaiementByTypePaiement(Long id, String typePaiement);

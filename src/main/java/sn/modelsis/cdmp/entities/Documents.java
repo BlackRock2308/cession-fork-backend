@@ -56,9 +56,9 @@ public class Documents implements Serializable {
   @Column(name = "nom")
   private String nom;
 
-  @Enumerated(EnumType.STRING)
+ // @Enumerated(EnumType.STRING)
   @Column(name = "typeDocument")
-  private TypeDocument typeDocument;
+  private String typeDocument;
 
   @Column(name = "id_provenance", updatable = false)
   private Long idprovenance;

@@ -39,7 +39,7 @@ public interface DemandeAdhesionService {
      * @return le type de retour est un optional de {@link Demande}
      * @throws IOException gère l'exception
      */
-    Optional<DemandeAdhesion> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
+    Optional<DemandeAdhesion> upload(Long id, MultipartFile file, String type) throws IOException;
 
 
 }

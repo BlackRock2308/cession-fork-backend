@@ -24,7 +24,6 @@ import sn.modelsis.cdmp.entities.DPaiementDocuments;
 import sn.modelsis.cdmp.entities.DemandeDocuments;
 import sn.modelsis.cdmp.entities.Documents;
 import sn.modelsis.cdmp.entities.PMEDocuments;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.repositories.DocumentsRepository;
 import sn.modelsis.cdmp.services.DocumentService;
@@ -76,7 +75,7 @@ public class DocumentServiceImpl implements DocumentService {
 
   @Override
   public Documents upload(MultipartFile file, Long provenanceId, String provenance,
-      TypeDocument type) throws IOException {
+      String type) throws IOException {
     Documents document = null;
     switch (provenance) {
       case BEDocuments.PROVENANCE:

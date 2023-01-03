@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import sn.modelsis.cdmp.entities.Demande;
 import sn.modelsis.cdmp.entities.DemandeDocuments;
 import sn.modelsis.cdmp.entities.Statuts;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.repositories.DemandeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
 import sn.modelsis.cdmp.services.DemandeService;
@@ -114,7 +113,7 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
-    public Optional<Demande> upload(Long demandeId, MultipartFile file, TypeDocument type)
+    public Optional<Demande> upload(Long demandeId, MultipartFile file, String type)
             throws IOException {
         Optional<Demande> demande = demandeRepository.findById(demandeId);
         if (demande.isPresent()) {

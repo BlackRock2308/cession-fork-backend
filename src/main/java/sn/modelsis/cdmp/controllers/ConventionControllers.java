@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.Convention;
 import sn.modelsis.cdmp.entities.ParametrageDecote;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.entitiesDtos.TextConventionDto;
 import sn.modelsis.cdmp.mappers.ConventionMapper;
@@ -149,7 +148,7 @@ public class ConventionControllers {
 
       Optional<Convention> convention = null;
       try {
-          convention = conventionService.upload(id, file, TypeDocument.valueOf(type));
+          convention = conventionService.upload(id, file, type);
       } catch (IOException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

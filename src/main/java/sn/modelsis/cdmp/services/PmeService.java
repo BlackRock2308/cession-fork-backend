@@ -34,7 +34,7 @@ public interface PmeService {
      * @return le type de retour est un optional de {@link Pme}
      * @throws IOException gère l'exception
      */
-    Optional<Pme> upload(Long id, MultipartFile file, TypeDocument type) throws IOException;
+    Optional<Pme> upload(Long id, MultipartFile file, String type) throws IOException;
 
     Optional<Pme> getPmeByUtilisateur(Long id);
 

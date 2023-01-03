@@ -25,7 +25,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.DemandeAdhesion;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.services.DemandeAdhesionService;
 import sn.modelsis.cdmp.util.DtoConverter;
@@ -93,7 +92,7 @@ public class DemandeAdhesionController {
 
         Optional<DemandeAdhesion> doc = null;
         try {
-            doc = demandeAdhesionService.upload(id, file, TypeDocument.valueOf(type));
+            doc = demandeAdhesionService.upload(id, file, type);
         } catch (IOException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
