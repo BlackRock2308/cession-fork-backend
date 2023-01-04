@@ -136,6 +136,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public Boolean active_desactive(Long id) {
+        Utilisateur user = utilisateurRepository.findById(id).orElse(null);
+        if(user != null){
+            user.setActive(!user.isActive());
+            utilisateurRepository.save(user);
+            return true;
+        }
+    return false;
+    }
+
+    @Override
     public Utilisateur update(Utilisateur utilisateur) {
         Utilisateur utilisateurToUpdate = utilisateurRepository.findById(utilisateur.getIdUtilisateur()).orElse(null);
         utilisateurToUpdate.setCodePin(utilisateur.getCodePin());

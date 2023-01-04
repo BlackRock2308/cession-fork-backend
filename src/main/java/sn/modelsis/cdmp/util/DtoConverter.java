@@ -393,6 +393,7 @@ public class DtoConverter {
 		if(null != utilisateur) {
 			modelMapper.getConfiguration().setAmbiguityIgnored(true);
 			utilisateurDto = modelMapper.map(utilisateur, UtilisateurDto.class);
+			utilisateurDto.setMinister(convertToDto(utilisateur.getMinistere()));
 		}
 		return utilisateurDto;
 	}
@@ -401,6 +402,7 @@ public class DtoConverter {
 		Utilisateur utilisateur = new Utilisateur();
 		if(null != utilisateurDto) {
 			utilisateur = modelMapper.map(utilisateurDto, Utilisateur.class);
+			utilisateur.setMinistere(convertToEntity(utilisateurDto.getMinister()));
 		}
 		return utilisateur;
 	}
