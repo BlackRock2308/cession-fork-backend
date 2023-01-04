@@ -64,7 +64,7 @@ public class Utilisateur implements Serializable {
    private Set<Role> roles ;
 
    @Column(name="active")
-   private boolean active;
+   private boolean active = true;
 
  //  @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
  //  private Set<Observation> observations = new HashSet<>();
