@@ -36,7 +36,6 @@ import sn.modelsis.cdmp.entities.Observation;
 import sn.modelsis.cdmp.entities.ParametrageDecote;
 import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entities.TextConvention;
-import sn.modelsis.cdmp.entities.TypeDocument;
 import sn.modelsis.cdmp.entitiesDtos.ConventionDto;
 import sn.modelsis.cdmp.entitiesDtos.ObservationDto;
 import sn.modelsis.cdmp.entitiesDtos.StatutDto;
@@ -165,7 +164,7 @@ public class ConventionServiceImpl implements ConventionService{
   }
   
   @Override
-  public Optional<Convention> upload(Long id, MultipartFile file, TypeDocument type)
+  public Optional<Convention> upload(Long id, MultipartFile file, String type)
       throws IOException {
     Optional<Convention> convention = conventionRepository.findById(id);
     if (convention.isPresent()) {
@@ -270,7 +269,7 @@ public class ConventionServiceImpl implements ConventionService{
     Documents[] documents = convention.getDocuments().toArray(new Documents[convention.getDocuments().size()]);
     if(documents.length==0){
       MultipartFile file = new MockMultipartFile(fileName,fileName,"", inputStream);
-      upload(convention.getIdConvention(), file, TypeDocument.CONVENTION);
+      upload(convention.getIdConvention(), file, "CONVENTION");
     }else {
       FileOutputStream output = new FileOutputStream(documents[0].getUrlFile());
       output.write(inputStream.readAllBytes());

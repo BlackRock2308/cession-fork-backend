@@ -62,8 +62,9 @@ public interface DocumentService {
    * @return le type de retour est un optional de {@link Documents}
    * @throws IOException gère l'exception
    */
-  Documents upload(MultipartFile file, Long provenanceId, String provenance, TypeDocument type)
+  Documents upload(MultipartFile file, Long provenanceId, String provenance, String type)
       throws IOException;
+
 
   /**
    * Renvoie le fichier par id de la classe

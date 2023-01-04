@@ -159,7 +159,7 @@ public class PmeServiceImpl implements PmeService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public Optional<Pme> upload(Long demandeId, MultipartFile file, TypeDocument type)
+  public Optional<Pme> upload(Long demandeId, MultipartFile file, String type)
           throws IOException {
 
     PMEDocuments doc;
