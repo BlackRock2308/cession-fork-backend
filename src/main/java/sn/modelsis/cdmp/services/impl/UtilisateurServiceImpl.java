@@ -12,6 +12,7 @@ import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
 import sn.modelsis.cdmp.entitiesDtos.CreationComptePmeDto;
 import sn.modelsis.cdmp.entitiesDtos.PmeDto;
+import sn.modelsis.cdmp.entitiesDtos.UtilisateurDto;
 import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.exceptions.CustomException;
 import sn.modelsis.cdmp.exceptions.NotFoundException;
@@ -82,6 +83,54 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public Utilisateur addUser(Utilisateur utilisateur) {
+        String password =generatePassword();
+        utilisateur.setUpdatePassword(true);
+        utilisateur.setUpdateCodePin(true);
+        utilisateur.setPassword(passwordEncoder.encode(password));
+        utilisateur.setCodePin(Integer.toString(generateCodePin()));
+        Utilisateur user = utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail());
+        if(user == null) {
+            Utilisateur utilisateurSaved = utilisateurRepository.save(utilisateur);
+            if (utilisateurSaved == null)
+                throw new CustomException("Error while saving the user ");
+            sendAccepetAdhesionEmail(utilisateurSaved.getEmail(), password, Integer.parseInt(utilisateurSaved.getCodePin()));
+        return utilisateurSaved;
+        }
+        return null;
+    }
+
+    @Override
+    public Utilisateur updateUser(UtilisateurDto utilisateurDto) {
+        Utilisateur user = utilisateurRepository.findById(utilisateurDto.getIdUtilisateur()).orElse(null);
+        user.setPrenom(utilisateurDto.getPrenom());
+        user.setNom(utilisateurDto.getNom());
+        user.setTelephone(utilisateurDto.getTelephone());
+        user.setAdresse(utilisateurDto.getAdresse());
+        user.setMinistere(DtoConverter.convertToEntity(utilisateurDto.getMinister()));
+        user.setRoles(utilisateurDto.getRoles());
+        if(utilisateurDto.getEmail().equals(user.getEmail()) == false){
+            Utilisateur userEx = utilisateurRepository.findUtilisateurByEmail(utilisateurDto.getEmail());
+            if(userEx == null) {
+                user.setEmail(utilisateurDto.getEmail());
+                user.setUpdatePassword(true);
+                user.setUpdateCodePin(true);
+                String password =generatePassword();
+                user.setPassword(passwordEncoder.encode(password));
+                user.setCodePin(Integer.toString(generateCodePin()));
+                Utilisateur utilisateurSaved = utilisateurRepository.save(user);
+                if (utilisateurSaved == null)
+                    throw new CustomException("Error while saving the user ");
+                sendAccepetAdhesionEmail(utilisateurSaved.getEmail(), password, Integer.parseInt(utilisateurSaved.getCodePin()));
+                return utilisateurSaved;
+            }
+            return null;
+        }else {
+            return utilisateurRepository.save(user);
+        }
+    }
+
+    @Override
     public Utilisateur save(Utilisateur utilisateur) {
         return utilisateurRepository.save(utilisateur);
     }
@@ -123,6 +172,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             utilisateurToUpdate.setRoles(newRoles);
         }
         return utilisateurRepository.save(utilisateurToUpdate);
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 
     @Override

@@ -25,17 +25,20 @@ public class PersitUsers {
 
     private  final FormeJuridiqueRepository formeJuridiqueRepository;
 
+    private final CentreDesServicesFiscauxRepository centreFiscalRepository;
+
     final  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     public PersitUsers(RoleRepository roleRepository,
                        UtilisateurRepository utilisateurRepository,
-                       PmeRepository pmeRepository, MinistereDepensierRepository mdRepository, FormeJuridiqueRepository formeJuridiqueRepository) {
+                       PmeRepository pmeRepository, MinistereDepensierRepository mdRepository, FormeJuridiqueRepository formeJuridiqueRepository, CentreDesServicesFiscauxRepository centreFiscalRepository) {
         this.roleRepository = roleRepository;
         this.utilisateurRepository = utilisateurRepository;
         this.pmeRepository = pmeRepository;
         this.mdRepository = mdRepository;
         this.formeJuridiqueRepository = formeJuridiqueRepository;
+        this.centreFiscalRepository = centreFiscalRepository;
 
         Role DG = roleRepository.findByLibelle("DG");
 
@@ -83,6 +86,8 @@ public class PersitUsers {
 
         MinistereDepensier md = mdRepository.findByCode("MAER");
         FormeJuridique fj = formeJuridiqueRepository.findByCode("SRL");
+
+        CentreDesServicesFiscaux cf = centreFiscalRepository.findByCode("DKR-PLT");
 
         Utilisateur dg = new Utilisateur();
         dg.setAdresse("Mermoz");
@@ -200,6 +205,7 @@ public class PersitUsers {
             LocalDateTime date = LocalDateTime.now();
             Pme pme1 = new Pme();
             pme1.setFormeJuridique(fj);
+            pme1.setCentreFiscal(cf);
             pme1.setAdressePME("Dakar Point E");
             pme1.setNinea("123456789088");
             pme1.setRccm("SN DK 2898 Y 9989");

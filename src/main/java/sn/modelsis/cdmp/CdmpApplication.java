@@ -53,18 +53,21 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
 
   private  final FormeJuridiqueRepository formeJuridiqueRepository;
 
+    private final CentreDesServicesFiscauxRepository centreFiscalRepository;
+
     @Value("${server.link_front}")
     private String uilocation; 
 
     public CdmpApplication(Environment env,
                            UtilisateurRepository utilisateurRepository, RoleRepository roleRepository,
-                           PmeRepository pmeRepository, MinistereDepensierRepository mdRepository, FormeJuridiqueRepository formeJuridiqueRepository) {
+                           PmeRepository pmeRepository, MinistereDepensierRepository mdRepository, FormeJuridiqueRepository formeJuridiqueRepository, CentreDesServicesFiscauxRepository centreFiscalRepository) {
         this.env = env;
       this.utilisateurRepository = utilisateurRepository;
       this.roleRepository = roleRepository;
       this.pmeRepository = pmeRepository;
       this.mdRepository = mdRepository;
         this.formeJuridiqueRepository = formeJuridiqueRepository;
+        this.centreFiscalRepository = centreFiscalRepository;
     }
 
   @Override
@@ -178,7 +181,7 @@ public class CdmpApplication implements InitializingBean, CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository, mdRepository, formeJuridiqueRepository);
+       PersitUsers persitUsers=new PersitUsers(roleRepository,utilisateurRepository,pmeRepository, mdRepository, formeJuridiqueRepository, centreFiscalRepository);
         log.info("Initialisation des differents profils terminée");
 
 

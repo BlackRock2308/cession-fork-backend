@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,14 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import sn.modelsis.cdmp.entities.Role;
 import sn.modelsis.cdmp.entities.Utilisateur;
@@ -102,6 +96,14 @@ public class UtilisateurController {
         ArrayList<UtilisateurDto> utilisateurDtos = new ArrayList<>();
         utilisateurs.forEach(utilisateur ->  utilisateurDtos.add(DtoConverter.convertToDto(utilisateur)));
         return ResponseEntity.ok().body(utilisateurDtos);
+    }
+
+    @GetMapping("/getAllRoles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        log.debug("REST request to get  roles");
+        List<Role> roles =  utilisateurService.getAllRoles();
+        log.info("All roles");
+        return ResponseEntity.ok().body(roles);
     }
 
     /**
@@ -239,6 +241,32 @@ public class UtilisateurController {
 
         return ResponseEntity
                 .created(new URI("/api/utilisateurs/" + result.getIdUtilisateur()))
+                .body(DtoConverter.convertToDto(result));
+    }
+
+    @PostMapping("")
+    public ResponseEntity<UtilisateurDto> addUtilisateur(@Valid @RequestBody UtilisateurDto utilisateurDto) throws Exception {
+        log.debug("REST request to save Utilisateur : {}", utilisateurDto);
+       Utilisateur result = utilisateurService.addUser(DtoConverter.convertToEntity(utilisateurDto));
+        if(result == null){
+            log.info("UtilisateurController:ce code email existe");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(DtoConverter.convertToDto(result));
+        }
+        log.info("UtilisateurController: utilisateur créée");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(DtoConverter.convertToDto(result));
+    }
+
+    @PutMapping("")
+    public ResponseEntity<UtilisateurDto> update(@RequestBody  UtilisateurDto utilisateurDto) throws Exception {
+        log.debug("REST request to save Utilisateur : {}", utilisateurDto);
+        Utilisateur result = utilisateurService.updateUser(utilisateurDto);
+        if(result == null){
+            log.info("UtilisateurController:ce code email existe");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(DtoConverter.convertToDto(result));
+        }
+        log.info("UtilisateurController: utilisateur modifié");
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(DtoConverter.convertToDto(result));
     }
 
