@@ -63,6 +63,9 @@ public class Utilisateur implements Serializable {
    @ManyToMany(fetch = FetchType.EAGER,cascade =CascadeType.DETACH)
    private Set<Role> roles ;
 
+   @Column(name="active")
+   private boolean active;
+
  //  @OneToMany(mappedBy = "utilisateur",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
  //  private Set<Observation> observations = new HashSet<>();
 //

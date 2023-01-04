@@ -48,6 +48,8 @@ public interface UtilisateurService {
     Utilisateur updateUser(UtilisateurDto utilisateurDto);
     Utilisateur save(Utilisateur utilisateur);
 
+    Boolean active_desactive(Long id);
+
     /**
      ** cette methode permet d'enregistrer un utilisateur
      * 
