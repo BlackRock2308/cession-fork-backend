@@ -35,6 +35,6 @@ public class DocumentDto {
 
   private String urlFile;
 
-  private TypeDocument typeDocument;
+  private String typeDocument;
   
 }
