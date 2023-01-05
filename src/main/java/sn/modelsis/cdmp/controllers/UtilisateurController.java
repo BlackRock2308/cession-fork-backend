@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -92,10 +93,13 @@ public class UtilisateurController {
     @GetMapping("/getAll")
     public ResponseEntity<List<UtilisateurDto>> getAllUtilisateurs() {
         log.debug("REST request to get  Utilisateurs");
-        List<Utilisateur> utilisateurs =  utilisateurService.getAll();
-        ArrayList<UtilisateurDto> utilisateurDtos = new ArrayList<>();
+
+       List<Utilisateur> utilisateurs =  utilisateurService.getAll();
+         /*ArrayList<UtilisateurDto> utilisateurDtos = new ArrayList<>();
         utilisateurs.forEach(utilisateur ->  utilisateurDtos.add(DtoConverter.convertToDto(utilisateur)));
-        return ResponseEntity.ok().body(utilisateurDtos);
+        return ResponseEntity.ok().body(utilisateurDtos);*/
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(utilisateurs.stream().map(DtoConverter::convertToDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/getAllRoles")
@@ -257,6 +261,13 @@ public class UtilisateurController {
                 .body(DtoConverter.convertToDto(result));
     }
 
+    @PostMapping("/{id}")
+    public ResponseEntity<Boolean> active_desactiveUtilisateur(@RequestBody UtilisateurDto utilisateurDto)  {
+        log.debug("REST request to save Utilisateur : {}", utilisateurDto.getIdUtilisateur());
+       Boolean active = utilisateurService.active_desactive(utilisateurDto.getIdUtilisateur());
+        log.info("UtilisateurController: active_desactiveUtilisateur");
+        return ResponseEntity.status(HttpStatus.OK).body(active);
+    }
     @PutMapping("")
     public ResponseEntity<UtilisateurDto> update(@RequestBody  UtilisateurDto utilisateurDto) throws Exception {
         log.debug("REST request to save Utilisateur : {}", utilisateurDto);
@@ -317,7 +328,7 @@ public class UtilisateurController {
         }
         UserDetails userDetails = utilisateurDetailService.loadUserByUsername(authentificationDto.getEmail());
         Utilisateur utilisateur = utilisateurService.findByEmail(authentificationDto.getEmail());
-        if (utilisateur != null) {
+        if (utilisateur != null && utilisateur.isActive()) {
             final String token = jwtUtility.generateToken(userDetails);
             return new AuthentificationResponseDto(utilisateur, token);
         } else {
