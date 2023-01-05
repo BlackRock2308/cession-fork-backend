@@ -42,7 +42,7 @@ public class DemandeAdhesionController {
                                                                  HttpServletRequest request) {
 
         DemandeAdhesion result = demandeAdhesionService.saveAdhesion(demandeadhesionDto);
-        log.info("demande cession created. Id:{} ", result.getIdDemande());
+        log.info("demande adhésion created. Id:{} ", result.getIdDemande());
         return ResponseEntity.status(HttpStatus.CREATED).body(DtoConverter.convertToDto(result));
     }
 

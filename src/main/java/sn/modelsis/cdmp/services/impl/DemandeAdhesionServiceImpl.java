@@ -9,15 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
-import sn.modelsis.cdmp.entities.*;
+import sn.modelsis.cdmp.entities.DemandeAdhesion;
+import sn.modelsis.cdmp.entities.DemandeDocuments;
+import sn.modelsis.cdmp.entities.Documents;
+import sn.modelsis.cdmp.entities.Statut;
 import sn.modelsis.cdmp.entitiesDtos.DemandeAdhesionDto;
 import sn.modelsis.cdmp.entitiesDtos.email.EmailMessageWithTemplate;
 import sn.modelsis.cdmp.exceptions.CustomException;
@@ -75,18 +76,41 @@ public class DemandeAdhesionServiceImpl implements DemandeAdhesionService {
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeAdhesion saveAdhesion(DemandeAdhesionDto demandeAdhesionDto) {
         DemandeAdhesion demandeAdhesion = adhesionMapper.asEntity(demandeAdhesionDto);
+        
         pmeRepository.findById(demandeAdhesionDto.getIdPME()).ifPresentOrElse(
                 (value)
                         -> { 
-                    demandeAdhesion.setPme(value);
-                    demandeAdhesion.setDateDemandeAdhesion(new Date());
-                    Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
-                   // Statut statut = new Statut();
-                   // statut.setIdStatut(1L);
-                    demandeAdhesion.setStatut(statut);
-                    if(demandeAdhesion.getIdDemande()==null){
-                        demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
+                    List<DemandeAdhesion> demandes = demandeAdhesionRepository.findAllByPmeIdPME(value.getIdPME());
+                    if(demandes.size() == 0) {
+                        demandeAdhesion.setPme(value);
+                        demandeAdhesion.setDateDemandeAdhesion(new Date());
+                        Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
+                        demandeAdhesion.setStatut(statut);
+                        if(demandeAdhesion.getIdDemande()==null){
+                            demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
+                        }
                     }
+                    else {
+                        demandes.forEach(d ->{
+                            String code = d.getStatut().getCode();
+                            if(code == "ADHESION_SOUMISE") {
+                                throw new CustomException("Vous avez déjà une demande en cours d'exécution ");
+                            }
+                            else if(code == "ADHESION_ACCEPTEE") {
+                                throw new CustomException("Vous avez déjà un compte ");
+                            }
+                            else if(code == "ADHESION_REJETEE") {
+                                demandeAdhesion.setPme(value);
+                                demandeAdhesion.setDateDemandeAdhesion(new Date());
+                                Statut statut=statutRepository.findByLibelle("ADHESION_SOUMISE");
+                                demandeAdhesion.setStatut(statut);
+                                if(demandeAdhesion.getIdDemande()==null){
+                                    demandeAdhesion.setNumeroDemande(demandeService.getNumDemande());
+                                }
+                            }
+                        });
+                    }
+                    
                 },
                 ()
                         -> {

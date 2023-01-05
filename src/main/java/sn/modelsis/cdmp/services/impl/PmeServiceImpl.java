@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sn.modelsis.cdmp.entities.*;
 import sn.modelsis.cdmp.exceptions.CustomException;
+import sn.modelsis.cdmp.repositories.DemandeAdhesionRepository;
 import sn.modelsis.cdmp.repositories.DemandeCessionRepository;
 import sn.modelsis.cdmp.repositories.PmeRepository;
 import sn.modelsis.cdmp.repositories.StatutRepository;
@@ -34,6 +36,8 @@ public class PmeServiceImpl implements PmeService {
   private final DemandeCessionRepository demandecessionRepository;
   private final UtilisateurRepository utilisateurRepository;
   private final DocumentService documentService;
+  @Autowired
+  private DemandeAdhesionRepository demandeAdhesionRepository;
 
   private final Util util;
 
@@ -42,7 +46,7 @@ public class PmeServiceImpl implements PmeService {
   @Transactional(propagation = Propagation.REQUIRED)
   public Pme savePme(Pme pme) {
 
-    Pme newPme;
+   Pme newPme;
     Pme oldpme;
 
     try {
@@ -51,9 +55,22 @@ public class PmeServiceImpl implements PmeService {
             newPme = pmeRepository.saveAndFlush(pme);
             log.debug("PmeService:savePme received from database : {}",newPme);
         }else {
-            newPme = pmeRepository.save(oldpme);
+            List<DemandeAdhesion> demandes = demandeAdhesionRepository.findAllByPmeIdPME(oldpme.getIdPME());
+            demandes.forEach(d -> {
+                String code = d.getStatut().getCode();
+                if(code == "ADHESION_SOUMISE") {
+                    throw new CustomException("Vous avez déjà une demande en cours d'exécution ");
+                }
+                else if(code == "ADHESION_ACCEPTEE") {
+                    throw new CustomException("Vous avez déjà un compte ");
+                }
+                else if(code == "ADHESION_REJETEE") {
+                    pmeRepository.delete(oldpme);
+                    pmeRepository.save(pme);
+                }
+            });
+            newPme = pmeRepository.findByMail(pme.getEmail());
         }
-      
 
     } catch (Exception ex){
       log.error("Exception occured while persisting new Pme to database : {}",ex.getMessage());
