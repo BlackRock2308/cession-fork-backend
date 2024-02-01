@@ -49,9 +49,6 @@ public class SecurityConfig {
         .disable()
         .authorizeRequests()
         .antMatchers(AUTH_WHITELIST).permitAll()
-//        .antMatchers("/api/**").hasAnyAuthority("PME","DG","DAF","DRC","PCA","JURISTE","ORDONNATEUR","DSEAR","ADMIN")
-        //.anyRequest()
-        //.antMatchers("/api/**").permitAll()
         .and()
         .httpBasic()
         .and()
@@ -62,14 +59,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-//        UserDetails user = User.withUsername("yoda")
-//                .password(passwordEncoder.encode("secret"))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user);
-//    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

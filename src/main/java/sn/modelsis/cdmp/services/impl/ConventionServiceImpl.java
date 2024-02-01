@@ -111,7 +111,7 @@ public class ConventionServiceImpl implements ConventionService{
           demandeCession.setStatut(statut);
           demandeCession.getConventions().add(newConvention);
           demandeCessionService.save(demandeCession);
-              }
+      }
     } catch (Exception ex){
       log.error("Exception occured while adding convention. Error message : {}", ex.getMessage());
       throw new CustomException("Exception occured while adding new convention");

@@ -51,7 +51,7 @@ public class PaiementServiceImpl implements PaiementService {
     public Paiement addPaiementToDemandeCession(PaiementDto paiementDto) {
 
         Statut newDemandeStatus = statutRepository.findByCode("CONVENTION_ACCEPTEE");
-        Paiement paiement =new Paiement();
+        Paiement paiement = new Paiement();
         DemandeCession demandeCession = initPaiement(paiementDto);
         demandeCession.setStatut(newDemandeStatus);
         String statusLibelle = demandeCession.getStatut().getLibelle() ;

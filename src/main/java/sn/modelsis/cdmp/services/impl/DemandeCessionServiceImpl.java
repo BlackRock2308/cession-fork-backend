@@ -182,6 +182,7 @@ public class DemandeCessionServiceImpl implements DemandeCessionService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public DemandeCession validerRecevabilite(Long idDemande, String code) {
+
         DemandeCession demandeCessionDto;
         
         try {
